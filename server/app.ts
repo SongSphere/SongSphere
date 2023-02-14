@@ -10,6 +10,10 @@ import bodyParser from "body-parser";
 
 // import routers
 import sampleRouter from "./routes/sample";
+import loginRouter from "./routes/login";
+
+// import middleware
+import logger from "./middlewares/logger";
 
 const app = express();
 
@@ -22,9 +26,11 @@ app.use(
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(logger);
 
 // set routers
 app.use(sampleRouter);
+app.use(loginRouter);
 
 const port = process.env.PORT || "8080";
 
