@@ -8,7 +8,7 @@ export const validateToken = async (token: string) => {
     audience: process.env.GOOGLE_CLIENT_ID,
   });
 
-  const { name, email, picture } = ticket.getPayload();
+  const userData = ticket.getPayload();
 
-  return { name, email, picture };
+  return userData;
 };
