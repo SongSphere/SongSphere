@@ -1,10 +1,12 @@
+// import packages
 import { Request, Response, NextFunction } from "express";
+
+// import db
+import User from "../db/user";
 
 // import services
 import { validateToken } from "../services/google-login";
-
-// import models
-import User from "../db/user";
+import { saveUser } from "../services/db";
 
 export const login = (req: Request, res: Response, next: NextFunction) => {
   const { token } = req.body;
@@ -18,11 +20,6 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
       profileImgUrl: userData.picture,
     });
 
-    try {
-      await user.save();
-      res.send(user);
-    } catch (error) {
-      res.status(500).send(error);
-    }
+    saveUser(user);
   });
 };
