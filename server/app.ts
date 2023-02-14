@@ -15,7 +15,11 @@ import loginRouter from "./routes/login";
 // import middleware
 import logger from "./middlewares/logger";
 
+// import db
+import { connect } from "./db/connect";
+
 const app = express();
+connect();
 
 app.use(
   cors({
