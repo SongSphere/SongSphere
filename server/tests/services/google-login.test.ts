@@ -2,7 +2,6 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 import { validateToken } from "../../services/google-login";
-import { login } from "../../controllers/login";
 
 describe("testing login controller", () => {
   const testToken = process.env.DEBUG_GOOGLE_TOKEN;
