@@ -7,6 +7,7 @@ export interface IUser {
   email: string;
   emailVerified: Boolean;
   profileImgUrl: string;
+  token: string; // this is for debugging purposese
 }
 
 const UserSchema = new mongoose.Schema<IUser>(
@@ -32,6 +33,10 @@ const UserSchema = new mongoose.Schema<IUser>(
       required: true,
     },
     profileImgUrl: {
+      type: String,
+      required: true,
+    },
+    token: {
       type: String,
       required: true,
     },

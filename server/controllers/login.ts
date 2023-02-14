@@ -18,6 +18,7 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
       email: userData.email,
       emailVerified: userData.email_verified,
       profileImgUrl: userData.picture,
+      token: token,
     });
 
     saveUser(user);
