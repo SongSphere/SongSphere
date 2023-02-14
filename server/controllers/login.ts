@@ -20,7 +20,6 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
 
     try {
       await user.save();
-      console.log(user.createdAt);
       res.send(user);
     } catch (error) {
       res.status(500).send(error);

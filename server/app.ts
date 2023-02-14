@@ -13,7 +13,7 @@ import sampleRouter from "./routes/sample";
 import loginRouter from "./routes/login";
 
 // import middleware
-import logger from "./middlewares/logger";
+import logger from "./middleware/logger";
 
 // import db
 import { connect } from "./db/connect";
