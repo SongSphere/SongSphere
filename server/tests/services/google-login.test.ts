@@ -3,17 +3,16 @@ dotenv.config();
 
 import { validateToken } from "../../services/google-login";
 
-describe("testing login controller", () => {
+describe("Testing google-login services", () => {
   const testToken = process.env.DEBUG_GOOGLE_TOKEN;
-  test("testing user token validation", () => {
+  test("Testing user token validation", () => {
     expect(validateToken(testToken)).resolves.toMatchObject({
-      name: "Willy Lien",
-      given_name: "Willy",
-      family_name: "Lien",
-      email: "crashingballoon@gmail.com",
-      email_verified: true,
-      picture:
-        "https://lh3.googleusercontent.com/a/AEdFTp7VQi0KaRITkjrZblY_SYGCS3H2xxeH783DVSY4kg=s96-c",
+      name: process.env.DEBUG_NAME,
+      given_name: process.env.DEBUG_GIVEN_NAME,
+      family_name: process.env.DEBUG_FAMILY_NAME,
+      email: process.env.DEBUG_EMAIL,
+      email_verified: process.env.DEBUG_EMAIL_VERIFIED,
+      picture: process.env.DEBUG_PICTURE,
     });
   });
 });
