@@ -1,6 +1,6 @@
 // import packages
 import { TokenPayload } from "google-auth-library";
-import mongoose, { ObjectId, Types } from "mongoose";
+import mongoose from "mongoose";
 
 // import models
 import User, { IUser } from "../db/user";

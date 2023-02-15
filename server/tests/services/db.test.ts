@@ -4,7 +4,7 @@ dotenv.config();
 import { createUser, fetchUser, saveUser } from "../../services/db";
 import { connect } from "../../db/connect";
 import { validateToken } from "../../services/google-login";
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
 describe("Testing db services", () => {
   test("Testing user create, save, and fetch", async () => {
