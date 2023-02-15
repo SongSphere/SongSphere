@@ -23,7 +23,7 @@ export const login = async (
     const userData = await validateToken(token);
     const exist = await checkUser(userData.email, User);
     if (exist) {
-      updateUserToken(userData.email, token, User);
+      await updateUserToken(userData.email, token, User);
     } else {
       const user = await createUser(userData, token, User);
       await saveUser(user);

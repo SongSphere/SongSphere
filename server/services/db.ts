@@ -39,9 +39,10 @@ export const updateUserToken = async (
   try {
     const user = await User.findOneAndUpdate(
       { email: email },
-      { token: token, updatedAt: new Date(0) },
+      { token: token },
       { new: true }
     );
+    return user;
   } catch (error) {
     throw error;
   }

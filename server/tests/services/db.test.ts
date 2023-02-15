@@ -6,7 +6,12 @@ dotenv.config();
 import mongoose from "mongoose";
 
 // import services
-import { createUser, fetchUser, saveUser } from "../../services/db";
+import {
+  createUser,
+  fetchUser,
+  saveUser,
+  updateUserToken,
+} from "../../services/db";
 import { validateToken } from "../../services/google-login";
 
 // import db
@@ -25,7 +30,7 @@ describe("Testing db services", () => {
       givenName: process.env.DEBUG_GIVEN_NAME,
       familyName: process.env.DEBUG_FAMILY_NAME,
       email: process.env.DEBUG_EMAIL,
-      emailVerified: process.env.DEBUG_EMAIL_VERIFIED == "true",
+      emailVerified: process.env.DEBUG_EMAIL_VERIFIED == "true", // convert string to boolean
       profileImgUrl: process.env.DEBUG_PICTURE,
       token: testToken,
     });
@@ -42,7 +47,7 @@ describe("Testing db services", () => {
       givenName: process.env.DEBUG_GIVEN_NAME,
       familyName: process.env.DEBUG_FAMILY_NAME,
       email: process.env.DEBUG_EMAIL,
-      emailVerified: true,
+      emailVerified: process.env.DEBUG_EMAIL_VERIFIED == "true", // convert string to boolean
       profileImgUrl: process.env.DEBUG_PICTURE,
       token: testToken,
     });
@@ -62,5 +67,23 @@ describe("Testing db services", () => {
   });
   afterAll(async () => {
     await mongoose.connection.close();
+  });
+
+  test("Testing updateUserToken", async () => {
+    const newToken = "new token";
+    const updatedUser = await updateUserToken(
+      process.env.DEBUG_EMAIL,
+      newToken,
+      UserTest
+    );
+    expect(updatedUser).toMatchObject({
+      name: process.env.DEBUG_NAME,
+      givenName: process.env.DEBUG_GIVEN_NAME,
+      familyName: process.env.DEBUG_FAMILY_NAME,
+      email: process.env.DEBUG_EMAIL,
+      emailVerified: process.env.DEBUG_EMAIL_VERIFIED == "true", // convert string to boolean
+      profileImgUrl: process.env.DEBUG_PICTURE,
+      token: newToken,
+    });
   });
 });
