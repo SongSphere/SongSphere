@@ -3,11 +3,12 @@ import { TokenPayload } from "google-auth-library";
 import mongoose from "mongoose";
 
 // import models
-import User, { IUser } from "../db/user";
+import { IUser } from "../db/user";
 
 export const createUser = async (
   userData: TokenPayload,
-  token: string
+  token: string,
+  User: mongoose.Model<IUser, {}, {}, {}, any>
 ): Promise<mongoose.Document<unknown, any, IUser>> => {
   const user = new User({
     name: userData.name,
@@ -21,8 +22,14 @@ export const createUser = async (
   return user;
 };
 
+export const checkUser = async (email: string, User: mongoose.Model<IUser>) => {
+  const exist = await User.exists({ email: email });
+  return exist;
+};
+
 export const fetchUser = async (
-  id: string
+  id: string,
+  User: mongoose.Model<IUser>
 ): Promise<mongoose.Document<unknown, any, IUser>> => {
   try {
     const user = await User.findById(id);
