@@ -23,8 +23,10 @@ export const login = async (
     const userData = await validateToken(token);
     const exist = await checkUser(userData.email, User);
     if (exist) {
+      // exist == document with _id
       await updateUserToken(userData.email, token, User);
     } else {
+      // exist == null
       const user = await createUser(userData, token, User);
       await saveUser(user);
     }
