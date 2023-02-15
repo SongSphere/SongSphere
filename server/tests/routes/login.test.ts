@@ -37,5 +37,7 @@ describe("Testing login route", () => {
       .send({ token: testToken });
 
     expect(res.statusCode).toBe(200);
+    const exist = await User.exists({ email: process.env.DEBUG_EMAIL });
+    expect(exist != null).toBe(true);
   });
 });
