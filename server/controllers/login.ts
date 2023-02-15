@@ -14,7 +14,21 @@ export const login = async (
   next: NextFunction
 ) => {
   const { token } = req.body;
-  const userData = await validateToken(token);
-  const user = await createUser(userData, token, User);
-  await saveUser(user);
+  try {
+    const userData = await validateToken(token);
+    const exist = checkUser(userData.email, User);
+    if (exist) {
+      const user = await User.findOneAndUpdate(
+        { email: userData.email },
+        { updatedAt: new Date(0) },
+        { new: true }
+      );
+    } else {
+      const user = await createUser(userData, token, User);
+      await saveUser(user);
+    }
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
 };

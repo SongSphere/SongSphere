@@ -23,8 +23,12 @@ export const createUser = async (
 };
 
 export const checkUser = async (email: string, User: mongoose.Model<IUser>) => {
-  const exist = await User.exists({ email: email });
-  return exist;
+  try {
+    const exist = await User.exists({ email: email });
+    return exist;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const fetchUser = async (
