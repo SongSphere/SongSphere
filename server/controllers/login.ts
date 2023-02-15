@@ -6,7 +6,12 @@ import { User } from "../db/user";
 
 // import services
 import { validateToken } from "../services/google-login";
-import { createUser, saveUser, checkUser } from "../services/db";
+import {
+  createUser,
+  saveUser,
+  checkUser,
+  updateUserToken,
+} from "../services/db";
 
 export const login = async (
   req: Request,
@@ -16,18 +21,15 @@ export const login = async (
   const { token } = req.body;
   try {
     const userData = await validateToken(token);
-    const exist = checkUser(userData.email, User);
+    const exist = await checkUser(userData.email, User);
     if (exist) {
-      const user = await User.findOneAndUpdate(
-        { email: userData.email },
-        { updatedAt: new Date(0) },
-        { new: true }
-      );
+      updateUserToken(userData.email, token, User);
     } else {
       const user = await createUser(userData, token, User);
       await saveUser(user);
     }
   } catch (error) {
+    console.error(error);
     res.status(500);
     res.json({ error: error });
   }
