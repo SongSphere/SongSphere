@@ -7,9 +7,9 @@ import { validateToken } from "../../services/google-login";
 import mongoose from "mongoose";
 
 describe("Testing db services", () => {
+  connect();
+  const testToken = process.env.DEBUG_GOOGLE_TOKEN;
   test("Testing user create, save, and fetch", async () => {
-    connect();
-    const testToken = process.env.DEBUG_GOOGLE_TOKEN;
     const userData = await validateToken(testToken);
     const user = await createUser(userData, testToken);
 
@@ -39,6 +39,19 @@ describe("Testing db services", () => {
       profileImgUrl: process.env.DEBUG_PICTURE,
       token: testToken,
     });
+  });
+
+  test("Testing user create with insufficient data", async () => {
+    const userData = await validateToken(testToken);
+    userData.name = undefined;
+    const user = await createUser(userData, testToken);
+    let error;
+    try {
+      await saveUser(user);
+    } catch (err) {
+      error = err;
+    }
+    expect(error.errors["name"].message).toBe("Path `name` is required.");
   });
   afterAll(async () => {
     await mongoose.connection.close();
