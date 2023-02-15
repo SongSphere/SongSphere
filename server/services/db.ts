@@ -1,6 +1,6 @@
 // import packages
 import { TokenPayload } from "google-auth-library";
-import mongoose, { ObjectId } from "mongoose";
+import mongoose, { ObjectId, Types } from "mongoose";
 
 // import models
 import User, { IUser } from "../db/user";
@@ -19,6 +19,17 @@ export const createUser = async (
     token: token,
   });
   return user;
+};
+
+export const fetchUser = async (
+  id: string
+): Promise<mongoose.Document<unknown, any, IUser>> => {
+  try {
+    const user = await User.findById(id);
+    return user;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const saveUser = async (

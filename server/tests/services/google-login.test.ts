@@ -11,7 +11,7 @@ describe("Testing google-login services", () => {
       given_name: process.env.DEBUG_GIVEN_NAME,
       family_name: process.env.DEBUG_FAMILY_NAME,
       email: process.env.DEBUG_EMAIL,
-      email_verified: process.env.DEBUG_EMAIL_VERIFIED,
+      email_verified: process.env.DEBUG_EMAIL_VERIFIED == "true",
       picture: process.env.DEBUG_PICTURE,
     });
   });
