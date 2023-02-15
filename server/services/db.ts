@@ -31,6 +31,22 @@ export const checkUser = async (email: string, User: mongoose.Model<IUser>) => {
   }
 };
 
+export const updateUserToken = async (
+  email: string,
+  token: string,
+  User: mongoose.Model<IUser>
+) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { token: token, updatedAt: new Date(0) },
+      { new: true }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const fetchUser = async (
   id: string,
   User: mongoose.Model<IUser>
