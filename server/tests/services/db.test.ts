@@ -17,21 +17,26 @@ import { validateToken } from "../../services/google-login";
 
 // import db
 import { connect } from "../../db/connect";
-import { UserTest, IUser } from "../../db/user";
+import User, { IUser } from "../../db/user";
 
 describe("Testing db services", () => {
-  let userData;
-  let user: mongoose.Document<unknown, any, IUser>;
+  const testToken = process.env.DEBUG_GOOGLE_TOKEN;
 
   beforeAll(async () => {
-    connect();
-    await UserTest.collection.drop();
-    userData = await validateToken(testToken);
-    user = await createUser(userData, testToken, UserTest);
+    await connect("testDBServices");
   });
 
-  const testToken = process.env.DEBUG_GOOGLE_TOKEN;
+  afterEach(async () => {
+    await User.deleteMany();
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
+  });
+
   test("Testing user create, save, and fetch", async () => {
+    const userData = await validateToken(testToken);
+    const user = await createUser(userData, testToken);
     expect(user).toMatchObject({
       name: process.env.DEBUG_NAME,
       givenName: process.env.DEBUG_GIVEN_NAME,
@@ -47,7 +52,7 @@ describe("Testing db services", () => {
     } catch (error) {
       console.error(error);
     }
-    const fetchedUser = await fetchUser(user.id, UserTest);
+    const fetchedUser = await fetchUser(user.id);
 
     expect(fetchedUser).toMatchObject({
       name: process.env.DEBUG_NAME,
@@ -63,7 +68,7 @@ describe("Testing db services", () => {
   test("Testing user create with insufficient data", async () => {
     const userData = await validateToken(testToken);
     userData.name = undefined;
-    const user = await createUser(userData, testToken, UserTest);
+    const user = await createUser(userData, testToken);
     let error;
     try {
       await saveUser(user);
@@ -74,11 +79,19 @@ describe("Testing db services", () => {
   });
 
   test("Testing updateUserToken", async () => {
+    const userData = await validateToken(testToken);
+    const user = await createUser(userData, testToken);
+
+    try {
+      await saveUser(user);
+    } catch (error) {
+      console.error(error);
+    }
+
     const newToken = "new token";
     const updatedUser = await updateUserToken(
       process.env.DEBUG_EMAIL,
-      newToken,
-      UserTest
+      newToken
     );
     expect(updatedUser).toMatchObject({
       name: process.env.DEBUG_NAME,
@@ -92,16 +105,21 @@ describe("Testing db services", () => {
   });
 
   test("Testing check user", async () => {
+    const userData = await validateToken(testToken);
+    const user = await createUser(userData, testToken);
+
+    try {
+      await saveUser(user);
+    } catch (error) {
+      console.error(error);
+    }
+
     const existEmail = process.env.DEBUG_EMAIL;
     const notExistEmail = "this is an email that does not exist";
-    const shouldExist = await checkUser(existEmail, UserTest);
+    const shouldExist = await checkUser(existEmail);
 
     expect(shouldExist).toEqual({ _id: user._id });
-    const shouldNotExist = await checkUser(notExistEmail, UserTest);
+    const shouldNotExist = await checkUser(notExistEmail);
     expect(shouldNotExist).toBe(null);
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
   });
 });

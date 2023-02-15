@@ -15,11 +15,7 @@ import loginRouter from "./routes/login";
 // import middleware
 import logger from "./middleware/logger";
 
-// import db
-import { connect } from "./db/connect";
-
 const app = express();
-connect();
 
 app.use(
   cors({
@@ -36,8 +32,4 @@ app.use(logger);
 app.use(sampleRouter);
 app.use(loginRouter);
 
-const port = process.env.PORT || "8080";
-
-app.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`);
-});
+export default app;
