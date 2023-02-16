@@ -40,4 +40,14 @@ describe("Testing login route", () => {
     const exist = await User.exists({ email: process.env.DEBUG_EMAIL });
     expect(exist != null).toBe(true);
   });
+
+  test("Testing sign in (not creating duplicate user documents)", async () => {
+    const res = await request(app)
+      .post("/api/auth/google")
+      .send({ token: testToken });
+
+    expect(res.statusCode).toBe(200);
+    const users = await User.find({ email: process.env.DEBUG_EMAIL });
+    expect(users.length == 1).toBe(true);
+  });
 });
