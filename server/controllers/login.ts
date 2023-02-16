@@ -1,6 +1,6 @@
 // import packages
 import { Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 // import db
 import User, { IUser } from "../db/user";
@@ -60,9 +60,20 @@ export const login = async (
       // exist == null
       const user = await createUser(userData, token);
       await saveUser(user);
-      res.status(200);
-      res.json({ user: user });
     }
+
+    req.session.user = {
+      name: userData.name,
+      givenName: userData.given_name,
+      familyName: userData.family_name,
+      email: userData.email,
+      emailVerified: userData.email_verified,
+      profileImgUrl: userData.picture,
+      token: token,
+    };
+
+    res.status(201);
+    res.json({ msg: "login success" });
   } catch (error) {
     console.error(error);
     res.status(500);

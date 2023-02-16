@@ -2,6 +2,7 @@ import app from "./app";
 
 // import db
 import { connect } from "./db/connect";
+import { IUser } from "./db/user";
 
 connect(process.env.DB_NAME);
 

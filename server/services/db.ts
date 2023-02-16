@@ -18,6 +18,7 @@ export const createUser = async (
     profileImgUrl: userData.picture,
     token: token,
   });
+
   return user;
 };
 
@@ -58,7 +59,8 @@ export const saveUser = async (
   user: mongoose.Document<unknown, any, IUser>
 ) => {
   try {
-    await user.save();
+    const savedUser = await user.save();
+    return savedUser;
   } catch (error) {
     throw error;
   }

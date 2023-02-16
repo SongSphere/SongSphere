@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IUser {
   name: string;
@@ -10,7 +10,7 @@ export interface IUser {
   token: string; // this is for debugging purposese
 }
 
-const UserSchema = new mongoose.Schema<IUser>(
+const UserSchema = new Schema<IUser>(
   {
     name: {
       type: String,
