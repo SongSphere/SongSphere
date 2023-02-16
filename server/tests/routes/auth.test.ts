@@ -16,11 +16,11 @@ import User, { IUser } from "../../db/user";
 
 import createApp from "../../app";
 
-const app = createApp("testLoginRoute");
+const app = createApp("testAuthRoute");
 
-describe("Testing login route", () => {
+describe("Testing auth route", () => {
   beforeAll(async () => {
-    await connect("testLoginRoute");
+    await connect("testAuthRoute");
   });
 
   afterEach(async () => {

@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from "express";
 
 // import services
-import { validateToken } from "../services/google-login";
+import { validateToken } from "../services/google-sign-in-up";
 import {
   createUser,
   saveUser,
@@ -10,7 +10,7 @@ import {
   updateUserToken,
 } from "../services/db";
 
-export const login = async (
+export const signInUp = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -39,7 +39,7 @@ export const login = async (
     };
 
     res.status(201);
-    res.json({ msg: "login success" });
+    res.json({ msg: "sign in/up success" });
   } catch (error) {
     console.error(error);
     res.status(500);

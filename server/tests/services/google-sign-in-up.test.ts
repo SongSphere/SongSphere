@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import { validateToken } from "../../services/google-login";
+import { validateToken } from "../../services/google-sign-in-up";
 
-describe("Testing google-login services", () => {
+describe("Testing google sign in services", () => {
   const testToken = process.env.DEBUG_GOOGLE_TOKEN;
   test("Testing user token validation", () => {
     expect(validateToken(testToken)).resolves.toMatchObject({

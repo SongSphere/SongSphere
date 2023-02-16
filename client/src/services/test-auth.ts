@@ -1,6 +1,6 @@
 import { CredentialResponse } from "@react-oauth/google";
 
-const testLogin = async () => {
+const testAuth = async () => {
   await fetch(`${process.env.REACT_APP_API}/api/testauth`, {
     method: "get",
     credentials: "include",
@@ -12,4 +12,4 @@ const testLogin = async () => {
   });
 };
 
-export default testLogin;
+export default testAuth;

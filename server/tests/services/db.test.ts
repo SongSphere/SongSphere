@@ -13,7 +13,7 @@ import {
   updateUserToken,
   checkUser,
 } from "../../services/db";
-import { validateToken } from "../../services/google-login";
+import { validateToken } from "../../services/google-sign-in-up";
 
 // import db
 import { connect } from "../../db/connect";
