@@ -11,7 +11,7 @@ const handleLogin = async (credentialResponse: CredentialResponse) => {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then(async () => {
+  }).then(async (res) => {
     // do things after login
   });
 };

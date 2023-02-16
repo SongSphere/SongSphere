@@ -7,6 +7,7 @@ import { GoogleLogin } from "@react-oauth/google";
 
 // import services
 import handleLogin from "../services/handle-login";
+import testLogin from "../services/test-login";
 
 const DummyLogin = () => {
   return (
@@ -19,6 +20,9 @@ const DummyLogin = () => {
           console.error("Login Failed");
         }}
       />
+      <button onClick={() => testLogin()} className="bg-blue-300">
+        test login
+      </button>
     </div>
   );
 };
