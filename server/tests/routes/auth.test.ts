@@ -14,7 +14,9 @@ import { checkUser } from "../../services/db";
 import { connect } from "../../db/connect";
 import User, { IUser } from "../../db/user";
 
-import app from "../../app";
+import createApp from "../../app";
+
+const app = createApp("testLoginRoute");
 
 describe("Testing login route", () => {
   beforeAll(async () => {
@@ -36,7 +38,7 @@ describe("Testing login route", () => {
       .post("/api/auth/google")
       .send({ token: testToken });
 
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(201);
     const exist = await User.exists({ email: process.env.DEBUG_EMAIL });
     expect(exist != null).toBe(true);
   });
@@ -46,7 +48,7 @@ describe("Testing login route", () => {
       .post("/api/auth/google")
       .send({ token: testToken });
 
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(201);
     const users = await User.find({ email: process.env.DEBUG_EMAIL });
     expect(users.length == 1).toBe(true);
   });

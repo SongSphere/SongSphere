@@ -29,42 +29,46 @@ declare module "express-session" {
   }
 }
 
-const app = express();
+const createApp = (dbname: string) => {
+  const app = express();
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
-);
-app.use(cookieParser());
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    })
+  );
+  app.use(cookieParser());
 
-const username = process.env.DB_USER_NAME;
-const password = process.env.DB_PASSWORD;
-const cluster = process.env.DB_CLUSTER;
+  const username = process.env.DB_USER_NAME;
+  const password = process.env.DB_PASSWORD;
+  const cluster = process.env.DB_CLUSTER;
 
-app.use(
-  session({
-    name: "ssid",
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-    },
-    store: new MongoDBStore({
-      uri: `mongodb+srv://${username}:${password}@${cluster}.1oxopys.mongodb.net/main?retryWrites=true&w=majority`,
-      collection: "sessions",
-    }),
-  })
-);
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(logger);
+  app.use(
+    session({
+      name: "ssid",
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+      },
+      store: new MongoDBStore({
+        uri: `mongodb+srv://${username}:${password}@${cluster}.1oxopys.mongodb.net/${dbname}?retryWrites=true&w=majority`,
+        collection: "sessions",
+      }),
+    })
+  );
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(logger);
 
-// set routers
-app.use(sampleRouter);
-app.use(authRouter);
+  // set routers
+  app.use(sampleRouter);
+  app.use(authRouter);
 
-export default app;
+  return app;
+};
+
+export default createApp;
