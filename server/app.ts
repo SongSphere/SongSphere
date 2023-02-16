@@ -15,7 +15,7 @@ const MongoDBStore = connectMongoDBSession(session);
 
 // import routers
 import sampleRouter from "./routes/sample";
-import loginRouter from "./routes/login";
+import authRouter from "./routes/auth";
 
 // import middleware
 import logger from "./middleware/logger";
@@ -65,6 +65,6 @@ app.use(logger);
 
 // set routers
 app.use(sampleRouter);
-app.use(loginRouter);
+app.use(authRouter);
 
 export default app;
