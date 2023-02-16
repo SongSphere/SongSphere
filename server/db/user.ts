@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export interface IUser {
   name: string;
@@ -10,7 +10,7 @@ export interface IUser {
   token: string; // this is for debugging purposese
 }
 
-const UserSchema = new mongoose.Schema<IUser>(
+const UserSchema = new Schema<IUser>(
   {
     name: {
       type: String,
@@ -47,5 +47,5 @@ const UserSchema = new mongoose.Schema<IUser>(
   }
 );
 
-export const User = mongoose.model<IUser>("User", UserSchema);
-export const UserTest = mongoose.model<IUser>("UserTest", UserSchema);
+const User = mongoose.model<IUser>("User", UserSchema);
+export default User;

@@ -1,11 +1,11 @@
 import React from "react";
-import DummyLogin from "./components/dummy-login";
+import DummyAuth from "./components/dummy-auth";
 
 function App() {
   return (
     <div>
       <p>default starting component</p>
-      <DummyLogin />
+      <DummyAuth />
     </div>
   );
 }

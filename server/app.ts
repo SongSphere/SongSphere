@@ -7,37 +7,68 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import session from "express-session";
+
+import { default as connectMongoDBSession } from "connect-mongodb-session";
+
+const MongoDBStore = connectMongoDBSession(session);
 
 // import routers
 import sampleRouter from "./routes/sample";
-import loginRouter from "./routes/login";
+import authRouter from "./routes/auth";
 
 // import middleware
 import logger from "./middleware/logger";
 
 // import db
-import { connect } from "./db/connect";
+import { IUser } from "./db/user";
 
-const app = express();
-connect();
+declare module "express-session" {
+  interface SessionData {
+    user: IUser;
+  }
+}
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
-);
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(logger);
+const createApp = (dbname: string) => {
+  const app = express();
 
-// set routers
-app.use(sampleRouter);
-app.use(loginRouter);
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    })
+  );
+  app.use(cookieParser());
 
-const port = process.env.PORT || "8080";
+  const username = process.env.DB_USER_NAME;
+  const password = process.env.DB_PASSWORD;
+  const cluster = process.env.DB_CLUSTER;
 
-app.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`);
-});
+  app.use(
+    session({
+      name: "ssid",
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+      },
+      store: new MongoDBStore({
+        uri: `mongodb+srv://${username}:${password}@${cluster}.1oxopys.mongodb.net/${dbname}?retryWrites=true&w=majority`,
+        collection: "sessions",
+      }),
+    })
+  );
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(logger);
+
+  // set routers
+  app.use(sampleRouter);
+  app.use(authRouter);
+
+  return app;
+};
+
+export default createApp;

@@ -1,3 +1,7 @@
+// set env variable
+import * as dotenv from "dotenv";
+dotenv.config();
+
 module.exports = {
   transform: { "^.+\\.ts?$": "ts-jest" },
   testEnvironment: "node",
