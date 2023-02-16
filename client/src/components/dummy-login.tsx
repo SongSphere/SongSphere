@@ -8,6 +8,7 @@ import { GoogleLogin } from "@react-oauth/google";
 // import services
 import handleLogin from "../services/handle-login";
 import testLogin from "../services/test-login";
+import handleSignout from "../services/handle-signout";
 
 const DummyLogin = () => {
   return (
@@ -22,6 +23,9 @@ const DummyLogin = () => {
       />
       <button onClick={() => testLogin()} className="bg-blue-300">
         test login
+      </button>
+      <button onClick={() => handleSignout()} className="bg-violet-300">
+        logout
       </button>
     </div>
   );

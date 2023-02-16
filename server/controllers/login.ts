@@ -50,3 +50,15 @@ export const login = async (
 export const testauth = (req: Request, res: Response) => {
   res.send("welcome. you are logged in");
 };
+
+export const signout = async (req: Request, res: Response) => {
+  await req.session.destroy((error) => {
+    if (error) {
+      res.status(500);
+      res.json({ msg: "signout fail" });
+    } else {
+      res.status(200);
+      res.json({ msg: "signout success" });
+    }
+  });
+};
