@@ -23,6 +23,9 @@ import logger from "./middleware/logger";
 // import db
 import { IUser } from "./db/user";
 
+import jwt from "jsonwebtoken";
+import fs from "fs";
+
 declare module "express-session" {
   interface SessionData {
     user: IUser;
@@ -67,6 +70,29 @@ const createApp = (dbname: string) => {
   // set routers
   app.use(sampleRouter);
   app.use(authRouter);
+
+  const private_key = fs.readFileSync("./apple_private_key.p8");
+  const team_id = "";
+  const key_id = "36W7MRZQ7M";
+
+  const token = jwt.sign({}, private_key, {
+    algorithm: "ES256",
+    expiresIn: "180d",
+    issuer: team_id,
+    header: {
+      alg: "ES256",
+      kid: key_id,
+    },
+  });
+
+  app.get("/token", async function (req, res) {
+    //if (req.query.key === token_key) {
+    res.setHeader("Content-Type", "application/json");
+    res.send(JSON.stringify({ token: token }));
+    //const music = MusicKit.getInstance();
+    //console.log(MusicKit);
+    //await music.authorize();
+  });
 
   return app;
 };
