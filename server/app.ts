@@ -71,28 +71,39 @@ const createApp = (dbname: string) => {
   app.use(sampleRouter);
   app.use(authRouter);
 
-  const private_key = fs.readFileSync("./apple_private_key.p8");
-  const team_id = "";
-  const key_id = "36W7MRZQ7M";
+  // Attached below is how to generate a MusicKit Developer Token for this project
+  // I would recommend using the apple-music-token-generator repo though
 
-  const token = jwt.sign({}, private_key, {
-    algorithm: "ES256",
-    expiresIn: "180d",
-    issuer: team_id,
-    header: {
-      alg: "ES256",
-      kid: key_id,
-    },
-  });
+  // const private_key = fs.readFileSync("./apple_private_key.p8");
+  // const team_id = process.env.TEAM_ID;
+  // const key_id = process.env.KEY_ID;
 
-  app.get("/token", async function (req, res) {
-    //if (req.query.key === token_key) {
-    res.setHeader("Content-Type", "application/json");
-    res.send(JSON.stringify({ token: token }));
-    //const music = MusicKit.getInstance();
-    //console.log(MusicKit);
-    //await music.authorize();
-  });
+  // let now = new Date();
+  // let nextMonth = new Date(
+  //   now.getFullYear(),
+  //   now.getMonth() + 1,
+  //   now.getDate()
+  // );
+  // const nowEpoch = Math.round(now.getTime() / 1000); // number of seconds since Epoch, in UTC
+  // let nextMonthEpoch = Math.round(nextMonth.getTime() / 1000); // number of seconds since Epoch, in UTC
+
+  // var payload = {
+  //   iss: team_id, // TEAM ID
+  //   iat: nowEpoch,
+  //   exp: nextMonthEpoch
+  // };
+
+  // var options = {
+  //   header: {
+  //     alg: "ES256",
+  //     kid: key_id, // KEY ID
+  //   },
+  // };
+
+  // jwt.sign(payload, private_key, options, function (error, token) {
+  //   console.log(error);
+  //   console.log(token);
+  // });
 
   return app;
 };

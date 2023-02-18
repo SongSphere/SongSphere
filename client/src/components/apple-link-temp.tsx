@@ -11,9 +11,7 @@ const setUp = async () => {
   // Call configure() to configure an instance of MusicKit on the Web.
   try {
     await MusicKit.configure({
-      developerToken:
-        "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjM2VzdNUlpRN00ifQ.eyJpYXQiOjE2NzY2MDc0NjQsImV4cCI6MTY5MjE1OTQ2NCwiaXNzIjoiIn0.O0HC0HnyP0Q4Qew-dqSxBi_PdPbu8eNI0y8w0AGGgI-TIa69JE7vyfAp-UmwKa-yQ8baNXs2Q9A3rm9NvnKqUg",
-      //developerToken: token,
+      developerToken: process.env.APPLE_TOKEN,
       app: {
         name: "SongSphere",
         build: "1978.4.1",
@@ -25,9 +23,8 @@ const setUp = async () => {
 
   // MusicKit instance is available
   const music = MusicKit.getInstance();
-  console.log(music);
   await music.authorize();
-  await music.player.play();
+  await music.play();
 };
 
 const test = async () => {
@@ -60,30 +57,7 @@ const AppleLink = () => {
   useEffect(() => {
     setUp();
   });
-  return (
-    <div>
-      {/* <GoogleLogin
-        onSuccess={(credentialResponse) => {
-          handleLogin(credentialResponse);
-        }}
-        onError={() => {
-          console.error("Login Failed");
-        }}
-      /> */}
-      <script
-        src="https://js-cdn.music.apple.com/musickit/v3/musickit.js"
-        data-web-components
-        async
-      ></script>
-      <meta name="apple-music-developer-token" content="36W7MRZQ7M" />
-      <meta name="apple-music-app-name" content="My Cool Web App" />
-      <meta name="apple-music-app-build" content="1.0" />
-      <button id="apple-music-authorize">test</button>
-      <br></br>
-      <button id="apple-music-unauthorize">test</button>
-      <h1>hello</h1>
-    </div>
-  );
+  return <div></div>;
 };
 
 export default AppleLink;
