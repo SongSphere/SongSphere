@@ -31,6 +31,17 @@ export const checkUser = async (email: string) => {
   }
 };
 
+export const updateAppleToken = async (email: string, token: string) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { appleToken: token }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateUserToken = async (email: string, token: string) => {
   try {
     const user = await User.findOneAndUpdate(
