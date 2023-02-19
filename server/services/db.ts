@@ -42,6 +42,17 @@ export const updateAppleToken = async (email: string, token: string) => {
   }
 };
 
+export const removeAppleToken = async (email: string) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { appleToken: "" }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateUserToken = async (email: string, token: string) => {
   try {
     const user = await User.findOneAndUpdate(

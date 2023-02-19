@@ -9,19 +9,32 @@ import {
   checkUser,
   updateUserToken,
   updateAppleToken,
+  removeAppleToken,
 } from "../services/db";
 
 export const appleAuth = async (req: Request, res: Response) => {
   const email = req.session.user.email;
   const appleToken = req.body.appleToken;
+  const remove = req.body.remove;
 
-  try {
-    await updateAppleToken(email, appleToken);
-    res.status(201);
-    res.json({ msg: "apple token successfully updated" });
-  } catch (error) {
-    console.log(error);
-    res.json({ error: error });
+  if (remove) {
+    try {
+      await removeAppleToken(email);
+      res.status(201);
+      res.json({ msg: "apple token successfully updated" });
+    } catch (error) {
+      console.log(error);
+      res.json({ error: error });
+    }
+  } else {
+    try {
+      await updateAppleToken(email, appleToken);
+      res.status(201);
+      res.json({ msg: "apple token successfully updated" });
+    } catch (error) {
+      console.log(error);
+      res.json({ error: error });
+    }
   }
 };
 

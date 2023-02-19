@@ -5,6 +5,7 @@ import AppleLink from "./components/apple-link-temp";
 function App() {
   return (
     <div>
+      <DummyAuth />
       <AppleLink />
     </div>
   );

@@ -18,6 +18,7 @@ const setUp = async () => {
       credentials: "include",
       body: JSON.stringify({
         appleToken: AppleMusicToken,
+        remove: false,
       }),
       headers: {
         "Content-Type": "application/json",
