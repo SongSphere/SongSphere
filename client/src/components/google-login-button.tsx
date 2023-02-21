@@ -1,8 +1,7 @@
 /*
-  this is a dummy component for google login
+  this is a  component for google login
 */
 
-import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
 
 // import services
