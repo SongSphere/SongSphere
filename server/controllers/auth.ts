@@ -8,7 +8,59 @@ import {
   saveUser,
   checkUser,
   updateUserToken,
+  updateSpotifyToken,
+  removeSpotifyToken,
 } from "../services/db";
+
+/*
+ *  spotifyAuth
+ *
+ *  note this is basically code copied from Tony's repo that I am changing to use for spotify auth
+ *  this function is used to take the request from client and make calls to removal / update functions
+ *
+ *  @param req: Request this has the request data (user email, the users token, and remove bool)
+ *
+ *  @param res: Response this is json data that will either be success or error
+ *
+ */
+
+export const spotifyAuth = async (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const spotifyToken = req.body.spotifyToken;
+  const remove = req.body.remove;
+
+  if (remove) {
+    // removing token
+
+    try {
+      // make call to removal function (services/db.ts)
+      await removeSpotifyToken(email);
+
+      res.status(201);
+      res.json({ msg: "apple token successfully updated" });
+    } catch (error) {
+      // error handling, print to console and include in response to client
+
+      console.log(error);
+      res.json({ error: error });
+    }
+  } else {
+    // updating the token (save the new one to db)
+
+    try {
+      // make call to update function (services/db.ts)
+      await updateSpotifyToken(email, spotifyToken);
+
+      res.status(201);
+      res.json({ msg: "apple token successfully updated" });
+    } catch (error) {
+      // error handling, print to console and include in response to client
+
+      console.log(error);
+      res.json({ error: error });
+    }
+  }
+};
 
 export const signInUp = async (
   req: Request,
