@@ -38,6 +38,7 @@ export const updateAppleToken = async (email: string, token: string) => {
       { appleToken: token }
     );
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };
