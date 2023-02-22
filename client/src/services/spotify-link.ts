@@ -1,111 +1,82 @@
 import React, { Dispatch } from "react";
 
-var redirect_uri = process.env.REACT_APP_API;
+const REACT_API = `http://localhost:3000`;
 
 const AUTHORIZE = "https://accounts.spotify.com/authorize"; // authorization url
 
-const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID; // client id from env file
-
-const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET; // client secret from env file
-
-const API_TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
-
 // builds authorization request and links to spotify auth page
-const requestSpotifyAuthorization = async () => {
+export const requestSpotifyAuthorization = async () => {
   try {
     let url = AUTHORIZE;
 
     // build the url body
-    url += "?client_id=" + CLIENT_ID;
+    url += "?client_id=" + process.env.REACT_APP_SPOTIFY_CLIENT_ID;
     url += "&response_type=code";
-    url += "&redirect_uri=" + encodeURI(redirect_uri);
+    url += "&redirect_uri=" + encodeURI(REACT_API);
+    url += "&show_dialog=true"; // leaving as true for now, can be removed when we don't want to go though auth every login
+
+    // this part includes all of the permissions we are requesting access to
     url +=
-      "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
+      "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position " +
+      "user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
 
     // will take user to spotify authorization page
     window.location.href = url;
   } catch (error) {
-    // no real error handling rn
     console.log(error);
   }
 };
 
-// this function should be called once the user is redirected back to our website after
-// they have logged in on spotify's auth page
-function handleAPIRedirect() {
+export const getToken = async () => {
   let code = getCode();
 
-  fetchAccessToken(code);
-}
+  console.log("code: " + code);
 
-// builds url and makes api call to get the user auth token
-function fetchAccessToken(code) {
-  let body = "grant_type=authorization_code";
+  await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      Authorization:
+        "Basic " +
+        btoa(
+          process.env.REACT_APP_SPOTIFY_CLIENT_ID +
+            ":" +
+            process.env.REACT_APP_SPOTIFY_CLIENT_SECRET
+        ),
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      grant_type: `authorization_code`,
+      code: `${code}`,
+      redirect_uri: `http://localhost:3000`,
+    }),
+  }).then(async (res) => {
+    if (res.status == 200) {
+      const resData = await res.json();
+      let token = resData.access_token;
+      let refresh_token = resData.refresh_token;
 
-  // add code, redirect uri (takes back to webpage), client id, client secret
-  body += "&code=" + code;
-  body += "&redirect_uri=" + encodeURI(redirect_uri);
-  body += "&client_id=" + CLIENT_ID;
-  body += "&client_secret=" + CLIENT_SECRET;
-
-  callAuthAPI(body);
-}
-
-function callAuthAPI(body) {
-  // build request
-  let xhr = new XMLHttpRequest();
-
-  xhr.open("POST", API_TOKEN_ENDPOINT, true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.setRequestHeader(
-    "Authorization",
-    "Basic " + btoa(CLIENT_ID + ":" + CLIENT_SECRET)
-  );
-
-  // send api request
-  xhr.send(body);
-
-  // handle response
-  xhr.onload = handleAuthorizationResponse;
-}
-
-// handles response from api
-function handleAuthorizationResponse() {
-  // check for success
-  if (this.status == 200) {
-    var data = JSON.parse(this.responseText);
-
-    var data = JSON.parse(this.responseText);
-
-    if (data.access_token != undefined) {
-      var access_token = data.access_token;
-
-      // TODO need to save the provided access token
-      // write to database ?
+      //TODO write to database
+      // should be able to do this by making a route call with this data, then will be handled by a controller
+    } else {
+      console.log("fail");
     }
-    if (data.refresh_token != undefined) {
-      var refresh_token = data.refresh_token;
+  });
+};
 
-      // TODO need to save the refresh token
-      // write to database
-    }
-  } else {
-    console.log(this.responseText);
-    alert(this.responseText);
-  }
-}
+/*
+ *  getCode()
+ *
+ *  this function parses the code out of the uri
+ *
+ */
 
-// parses the users code (needed for auth token call) from redirect url
-function getCode() {
+export const getCode = () => {
   let code = null;
 
-  const uriString = window.location.search;
+  const uriString = window.location.search; // url from window
 
-  // if the uri has query params
-  if (uriString.length > 0) {
-    const urlParameters = new URLSearchParams(uriString);
-    code = urlParameters.get("code");
-  }
+  const urlParameters = new URLSearchParams(uriString);
+  code = urlParameters.get("code");
 
   return code;
-}
+};
