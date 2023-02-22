@@ -34,8 +34,16 @@ const createApp = (dbname: string) => {
 
   app.use(
     cors({
-      origin: "http://localhost:3000",
+      origin: [
+        "http://localhost:3000",
+        "https://euphonious-tartufo-ec255e.netlify.app",
+        "https://test.loophole.engineer",
+      ],
+      methods: ["GET", "PUT", "POST"],
       credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
+      maxAge: 600,
+      exposedHeaders: ["*", "Authorization"],
     })
   );
   app.use(cookieParser());
@@ -51,8 +59,10 @@ const createApp = (dbname: string) => {
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        // secure: process.env.NODE_ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24, // 1 day,
+        // sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        httpOnly: true,
       },
       store: new MongoDBStore({
         uri: `mongodb+srv://${username}:${password}@${cluster}.1oxopys.mongodb.net/${dbname}?retryWrites=true&w=majority`,
