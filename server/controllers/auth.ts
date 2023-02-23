@@ -85,6 +85,8 @@ export const signInUp = async (
       emailVerified: userData.email_verified,
       profileImgUrl: userData.picture,
       token: token,
+      spotifyToken: "",
+      spotifyRefreshToken: "",
     };
 
     res.status(201);

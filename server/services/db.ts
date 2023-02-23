@@ -51,7 +51,11 @@ export const updateSpotifyTokens = async (
 
     const user = await User.findOneAndUpdate(
       { email: email },
-      { spotifyToken: token },
+      { spotifyToken: token }
+    );
+
+    await User.findOneAndUpdate(
+      { email: email },
       { spotifyRefreshToken: refresh_token }
     );
   } catch (error) {
