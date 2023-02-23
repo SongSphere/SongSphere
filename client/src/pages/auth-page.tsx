@@ -14,9 +14,8 @@ const AuthPage = () => {
       <div className="flex h-4/5 w-4/5 flex-row rounded-xl bg-white">
         {/* Responsible for logo image design */}
         <div className="relative h-32 w-32 ...">
-          <div className="absolute left-0 top-0 h-16 w-16 ...">
-
-            
+          <div className="absolute left-0 top-0 h-32 w-32 sm:h-40 sm:w-40 md:h-60 md:w-60">
+            <img className="" src="/img/SongSphere.png"></img>
           </div>
         </div>
         {/* flex box responsible wrapping for header, light text, and button */}
