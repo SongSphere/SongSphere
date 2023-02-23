@@ -2,8 +2,13 @@
 import express from "express";
 
 // import controllers
-import { signInUp, testauth, signout, spotifyAuth } from "../controllers/auth";
-import { signInUp, testauth, signout, appleAuth, spotifyAuth } from "../controllers/auth";
+import {
+  signInUp,
+  testauth,
+  signout,
+  appleAuth,
+  spotifyAuth,
+} from "../controllers/auth";
 
 // import middleware
 import auth from "../middleware/auth";

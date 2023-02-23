@@ -67,8 +67,8 @@ export const removeSpotifyTokens = async (email: string) => {
     // call mongoose findOneAndUpdate function with data, this updates database
     const user = await User.findOneAndUpdate(
       { email: email },
-      { spotifyToken: “” },
-      { spotifyRefreshToken: “” }
+      { spotifyToken: "" },
+      { spotifyRefreshToken: "" }
     );
   } catch (error) {
     throw error;
