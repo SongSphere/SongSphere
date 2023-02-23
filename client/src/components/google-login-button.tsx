@@ -7,7 +7,7 @@ import { GoogleLogin } from "@react-oauth/google";
 // import services
 import handleLogin from "../services/handle-login";
 
-const DummyLogin = () => {
+const LoginButton = () => {
   return (
     <div>
       <GoogleLogin
@@ -22,4 +22,4 @@ const DummyLogin = () => {
   );
 };
 
-export default DummyLogin;
+export default LoginButton;
