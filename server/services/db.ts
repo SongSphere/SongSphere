@@ -34,21 +34,25 @@ export const checkUser = async (email: string) => {
 /*
  *  updateSpotifyToken
  *
- *  Note code structure taken from Tony
- *  This funciton finds the user in the db and updates the spotify token with the one provided
+ *  Finds the user in the db and updates the spotify token with the one provided
  *
  *  @param email: string  the user email is used to find the user in the database
  *
  *  @param token: string  the users token from the frontend, will be stored in database
  *
  */
-export const updateSpotifyToken = async (email: string, token: string) => {
+export const updateSpotifyTokens = async (
+  email: string,
+  token: string,
+  refresh_token: string
+) => {
   try {
     // call mongoose findOneAndUpdate function with data, this updates database
 
     const user = await User.findOneAndUpdate(
       { email: email },
-      { spotifyToken: token }
+      { spotifyToken: token },
+      { spotifyRefreshToken: refresh_token }
     );
   } catch (error) {
     throw error;
@@ -67,13 +71,14 @@ export const updateSpotifyToken = async (email: string, token: string) => {
  *
  */
 
-export const removeSpotifyToken = async (email: string) => {
+export const removeSpotifyTokens = async (email: string) => {
   try {
     // call mongoose findOneAndUpdate function with data, this updates database
 
     const user = await User.findOneAndUpdate(
       { email: email },
-      { spotifyToken: "" }
+      { spotifyToken: "" },
+      { spotifyRefreshToken: "" }
     );
   } catch (error) {
     throw error;

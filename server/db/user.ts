@@ -8,6 +8,8 @@ export interface IUser {
   emailVerified: Boolean;
   profileImgUrl: string;
   token: string; // this is for debugging purposese
+  spotifyToken: string;
+  spotifyRefreshToken: string;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -39,6 +41,14 @@ const UserSchema = new Schema<IUser>(
     token: {
       type: String,
       required: true,
+    },
+    spotifyToken: {
+      type: String,
+      required: false,
+    },
+    spotifyRefreshToken: {
+      type: String,
+      required: false,
     },
   },
   {
