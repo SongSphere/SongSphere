@@ -10,6 +10,8 @@ import {
   updateUserToken,
   updateSpotifyTokens,
   removeSpotifyTokens,
+  updateAppleToken,
+  removeAppleToken,
 } from "../services/db";
 
 /*
@@ -44,14 +46,38 @@ export const spotifyAuth = async (req: Request, res: Response) => {
       res.json({ error: error });
     }
   } else {
-    // updating the token (save the new one to db)
-
     try {
       // make call to update function (services/db.ts)
       await updateSpotifyTokens(email, spotifyToken, spotifyRefreshToken);
 
       res.status(201);
       res.json({ msg: "spotify tokens successfully updated" });
+    } catch (error) {
+      console.log(error);
+      res.json({ error: error });
+    }
+  }
+}
+
+export const appleAuth = async (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const appleToken = req.body.appleToken;
+  const remove = req.body.remove;
+
+  if (remove) {
+    try {
+      await removeAppleToken(email);
+      res.status(201);
+      res.json({ msg: "apple token successfully updated" });
+    } catch (error) {
+      console.log(error);
+      res.json({ error: error });
+    }
+  } else {
+    try {
+      await updateAppleToken(email, appleToken);
+      res.status(201);
+      res.json({ msg: "apple token successfully updated" });
     } catch (error) {
       console.log(error);
       res.json({ error: error });
@@ -87,6 +113,7 @@ export const signInUp = async (
       token: token,
       spotifyToken: "",
       spotifyRefreshToken: "",
+      appleToken: "",
     };
 
     res.status(201);

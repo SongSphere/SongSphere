@@ -10,6 +10,7 @@ export interface IUser {
   token: string; // this is for debugging purposese
   spotifyToken: string;
   spotifyRefreshToken: string;
+  appleToken: string;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -47,6 +48,10 @@ const UserSchema = new Schema<IUser>(
       required: false,
     },
     spotifyRefreshToken: {
+      type: String,
+      required: false,
+    },
+    appleToken: {
       type: String,
       required: false,
     },
