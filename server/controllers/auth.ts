@@ -8,9 +8,56 @@ import {
   saveUser,
   checkUser,
   updateUserToken,
+  updateSpotifyTokens,
+  removeSpotifyTokens,
   updateAppleToken,
   removeAppleToken,
 } from "../services/db";
+
+/*
+ *  spotifyAuth
+ *
+
+ *  take the request from client and make calls to removal / update functions
+ *
+ *  @param req: Request this has the request data (user email, the users token, and remove bool)
+ *
+ *  @param res: Response this is json data that will either be success or error
+ *
+ */
+
+export const spotifyAuth = async (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const spotifyToken = req.body.token;
+  const spotifyRefreshToken = req.body.refreshToken;
+  const remove = req.body.remove;
+
+  if (remove) {
+    // removing token
+
+    try {
+      // make call to removal function (services/db.ts)
+      await removeSpotifyTokens(email);
+
+      res.status(201);
+      res.json({ msg: "spotify tokens successfully updated" });
+    } catch (error) {
+      console.log(error);
+      res.json({ error: error });
+    }
+  } else {
+    try {
+      // make call to update function (services/db.ts)
+      await updateSpotifyTokens(email, spotifyToken, spotifyRefreshToken);
+
+      res.status(201);
+      res.json({ msg: "spotify tokens successfully updated" });
+    } catch (error) {
+      console.log(error);
+      res.json({ error: error });
+    }
+  }
+}
 
 export const appleAuth = async (req: Request, res: Response) => {
   const email = req.session.user.email;
@@ -64,6 +111,8 @@ export const signInUp = async (
       emailVerified: userData.email_verified,
       profileImgUrl: userData.picture,
       token: token,
+      spotifyToken: "",
+      spotifyRefreshToken: "",
       appleToken: "",
     };
 
