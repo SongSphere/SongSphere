@@ -8,7 +8,35 @@ import {
   saveUser,
   checkUser,
   updateUserToken,
+  updateAppleToken,
+  removeAppleToken,
 } from "../services/db";
+
+export const appleAuth = async (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const appleToken = req.body.appleToken;
+  const remove = req.body.remove;
+
+  if (remove) {
+    try {
+      await removeAppleToken(email);
+      res.status(201);
+      res.json({ msg: "apple token successfully updated" });
+    } catch (error) {
+      console.log(error);
+      res.json({ error: error });
+    }
+  } else {
+    try {
+      await updateAppleToken(email, appleToken);
+      res.status(201);
+      res.json({ msg: "apple token successfully updated" });
+    } catch (error) {
+      console.log(error);
+      res.json({ error: error });
+    }
+  }
+};
 
 export const signInUp = async (
   req: Request,
@@ -36,6 +64,7 @@ export const signInUp = async (
       emailVerified: userData.email_verified,
       profileImgUrl: userData.picture,
       token: token,
+      appleToken: "",
     };
 
     res.status(201);

@@ -78,6 +78,40 @@ const createApp = (dbname: string) => {
   app.use(sampleRouter);
   app.use(authRouter);
 
+  // Attached below is how to generate a MusicKit Developer Token for this project
+  // I would recommend using the apple-music-token-generator repo though
+
+  // const private_key = fs.readFileSync("./apple_private_key.p8");
+  // const team_id = process.env.TEAM_ID;
+  // const key_id = process.env.KEY_ID;
+
+  // let now = new Date();
+  // let nextMonth = new Date(
+  //   now.getFullYear(),
+  //   now.getMonth() + 1,
+  //   now.getDate()
+  // );
+  // const nowEpoch = Math.round(now.getTime() / 1000); // number of seconds since Epoch, in UTC
+  // let nextMonthEpoch = Math.round(nextMonth.getTime() / 1000); // number of seconds since Epoch, in UTC
+
+  // var payload = {
+  //   iss: team_id, // TEAM ID
+  //   iat: nowEpoch,
+  //   exp: nextMonthEpoch
+  // };
+
+  // var options = {
+  //   header: {
+  //     alg: "ES256",
+  //     kid: key_id, // KEY ID
+  //   },
+  // };
+
+  // jwt.sign(payload, private_key, options, function (error, token) {
+  //   console.log(error);
+  //   console.log(token);
+  // });
+
   return app;
 };
 

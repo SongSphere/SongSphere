@@ -8,6 +8,7 @@ export interface IUser {
   emailVerified: Boolean;
   profileImgUrl: string;
   token: string; // this is for debugging purposese
+  appleToken: string;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -39,6 +40,10 @@ const UserSchema = new Schema<IUser>(
     token: {
       type: String,
       required: true,
+    },
+    appleToken: {
+      type: String,
+      required: false,
     },
   },
   {
