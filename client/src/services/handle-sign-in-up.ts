@@ -12,7 +12,10 @@ const handleSignInUp = async (credentialResponse: CredentialResponse) => {
       "Content-Type": "application/json",
     },
   }).then(async (res) => {
-    // do things after sign in / up
+    // do things after login
+    if (res.status == 200) {
+      console.log("HI");
+    }
   });
 };
 
