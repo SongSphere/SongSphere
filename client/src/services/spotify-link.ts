@@ -1,9 +1,6 @@
 import React, { Dispatch } from "react";
 
-const REACT_API = `http://localhost:3000`;
-
-const AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize"; // authorization url
-
+const AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
 const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
 
 /*
@@ -19,7 +16,9 @@ export const requestSpotifyAuthorization = async () => {
     // build the url body
     url += "?client_id=" + process.env.REACT_APP_SPOTIFY_CLIENT_ID;
     url += "&response_type=code";
-    url += "&redirect_uri=" + encodeURI(REACT_API);
+    url +=
+      "&redirect_uri=" +
+      encodeURI(process.env.REACT_APP_DIR || window.location.href);
     url += "&show_dialog=true"; // leaving as true for now, can be removed when we don't want to go though auth every login
 
     // this part includes all of the permissions we are requesting access to
@@ -27,7 +26,6 @@ export const requestSpotifyAuthorization = async () => {
       "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position " +
       "user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
 
-    // will take user to spotify authorization page
     window.location.href = url;
   } catch (error) {
     console.log(error);
@@ -37,13 +35,10 @@ export const requestSpotifyAuthorization = async () => {
 /*
  *  getToken()
  *
- *  Gets auth code from url, uses it to make call to spotify api, parses token and refresh token. Note this should somehow
- *  be called automatically from the client when spotify redirects back to our site
+ *  Gets auth code from url, uses it to make call to spotify api, parses token and refresh token
  */
 
-export const getToken = async () => {
-  let code = getAuthorizationCode();
-
+export const getToken = async (code: string) => {
   // this call to the spotify api sends necessary header (client id, client secret) along with the auth code in the body
   await fetch(TOKEN_ENDPOINT, {
     method: "POST",
@@ -60,17 +55,18 @@ export const getToken = async () => {
     body: new URLSearchParams({
       grant_type: `authorization_code`,
       code: `${code}`,
-      redirect_uri: REACT_API,
+      redirect_uri: process.env.REACT_APP_DIR || window.location.href,
     }),
   }).then(async (res) => {
     if (res.status == 200) {
-      const resData = await res.json();
-      let token = resData.access_token;
-      let refresh_token = resData.refresh_token;
+      // const resData = await res.json();
+      // let token = resData.access_token;
+      // let refresh_token = resData.refresh_token;
 
-      sendTokenToServer(token, refresh_token);
+      // sendTokenToServer(token, refresh_token);
+      return res;
     } else {
-      console.log("fail");
+      console.error(res);
     }
   });
 };

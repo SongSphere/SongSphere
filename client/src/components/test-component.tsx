@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useState } from "react";
 
 // import services
 import {
@@ -7,6 +8,24 @@ import {
 } from "../services/spotify-link";
 
 const TwoButtons = () => {
+  const [url, setUrl] = useState(window.location.href);
+  const codePrefixString = "?code=";
+
+  useEffect(() => {
+    const spotifyAuth = async () => {
+      if (url.includes(codePrefixString)) {
+        const uriString = window.location.search; // url from window
+        const urlParameters = new URLSearchParams(uriString);
+        const code = urlParameters.get("code");
+        if (code) {
+          const token = await getToken(code);
+          console.log(token);
+        }
+      }
+    };
+    spotifyAuth();
+  }, [url]);
+
   return (
     <div>
       <button
@@ -15,12 +34,7 @@ const TwoButtons = () => {
       >
         {"request spotify auth"}
       </button>
-      <button
-        onClick={() => getToken()}
-        className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700"
-      >
-        {"get token"}
-      </button>
+      <p>{url}</p>
     </div>
   );
 };
