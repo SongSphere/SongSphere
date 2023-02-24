@@ -1,5 +1,7 @@
 // import packages
 import { Request, Response, NextFunction } from "express";
+import qs from "qs";
+import axios from "axios";
 
 // import services
 import { validateToken } from "../services/google-sign-in-up";
@@ -14,50 +16,67 @@ import {
   removeAppleToken,
 } from "../services/db";
 
-/*
- *  spotifyAuth
- *
-
- *  take the request from client and make calls to removal / update functions
- *
- *  @param req: Request this has the request data (user email, the users token, and remove bool)
- *
- *  @param res: Response this is json data that will either be success or error
- *
- */
+const client_id = process.env.SPOTIFY_CLIENT_ID;
+const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+const auth_token = Buffer.from(
+  `${client_id}:${client_secret}`,
+  "utf-8"
+).toString("base64");
 
 export const spotifyAuth = async (req: Request, res: Response) => {
   const email = req.session.user.email;
-  const spotifyToken = req.body.token;
-  const spotifyRefreshToken = req.body.refreshToken;
   const remove = req.body.remove;
 
-  if (remove) {
-    // removing token
+  const data = qs.stringify({
+    grant_type: "authorization_code",
+    code: req.body.code,
+    redirect_uri: "http://localhost:3000",
+  });
 
-    try {
-      // make call to removal function (services/db.ts)
-      await removeSpotifyTokens(email);
+  let tokenRes;
+  try {
+    tokenRes = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      data,
+      {
+        headers: {
+          Authorization: `Basic ${auth_token}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
 
-      res.status(201);
-      res.json({ msg: "spotify tokens successfully updated" });
-    } catch (error) {
-      console.log(error);
-      res.json({ error: error });
+    if (tokenRes.status != 200) {
+      throw new Error("fetch token failed with invalid data");
     }
-  } else {
-    try {
-      // make call to update function (services/db.ts)
-      await updateSpotifyTokens(email, spotifyToken, spotifyRefreshToken);
 
-      res.status(201);
-      res.json({ msg: "spotify tokens successfully updated" });
-    } catch (error) {
-      console.log(error);
-      res.json({ error: error });
+    const spotifyToken = tokenRes.data.access_token;
+    const spotifyRefreshToken = tokenRes.data.refresh_token;
+
+    if (remove) {
+      try {
+        await removeSpotifyTokens(email);
+        res.status(201);
+        res.json({ msg: "spotify tokens successfully updated" });
+      } catch (error) {
+        console.log(error);
+        res.json({ error: error });
+      }
+    } else {
+      try {
+        await updateSpotifyTokens(email, spotifyToken, spotifyRefreshToken);
+        res.status(201);
+        res.json({ msg: "spotify tokens successfully updated" });
+      } catch (error) {
+        console.log(error);
+        res.json({ error: error });
+      }
     }
+  } catch (error) {
+    res.status(500);
+    res.json({ msg: "token fetch failed" });
   }
-}
+};
 
 export const appleAuth = async (req: Request, res: Response) => {
   const email = req.session.user.email;

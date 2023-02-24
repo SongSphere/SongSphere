@@ -1,30 +1,29 @@
-import React from "react";
 import { useEffect, useState } from "react";
 
 // import services
-import {
-  requestSpotifyAuthorization,
-  getToken,
-} from "../services/spotify-link";
+import { requestSpotifyAuthorization } from "../services/spotify-link";
+import { spotifyAuth } from "../services/spotify-link";
 
 const TwoButtons = () => {
-  const [url, setUrl] = useState(window.location.href);
-  const codePrefixString = "?code=";
-
+  const [calledSpotifyAuth, setCalledSpotifyAuth] = useState(false);
   useEffect(() => {
-    const spotifyAuth = async () => {
+    const url = window.location.href;
+    const codePrefixString = "?code=";
+
+    const spotifyAuthHandler = async () => {
       if (url.includes(codePrefixString)) {
         const uriString = window.location.search; // url from window
         const urlParameters = new URLSearchParams(uriString);
         const code = urlParameters.get("code");
-        if (code) {
-          const token = await getToken(code);
-          console.log(token);
+        if (code && !calledSpotifyAuth) {
+          setCalledSpotifyAuth(true);
+          console.log(code);
+          await spotifyAuth(code);
         }
       }
     };
-    spotifyAuth();
-  }, [url]);
+    spotifyAuthHandler();
+  }, []);
 
   return (
     <div>
@@ -34,7 +33,6 @@ const TwoButtons = () => {
       >
         {"request spotify auth"}
       </button>
-      <p>{url}</p>
     </div>
   );
 };
