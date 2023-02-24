@@ -12,6 +12,6 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "../client/src/services/spotify-link.ts"],
   "exclude": ["node_modules"]
 }
