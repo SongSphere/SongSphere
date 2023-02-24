@@ -27,6 +27,7 @@ const DummyAuth = () => {
       <button onClick={() => handleSignOut()} className="bg-violet-300">
         logout
       </button>
+      
     </div>
   );
 };
