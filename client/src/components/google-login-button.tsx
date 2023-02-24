@@ -5,7 +5,7 @@
 import { GoogleLogin } from "@react-oauth/google";
 
 // import services
-import handleLogin from "../services/handle-login";
+import handleLogin from "../services/handle-sign-in-up";
 
 const LoginButton = () => {
   return (

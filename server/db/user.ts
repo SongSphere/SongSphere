@@ -1,6 +1,17 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const UserSchema = new mongoose.Schema(
+export interface IUser {
+  name: string;
+  givenName: string;
+  familyName: string;
+  email: string;
+  emailVerified: Boolean;
+  profileImgUrl: string;
+  token: string; // this is for debugging purposese
+  appleToken: string;
+}
+
+const UserSchema = new Schema<IUser>(
   {
     name: {
       type: String,
@@ -26,6 +37,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    token: {
+      type: String,
+      required: true,
+    },
+    appleToken: {
+      type: String,
+      required: false,
+    },
   },
   {
     // this enables createdAt and updatedAt
@@ -33,6 +52,5 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-const User = mongoose.model("User", UserSchema);
-
+const User = mongoose.model<IUser>("User", UserSchema);
 export default User;
