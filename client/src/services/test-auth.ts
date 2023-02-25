@@ -1,5 +1,3 @@
-import { CredentialResponse } from "@react-oauth/google";
-
 const testAuth = async () => {
   await fetch(`${process.env.REACT_APP_API}/api/testauth`, {
     method: "get",

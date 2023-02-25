@@ -4,12 +4,8 @@
   this is a page for login/sign up page
 */
 
-import { GoogleLogin } from "@react-oauth/google";
-import { Link } from "react-router-dom";
 import LoginButton from "../components/google-login-button";
-import handleSignInUp from "../services/handle-sign-in-up";
-import handleSignOut from "../services/handle-sign-out";
-import testAuth from "../services/test-auth";
+
 import { BrowserRouter, Routes, Route, useNavigate, useParams } from "react-router-dom";
 
 
@@ -34,24 +30,7 @@ const AuthPage = () => {
             <div>Continue with Google</div>
             <div>
               <div>
-                <GoogleLogin
-                  onSuccess={(credentialResponse) => {
-                    handleSignInUp(credentialResponse);
-                    
-                  }}
-                  onError={() => {
-                    console.error("Login Failed");
-                  }}
-                />
-                <button onClick={() => testAuth()} className="bg-blue-300">
-                  test auth
-                </button>
-                <button
-                  onClick={() => handleSignOut()}
-                  className="bg-violet-300"
-                >
-                  logout
-                </button>
+                <LoginButton/>
                 <button onClick={() => handleNavigationToHome()}>
                   go to home
                 </button>

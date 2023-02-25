@@ -7,7 +7,6 @@ const HomePage = () => {
     return(
         <div>   
             <div>Home</div>
-        
             <AppleLink/>
         </div>
     );
