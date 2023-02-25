@@ -73,6 +73,7 @@ export const spotifyAuth = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
+    console.error(error)
     res.status(500);
     res.json({ msg: "token fetch failed" });
   }
@@ -136,7 +137,7 @@ export const signInUp = async (
     };
 
     res.status(201);
-    res.json({ msg: "sign in/up success" });
+    res.json({ user: req.session.user });
   } catch (error) {
     console.error(error);
     res.status(500);

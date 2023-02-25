@@ -1,5 +1,3 @@
-import React, { Dispatch } from "react";
-
 const AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
 
 /*
