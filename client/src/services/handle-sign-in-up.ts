@@ -1,8 +1,15 @@
 import React, { Dispatch } from "react";
 import { CredentialResponse } from "@react-oauth/google";
+import { TUser } from "../context/userSessionContext";
+
+type TUserWrapper = {
+  user: TUser;
+};
 
 const handleSignInUp = async (credentialResponse: CredentialResponse) => {
   let loggedInSuccess = false;
+  let userData = null;
+
   await fetch(`${process.env.REACT_APP_API}/api/auth/google`, {
     method: "POST",
     credentials: "include",
@@ -17,12 +24,17 @@ const handleSignInUp = async (credentialResponse: CredentialResponse) => {
       if (res.status == 201) {
         loggedInSuccess = true;
       }
+      return res.json();
+    })
+    .then((data) => {
+      userData = (data as TUserWrapper).user;
+      console.log(userData);
     })
     .catch((error) => {
       console.error(error);
     });
 
-  return loggedInSuccess;
+  return [loggedInSuccess, userData];
 };
 
 export default handleSignInUp;
