@@ -5,8 +5,8 @@ import PostPage from "../pages/post-page";
 
 export default function Router() {
   let element = useRoutes([
-    { path: "/", element: <AuthPage/> },
-    { path: "/home", element: <HomePage /> },
+    { path: "/auth", element: <AuthPage/> },
+    { path: "/", element: <HomePage /> },
     { path: "/posts", element: <PostPage /> },
 
   ]);

@@ -31,6 +31,50 @@ export const checkUser = async (email: string) => {
   }
 };
 
+export const updateSpotifyTokens = async (
+  email: string,
+  token: string,
+  refresh_token: string
+) => {
+  try {
+    // call mongoose findOneAndUpdate function with data, this updates database
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { spotifyToken: token }
+    );
+    await User.findOneAndUpdate(
+      { email: email },
+      { spotifyRefreshToken: refresh_token }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+/*
+ *  removeSpotifyToken
+ *
+ *  Note code structure taken from Tony
+ *  This funciton finds the user in the db and updates the spotify token with the one provided
+ *
+ *  @param email: string  the user email is used to find the user in the database
+ *
+ *  @param token: string  the users token from the frontend, will be stored in database
+ *
+ */
+export const removeSpotifyTokens = async (email: string) => {
+  try {
+    // call mongoose findOneAndUpdate function with data, this updates database
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { spotifyToken: "" },
+      { spotifyRefreshToken: "" }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateAppleToken = async (email: string, token: string) => {
   try {
     const user = await User.findOneAndUpdate(

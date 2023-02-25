@@ -15,7 +15,7 @@ const AuthPage = () => {
   let navigate = useNavigate();
 
   const handleNavigationToHome = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   return (

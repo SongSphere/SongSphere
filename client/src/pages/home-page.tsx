@@ -1,6 +1,6 @@
 
 import AppleLink from "../components/apple-link-temp";
-
+import TwoButtons from "../components/test-component";
 
 
 const HomePage = () => {
@@ -8,6 +8,7 @@ const HomePage = () => {
         <div>   
             <div>Home</div>
             <AppleLink/>
+            <TwoButtons/>
         </div>
     );
 };
