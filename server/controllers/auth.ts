@@ -137,7 +137,7 @@ export const signInUp = async (
     };
 
     res.status(201);
-    res.json({ msg: "sign in/up success" });
+    res.json({ user: req.session.user });
   } catch (error) {
     console.error(error);
     res.status(500);
