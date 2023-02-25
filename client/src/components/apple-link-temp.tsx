@@ -2,10 +2,6 @@
   This is a temporary test component for linking to Apple Music API
 */
 
-import React from "react";
-
-// import services
-import { useEffect } from "react";
 import styled from "styled-components";
 import setUp from "../services/apple-music-link";
 
