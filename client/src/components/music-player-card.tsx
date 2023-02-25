@@ -8,7 +8,7 @@ const MusicPlayerCard = () => {
               <img src="/img/trackCoverDemo.jpg"></img>
             </div>
           </div>
-          <div className="font-bold text-center">Into the Night</div>
+          <div className="mt-2 text-2xl text-center">Into the Night</div>
         </div>
       </div>
     </div>
