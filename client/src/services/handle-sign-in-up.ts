@@ -1,14 +1,10 @@
 import React, { Dispatch } from "react";
 import { CredentialResponse } from "@react-oauth/google";
-import { TUser } from "../context/userSessionContext";
-
-type TUserWrapper = {
-  user: TUser;
-};
+import { TUser, TUserWrapper } from "../context/userSessionContext";
 
 const handleSignInUp = async (credentialResponse: CredentialResponse) => {
   let loggedInSuccess = false;
-  let userData = null;
+  let user = null;
 
   await fetch(`${process.env.REACT_APP_API}/api/auth/google`, {
     method: "POST",
@@ -21,20 +17,20 @@ const handleSignInUp = async (credentialResponse: CredentialResponse) => {
     },
   })
     .then(async (res) => {
-      if (res.status == 201) {
-        loggedInSuccess = true;
+      if (res.status != 201) {
+        throw new Error("login fail");
       }
+      loggedInSuccess = true;
       return res.json();
     })
     .then((data) => {
-      userData = (data as TUserWrapper).user;
-      console.log(userData);
+      user = (data as TUserWrapper).user;
     })
     .catch((error) => {
-      console.error(error);
+      throw error;
     });
 
-  return [loggedInSuccess, userData];
+  return loggedInSuccess;
 };
 
 export default handleSignInUp;

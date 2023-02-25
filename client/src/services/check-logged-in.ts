@@ -6,11 +6,15 @@ const checkLoggedIn = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then(async (res) => {
-    if (res.status == 200) {
-      isLoggedIn = true;
-    }
-  });
+  })
+    .then(async (res) => {
+      if (res.status == 200) {
+        isLoggedIn = true;
+      }
+    })
+    .catch((error) => {
+      throw error;
+    });
   return isLoggedIn;
 };
 

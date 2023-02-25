@@ -3,6 +3,8 @@
 */
 
 import styled from "styled-components";
+import { userSessionContext } from "../context/userSessionContext";
+import fetchUser from "../services/fetch-user";
 import setUp from "../services/apple-music-link";
 
 const Button = styled.button`

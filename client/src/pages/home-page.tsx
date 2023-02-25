@@ -1,16 +1,14 @@
-
 import AppleLink from "../components/apple-link-temp";
-import TwoButtons from "../components/test-component";
-
+import SpotfiyLinkButton from "../components/spotify-link-button";
 
 const HomePage = () => {
-    return(
-        <div>   
-            <div>Home</div>
-            <AppleLink/>
-            <TwoButtons/>
-        </div>
-    );
+  return (
+    <div>
+      <div>Home</div>
+      <AppleLink />
+      <SpotfiyLinkButton />
+    </div>
+  );
 };
 
 export default HomePage;

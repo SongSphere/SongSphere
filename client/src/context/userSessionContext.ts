@@ -1,5 +1,9 @@
 import { createContext } from "react";
 
+export type TUserWrapper = {
+  user: TUser;
+};
+
 export type TUser = {
   name: string;
   givenName: string;

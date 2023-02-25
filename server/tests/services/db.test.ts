@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 // import services
 import {
   createUser,
-  fetchUser,
+  fetchUserById,
   saveUser,
   updateUserToken,
   checkUser,
@@ -52,7 +52,7 @@ describe("Testing db services", () => {
     } catch (error) {
       console.error(error);
     }
-    const fetchedUser = await fetchUser(user.id);
+    const fetchedUser = await fetchUserById(user.id);
 
     expect(fetchedUser).toMatchObject({
       name: process.env.DEBUG_NAME,

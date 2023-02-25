@@ -111,11 +111,20 @@ export const updateUserToken = async (email: string, token: string) => {
   }
 };
 
-export const fetchUser = async (
+export const fetchUserById = async (
   id: string
 ): Promise<mongoose.Document<unknown, any, IUser>> => {
   try {
     const user = await User.findById(id);
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchUserByEmail = async (email: string) => {
+  try {
+    const user = await User.findOne({ email: email });
     return user;
   } catch (error) {
     throw error;

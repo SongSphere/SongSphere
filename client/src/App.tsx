@@ -5,16 +5,30 @@ import Router from "./components/router";
 import { useEffect, useState } from "react";
 import { userSessionContext, TUser } from "./context/userSessionContext";
 import checkLoggedIn from "./services/check-logged-in";
+import fetchUser from "./services/fetch-user";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
 
+  console.log(isLoggedIn);
+  console.log(user);
+
   useEffect(() => {
-    const checkLoggedInHandler = async () => {
-      setIsLoggedIn(await checkLoggedIn());
+    const sessionUpdate = async () => {
+      try {
+        setIsLoggedIn(await checkLoggedIn());
+      } catch (error) {
+        console.error(error);
+      }
+
+      try {
+        setUser(await fetchUser());
+      } catch (error) {
+        console.error(error);
+      }
     };
-    checkLoggedInHandler();
+    sessionUpdate();
   }, []);
 
   return (

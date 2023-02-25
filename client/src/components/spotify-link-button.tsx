@@ -1,27 +1,42 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // import services
 import { requestSpotifyAuthorization } from "../services/spotify-link";
 import { spotifyAuth } from "../services/spotify-link";
+import { userSessionContext } from "../context/userSessionContext";
 
-const TwoButtons = () => {
+import fetchUser from "../services/fetch-user";
+
+const SpotifyLinkButton = () => {
   const [calledSpotifyAuth, setCalledSpotifyAuth] = useState(false);
+  const { isLoggedIn, setIsLoggedIn, user, setUser } =
+    useContext(userSessionContext);
+
   useEffect(() => {
     const url = window.location.href;
     const codePrefixString = "?code=";
 
     const spotifyAuthHandler = async () => {
       if (url.includes(codePrefixString)) {
-        const uriString = window.location.search; // url from window
+        const uriString = window.location.search;
         const urlParameters = new URLSearchParams(uriString);
         const code = urlParameters.get("code");
+
+        // this ensures that spotifyAuth only get called once
         if (code && !calledSpotifyAuth) {
           setCalledSpotifyAuth(true);
-          console.log(code);
-          await spotifyAuth(code);
+          try {
+            await spotifyAuth(code);
+
+            // update session
+            setUser(await fetchUser());
+          } catch (error) {
+            console.error(error);
+          }
         }
       }
     };
+
     spotifyAuthHandler();
   }, []);
 
@@ -37,4 +52,4 @@ const TwoButtons = () => {
   );
 };
 
-export default TwoButtons;
+export default SpotifyLinkButton;
