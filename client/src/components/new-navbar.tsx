@@ -1,10 +1,16 @@
+import { Link } from "react-router-dom";
+
 const NewNavbar = () => {
   return (
     <div className="relative h-16">
       <div className="fixed w-screen bg-white">
         <div className="flex flex-row justify-end">
-          <div className="p-5">Home</div>
-          <div className="p-5">Profile</div>
+          <Link className="p-5" to="/">
+            Home
+          </Link>
+          <Link className="p-5" to="/profile">
+            Profile
+          </Link>
         </div>
       </div>
     </div>
