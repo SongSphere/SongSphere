@@ -7,7 +7,13 @@ import { GoogleLogin } from "@react-oauth/google";
 // import services
 import handleLogin from "../services/handle-sign-in-up";
 
+import { useMemo, useState } from "react";
+import { IisLoggedInContext } from "../context/isLoggedInContext";
+
 const LoginButton = () => {
+  const [isLoggedin, setIsLoggedIn] = useState<boolean>(false);
+
+
   return (
     <div>
       <GoogleLogin
