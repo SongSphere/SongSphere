@@ -18,6 +18,10 @@ const AuthPage = () => {
     navigate("/");
   };
 
+  const handleNavigationToSpotify = () => {
+    navigate("spotify");
+  };
+
   return (
     <div className="flex justify-center w-screen h-screen bg-background place-items-center">
       <div className="flex flex-row w-4/5 bg-white h-4/5 rounded-xl">
@@ -33,6 +37,12 @@ const AuthPage = () => {
                 <LoginButton/>
                 <button onClick={() => handleNavigationToHome()}>
                   go to home
+                </button>
+                <div>
+
+                </div>
+                <button onClick={() => handleNavigationToSpotify()}>
+                  go to spotify
                 </button>
               </div>
             </div>

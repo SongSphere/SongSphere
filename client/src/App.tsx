@@ -40,7 +40,7 @@ const App = () => {
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
         >
           <BrowserRouter>
-            <Router />
+            <Router user={user}/>
           </BrowserRouter>
         </GoogleOAuthProvider>
       </userSessionContext.Provider>
