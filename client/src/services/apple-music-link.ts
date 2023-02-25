@@ -1,5 +1,3 @@
-import React, { Dispatch } from "react";
-
 const setUp = async () => {
   // Call configure() to configure an instance of MusicKit on the Web.
   try {
