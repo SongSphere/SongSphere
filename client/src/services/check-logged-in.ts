@@ -1,4 +1,5 @@
-const testAuth = async () => {
+const checkLoggedIn = async () => {
+  let isLoggedIn = false;
   await fetch(`${process.env.REACT_APP_API}/api/testauth`, {
     method: "get",
     credentials: "include",
@@ -6,8 +7,11 @@ const testAuth = async () => {
       "Content-Type": "application/json",
     },
   }).then(async (res) => {
-    console.log(res);
+    if (res.status == 200) {
+      isLoggedIn = true;
+    }
   });
+  return isLoggedIn;
 };
 
-export default testAuth;
+export default checkLoggedIn;

@@ -1,7 +1,8 @@
 import React, { Dispatch } from "react";
 import { CredentialResponse } from "@react-oauth/google";
 
-const handleSignInUp = async (credentialResponse: CredentialResponse) =>  {
+const handleSignInUp = async (credentialResponse: CredentialResponse) => {
+  let loggedInSuccess = false;
   await fetch(`${process.env.REACT_APP_API}/api/auth/google`, {
     method: "POST",
     credentials: "include",
@@ -11,13 +12,17 @@ const handleSignInUp = async (credentialResponse: CredentialResponse) =>  {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then(async (res) => {
-    // do things after login
-    if (res.status == 200) {
-      // have cookie saved as true and have a hook where it goes to a new page
-      console.log("HI");
-    }
-  });
+  })
+    .then(async (res) => {
+      if (res.status == 201) {
+        loggedInSuccess = true;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  return loggedInSuccess;
 };
 
 export default handleSignInUp;

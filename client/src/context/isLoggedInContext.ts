@@ -1,11 +1,11 @@
-import { createContext } from "react"
+import { createContext } from "react";
 
 export interface IisLoggedInContext {
-    isloggedin: boolean,
-    setIsLoggedIn: Function
+  isLoggedIn: boolean;
+  setIsLoggedIn: Function;
 }
 
 export const isLoggedInContext = createContext<IisLoggedInContext>({
-    isloggedin: false,
-    setIsLoggedIn: () => {}
-})
+  isLoggedIn: false,
+  setIsLoggedIn: (isloggedin: boolean) => {},
+});
