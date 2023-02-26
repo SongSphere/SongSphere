@@ -10,6 +10,19 @@ import styled from "styled-components";
 import search from "../services/apple-search";
 import checkService from "../services/check-service";
 
+const Button = styled.button`
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  box-shadow: 0px 2px 2px lightgray;
+  margin-left: 10px;
+  outline: 2px
+  inline: block;
+  &:hover {
+    color: grey;
+  }
+`;
+
 const Search = () => {
   //let songs: [string, string][] = useState([]);
   let [songs, setSongs] = useState<any[]>([]);
@@ -35,22 +48,15 @@ const Search = () => {
 
   return (
     <div>
-      <input
-        placeholder="Enter Post Title"
-        onChange={(event) =>
-          search(event.target.value as string, category).then((result) => {
-            setSong(event.target.value);
-            songs = result!;
-            setSongs(result!);
-          })
-        }
-      />
+      
       <div className="dropdown">
-        <button onClick={handleOpen}>Dropdown</button>
+    
+        <button onClick={handleOpen}>Search For</button>
+       
         {open ? (
           <ul className="menu">
             <li className="songs">
-              <button
+              <Button
                 onClick={() =>
                   search(song as string, "songs").then((result) => {
                     setCategory("songs");
@@ -61,10 +67,10 @@ const Search = () => {
                 }
               >
                 Songs
-              </button>
+              </Button>
             </li>
             <li className="albums">
-              <button
+              <Button
                 onClick={() =>
                   search(song as string, "albums").then((result) => {
                     setCategory("albums");
@@ -75,10 +81,10 @@ const Search = () => {
                 }
               >
                 Albums
-              </button>
+              </Button>
             </li>
             <li className="artists">
-              <button
+              <Button
                 onClick={() =>
                   search(song as string, "artists").then((result) => {
                     setCategory("artists");
@@ -89,10 +95,21 @@ const Search = () => {
                 }
               >
                 Artists
-              </button>
+              </Button>
             </li>
           </ul>
         ) : null}
+        <br />
+        <input
+        placeholder="Enter Post Title"
+        onChange={(event) =>
+          search(event.target.value as string, category).then((result) => {
+            setSong(event.target.value);
+            songs = result!;
+            setSongs(result!);
+          })
+        }
+      />
       </div>
       <button data-apple-music-skip-to-previous-item></button>
       <h1 id="name"></h1>
