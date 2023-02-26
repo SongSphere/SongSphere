@@ -73,7 +73,7 @@ export const spotifyAuth = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    console.error(error)
+    console.error(error);
     res.status(500);
     res.json({ msg: "token fetch failed" });
   }
@@ -111,6 +111,7 @@ export const signInUp = async (
   next: NextFunction
 ) => {
   const { token } = req.body;
+  let existingAccount = true;
   try {
     const userData = await validateToken(token);
     const exist = await checkUser(userData.email);
@@ -120,6 +121,7 @@ export const signInUp = async (
     } else {
       // exist == null
       const user = await createUser(userData, token);
+      existingAccount = false;
       await saveUser(user);
     }
 
@@ -137,7 +139,7 @@ export const signInUp = async (
     };
 
     res.status(201);
-    res.json({ user: req.session.user });
+    res.json({ user: req.session.user, existingAccount: existingAccount });
   } catch (error) {
     console.error(error);
     res.status(500);
