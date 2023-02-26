@@ -22,8 +22,12 @@ const setUp = async () => {
         "Content-Type": "application/json",
       },
     });
+    console.log("apple worked")
+    return true;
   } catch (err) {
     console.log(err);
+    return false;
+    
   }
 };
 

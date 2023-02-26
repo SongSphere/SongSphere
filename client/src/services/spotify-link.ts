@@ -41,7 +41,9 @@ export const spotifyAuth = async (code: string) => {
   }).then(async (res) => {
     if (res.status != 201) {
       console.error(res);
+      return false;
     }
     console.log(res.json());
+    return true;
   });
 };
