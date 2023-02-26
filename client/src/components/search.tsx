@@ -14,7 +14,7 @@ const AppleSearch = async (term: string, category: string) => {
 };
 
 const SpotifySearch = async (term: string, category: string, token: string) => {
-  return spotifySearch(term, token);
+  return spotifySearch(term, category, token);
 };
 
 const Search = () => {
@@ -25,12 +25,10 @@ const Search = () => {
   const spotifyToken = user?.spotifyToken;
   let service = "";
 
-  if (appleToken !== "") {
-    service = "apple";
-    console.log("apple");
-  } else if (spotifyToken !== "") {
+  if (spotifyToken !== "") {
     service = "spotify";
-    console.log("spotify");
+  } else if (appleToken !== "") {
+    service = "apple";
   } else {
     console.log("NO SERVICE");
   }
