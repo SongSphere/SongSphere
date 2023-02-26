@@ -10,9 +10,7 @@ import fetchUser from "./services/fetch-user";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
-
-  console.log(isLoggedIn);
-  console.log(user);
+  const [existingAccount, setExistingAccount] = useState<boolean>(true);
 
   useEffect(() => {
     const sessionUpdate = async () => {
@@ -34,13 +32,20 @@ const App = () => {
   return (
     <>
       <userSessionContext.Provider
-        value={{ isLoggedIn, setIsLoggedIn, user, setUser }}
+        value={{
+          isLoggedIn,
+          setIsLoggedIn,
+          user,
+          setUser,
+          existingAccount,
+          setExistingAccount,
+        }}
       >
         <GoogleOAuthProvider
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
         >
           <BrowserRouter>
-            <Router user={user}/>
+            <Router user={user} />
           </BrowserRouter>
         </GoogleOAuthProvider>
       </userSessionContext.Provider>
