@@ -41,8 +41,6 @@ const SpotifyLinkButton = () => {
             // update session
             setUser(await fetchUser());
 
-          
-   
 
           } catch (error) {
             console.error(error);

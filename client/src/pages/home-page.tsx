@@ -1,5 +1,5 @@
-import AppleLink from "../components/apple-link-temp";
-import SpotfiyLinkButton from "../components/spotify-link-button";
+import AppleLink from "../components/apple-link";
+import SpotfiyLinkButton from "../components/spotify-link";
 
 const HomePage = () => {
   return (

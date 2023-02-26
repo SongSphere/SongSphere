@@ -3,7 +3,7 @@
   this is a onboard page for apple, when success goes to home
 */
 
-import AppleLink from "../components/apple-link-temp";
+import AppleLink from "../components/apple-link";
 import { TUser } from "../context/userSessionContext";
 
 type UserInfo = {

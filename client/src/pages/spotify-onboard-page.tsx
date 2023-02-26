@@ -4,7 +4,7 @@
   Author: David Kim
   this is a onboard page for spotify, when success goes to apple on boarding page
 */
-import SpotifyLinkButton from "../components/spotify-link-button";
+import SpotifyLinkButton from "../components/spotify-link";
 import { TUser } from "../context/userSessionContext";
 
 type UserInfo = {
