@@ -8,14 +8,26 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import search from "../services/apple-search";
+import checkService from "../services/check-service";
 
-const AppleSearch = () => {
+const Search = () => {
   //let songs: [string, string][] = useState([]);
   let [songs, setSongs] = useState<any[]>([]);
   let [selected, setSelected] = useState<string[]>([]);
   let [song, setSong] = useState<string>("");
   let [category, setCategory] = useState<string>("songs");
   const [open, setOpen] = React.useState(false);
+  let service = "";
+
+  useEffect(() => {
+    const checkServiceHandler = async () => {
+      await checkService().then((result) => {
+        service = result;
+        console.log("result : " + result);
+      });
+    };
+    checkServiceHandler();
+  });
 
   const handleOpen = () => {
     setOpen(!open);
@@ -100,4 +112,4 @@ const AppleSearch = () => {
   );
 };
 
-export default AppleSearch;
+export default Search;
