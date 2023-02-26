@@ -2,32 +2,53 @@
   This is a temporary test component for linking to Apple Music API
 */
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 // import services
 import { useEffect } from "react";
 import styled from "styled-components";
-import search from "../services/apple-search";
+import appleSearch from "../services/apple-search";
 import checkService from "../services/check-service";
+import { userSessionContext, TUser } from "../context/userSessionContext";
+
+const AppleSearch = async (term: string, category: string) => {
+  return appleSearch(term, category);
+};
+
+const SpotifySearch = async (term: string, category: string) => {};
 
 const Search = () => {
+  const { isLoggedIn, setIsLoggedIn, user, setUser } =
+    useContext(userSessionContext);
+
+  const appleToken = user?.appleToken;
+  const spotifyToken = user?.spotifyToken;
+  let service = "";
+
+  if (appleToken !== "") {
+    service = "apple";
+    console.log("apple");
+  } else if (spotifyToken !== "") {
+    service = "spotify";
+    console.log("spotify");
+  } else {
+    console.log("NO SERVICE");
+  }
+
+  const selectService = async (term: string, category: string) => {
+    if (service === "apple") {
+      return AppleSearch(term, category);
+    } else {
+      return SpotifySearch(term, category);
+    }
+  };
+
   //let songs: [string, string][] = useState([]);
   let [songs, setSongs] = useState<any[]>([]);
   let [selected, setSelected] = useState<string[]>([]);
   let [song, setSong] = useState<string>("");
   let [category, setCategory] = useState<string>("songs");
   const [open, setOpen] = React.useState(false);
-  let service = "";
-
-  useEffect(() => {
-    const checkServiceHandler = async () => {
-      await checkService().then((result) => {
-        service = result;
-        console.log("result : " + result);
-      });
-    };
-    checkServiceHandler();
-  });
 
   const handleOpen = () => {
     setOpen(!open);
@@ -35,14 +56,26 @@ const Search = () => {
 
   return (
     <div>
-      <input
+      {/* <input
         placeholder="Enter Post Title"
         onChange={(event) =>
-          search(event.target.value as string, category).then((result) => {
+          appleSearch(event.target.value as string, category).then((result) => {
             setSong(event.target.value);
             songs = result!;
             setSongs(result!);
           })
+        }
+      /> */}
+      <input
+        placeholder="Enter Post Title"
+        onChange={(event) =>
+          selectService(event.target.value as string, category).then(
+            (result) => {
+              setSong(event.target.value);
+              songs = result!;
+              setSongs(result!);
+            }
+          )
         }
       />
       <div className="dropdown">
@@ -52,7 +85,7 @@ const Search = () => {
             <li className="songs">
               <button
                 onClick={() =>
-                  search(song as string, "songs").then((result) => {
+                  selectService(song as string, "songs").then((result) => {
                     setCategory("songs");
                     console.log(result);
                     songs = result!;
@@ -66,7 +99,7 @@ const Search = () => {
             <li className="albums">
               <button
                 onClick={() =>
-                  search(song as string, "albums").then((result) => {
+                  selectService(song as string, "albums").then((result) => {
                     setCategory("albums");
                     console.log(result);
                     songs = result!;
@@ -80,7 +113,7 @@ const Search = () => {
             <li className="artists">
               <button
                 onClick={() =>
-                  search(song as string, "artists").then((result) => {
+                  selectService(song as string, "artists").then((result) => {
                     setCategory("artists");
                     console.log(result);
                     songs = result!;

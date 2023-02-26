@@ -1,8 +1,8 @@
 import React, { Dispatch } from "react";
 import { textChangeRangeNewSpan } from "typescript";
 
-const search = async (term: string, types: string) => {
-  const list: [string, string][] = [];
+const appleSearch = async (term: string, types: string) => {
+  const list: string[][] = [];
   if (term === "") return list;
 
   const music = MusicKit.getInstance();
@@ -16,6 +16,8 @@ const search = async (term: string, types: string) => {
   });
 
   const songs = Object.values(response)[0].data;
+  // const id = Object.values(response)[0].data[0].id;
+  // await music.setQueue({ song: id });
   songs.forEach(function (entry: any) {
     list.push([entry.attributes.name, entry.id]);
   });
@@ -23,4 +25,4 @@ const search = async (term: string, types: string) => {
   return list;
 };
 
-export default search;
+export default appleSearch;
