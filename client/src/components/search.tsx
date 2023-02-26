@@ -1,7 +1,3 @@
-/*
-  This is a temporary test component for linking to Apple Music API
-*/
-
 import React, { useState, useContext } from "react";
 
 // import services
@@ -10,12 +6,17 @@ import styled from "styled-components";
 import appleSearch from "../services/apple-search";
 import checkService from "../services/check-service";
 import { userSessionContext, TUser } from "../context/userSessionContext";
+import { TSong } from "../types/song";
 
 const AppleSearch = async (term: string, category: string) => {
   return appleSearch(term, category);
 };
 
-const SpotifySearch = async (term: string, category: string) => {};
+const SpotifySearch = async (
+  term: string,
+  category: string,
+  token: string
+) => {};
 
 const Search = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
@@ -39,13 +40,13 @@ const Search = () => {
     if (service === "apple") {
       return AppleSearch(term, category);
     } else {
-      return SpotifySearch(term, category);
+      return SpotifySearch(term, category, user?.spotifyToken!);
     }
   };
 
   //let songs: [string, string][] = useState([]);
-  let [songs, setSongs] = useState<any[]>([]);
-  let [selected, setSelected] = useState<string[]>([]);
+  let [songs, setSongs] = useState<TSong[]>([]);
+  let [selected, setSelected] = useState<TSong>();
   let [song, setSong] = useState<string>("");
   let [category, setCategory] = useState<string>("songs");
   const [open, setOpen] = React.useState(false);
@@ -56,16 +57,6 @@ const Search = () => {
 
   return (
     <div>
-      {/* <input
-        placeholder="Enter Post Title"
-        onChange={(event) =>
-          appleSearch(event.target.value as string, category).then((result) => {
-            setSong(event.target.value);
-            songs = result!;
-            setSongs(result!);
-          })
-        }
-      /> */}
       <input
         placeholder="Enter Post Title"
         onChange={(event) =>
@@ -133,14 +124,14 @@ const Search = () => {
         const artworkElement = document.querySelector('apple-music-artwork');
         artworkElement.source = album.attributes.artwork;
       </script>
-      {songs.map(([song, id]) => (
+      {songs.map((s) => (
         <div>
-          <button key={id} onClick={() => setSelected([song, id])}>
-            {song}
+          <button key={s.id} onClick={() => setSelected(s)}>
+            {s.name}
           </button>
         </div>
       ))}
-      <div>Selected: {selected}</div>
+      <div>Selected: {selected?.name}</div>
     </div>
   );
 };
