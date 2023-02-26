@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Router from "./components/router";
 import { useEffect, useState } from "react";
@@ -12,10 +12,21 @@ const App = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [existingAccount, setExistingAccount] = useState<boolean>(true);
 
+  let navigate = useNavigate();
+
+
   useEffect(() => {
     const sessionUpdate = async () => {
       try {
         setIsLoggedIn(await checkLoggedIn());
+        console.log(isLoggedIn);
+        if (isLoggedIn == false) {
+          // go to auth page
+          console.log("user is not logged in")
+          
+          navigate('/auth')
+          
+        }
       } catch (error) {
         console.error(error);
       }
@@ -44,9 +55,7 @@ const App = () => {
         <GoogleOAuthProvider
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
         >
-          <BrowserRouter>
-            <Router user={user} />
-          </BrowserRouter>
+          <Router user={user}/>
         </GoogleOAuthProvider>
       </userSessionContext.Provider>
     </>

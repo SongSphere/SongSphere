@@ -4,8 +4,10 @@
   Author: David Kim
   this is a onboard page for spotify, when success goes to apple on boarding page
 */
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import SpotifyLinkButton from "../components/spotify-link";
-import { TUser } from "../context/userSessionContext";
+import { TUser, userSessionContext } from "../context/userSessionContext";
 
 type UserInfo = {
   user: TUser | null;
@@ -13,6 +15,27 @@ type UserInfo = {
 
 const SpotifyOnBoardPage = (props: UserInfo) => {
   console.log(props.user?.givenName);
+
+  const { isLoggedIn, setIsLoggedIn, user, setUser } =
+  useContext(userSessionContext);
+
+  let navigate = useNavigate();
+  
+  const handleNavigationToAuth = () => {
+    navigate("/auth");
+  };
+
+  
+
+  if (isLoggedIn == false) {
+    console.log("logged in failed so redirecting to /auth")
+    useEffect(() => {
+      // Check if the user is logged in (after the page loads)
+      // If they're not, redirect them to the homepage
+      if (!isLoggedIn) navigate('/auth')
+      console.log("useeffect called")
+    })
+  }
 
   return (
     <div className="flex flex-wrap items-center mt-20">

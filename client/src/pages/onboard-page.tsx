@@ -3,7 +3,7 @@
   this is a onboard page for apple and spotify, when success goes to home
 */
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AppleLink from "../components/apple-link";
 import SpotifyLinkButton from "../components/spotify-link";
 import { TUser, userSessionContext } from "../context/userSessionContext";
@@ -20,6 +20,20 @@ const OnBoardPage = () => {
   const handleNavigationToHome = () => {
     navigate("/");
   };
+
+
+
+    useEffect(() => {
+      // Check if the user is logged in (after the page loads)
+      // If they're not, redirect them to the homepage
+      if (!isLoggedIn) {
+        navigate('/auth')
+      }
+
+      console.log("useeffect called in onboard page")
+    },[])
+  
+
 
   return (
     <div className="flex flex-wrap items-center mt-20">

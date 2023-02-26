@@ -1,6 +1,7 @@
 // import packages
-import { useRoutes } from "react-router-dom";
-import { TUser } from "../context/userSessionContext";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useRoutes } from "react-router-dom";
+import { TUser, userSessionContext } from "../context/userSessionContext";
 import AppleOnBoardPage from "../pages/apple-onboard-page";
 
 // import pages
@@ -10,6 +11,8 @@ import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
 import SpotifyOnBoardPage from "../pages/spotify-onboard-page";
+import checkLoggedIn from "../services/check-logged-in";
+import fetchUser from "../services/fetch-user";
 
 type UserInfo = {
   user: TUser | null;
@@ -17,6 +20,8 @@ type UserInfo = {
 
 
 export default function Router(props: UserInfo) {
+ 
+
   let element = useRoutes([
     { path: "/auth", element: <AuthPage /> },
     { path: "/", element: <HomePage /> },

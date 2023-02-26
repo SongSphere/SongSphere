@@ -7,10 +7,15 @@
 import LoginButton from "../components/google-login-button";
 
 import { useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { userSessionContext } from "../context/userSessionContext";
 
 
 
 const AuthPage = () => {
+
+  const { isLoggedIn, setIsLoggedIn, user, setUser } =
+  useContext(userSessionContext);
 
   let navigate = useNavigate();
 
@@ -21,6 +26,16 @@ const AuthPage = () => {
   const handleNavigationToOnboard = () => {
     navigate("/onboard");
   };
+
+  useEffect(() => {
+    // Check if the user is logged in (after the page loads)
+    // If they're not, redirect them to the homepage
+    if (isLoggedIn) {
+      navigate('/onboard')
+    }
+
+    console.log("useeffect called")
+  })
 
   return (
     <div className="flex justify-center w-screen h-screen bg-background place-items-center">
