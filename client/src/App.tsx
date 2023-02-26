@@ -11,9 +11,6 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
 
-  console.log(isLoggedIn);
-  console.log(user);
-
   useEffect(() => {
     const sessionUpdate = async () => {
       try {
