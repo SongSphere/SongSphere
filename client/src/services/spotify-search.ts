@@ -4,7 +4,7 @@ import { TSong } from "../types/song";
 
 const SPOTIFY_API = "https://api.spotify.com/v1";
 
-export const search = async (query: string, token: string) => {
+export const spotifySearch = async (query: string, token: string) => {
   let songs: TSong[] = [];
 
   await fetch(

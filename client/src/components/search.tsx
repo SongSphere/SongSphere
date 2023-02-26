@@ -7,16 +7,15 @@ import appleSearch from "../services/apple-search";
 import checkService from "../services/check-service";
 import { userSessionContext, TUser } from "../context/userSessionContext";
 import { TSong } from "../types/song";
+import { spotifySearch } from "../services/spotify-search";
 
 const AppleSearch = async (term: string, category: string) => {
   return appleSearch(term, category);
 };
 
-const SpotifySearch = async (
-  term: string,
-  category: string,
-  token: string
-) => {};
+const SpotifySearch = async (term: string, category: string, token: string) => {
+  return spotifySearch(term, token);
+};
 
 const Search = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
