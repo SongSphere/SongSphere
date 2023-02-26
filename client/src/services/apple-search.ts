@@ -24,8 +24,8 @@ const appleSearch = async (term: string, types: string) => {
   songs.forEach(function (entry: any) {
     list.push({
       name: entry.attributes.name,
-      artist: "",
-      albumName: "empty",
+      artist: entry.attributes.artistName,
+      albumName: entry.attributes.albumName,
       id: entry.id,
       service: "apple",
     });

@@ -80,9 +80,8 @@ const Search = () => {
         }
       />
       <div className="dropdown">
-    
         <button onClick={handleOpen}>Search For</button>
-       
+
         {open ? (
           <ul className="menu">
             <li className="songs">
@@ -130,16 +129,6 @@ const Search = () => {
           </ul>
         ) : null}
         <br />
-        <input
-        placeholder="Enter Post Title"
-        onChange={(event) =>
-          search(event.target.value as string, category).then((result) => {
-            setSong(event.target.value);
-            songs = result!;
-            setSongs(result!);
-          })
-        }
-      />
       </div>
       <button data-apple-music-skip-to-previous-item></button>
       <h1 id="name"></h1>
