@@ -1,5 +1,7 @@
 // import packages
 import { Request, Response, NextFunction } from "express";
+import qs from "qs";
+import axios from "axios";
 
 // import services
 import { validateToken } from "../services/google-sign-in-up";
@@ -8,9 +10,74 @@ import {
   saveUser,
   checkUser,
   updateUserToken,
+  updateSpotifyTokens,
+  removeSpotifyTokens,
   updateAppleToken,
   removeAppleToken,
 } from "../services/db";
+
+const client_id = process.env.SPOTIFY_CLIENT_ID;
+const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+const auth_token = Buffer.from(
+  `${client_id}:${client_secret}`,
+  "utf-8"
+).toString("base64");
+
+export const spotifyAuth = async (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const remove = req.body.remove;
+
+  const data = qs.stringify({
+    grant_type: "authorization_code",
+    code: req.body.code,
+    redirect_uri: "http://localhost:3000",
+  });
+
+  let tokenRes;
+  try {
+    tokenRes = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      data,
+      {
+        headers: {
+          Authorization: `Basic ${auth_token}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    if (tokenRes.status != 200) {
+      throw new Error("fetch token failed with invalid data");
+    }
+
+    const spotifyToken = tokenRes.data.access_token;
+    const spotifyRefreshToken = tokenRes.data.refresh_token;
+
+    if (remove) {
+      try {
+        await removeSpotifyTokens(email);
+        res.status(201);
+        res.json({ msg: "spotify tokens successfully updated" });
+      } catch (error) {
+        console.log(error);
+        res.json({ error: error });
+      }
+    } else {
+      try {
+        await updateSpotifyTokens(email, spotifyToken, spotifyRefreshToken);
+        res.status(201);
+        res.json({ msg: "spotify tokens successfully updated" });
+      } catch (error) {
+        console.log(error);
+        res.json({ error: error });
+      }
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500);
+    res.json({ msg: "token fetch failed" });
+  }
+};
 
 export const appleAuth = async (req: Request, res: Response) => {
   const email = req.session.user.email;
@@ -64,11 +131,13 @@ export const signInUp = async (
       emailVerified: userData.email_verified,
       profileImgUrl: userData.picture,
       token: token,
+      spotifyToken: "",
+      spotifyRefreshToken: "",
       appleToken: "",
     };
 
     res.status(201);
-    res.json({ msg: "sign in/up success" });
+    res.json({ user: req.session.user });
   } catch (error) {
     console.error(error);
     res.status(500);

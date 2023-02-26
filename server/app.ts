@@ -16,6 +16,7 @@ const MongoDBStore = connectMongoDBSession(session);
 // import routers
 import sampleRouter from "./routes/sample";
 import authRouter from "./routes/auth";
+import userRouter from "./routes/user";
 
 // import middleware
 import logger from "./middleware/logger";
@@ -77,6 +78,7 @@ const createApp = (dbname: string) => {
   // set routers
   app.use(sampleRouter);
   app.use(authRouter);
+  app.use(userRouter);
 
   // Attached below is how to generate a MusicKit Developer Token for this project
   // I would recommend using the apple-music-token-generator repo though
