@@ -12,11 +12,7 @@ const PostPage = () => {
             <Search />
                 
                 <h1>Enter Caption:</h1>
-                <form>
-                    <label w-20 h-20>
-                         <input type="text" />
-                    </label>
-                </form>
+                
                 <button  onClick={() => handleSumbitPost()} className="my-5 border-black rounded-md text-lgrey bg-navy">Sumbit</button>
             </div>
             <div className="col-span-1 rounded-lg">
