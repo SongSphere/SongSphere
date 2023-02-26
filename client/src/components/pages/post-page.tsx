@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react";
+import handleSumbitPost from "../../services/handle-submit-post";
+
 const PostPage = () => {
     return (
     //page container
@@ -20,7 +22,7 @@ const PostPage = () => {
                          <input type="text" />
                     </label>
                 </form>
-                <button className="my-5 border-black rounded-md text-lgrey bg-navy">Sumbit</button>
+                <button  onClick={() => handleSumbitPost()} className="my-5 border-black rounded-md text-lgrey bg-navy">Sumbit</button>
             </div>
             <div className="col-span-1 rounded-lg">
                 <form>
@@ -28,7 +30,7 @@ const PostPage = () => {
                          <input type="text" />
                     </label>
                 </form>
-                <button className="my-5 border-black rounded-md text-lgrey bg-navy">Sumbit</button>
+                <button className="my-5 border-black rounded-md text-lgrey bg-navy">Search</button>
             </div>
         </div>
     </div>
