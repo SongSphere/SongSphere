@@ -50,7 +50,7 @@ const AppleLink = () => {
       <Button
         onClick={async () => {
           // If set up is successful to go home page else go to 404
-          await setUp() ? handleNavigationToHomePage() : handleNavigationTo404() ;
+          await setUp(); //? handleNavigationToHomePage() : handleNavigationTo404() ;
           try {
             await setUser(await fetchUser());
          

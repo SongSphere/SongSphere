@@ -6,6 +6,7 @@ import AppleOnBoardPage from "../pages/apple-onboard-page";
 // import pages
 import AuthPage from "../pages/auth-page";
 import HomePage from "../pages/home-page";
+import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
 import SpotifyOnBoardPage from "../pages/spotify-onboard-page";
@@ -21,8 +22,9 @@ export default function Router(props: UserInfo) {
     { path: "/", element: <HomePage /> },
     { path: "/posts", element: <PostPage /> },
     { path: "/profile", element: <ProfilePage /> },
-    { path: "/auth/spotify", element: <SpotifyOnBoardPage user={props.user}/> },
-    { path: "/auth/apple", element: <AppleOnBoardPage user={props.user} /> } 
+    { path: "/onboard", element: <OnBoardPage />}
+    // { path: "/auth/spotify", element: <SpotifyOnBoardPage user={props.user}/> },
+    // { path: "/auth/apple", element: <AppleOnBoardPage user={props.user} /> } 
   ]);
 
   return element;

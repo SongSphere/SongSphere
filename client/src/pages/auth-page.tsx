@@ -18,8 +18,8 @@ const AuthPage = () => {
     navigate("/");
   };
 
-  const handleNavigationToSpotify = () => {
-    navigate("spotify");
+  const handleNavigationToOnboard = () => {
+    navigate("/onboard");
   };
 
   return (
@@ -41,8 +41,8 @@ const AuthPage = () => {
                 <div>
 
                 </div>
-                <button onClick={() => handleNavigationToSpotify()}>
-                  go to spotify
+                <button onClick={() => handleNavigationToOnboard()}>
+                  go to onboard
                 </button>
               </div>
             </div>

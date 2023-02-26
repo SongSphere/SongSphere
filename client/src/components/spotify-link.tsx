@@ -36,7 +36,7 @@ const SpotifyLinkButton = () => {
           setCalledSpotifyAuth(true);
           try {
             await spotifyAuth(code);
-            handleNavigationToApple();
+           // handleNavigationToApple();
 
             // update session
             setUser(await fetchUser());
