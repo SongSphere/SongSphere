@@ -8,15 +8,25 @@ import fetchUser from "../services/fetch-user";
 
 const LoginButton = () => {
   // you can use the isLoggedIn with useContext to see if the user is signed in
-  const { isLoggedIn, setIsLoggedIn, user, setUser } =
-    useContext(userSessionContext);
+  const {
+    isLoggedIn,
+    setIsLoggedIn,
+    user,
+    setUser,
+    existingAccount,
+    setExistingAccount,
+  } = useContext(userSessionContext);
 
   return (
     <div>
       <GoogleLogin
         onSuccess={async (credentialResponse) => {
           try {
-            const loginSuccess = await handleSignInUp(credentialResponse);
+            const [loginSuccess, existingAccount] = await handleSignInUp(
+              credentialResponse
+            );
+            setExistingAccount(existingAccount);
+
             if (loginSuccess) {
               // login success
               // redirect to home page
