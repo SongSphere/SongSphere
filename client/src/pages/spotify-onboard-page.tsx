@@ -1,11 +1,10 @@
 /*
   
+  /*
   Author: David Kim
-  this is a onboard page for spotify
+  this is a onboard page for spotify, when success goes to apple on boarding page
 */
-
 import SpotifyLinkButton from "../components/spotify-link-button";
-import { VerticalFeatureRow } from "../components/vertical-feature-row";
 import { TUser } from "../context/userSessionContext";
 
 type UserInfo = {

@@ -1,7 +1,6 @@
 /*
-  
   Author: David Kim
-  this is a onboard page for spotify
+  this is a onboard page for apple, when success goes to home
 */
 
 import AppleLink from "../components/apple-link-temp";
