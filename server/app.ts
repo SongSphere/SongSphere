@@ -16,6 +16,7 @@ const MongoDBStore = connectMongoDBSession(session);
 // import routers
 import sampleRouter from "./routes/sample";
 import authRouter from "./routes/auth";
+import userRouter from "./routes/user";
 
 // import middleware
 import logger from "./middleware/logger";
@@ -34,8 +35,16 @@ const createApp = (dbname: string) => {
 
   app.use(
     cors({
-      origin: "http://localhost:3000",
+      origin: [
+        "http://localhost:3000",
+        "https://euphonious-tartufo-ec255e.netlify.app",
+        "https://test.loophole.engineer",
+      ],
+      methods: ["GET", "PUT", "POST"],
       credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
+      maxAge: 600,
+      exposedHeaders: ["*", "Authorization"],
     })
   );
   app.use(cookieParser());
@@ -51,8 +60,10 @@ const createApp = (dbname: string) => {
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        // secure: process.env.NODE_ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24, // 1 day,
+        // sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        httpOnly: true,
       },
       store: new MongoDBStore({
         uri: `mongodb+srv://${username}:${password}@${cluster}.1oxopys.mongodb.net/${dbname}?retryWrites=true&w=majority`,
@@ -67,6 +78,41 @@ const createApp = (dbname: string) => {
   // set routers
   app.use(sampleRouter);
   app.use(authRouter);
+  app.use(userRouter);
+
+  // Attached below is how to generate a MusicKit Developer Token for this project
+  // I would recommend using the apple-music-token-generator repo though
+
+  // const private_key = fs.readFileSync("./apple_private_key.p8");
+  // const team_id = process.env.TEAM_ID;
+  // const key_id = process.env.KEY_ID;
+
+  // let now = new Date();
+  // let nextMonth = new Date(
+  //   now.getFullYear(),
+  //   now.getMonth() + 1,
+  //   now.getDate()
+  // );
+  // const nowEpoch = Math.round(now.getTime() / 1000); // number of seconds since Epoch, in UTC
+  // let nextMonthEpoch = Math.round(nextMonth.getTime() / 1000); // number of seconds since Epoch, in UTC
+
+  // var payload = {
+  //   iss: team_id, // TEAM ID
+  //   iat: nowEpoch,
+  //   exp: nextMonthEpoch
+  // };
+
+  // var options = {
+  //   header: {
+  //     alg: "ES256",
+  //     kid: key_id, // KEY ID
+  //   },
+  // };
+
+  // jwt.sign(payload, private_key, options, function (error, token) {
+  //   console.log(error);
+  //   console.log(token);
+  // });
 
   return app;
 };
