@@ -6,17 +6,9 @@
 
 import LoginButton from "../components/google-login-button";
 
-import { BrowserRouter, Routes, Route, useNavigate, useParams } from "react-router-dom";
-
-
 
 const AuthPage = () => {
 
-  let navigate = useNavigate();
-
-  const handleNavigationToHome = () => {
-    navigate("/");
-  };
 
   return (
     <div className="flex justify-center w-screen h-screen bg-background place-items-center">
@@ -31,9 +23,6 @@ const AuthPage = () => {
             <div>
               <div>
                 <LoginButton/>
-                <button onClick={() => handleNavigationToHome()}>
-                  go to home
-                </button>
               </div>
             </div>
           </div>
