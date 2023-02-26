@@ -10,20 +10,11 @@ import { useNavigate } from "react-router-dom";
 const LoginButton = () => {
   // you can use the isLoggedIn with useContext to see if the user is signed in
   const {
-    isLoggedIn,
     setIsLoggedIn,
-    user,
     setUser,
-    existingAccount,
     setExistingAccount,
   } = useContext(userSessionContext);
-
   let navigate = useNavigate();
-
-  const handleNavigationToOnboard = () => {
-    navigate("/onboard");
-  };
-
   return (
     <div>
       <GoogleLogin
@@ -35,14 +26,20 @@ const LoginButton = () => {
             setExistingAccount(existingAccount);
 
             if (loginSuccess) {
-              // login success
-              // redirect to home page
               setIsLoggedIn(true);
               setUser(await fetchUser());
-              handleNavigationToOnboard();
+
+            /*
+            user does exist in the DB
+            Then go to the home page
+            */
+              if (existingAccount) {
+                navigate("/");
+              } else {
+                navigate("/onboard");
+              }
             }
           } catch (error) {
-            // error handling
             console.error(error);
           }
         }}

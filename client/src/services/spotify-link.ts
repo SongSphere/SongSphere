@@ -15,7 +15,7 @@ export const requestSpotifyAuthorization = async () => {
     url += "&response_type=code";
     url +=
       "&redirect_uri=" +
-      encodeURI(process.env.REACT_APP_DIR || window.location.href);
+      encodeURI(`${process.env.REACT_APP_DIR}/onboard` || window.location.href);
     url += "&show_dialog=true"; // leaving as true for now, can be removed when we don't want to go though auth every login
 
     url +=

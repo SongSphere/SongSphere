@@ -1,4 +1,3 @@
-import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Router from "./components/router";
@@ -14,18 +13,28 @@ const App = () => {
 
   let navigate = useNavigate();
 
-
   useEffect(() => {
     const sessionUpdate = async () => {
       try {
         setIsLoggedIn(await checkLoggedIn());
-        console.log(isLoggedIn);
-        if (isLoggedIn == false) {
-          // go to auth page
-          console.log("user is not logged in")
-          
-          navigate('/auth')
-          
+
+        console.log(existingAccount);
+
+        /*
+            user does exist in the DB
+            Spotify token exists or Apple token exists. 
+            User must have one or the other
+            Then go to the home page
+          */
+
+        if (
+          existingAccount &&
+          (user?.appleToken != null || user?.spotifyToken != null)
+        ) {
+          navigate("/");
+        } else {
+          // user doesn't exist in the DB, then go to onboarding page
+          navigate("/onboard");
         }
       } catch (error) {
         console.error(error);
@@ -55,7 +64,7 @@ const App = () => {
         <GoogleOAuthProvider
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
         >
-          <Router user={user}/>
+          <Router user={user} />
         </GoogleOAuthProvider>
       </userSessionContext.Provider>
     </>

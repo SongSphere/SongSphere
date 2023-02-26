@@ -30,7 +30,7 @@ export const spotifyAuth = async (req: Request, res: Response) => {
   const data = qs.stringify({
     grant_type: "authorization_code",
     code: req.body.code,
-    redirect_uri: "http://localhost:3000",
+    redirect_uri: "http://localhost:3000/onboard",
   });
 
   let tokenRes;

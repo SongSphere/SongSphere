@@ -1,6 +1,7 @@
 /*
   Author: David Kim
   this is a onboard page for apple and spotify, when success goes to home
+  Note: When connecting with Spotify, redirect back to Onboard is unstable(janky) just for documentation
 */
 
 import { useContext, useEffect } from "react";
