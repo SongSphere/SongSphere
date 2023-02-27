@@ -5,7 +5,7 @@
 import styled from "styled-components";
 import { userSessionContext } from "../context/userSessionContext";
 import fetchUser from "../services/fetch-user";
-import setUp from "../services/apple-music-link";
+import { appleAuth, appleMusicInstance } from "../services/apple-music-link";
 import { useContext } from "react";
 
 const Button = styled.button`
@@ -31,11 +31,19 @@ const Button = styled.button`
 const AppleLink = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
     useContext(userSessionContext);
+
   return (
     <div>
       <Button
         onClick={async () => {
-          setUp();
+          try {
+            await appleAuth(await appleMusicInstance).then(() => {
+              console.log(appleMusicInstance);
+            });
+          } catch (error) {
+            console.error(error);
+          }
+          // console.log(appleMusicInstance);
           try {
             await setUser(await fetchUser());
           } catch (error) {

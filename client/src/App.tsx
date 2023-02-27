@@ -31,7 +31,12 @@ const App = () => {
   return (
     <>
       <userSessionContext.Provider
-        value={{ isLoggedIn, setIsLoggedIn, user, setUser }}
+        value={{
+          isLoggedIn,
+          setIsLoggedIn,
+          user,
+          setUser,
+        }}
       >
         <GoogleOAuthProvider
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}

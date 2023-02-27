@@ -19,14 +19,14 @@ export type TUser = {
 
 export interface userSessionContext {
   isLoggedIn: boolean;
-  user: TUser | null;
   setIsLoggedIn: Function;
+  user: TUser | null;
   setUser: Function;
 }
 
 export const userSessionContext = createContext<userSessionContext>({
   isLoggedIn: false,
-  user: null,
   setIsLoggedIn: (isloggedin: boolean) => {},
+  user: null,
   setUser: (user: TUser) => {},
 });

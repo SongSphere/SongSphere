@@ -1,10 +1,64 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { appleMusicInstance } from "../services/apple-music-link";
 
 const MusicPlayerCard = () => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [music, setMusic] = useState<MusicKit.MusicKitInstance | null>(null);
 
-  const playMusicHander = () => {
+  useEffect(() => {
+    const tempFetchSong = async () => {
+      if (music) {
+        const songId = 716192621;
+        const song = await music.api.song(songId.toString());
+
+        const mediaItemOptions: MusicKit.MediaItemOptions = {
+          id: song.id,
+          attributes: song.attributes,
+          type: song.type,
+        };
+
+        const mediaItem = new MusicKit.MediaItem(mediaItemOptions);
+        console.log(mediaItem);
+
+        if (music) {
+          music
+            .setQueue({
+              items: [mediaItem],
+            })
+            .then(function (queue) {
+              console.log(queue);
+            });
+        }
+      }
+    };
+    tempFetchSong();
+  }, [music]);
+
+  useEffect(() => {
+    const appleMusicConfigureHandler = async () => {
+      await appleMusicInstance.then((musicInstance) => {
+        // console.log(musicInstance);
+        setMusic(musicInstance);
+      });
+    };
+    appleMusicConfigureHandler().then(() => {
+      // console.log(music);
+      // tempFetchSong();
+    });
+  }, []);
+
+  const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
+
+    if (music != null) {
+      if (!isPlaying) {
+        music.play();
+      } else {
+        music.pause();
+      }
+    } else {
+      console.error("music not instantiated");
+    }
   };
 
   return (
@@ -21,7 +75,7 @@ const MusicPlayerCard = () => {
             <div
               className="w-5 h-5 cursor-pointer"
               onClick={() => {
-                playMusicHander();
+                playMusicHandler();
               }}
             >
               <img
