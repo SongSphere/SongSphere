@@ -1,4 +1,6 @@
 import { TSong } from "../types/song";
+import PostFailure from "../components/post-failure";
+import PostSucess from "../components/post-sucess";
 
 const sendPost = async (name: string, caption: string, song: TSong) => {
   try {
@@ -17,7 +19,9 @@ const sendPost = async (name: string, caption: string, song: TSong) => {
     });
   } catch (err) {
     console.log(err);
+    PostFailure();
   }
+  PostSucess();
 };
 
 export default sendPost;

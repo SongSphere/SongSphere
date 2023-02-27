@@ -9,6 +9,8 @@ import { userSessionContext, TUser } from "../context/userSessionContext";
 import { TSong } from "../types/song";
 import { spotifySearch } from "../services/spotify-search";
 import sendPost from "../services/send-post";
+import SearchOption from "./search-option-button";
+
 
 const AppleSearch = async (term: string, category: string, limit: number) => {
   return appleSearch(term, category, limit);
@@ -23,22 +25,6 @@ const SpotifySearch = async (
   return spotifySearch(term, category, token, limit);
 };
 
-const Button = styled.button`
-  background-color: white;
-  color: black;
-  cursor: pointer;
-  border-style:solid;
-  box-shadow: 0px 2px 2px lightgray;
-  inline: block;
-  width: 70px;
-  &:hover {
-    color: grey;
-  }
-
-  &:focus {
-    color: 
-  }
-`;
 
 const Search = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
@@ -90,7 +76,7 @@ const Search = () => {
         {open ? (
           <ul className="mx-2 text-left menu">
             <li className="songs">
-              <Button className="border-2 border-solid border-lblue focus:bg-navy focus:text-lgrey"
+              < SearchOption caption="Songs"
                 onClick={() =>
                   selectService(song as string, "songs", 10).then((result) => {
                     setCategory("songs");
@@ -100,12 +86,11 @@ const Search = () => {
                   
                   })
                 }
-              >
-                Songs
-              </Button>
+              />
+                
             </li>
             <li className="albums">
-              <Button className="border-2 border-solid border-lblue focus:bg-navy focus:text-lgrey"
+              <SearchOption caption="Albums"
                 onClick={() =>
                   selectService(song as string, "albums", 10).then((result) => {
                     setCategory("albums");
@@ -114,12 +99,11 @@ const Search = () => {
                     setSongs(result!);
                   })
                 }
-              >
-                Albums
-              </Button>
+              />
+              
             </li>
             <li className="artists">
-              <Button className="border-2 border-solid border-lblue focus:bg-navy focus:text-lgrey"
+              <SearchOption caption="Artists"
                 onClick={() =>
                   selectService(song as string, "artists", 10).then(
                     (result) => {
@@ -130,9 +114,8 @@ const Search = () => {
                     }
                   )
                 }
-              >
-                Artists
-              </Button>
+              />
+               
             </li>
           </ul>
         ) : null}
@@ -166,7 +149,7 @@ const Search = () => {
       <div>Selected: {selected?.name}</div>
       <h1>Enter Caption</h1>
       <form>
-        <label w-20 h-20>
+        <label >
           <input
             type="text"
             value={caption}
@@ -182,10 +165,13 @@ const Search = () => {
           sendPost(user?.name!, caption, selected!).then((result) =>
           console.log("Hello? " + result)
           )
+          
+          
         }
       >
         Submit
       </button>
+        
     </div>
   );
 };
