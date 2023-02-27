@@ -13,7 +13,7 @@ const PostPage = () => {
                 
                 <h1>Enter Caption:</h1>
                 
-                <button  onClick={() => handleSumbitPost()} className="my-5 border-black rounded-md text-lgrey bg-navy">Sumbit</button>
+                
             </div>
             <div className="col-span-1 rounded-lg">
                 
