@@ -16,37 +16,48 @@ const App = () => {
   useEffect(() => {
     const sessionUpdate = async () => {
       try {
-        setIsLoggedIn(await checkLoggedIn());
-
-        console.log(existingAccount);
-
-        /*
-            user does exist in the DB
-            Spotify token exists or Apple token exists. 
-            User must have one or the other
-            Then go to the home page
-          */
-
-        if (
-          existingAccount &&
-          (user?.appleToken != null || user?.spotifyToken != null)
-        ) {
-          navigate("/");
-        } else {
-          // user doesn't exist in the DB, then go to onboarding page
-          navigate("/onboard");
-        }
+        await setUser(await fetchUser());
       } catch (error) {
         console.error(error);
       }
-
-      try {
-        setUser(await fetchUser());
-      } catch (error) {
-        console.error(error);
-      }
+      setIsLoggedIn(await checkLoggedIn());
     };
-    sessionUpdate();
+
+    sessionUpdate().then(() => {
+      console.log(user);
+    });
+
+    try {
+      console.log(existingAccount);
+
+      /*
+          user does exist in the DB
+          Spotify token exists or Apple token exists. 
+          User must have one or the other
+          Then go to the home page
+        */
+
+      if (
+        !existingAccount ||
+        (user?.appleToken == null && user?.spotifyToken == null)
+      ) {
+        console.log("user");
+        console.log(user);
+        navigate("/onboard");
+      }
+
+      // if (
+      //   existingAccount &&
+      //   (user?.appleToken != null || user?.spotifyToken != null)
+      // ) {
+      //   navigate("/");
+      // } else {
+      //   // user doesn't exist in the DB, then go to onboarding page
+      //   navigate("/onboard");
+      // }
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   return (
