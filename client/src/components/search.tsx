@@ -156,9 +156,20 @@ const Search = () => {
         </div>
       ))}
       <div>Selected: {selected?.name}</div>
+<<<<<<< HEAD
 
       {/* <button  onClick={() => sendPost()} className="my-5 border-black rounded-md text-lgrey bg-navy">Sumbit</button> */}
+=======
+      <h1>Enter Caption</h1>
+      <form>
+        <label w-20 h-20>
+          <input type="text" />
+        </label>
+      </form>
+      <button className="my-5 border-black rounded-md text-lgrey bg-navy">Sumbit</button>
+>>>>>>> 4ced3de8d2f08ff297ced94f8e419b0a593c01ae
     </div>
+    
   );
 };
 

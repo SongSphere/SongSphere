@@ -12,7 +12,7 @@ const HomePage = () => {
       <AppleLink />
       <SpotfiyLinkButton />
       <NewNavbar />
-      <Search />
+  
     </div>
   );
 };
