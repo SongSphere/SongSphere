@@ -6,6 +6,7 @@ import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import HomePage from "./pages/home-page";
+import ProtectedRouter from "./components/protected-router";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -68,7 +69,7 @@ const App = () => {
       ) {
         return <OnBoardPage musicInstance={musicInstance} />;
       } else {
-        return <Router musicInstance={musicInstance} />;
+        return <ProtectedRouter musicInstance={musicInstance} />;
       }
     } else {
       return <AuthPage />;

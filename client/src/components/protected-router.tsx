@@ -2,17 +2,15 @@
 import { useRoutes } from "react-router-dom";
 
 // import pages
-import AuthPage from "../pages/auth-page";
 import HomePage from "../pages/home-page";
-import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
 
-interface IRouterProps {
+interface IProtectedRouterProps {
   musicInstance: MusicKit.MusicKitInstance;
 }
 
-const Router = (props: IRouterProps) => {
+const ProtectedRouter = (props: IProtectedRouterProps) => {
   let element = useRoutes([
     { path: "/", element: <HomePage musicInstance={props.musicInstance} /> },
     { path: "/posts", element: <PostPage /> },
@@ -25,4 +23,4 @@ const Router = (props: IRouterProps) => {
   return element;
 };
 
-export default Router;
+export default ProtectedRouter;
