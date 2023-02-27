@@ -2,25 +2,22 @@ import { useEffect, useState } from "react";
 import { appleMusicInstance } from "../services/apple-music-link";
 
 const MusicPlayerCard = () => {
+  const songId = 716192621;
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [music, setMusic] = useState<MusicKit.MusicKitInstance | null>(null);
   const [progress, setProgress] = useState(0);
+  const [song, setSong] = useState<MusicKit.Resource | null>(null);
 
-  // useEffect(() => {
-  //   if (music) {
-  //     setProgress(music.player.currentPlaybackProgress);
-  //   }
-  // }, [MusicKit.Events.playbackTimeDidChange]);
   music?.addEventListener("playbackTimeDidChange", () => {
-    // console.log(music.player.currentPlaybackProgress);
     setProgress(music.player.currentPlaybackProgress * 100);
   });
 
   useEffect(() => {
-    const tempFetchSong = async () => {
+    const FetchSong = async (songId: number) => {
       if (music) {
-        const songId = 716192621;
         const song = await music.api.song(songId.toString());
+        setSong(song);
 
         const mediaItemOptions: MusicKit.MediaItemOptions = {
           id: song.id,
@@ -29,20 +26,15 @@ const MusicPlayerCard = () => {
         };
 
         const mediaItem = new MusicKit.MediaItem(mediaItemOptions);
-        console.log(mediaItem);
 
         if (music) {
-          music
-            .setQueue({
-              items: [mediaItem],
-            })
-            .then(function (queue) {
-              console.log(queue);
-            });
+          music.setQueue({
+            items: [mediaItem],
+          });
         }
       }
     };
-    tempFetchSong();
+    FetchSong(songId);
   }, [music]);
 
   useEffect(() => {
@@ -77,7 +69,9 @@ const MusicPlayerCard = () => {
               <img src="/img/trackCoverDemo.jpg"></img>
             </div>
           </div>
-          <div className="mt-2 text-2xl text-center">Into the Night</div>
+          <div className="px-6 mt-2 text-2xl text-center">
+            {song?.attributes.name}
+          </div>
           <div className="flex justify-center mt-2">
             <div
               className="w-5 h-5 cursor-pointer"
