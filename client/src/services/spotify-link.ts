@@ -1,16 +1,9 @@
 const AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
 
-/*
- *  requestSpotifyAuthorization()
- *
- *  builds authorization request and links to spotify auth page
- */
-
 export const requestSpotifyAuthorization = async () => {
   try {
     let url = AUTHORIZE_ENDPOINT;
 
-    // build the url body
     url += "?client_id=" + process.env.REACT_APP_SPOTIFY_CLIENT_ID;
     url += "&response_type=code";
     url +=
@@ -29,6 +22,7 @@ export const requestSpotifyAuthorization = async () => {
 };
 
 export const spotifyAuth = async (code: string) => {
+  // TODO: use promise for return
   await fetch(`${process.env.REACT_APP_API}/api/auth/spotify`, {
     method: "POST",
     credentials: "include",

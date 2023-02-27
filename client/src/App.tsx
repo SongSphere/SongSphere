@@ -1,5 +1,3 @@
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import Router from "./components/router";
 import { useEffect, useState } from "react";
 import { userSessionContext, TUser } from "./context/userSessionContext";
@@ -8,9 +6,12 @@ import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import HomePage from "./pages/home-page";
+import ProtectedRouter from "./components/protected-router";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [musicInstance, setMusicInstance] =
+    useState<MusicKit.MusicKitInstance | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
 
   const [existingAccount, setExistingAccount] = useState<boolean>(true);
@@ -19,21 +20,46 @@ const App = () => {
   useEffect(() => {
     const sessionUpdate = async () => {
       try {
-        await setUser(await fetchUser());
+        setIsLoggedIn(await checkLoggedIn());
       } catch (error) {
         console.error(error);
       }
 
       try {
-        setIsLoggedIn(await checkLoggedIn());
+        setUser(await fetchUser());
       } catch (error) {
         console.error(error);
       }
     };
-    sessionUpdate().then(() => {
-      setSessionUpdated(true);
-    });
+
+    // Dynamically loaded Apple Musickit
+    const script = document.createElement("script");
+    script.src = "https://js-cdn.music.apple.com/musickit/v1/musickit.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      MusicKit.configure({
+        developerToken: process.env.REACT_APP_APPLE_TOKEN,
+        app: {
+          name: "SongSphere",
+          build: "1978.4.1",
+        },
+      });
+      setMusicInstance(MusicKit.getInstance());
+      sessionUpdate().then(() => {
+        setSessionUpdated(true);
+      });
+    };
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
+
+  if (!musicInstance) {
+    return <div>rendering music instance</div>;
+  }
 
   if (sessionUpdated) {
     if (user && isLoggedIn) {
@@ -41,9 +67,9 @@ const App = () => {
         !existingAccount ||
         (user.appleToken == null && user.spotifyToken == null)
       ) {
-        return <OnBoardPage />;
+        return <OnBoardPage musicInstance={musicInstance} />;
       } else {
-        return <HomePage />;
+        return <ProtectedRouter musicInstance={musicInstance} />;
       }
     } else {
       return <AuthPage />;
@@ -62,7 +88,7 @@ const App = () => {
           setExistingAccount,
         }}
       >
-        <Router user={user} />
+        <Router musicInstance={musicInstance} />
       </userSessionContext.Provider>
     </>
   );

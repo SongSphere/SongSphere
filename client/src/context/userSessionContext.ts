@@ -18,20 +18,20 @@ export type TUser = {
   appleToken: string;
 };
 
-export interface userSessionContext {
+export interface IUserSessionContext {
   isLoggedIn: boolean;
-  user: TUser | null;
   setIsLoggedIn: Function;
+  user: TUser | null;
   setUser: Function;
   existingAccount: boolean;
   setExistingAccount: Function;
 }
 
-export const userSessionContext = createContext<userSessionContext>({
+export const userSessionContext = createContext<IUserSessionContext>({
   isLoggedIn: false,
-  user: null,
   setIsLoggedIn: (isloggedin: boolean) => {},
-  setUser: (user: TUser) => {},
+  user: null,
+  setUser: (user: TUser | null) => {},
   existingAccount: true,
   setExistingAccount: (existingAccount: boolean) => {},
 });

@@ -1,7 +1,5 @@
 // import packages
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useRoutes } from "react-router-dom";
-import { TUser, userSessionContext } from "../context/userSessionContext";
+import { useRoutes } from "react-router-dom";
 
 // import pages
 import AuthPage from "../pages/auth-page";
@@ -10,18 +8,26 @@ import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
 
-type UserInfo = {
-  user: TUser | null;
-};
+interface IRouterProps {
+  musicInstance: MusicKit.MusicKitInstance;
+}
 
-export default function Router(props: UserInfo) {
+const Router = (props: IRouterProps) => {
   let element = useRoutes([
     { path: "/auth", element: <AuthPage /> },
-    { path: "/", element: <HomePage /> },
-    { path: "/posts", element: <PostPage /> },
-    { path: "/profile", element: <ProfilePage /> },
-    { path: "/onboard", element: <OnBoardPage /> },
+    // { path: "/", element: <HomePage musicInstance={props.musicInstance} /> },
+    // { path: "/posts", element: <PostPage /> },
+    // {
+    //   path: "/profile",
+    //   element: <ProfilePage musicInstance={props.musicInstance} />,
+    // },
+    {
+      path: "/onboard",
+      element: <OnBoardPage musicInstance={props.musicInstance} />,
+    },
   ]);
 
   return element;
-}
+};
+
+export default Router;

@@ -10,7 +10,11 @@ import SpotifyLinkButton from "../components/spotify-link";
 import { TUser, userSessionContext } from "../context/userSessionContext";
 import { useNavigate } from "react-router-dom";
 
-const OnBoardPage = () => {
+interface IOnBoardPageProps {
+  musicInstance: MusicKit.MusicKitInstance;
+}
+
+const OnBoardPage = (props: IOnBoardPageProps) => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
     useContext(userSessionContext);
   let navigate = useNavigate();
@@ -31,11 +35,12 @@ const OnBoardPage = () => {
       </div>
 
       <div className="w-full text-center sm:w-1/2 sm:px-6">
-        <AppleLink />
+        <AppleLink musicInstance={props.musicInstance} />
         <SpotifyLinkButton />
         <button
           onClick={() => {
-            navigate("/");
+            console.log("clicked");
+            window.location.reload();
           }}
         >
           {" "}

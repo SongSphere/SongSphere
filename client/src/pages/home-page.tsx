@@ -5,14 +5,18 @@ import SpotfiyLinkButton from "../components/spotify-link";
 import { userSessionContext } from "../context/userSessionContext";
 import handleSignout from "../services/handle-sign-out";
 
-const HomePage = () => {
+interface IHomePageProps {
+  musicInstance: MusicKit.MusicKitInstance;
+}
+
+const HomePage = (props: IHomePageProps) => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
     useContext(userSessionContext);
 
   return (
     <div>
       <div>Home</div>
-      <AppleLink />
+      <AppleLink musicInstance={props.musicInstance} />
       <SpotfiyLinkButton />
       <div>
         <button
