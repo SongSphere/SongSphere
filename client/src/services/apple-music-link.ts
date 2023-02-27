@@ -10,6 +10,7 @@ export const appleMusicConfigure =
             build: "1978.4.1",
           },
         });
+        console.log(MusicKit);
         const music = MusicKit.getInstance();
         resolve(music);
       } catch (err) {

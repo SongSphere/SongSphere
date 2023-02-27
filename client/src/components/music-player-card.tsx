@@ -14,7 +14,7 @@ const MusicPlayerCard = () => {
   });
 
   useEffect(() => {
-    const FetchSong = async (songId: number) => {
+    const fetchSong = async (songId: number) => {
       if (music) {
         const song = await music.api.song(songId.toString());
         setSong(song);
@@ -32,9 +32,14 @@ const MusicPlayerCard = () => {
             items: [mediaItem],
           });
         }
+      } else {
+        console.log("music not set");
+        await appleMusicInstance.then((musicInstance) => {
+          setMusic(musicInstance);
+        });
       }
     };
-    FetchSong(songId);
+    fetchSong(songId);
   }, [music]);
 
   useEffect(() => {
@@ -66,7 +71,15 @@ const MusicPlayerCard = () => {
         <div className="bg-white w-80 h-5/6">
           <div className="flex justify-center">
             <div className="w-4/5 mt-5">
-              <img src="/img/trackCoverDemo.jpg"></img>
+              <img
+                src={
+                  song
+                    ? song.attributes.artwork.url
+                        .replace("{w}", 1000)
+                        .replace("{h}", 1000)
+                    : ""
+                }
+              ></img>
             </div>
           </div>
           <div className="px-6 mt-2 text-2xl text-center">
@@ -98,8 +111,6 @@ const MusicPlayerCard = () => {
               ></div>
             </div>
           </div>
-
-          {/* <div>{time}</div> */}
         </div>
       </div>
     </div>
