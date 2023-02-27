@@ -136,6 +136,8 @@ export const signInUp = async (
       spotifyToken: "",
       spotifyRefreshToken: "",
       appleToken: "",
+      followers: Array<String>(),
+      following: Array<String>(),
     };
 
     res.status(201);

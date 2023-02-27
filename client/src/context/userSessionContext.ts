@@ -16,6 +16,8 @@ export type TUser = {
   spotifyToken: string;
   spotifyRefreshToken: string;
   appleToken: string;
+  following: Array<String>;
+  followers: Array<String>;
 };
 
 export interface IUserSessionContext {
