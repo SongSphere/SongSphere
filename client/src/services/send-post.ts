@@ -1,12 +1,17 @@
 import { TSong } from "../types/song";
 
-const sendPost = async (name: string, caption: string, song: TSong) => {
+const sendPost = async (
+  username: string,
+  name: string,
+  caption: string,
+  song: TSong
+) => {
   try {
     await fetch(`${process.env.REACT_APP_API}/api/makepost`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
-        username: "me asl",
+        username: username,
         userEmail: name,
         caption: caption,
         song: song,

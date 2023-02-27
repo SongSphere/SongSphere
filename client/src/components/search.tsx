@@ -172,11 +172,7 @@ const Search = () => {
       </form>
       <button
         className="my-5 border-black rounded-md text-lgrey bg-navy"
-        onClick={() =>
-          sendPost(user?.name!, caption, selected!).then((result) =>
-            console.log("Hello? " + result)
-          )
-        }
+        onClick={() => sendPost("useruser", user?.name!, caption, selected!)}
       >
         Submit
       </button>

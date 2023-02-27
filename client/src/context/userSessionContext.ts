@@ -8,6 +8,7 @@ export type TUser = {
   name: string;
   givenName: string;
   familyName: string;
+  username: string;
   email: string;
   emailVerified: Boolean;
   profileImgUrl: string;
