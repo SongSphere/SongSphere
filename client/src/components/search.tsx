@@ -71,6 +71,8 @@ const Search = () => {
   let [category, setCategory] = useState<string>("songs");
   const [open, setOpen] = React.useState(false);
 
+  const [caption, setCaption] = useState<string>("");
+
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -156,20 +158,29 @@ const Search = () => {
         </div>
       ))}
       <div>Selected: {selected?.name}</div>
-<<<<<<< HEAD
-
-      {/* <button  onClick={() => sendPost()} className="my-5 border-black rounded-md text-lgrey bg-navy">Sumbit</button> */}
-=======
       <h1>Enter Caption</h1>
       <form>
         <label w-20 h-20>
-          <input type="text" />
+          <input
+            type="text"
+            value={caption}
+            onChange={(e) => {
+              setCaption(e.target.value);
+            }}
+          />
         </label>
       </form>
-      <button className="my-5 border-black rounded-md text-lgrey bg-navy">Sumbit</button>
->>>>>>> 4ced3de8d2f08ff297ced94f8e419b0a593c01ae
+      <button
+        className="my-5 border-black rounded-md text-lgrey bg-navy"
+        onClick={() =>
+          sendPost(user?.name!, caption, selected!).then((result) =>
+            console.log("Hello? " + result)
+          )
+        }
+      >
+        Submit
+      </button>
     </div>
-    
   );
 };
 

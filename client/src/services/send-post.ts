@@ -1,7 +1,6 @@
 import { TSong } from "../types/song";
 
 const sendPost = async (name: string, caption: string, song: TSong) => {
-  // Call configure() to configure an instance of MusicKit on the Web.
   try {
     await fetch(`${process.env.REACT_APP_API}/api/makepost`, {
       method: "POST",

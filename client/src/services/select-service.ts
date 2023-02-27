@@ -5,11 +5,7 @@ import appleSearch from "./apple-search";
 import { userSessionContext, TUser } from "../context/userSessionContext";
 import { spotifySearch } from "./spotify-search";
 
-const selectService = async (
-  name: string,
-  category: string,
-  postService: string
-) => {
+const selectService = async (postService: string, song: TSong) => {
   let list: TSong[] = [];
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
     useContext(userSessionContext);
@@ -28,18 +24,18 @@ const selectService = async (
   }
 
   if (service === postService) {
-    return "";
+    return song.id;
   } else if (service === "apple") {
-    appleSearch(name, category, 1).then((result) => {
+    appleSearch(song.name!, "song", 1).then((result) => {
       list = result;
     });
   } else {
-    spotifySearch(name, category, user?.spotifyToken!, 1).then((result) => {
+    spotifySearch(song.name!, "song", user?.spotifyToken!, 1).then((result) => {
       list = result;
     });
   }
 
-  list[0].id;
+  return list[0].id;
 };
 
 export default selectService;
