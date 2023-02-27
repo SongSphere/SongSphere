@@ -11,7 +11,7 @@ const PostPage = () => {
             <div className="col-span-2 rounded-lg">
             <Search />
                 
-                <h1>Enter Caption:</h1>
+            
                 
                 
             </div>
