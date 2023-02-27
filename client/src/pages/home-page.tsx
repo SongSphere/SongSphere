@@ -7,18 +7,7 @@ import handleSignout from "../services/handle-sign-out";
 
 const HomePage = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
-  useContext(userSessionContext);
-
-  let navigate = useNavigate();
-
-  
-  useEffect(() => {
-    // If the user is not logged in: Checks for bad session ID
-    if (!isLoggedIn) {
-      navigate('/auth')
-    }
-
-  }, []);
+    useContext(userSessionContext);
 
   return (
     <div>
@@ -26,21 +15,20 @@ const HomePage = () => {
       <AppleLink />
       <SpotfiyLinkButton />
       <div>
-      <button
-        onClick={async () => {
-          // If sign out success then set loggedin to false
-          // Redirect to the authentication page
-          const logoutSuccesss = await handleSignout();
-          if (logoutSuccesss) {
-            setUser(null);
-            setIsLoggedIn(false);
-            navigate('/auth')
-          } 
-
-        }}
-      >
-        logout
-      </button>
+        <button
+          onClick={async () => {
+            // If sign out success then set loggedin to false
+            // Redirect to the authentication page
+            const logoutSuccesss = await handleSignout();
+            if (logoutSuccesss) {
+              setUser(null);
+              setIsLoggedIn(false);
+              window.location.reload();
+            }
+          }}
+        >
+          logout
+        </button>
       </div>
     </div>
   );
