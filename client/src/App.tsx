@@ -20,25 +20,30 @@ const App = () => {
   useEffect(() => {
     const sessionUpdate = async () => {
       try {
-        setIsLoggedIn(await checkLoggedIn());
-      } catch (error) {
-        console.error(error);
-      }
-
-      try {
-        setUser(await fetchUser());
+        await checkLoggedIn()
+          .then(async (isLoggedIn) => {
+            setIsLoggedIn(isLoggedIn);
+            if (isLoggedIn) {
+              await fetchUser().then((user) => {
+                setUser(user);
+              });
+            }
+          })
+          .then(() => {
+            setSessionUpdated(true);
+          });
       } catch (error) {
         console.error(error);
       }
     };
 
-    // Dynamically loaded Apple Musickit
-    const script = document.createElement("script");
-    script.src = "https://js-cdn.music.apple.com/musickit/v1/musickit.js";
-    script.async = true;
-    document.body.appendChild(script);
+    const appleMusicScript = document.createElement("script");
+    appleMusicScript.src =
+      "https://js-cdn.music.apple.com/musickit/v1/musickit.js";
+    appleMusicScript.async = true;
+    document.body.appendChild(appleMusicScript);
 
-    script.onload = () => {
+    appleMusicScript.onload = () => {
       MusicKit.configure({
         developerToken: process.env.REACT_APP_APPLE_TOKEN,
         app: {
@@ -47,13 +52,12 @@ const App = () => {
         },
       });
       setMusicInstance(MusicKit.getInstance());
-      sessionUpdate().then(() => {
-        setSessionUpdated(true);
-      });
     };
 
+    sessionUpdate();
+
     return () => {
-      document.body.removeChild(script);
+      document.body.removeChild(appleMusicScript);
     };
   }, []);
 

@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AppleLink from "../components/apple-link";
-import MusicPlayerCard from "../components/music-player-card";
+import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import NewNavbar from "../components/new-navbar";
 import SpotfiyLinkButton from "../components/spotify-link";
 import { userSessionContext } from "../context/userSessionContext";
@@ -42,7 +42,7 @@ const HomePage = (props: IHomePageProps) => {
             </button>
           </div>
         </div>
-        <MusicPlayerCard musicInstance={props.musicInstance} />
+        <AppleMusicPlayerCard musicInstance={props.musicInstance} />
       </div>
     </div>
   );
