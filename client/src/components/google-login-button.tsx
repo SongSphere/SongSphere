@@ -1,6 +1,6 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { useContext, useEffect } from "react";
-import { userSessionContext } from "../context/userSessionContext";
+import { TUser, userSessionContext } from "../context/userSessionContext";
 
 // import services
 import handleSignInUp from "../services/handle-sign-in-up";
@@ -8,22 +8,9 @@ import fetchUser from "../services/fetch-user";
 import { useNavigate } from "react-router-dom";
 
 const LoginButton = () => {
-  // you can use the isLoggedIn with useContext to see if the user is signed in
-  const { user, setIsLoggedIn, setUser, existingAccount, setExistingAccount } =
+  const { setIsLoggedIn, setUser, setExistingAccount } =
     useContext(userSessionContext);
   let navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (
-  //     !existingAccount ||
-  //     (user?.appleToken == null && user?.spotifyToken == null)
-  //   ) {
-  //     console.log("onboarding is needed");
-  //     console.log(user);
-  //     // navigate("/onboard");
-  //   }
-  //   navigate("/");
-  // }, [user]);
 
   return (
     <div>
@@ -38,7 +25,21 @@ const LoginButton = () => {
 
             if (loginSuccess) {
               setIsLoggedIn(true);
-              await setUser(await fetchUser());
+              await fetchUser().then((user: TUser | null) => {
+                setUser(user);
+                if (user) {
+                  console.log(user);
+
+                  if (
+                    !existing ||
+                    (user.appleToken == null && user.spotifyToken == null)
+                  ) {
+                    navigate("/onboard");
+                  }
+                  window.location.reload();
+                }
+                navigate("/");
+              });
             } else {
               throw new Error("login not sucess");
             }

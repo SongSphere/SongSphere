@@ -7,6 +7,7 @@ import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
+import HomePage from "./pages/home-page";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,8 +15,6 @@ const App = () => {
 
   const [existingAccount, setExistingAccount] = useState<boolean>(true);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
-
-  let navigate = useNavigate();
 
   useEffect(() => {
     const sessionUpdate = async () => {
@@ -37,12 +36,14 @@ const App = () => {
   }, []);
 
   if (sessionUpdated) {
-    if (user) {
+    if (user && isLoggedIn) {
       if (
         !existingAccount ||
         (user.appleToken == null && user.spotifyToken == null)
       ) {
         return <OnBoardPage />;
+      } else {
+        return <HomePage />;
       }
     } else {
       return <AuthPage />;

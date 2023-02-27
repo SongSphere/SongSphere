@@ -22,8 +22,8 @@ const HomePage = () => {
             const logoutSuccesss = await handleSignout();
             if (logoutSuccesss) {
               setUser(null);
-              // setIsLoggedIn(false);
-              // navigate("/auth");
+              setIsLoggedIn(false);
+              window.location.reload();
             }
           }}
         >
