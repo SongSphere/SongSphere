@@ -1,7 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { appleMusicContext } from "../context/appleMusicContext";
+// import { musicInstance } from "../services/apple-music-link";
+// import { appleMusicContext } from "../context/appleMusicContext";
 
-const MusicPlayerCard = () => {
+interface IMusicPlayerCardProps {
+  musicInstance: MusicKit.MusicKitInstance;
+}
+
+const MusicPlayerCard = (props: IMusicPlayerCardProps) => {
   const songId = 716192621;
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -9,9 +14,10 @@ const MusicPlayerCard = () => {
   const [progress, setProgress] = useState(0);
   const [song, setSong] = useState<MusicKit.Resource | null>(null);
 
-  const { musicInstance } = useContext(appleMusicContext);
+  // const { musicInstance } = useContext(appleMusicContext);
 
-  musicInstance?.addEventListener("playbackTimeDidChange", () => {
+  const musicInstance = props.musicInstance;
+  musicInstance.addEventListener("playbackTimeDidChange", () => {
     setProgress(musicInstance.player.currentPlaybackProgress * 100);
   });
 

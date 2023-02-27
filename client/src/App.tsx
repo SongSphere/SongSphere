@@ -6,14 +6,13 @@ import { useEffect, useState } from "react";
 import { userSessionContext, TUser } from "./context/userSessionContext";
 import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/fetch-user";
-import { appleMusicContext } from "./context/appleMusicContext";
-import { appleMusicConfigure } from "./services/apple-music-link";
+// import { appleMusicContext } from "./context/appleMusicContext";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<TUser | null>(null);
   const [musicInstance, setMusicInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
+  const [user, setUser] = useState<TUser | null>(null);
 
   useEffect(() => {
     const sessionUpdate = async () => {
@@ -30,13 +29,13 @@ const App = () => {
       }
     };
 
-    const initAppleMusic = async () => {
-      try {
-        setMusicInstance(await appleMusicConfigure());
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    // const initAppleMusic = async () => {
+    //   try {
+    //     setMusicInstance(await appleMusicConfigure());
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
 
     // Dynamically loaded Apple Musickit
     const script = document.createElement("script");
@@ -45,7 +44,14 @@ const App = () => {
     document.body.appendChild(script);
 
     script.onload = () => {
-      initAppleMusic();
+      MusicKit.configure({
+        developerToken: process.env.REACT_APP_APPLE_TOKEN,
+        app: {
+          name: "SongSphere",
+          build: "1978.4.1",
+        },
+      });
+      setMusicInstance(MusicKit.getInstance());
       sessionUpdate();
     };
 
@@ -54,26 +60,28 @@ const App = () => {
     };
   }, []);
 
+  if (!musicInstance) {
+    return <div>rendering music instance</div>;
+  }
+
   return (
     <>
-      <appleMusicContext.Provider value={{ musicInstance, setMusicInstance }}>
-        <userSessionContext.Provider
-          value={{
-            isLoggedIn,
-            setIsLoggedIn,
-            user,
-            setUser,
-          }}
+      <userSessionContext.Provider
+        value={{
+          isLoggedIn,
+          setIsLoggedIn,
+          user,
+          setUser,
+        }}
+      >
+        <GoogleOAuthProvider
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
         >
-          <GoogleOAuthProvider
-            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
-          >
-            <BrowserRouter>
-              <Router />
-            </BrowserRouter>
-          </GoogleOAuthProvider>
-        </userSessionContext.Provider>
-      </appleMusicContext.Provider>
+          <BrowserRouter>
+            <Router musicInstance={musicInstance} />
+          </BrowserRouter>
+        </GoogleOAuthProvider>
+      </userSessionContext.Provider>
     </>
   );
 };
