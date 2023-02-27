@@ -27,12 +27,16 @@ const Button = styled.button`
   background-color: white;
   color: black;
   cursor: pointer;
+  border-style:solid;
   box-shadow: 0px 2px 2px lightgray;
-  margin-left: 10px;
-  outline: 2px
   inline: block;
+  width: 70px;
   &:hover {
     color: grey;
+  }
+
+  &:focus {
+    color: 
   }
 `;
 
@@ -79,31 +83,21 @@ const Search = () => {
 
   return (
     <div>
-      <input
-        placeholder="Enter Post Title"
-        onChange={(event) =>
-          selectService(event.target.value as string, category, 10).then(
-            (result) => {
-              setSong(event.target.value);
-              songs = result!;
-              setSongs(result!);
-            }
-          )
-        }
-      />
+     
       <div className="dropdown">
-        <button onClick={handleOpen}>Search For</button>
+        <button className="mx-2 text-black bg-white border-2 border-solid border-lblue" onClick={handleOpen}>Search For:</button>
 
         {open ? (
-          <ul className="menu">
+          <ul className="mx-2 text-left menu">
             <li className="songs">
-              <Button
+              <Button className="border-2 border-solid border-lblue focus:bg-navy focus:text-lgrey"
                 onClick={() =>
                   selectService(song as string, "songs", 10).then((result) => {
                     setCategory("songs");
                     console.log(result);
                     songs = result!;
                     setSongs(result!);
+                  
                   })
                 }
               >
@@ -111,7 +105,7 @@ const Search = () => {
               </Button>
             </li>
             <li className="albums">
-              <Button
+              <Button className="border-2 border-solid border-lblue focus:bg-navy focus:text-lgrey"
                 onClick={() =>
                   selectService(song as string, "albums", 10).then((result) => {
                     setCategory("albums");
@@ -125,7 +119,7 @@ const Search = () => {
               </Button>
             </li>
             <li className="artists">
-              <Button
+              <Button className="border-2 border-solid border-lblue focus:bg-navy focus:text-lgrey"
                 onClick={() =>
                   selectService(song as string, "artists", 10).then(
                     (result) => {
@@ -143,6 +137,18 @@ const Search = () => {
           </ul>
         ) : null}
         <br />
+        <input
+        placeholder="Enter Post Title"
+        onChange={(event) =>
+          selectService(event.target.value as string, category, 10).then(
+            (result) => {
+              setSong(event.target.value);
+              songs = result!;
+              setSongs(result!);
+            }
+          )
+        }
+      />
       </div>
       <button data-apple-music-skip-to-previous-item></button>
       <h1 id="name"></h1>
@@ -174,7 +180,7 @@ const Search = () => {
         className="my-5 border-black rounded-md text-lgrey bg-navy"
         onClick={() =>
           sendPost(user?.name!, caption, selected!).then((result) =>
-            console.log("Hello? " + result)
+          console.log("Hello? " + result)
           )
         }
       >
