@@ -10,6 +10,7 @@ import HomePage from "../pages/home-page";
 import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
+import SettingsPage from "../pages/settings-page";
 
 
 type UserInfo = {
@@ -25,7 +26,9 @@ export default function Router(props: UserInfo) {
     { path: "/", element: <HomePage /> },
     { path: "/posts", element: <PostPage /> },
     { path: "/profile", element: <ProfilePage /> },
-    { path: "/onboard", element: <OnBoardPage />}
+    { path: "/onboard", element: <OnBoardPage />},
+    { path: "/settings", element: <SettingsPage />}
+
 
   ]);
 

@@ -17,6 +17,8 @@ const AdjustName = async (username: string, givenName: string, middleName: strin
       console.log("Middle name")
       console.log(middleName);
       console.log("Adjust names called in services client")
+
+      
       return true;
       
     } catch (err) {

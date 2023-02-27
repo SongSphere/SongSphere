@@ -10,16 +10,21 @@ import SpotifyLinkButton from "../components/spotify-link";
 import { TUser, userSessionContext } from "../context/userSessionContext";
 import { useNavigate } from "react-router-dom";
 import AdjustNamesLink from "../components/adjust-names-link";
-import { useForm } from "react-hook-form";
 
-
+/**
+ * This class is the onboarding page
+ * 
+ * 1. If the user is a brand new user, they are directed to onboard page
+ * 2. If the user is a returning user, they are directed to home page
+ *
+ */
 const OnBoardPage = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
     useContext(userSessionContext);
 
   const [userName, setUserName] = useState<string>();
   const [middleName, setMiddleName] = useState<string>();
-  const { register, handleSubmit } = useForm();
+
 
   let navigate = useNavigate();
 
@@ -55,27 +60,13 @@ const OnBoardPage = () => {
       <div className="w-full sm:w-1/2 text-center sm:px-6">
         <AppleLink />
         <SpotifyLinkButton />
-        {/* <form >
-          <div>
-            <label>Name</label>
-            <input type="name" {...register("name")} />
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="email"  {...register("email")} />
-          </div>
-          <div>
-            <label>Password</label>
-            <input type="password"  {...register("password")} />
-          </div>
-          <button>Submit</button>
-        </form> */}
+    
         <input className="e-input" type="text" placeholder="Enter User Name" onChange={(e) => setUserName(e.target.value)} />
-        <input className="e-input" type="text" placeholder="Enter Middle Name" onChange={(e) => setMiddleName(e.target.value)) />
+        <input className="e-input" type="text" placeholder="Enter Middle Name" onChange={(e) => setMiddleName(e.target.value)} />
         <AdjustNamesLink
-          username="input"
+          username={userName? userName : ""}
           givenName={user?.givenName ? user?.givenName : ""}
-          middleName="bruh"
+          middleName={middleName ? middleName : ""}
           familyName={user?.familyName ? user?.familyName : ""}
         />
         <button onClick={handleNavigationToHome}> Next </button>

@@ -6,9 +6,10 @@ import styled from "styled-components";
 import { userSessionContext } from "../context/userSessionContext";
 import fetchUser from "../services/fetch-user";
 import setUp from "../services/apple-music-link";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdjustName from "../services/adjust-name";
+import Popup from 'reactjs-popup';
 
 const Button = styled.button`
   background-color: red
@@ -42,6 +43,9 @@ const AdjustNamesLink = (props: names) => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
     useContext(userSessionContext);
 
+  const [open, setOpen] = useState(false);
+  const closeModal = () => setOpen(false);
+
 
   return (
     <div>
@@ -50,12 +54,15 @@ const AdjustNamesLink = (props: names) => {
           // If set up is successful to go home page else go to 404
           console.log("before ran")
           console.log(props.givenName)
+          setOpen(true)
+  
           await AdjustName(props.username, props.givenName, props.middleName, props.familyName); //? handleNavigationToHomePage() : handleNavigationTo404() ;
+          
           console.log("ran")
           console.log("Ran adjust names")
-          try {
 
-            // await setUser(await fetchUser());
+          try {
+            await setUser(await fetchUser());
             console.log("IN fetch")
           } catch (error) {
 
@@ -65,8 +72,18 @@ const AdjustNamesLink = (props: names) => {
       >
         Done with Names
       </Button>
+      <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+            <div className="modal">
+              <a className="close" onClick={closeModal}>
+                &times;
+              </a>
+              Success
+            </div>
+          </Popup>
     </div>
   );
 };
 
 export default AdjustNamesLink;
+
+
