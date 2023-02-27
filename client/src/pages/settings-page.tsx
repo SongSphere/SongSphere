@@ -7,6 +7,7 @@
 
 import { useContext, useState } from "react";
 import AdjustNamesLink from "../components/adjust-names-link";
+import DeleteGoogleAcountLink from "../components/delete-google-account-link";
 import { userSessionContext } from "../context/userSessionContext";
 
 
@@ -46,6 +47,8 @@ const SettingsPage = () => {
           middleName={middleName}
           familyName={familyName}
         />
+
+      <DeleteGoogleAcountLink/>
       <button> Next </button>
 
     

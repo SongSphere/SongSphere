@@ -164,9 +164,22 @@ export const updateNames = async (email: string, username: string, givenName: st
       { email: email },
       { familyName: familyName }
     );
+   
     console.log("Found and update")
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+};
+
+export const deleteUserInServices = async (email: string) => {
+  try {
+    await User.deleteOne(
+      { email: email }
+    );
+    console.log(`${email} with this user is deleted`)
+  } catch (error) {
+    console.log(error)
     throw error;
   }
 };
