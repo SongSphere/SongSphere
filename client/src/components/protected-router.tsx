@@ -6,6 +6,8 @@ import HomePage from "../pages/home-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
 
+import Search from "./search";
+
 interface IProtectedRouterProps {
   musicInstance: MusicKit.MusicKitInstance;
 }
@@ -17,6 +19,10 @@ const ProtectedRouter = (props: IProtectedRouterProps) => {
     {
       path: "/profile",
       element: <ProfilePage musicInstance={props.musicInstance} />,
+    },
+    {
+      path: "/testsearch",
+      element: <Search musicInstance={props.musicInstance} />,
     },
   ]);
 

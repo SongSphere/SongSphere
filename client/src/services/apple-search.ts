@@ -1,15 +1,15 @@
 import React, { Dispatch } from "react";
 import { textChangeRangeNewSpan } from "typescript";
 
-const search = async (term: string, types: string) => {
+const search = async (
+  term: string,
+  types: string,
+  musicInstance: MusicKit.MusicKitInstance
+) => {
   const list: [string, string][] = [];
   if (term === "") return list;
 
-  const music = MusicKit.getInstance();
-
-  await music.authorize();
-
-  const response = await music.api.search(term, {
+  const response = await musicInstance.api.search(term, {
     types: "songs",
     limit: 25,
     offset: 0,
