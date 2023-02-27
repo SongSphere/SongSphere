@@ -8,13 +8,19 @@ import checkService from "../services/check-service";
 import { userSessionContext, TUser } from "../context/userSessionContext";
 import { TSong } from "../types/song";
 import { spotifySearch } from "../services/spotify-search";
+import sendPost from "../services/send-post";
 
-const AppleSearch = async (term: string, category: string) => {
-  return appleSearch(term, category);
+const AppleSearch = async (term: string, category: string, limit: number) => {
+  return appleSearch(term, category, limit);
 };
 
-const SpotifySearch = async (term: string, category: string, token: string) => {
-  return spotifySearch(term, category, token);
+const SpotifySearch = async (
+  term: string,
+  category: string,
+  token: string,
+  limit: number
+) => {
+  return spotifySearch(term, category, token, limit);
 };
 
 const Button = styled.button`
@@ -38,19 +44,23 @@ const Search = () => {
   const spotifyToken = user?.spotifyToken;
   let service = "";
 
-  if (spotifyToken !== "") {
-    service = "spotify";
-  } else if (appleToken !== "") {
+  if (appleToken !== "") {
     service = "apple";
+  } else if (spotifyToken !== "") {
+    service = "spotify";
   } else {
     console.log("NO SERVICE");
   }
 
-  const selectService = async (term: string, category: string) => {
+  const selectService = async (
+    term: string,
+    category: string,
+    limit: number
+  ) => {
     if (service === "apple") {
-      return AppleSearch(term, category);
+      return AppleSearch(term, category, limit);
     } else {
-      return SpotifySearch(term, category, user?.spotifyToken!);
+      return SpotifySearch(term, category, user?.spotifyToken!, limit);
     }
   };
 
@@ -70,7 +80,7 @@ const Search = () => {
       <input
         placeholder="Enter Post Title"
         onChange={(event) =>
-          selectService(event.target.value as string, category).then(
+          selectService(event.target.value as string, category, 10).then(
             (result) => {
               setSong(event.target.value);
               songs = result!;
@@ -87,7 +97,7 @@ const Search = () => {
             <li className="songs">
               <Button
                 onClick={() =>
-                  selectService(song as string, "songs").then((result) => {
+                  selectService(song as string, "songs", 10).then((result) => {
                     setCategory("songs");
                     console.log(result);
                     songs = result!;
@@ -101,7 +111,7 @@ const Search = () => {
             <li className="albums">
               <Button
                 onClick={() =>
-                  selectService(song as string, "albums").then((result) => {
+                  selectService(song as string, "albums", 10).then((result) => {
                     setCategory("albums");
                     console.log(result);
                     songs = result!;
@@ -115,12 +125,14 @@ const Search = () => {
             <li className="artists">
               <Button
                 onClick={() =>
-                  selectService(song as string, "artists").then((result) => {
-                    setCategory("artists");
-                    console.log(result);
-                    songs = result!;
-                    setSongs(result!);
-                  })
+                  selectService(song as string, "artists", 10).then(
+                    (result) => {
+                      setCategory("artists");
+                      console.log(result);
+                      songs = result!;
+                      setSongs(result!);
+                    }
+                  )
                 }
               >
                 Artists
@@ -144,6 +156,8 @@ const Search = () => {
         </div>
       ))}
       <div>Selected: {selected?.name}</div>
+
+      {/* <button  onClick={() => sendPost()} className="my-5 border-black rounded-md text-lgrey bg-navy">Sumbit</button> */}
     </div>
   );
 };

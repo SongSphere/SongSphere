@@ -7,9 +7,11 @@ const SPOTIFY_API = "https://api.spotify.com/v1";
 export const spotifySearch = async (
   query: string,
   category: string,
-  token: string
+  token: string,
+  limit: number
 ) => {
   let type = "";
+  if (query === "") return [];
 
   if (category === "songs") {
     type = "track";
@@ -24,7 +26,7 @@ export const spotifySearch = async (
   await fetch(
     `${SPOTIFY_API}/search?q=${encodeURIComponent(
       query
-    )}&type=${type}&limit=10`,
+    )}&type=${type}&limit=${limit}`,
     {
       method: "GET",
       headers: {

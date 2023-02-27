@@ -2,7 +2,7 @@ import React, { Dispatch } from "react";
 import { textChangeRangeNewSpan } from "typescript";
 import { TSong } from "../types/song";
 
-const appleSearch = async (term: string, types: string) => {
+const appleSearch = async (term: string, types: string, limit: number) => {
   const list: TSong[] = [];
   if (term === "") return list;
 
@@ -11,8 +11,8 @@ const appleSearch = async (term: string, types: string) => {
   await music.authorize();
 
   const response = await music.api.search(term, {
-    types: "songs",
-    limit: 25,
+    types: types,
+    limit: limit,
     offset: 0,
   });
 
