@@ -1,7 +1,5 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AppleLink from "../components/apple-link";
-import SpotfiyLinkButton from "../components/spotify-link";
 import { userSessionContext } from "../context/userSessionContext";
 import handleSignout from "../services/handle-sign-out";
 

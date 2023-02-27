@@ -2,14 +2,13 @@
   
   Author: David Kim
   this is a page for settings page
-
+  Contains modal, Calls Adjust Names Link to update toward DB
 */
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import AdjustNamesLink from "../components/adjust-names-link";
 import { userSessionContext } from "../context/userSessionContext";
-import fetchUser from "../services/fetch-user";
-import Popup from 'reactjs-popup';
+
 
 const SettingsPage = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =

@@ -1,19 +1,19 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { useContext } from "react";
 import { userSessionContext } from "../context/userSessionContext";
-
-// import services
 import handleSignInUp from "../services/handle-sign-in-up";
 import fetchUser from "../services/fetch-user";
 import { useNavigate } from "react-router-dom";
 
+/*
+  This is a component that allows for google authentication
+  Author: Willy
+*/
+
 const LoginButton = () => {
   // you can use the isLoggedIn with useContext to see if the user is signed in
-  const {
-    setIsLoggedIn,
-    setUser,
-    setExistingAccount,
-  } = useContext(userSessionContext);
+  const { setIsLoggedIn, setUser, setExistingAccount } =
+    useContext(userSessionContext);
   let navigate = useNavigate();
   return (
     <div>
@@ -29,7 +29,7 @@ const LoginButton = () => {
               setIsLoggedIn(true);
               setUser(await fetchUser());
 
-            /*
+              /*
             user does exist in the DB
             Then go to the home page
             */

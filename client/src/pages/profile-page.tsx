@@ -1,6 +1,12 @@
 import MusicPlayerCard from "../components/music-player-card";
 import NewNavbar from "../components/new-navbar";
 
+/*
+  
+  Author: 
+  Page for Profle
+
+*/
 const ProfilePage = () => {
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">

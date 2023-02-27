@@ -1,10 +1,4 @@
-// import packages
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useRoutes } from "react-router-dom";
-import { TUser, userSessionContext } from "../context/userSessionContext";
-
-
-// import pages
+import { useRoutes } from "react-router-dom";
 import AuthPage from "../pages/auth-page";
 import HomePage from "../pages/home-page";
 import OnBoardPage from "../pages/onboard-page";
@@ -12,15 +6,13 @@ import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
 import SettingsPage from "../pages/settings-page";
 
+/**
+ * This sets all the routes for each pages
+ * 
+ */
 
-type UserInfo = {
-  user: TUser | null;
-};
-
-
-export default function Router(props: UserInfo) {
+export default function Router() {
  
-
   let element = useRoutes([
     { path: "/auth", element: <AuthPage /> },
     { path: "/", element: <HomePage /> },
@@ -28,8 +20,6 @@ export default function Router(props: UserInfo) {
     { path: "/profile", element: <ProfilePage /> },
     { path: "/onboard", element: <OnBoardPage />},
     { path: "/settings", element: <SettingsPage />}
-
-
   ]);
 
   return element;

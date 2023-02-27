@@ -1,15 +1,14 @@
-/*
-  This is a button that adjust names
-*/
-
 import styled from "styled-components";
 import { userSessionContext } from "../context/userSessionContext";
 import fetchUser from "../services/fetch-user";
-import setUp from "../services/apple-music-link";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import AdjustName from "../services/adjust-name";
-import Popup from 'reactjs-popup';
+import Popup from "reactjs-popup";
+
+/*
+ * This is used in the settings page to modify username, givenName, middleName, and Family_name
+ * Author: David Kim
+ */
 
 const Button = styled.button`
   background-color: red
@@ -31,12 +30,12 @@ const Button = styled.button`
   }
 `;
 
+// This argument is filled out in settings-page
 type names = {
-    username: string,
-    givenName: string,
-    middleName: string,
-    familyName: string,
-
+  username: string;
+  givenName: string;
+  middleName: string;
+  familyName: string;
 };
 
 const AdjustNamesLink = (props: names) => {
@@ -46,44 +45,41 @@ const AdjustNamesLink = (props: names) => {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
 
-
   return (
     <div>
       <Button
         onClick={async () => {
-          // If set up is successful to go home page else go to 404
-          console.log("before ran")
-          console.log(props.givenName)
-          setOpen(true)
-  
-          await AdjustName(props.username, props.givenName, props.middleName, props.familyName); //? handleNavigationToHomePage() : handleNavigationTo404() ;
-          
-          console.log("ran")
-          console.log("Ran adjust names")
+          // Open Modal that prints Success
+          setOpen(true);
 
+          await AdjustName(
+            props.username,
+            props.givenName,
+            props.middleName,
+            props.familyName
+          );
+
+          // Update the user fields with the updated fields
           try {
             await setUser(await fetchUser());
-            console.log("IN fetch")
           } catch (error) {
-
             console.error(error);
           }
         }}
       >
-        Done with Names
+        Update Names
       </Button>
+
       <Popup open={open} closeOnDocumentClick onClose={closeModal}>
-            <div className="modal">
-              <a className="close" onClick={closeModal}>
-                &times;
-              </a>
-              Success
-            </div>
-          </Popup>
+        <div className="modal">
+          <a className="close" onClick={closeModal}>
+            &times;
+          </a>
+          Success
+        </div>
+      </Popup>
     </div>
   );
 };
 
 export default AdjustNamesLink;
-
-
