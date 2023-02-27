@@ -35,5 +35,3 @@ export const appleAuth = async (music: MusicKit.MusicKitInstance) => {
     },
   });
 };
-
-export const appleMusicInstance = appleMusicConfigure();
