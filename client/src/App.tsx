@@ -68,7 +68,7 @@ const App = () => {
       ) {
         return <OnBoardPage musicInstance={musicInstance} />;
       } else {
-        return <HomePage musicInstance={musicInstance} />;
+        return <Router musicInstance={musicInstance} />;
       }
     } else {
       return <AuthPage />;
