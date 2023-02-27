@@ -1,4 +1,6 @@
 import { TSong } from "../types/song";
+import PostFailure from "../components/post-failure";
+import PostSucess from "../components/post-sucess";
 
 const sendPost = async (
   username: string,
@@ -22,7 +24,9 @@ const sendPost = async (
     });
   } catch (err) {
     console.log(err);
+    PostFailure();
   }
+  PostSucess();
 };
 
 export default sendPost;

@@ -9,6 +9,7 @@ import { userSessionContext, TUser } from "../context/userSessionContext";
 import { TSong } from "../types/song";
 import { spotifySearch } from "../services/spotify-search";
 import sendPost from "../services/send-post";
+import SearchOption from "./search-option-button";
 
 const AppleSearch = async (term: string, category: string, limit: number) => {
   return appleSearch(term, category, limit);
@@ -22,19 +23,6 @@ const SpotifySearch = async (
 ) => {
   return spotifySearch(term, category, token, limit);
 };
-
-const Button = styled.button`
-  background-color: white;
-  color: black;
-  cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
-  margin-left: 10px;
-  outline: 2px
-  inline: block;
-  &:hover {
-    color: grey;
-  }
-`;
 
 const Search = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
@@ -79,25 +67,19 @@ const Search = () => {
 
   return (
     <div>
-      <input
-        placeholder="Enter Post Title"
-        onChange={(event) =>
-          selectService(event.target.value as string, category, 10).then(
-            (result) => {
-              setSong(event.target.value);
-              songs = result!;
-              setSongs(result!);
-            }
-          )
-        }
-      />
       <div className="dropdown">
-        <button onClick={handleOpen}>Search For</button>
+        <button
+          className="mx-2 text-black bg-white border-2 border-solid border-lblue"
+          onClick={handleOpen}
+        >
+          Search For:
+        </button>
 
         {open ? (
-          <ul className="menu">
+          <ul className="mx-2 text-left menu">
             <li className="songs">
-              <Button
+              <SearchOption
+                caption="Songs"
                 onClick={() =>
                   selectService(song as string, "songs", 10).then((result) => {
                     setCategory("songs");
@@ -106,12 +88,11 @@ const Search = () => {
                     setSongs(result!);
                   })
                 }
-              >
-                Songs
-              </Button>
+              />
             </li>
             <li className="albums">
-              <Button
+              <SearchOption
+                caption="Albums"
                 onClick={() =>
                   selectService(song as string, "albums", 10).then((result) => {
                     setCategory("albums");
@@ -120,12 +101,11 @@ const Search = () => {
                     setSongs(result!);
                   })
                 }
-              >
-                Albums
-              </Button>
+              />
             </li>
             <li className="artists">
-              <Button
+              <SearchOption
+                caption="Artists"
                 onClick={() =>
                   selectService(song as string, "artists", 10).then(
                     (result) => {
@@ -136,13 +116,23 @@ const Search = () => {
                     }
                   )
                 }
-              >
-                Artists
-              </Button>
+              />
             </li>
           </ul>
         ) : null}
         <br />
+        <input
+          placeholder="Enter Post Title"
+          onChange={(event) =>
+            selectService(event.target.value as string, category, 10).then(
+              (result) => {
+                setSong(event.target.value);
+                songs = result!;
+                setSongs(result!);
+              }
+            )
+          }
+        />
       </div>
       <button data-apple-music-skip-to-previous-item></button>
       <h1 id="name"></h1>
@@ -160,7 +150,7 @@ const Search = () => {
       <div>Selected: {selected?.name}</div>
       <h1>Enter Caption</h1>
       <form>
-        <label w-20 h-20>
+        <label>
           <input
             type="text"
             value={caption}
