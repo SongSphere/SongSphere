@@ -5,11 +5,15 @@ import { useEffect, useState } from "react";
 import { userSessionContext, TUser } from "./context/userSessionContext";
 import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/fetch-user";
+import AuthPage from "./pages/auth-page";
+import OnBoardPage from "./pages/onboard-page";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
+
   const [existingAccount, setExistingAccount] = useState<boolean>(true);
+  const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
 
   let navigate = useNavigate();
 
@@ -20,45 +24,30 @@ const App = () => {
       } catch (error) {
         console.error(error);
       }
-      setIsLoggedIn(await checkLoggedIn());
+
+      try {
+        setIsLoggedIn(await checkLoggedIn());
+      } catch (error) {
+        console.error(error);
+      }
     };
-
     sessionUpdate().then(() => {
-      console.log(user);
+      setSessionUpdated(true);
     });
+  }, []);
 
-    try {
-      console.log(existingAccount);
-
-      /*
-          user does exist in the DB
-          Spotify token exists or Apple token exists. 
-          User must have one or the other
-          Then go to the home page
-        */
-
+  if (sessionUpdated) {
+    if (user) {
       if (
         !existingAccount ||
-        (user?.appleToken == null && user?.spotifyToken == null)
+        (user.appleToken == null && user.spotifyToken == null)
       ) {
-        console.log("user");
-        console.log(user);
-        navigate("/onboard");
+        return <OnBoardPage />;
       }
-
-      // if (
-      //   existingAccount &&
-      //   (user?.appleToken != null || user?.spotifyToken != null)
-      // ) {
-      //   navigate("/");
-      // } else {
-      //   // user doesn't exist in the DB, then go to onboarding page
-      //   navigate("/onboard");
-      // }
-    } catch (error) {
-      console.error(error);
+    } else {
+      return <AuthPage />;
     }
-  }, []);
+  }
 
   return (
     <>
@@ -72,11 +61,7 @@ const App = () => {
           setExistingAccount,
         }}
       >
-        <GoogleOAuthProvider
-          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
-        >
-          <Router user={user} />
-        </GoogleOAuthProvider>
+        <Router user={user} />
       </userSessionContext.Provider>
     </>
   );

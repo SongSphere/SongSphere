@@ -1,5 +1,5 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { userSessionContext } from "../context/userSessionContext";
 
 // import services
@@ -9,38 +9,41 @@ import { useNavigate } from "react-router-dom";
 
 const LoginButton = () => {
   // you can use the isLoggedIn with useContext to see if the user is signed in
-  const {
-    setIsLoggedIn,
-    setUser,
-    setExistingAccount,
-  } = useContext(userSessionContext);
+  const { user, setIsLoggedIn, setUser, existingAccount, setExistingAccount } =
+    useContext(userSessionContext);
   let navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (
+  //     !existingAccount ||
+  //     (user?.appleToken == null && user?.spotifyToken == null)
+  //   ) {
+  //     console.log("onboarding is needed");
+  //     console.log(user);
+  //     // navigate("/onboard");
+  //   }
+  //   navigate("/");
+  // }, [user]);
+
   return (
     <div>
       <GoogleLogin
         onSuccess={async (credentialResponse) => {
           try {
-            const [loginSuccess, existingAccount] = await handleSignInUp(
+            const [loginSuccess, existing] = await handleSignInUp(
               credentialResponse
             );
-            setExistingAccount(existingAccount);
+
+            setExistingAccount(existing);
 
             if (loginSuccess) {
               setIsLoggedIn(true);
-              setUser(await fetchUser());
-
-            /*
-            user does exist in the DB
-            Then go to the home page
-            */
-              if (existingAccount) {
-                navigate("/");
-              } else {
-                navigate("/onboard");
-              }
+              await setUser(await fetchUser());
+            } else {
+              throw new Error("login not sucess");
             }
           } catch (error) {
-            console.error(error);
+            navigate("/auth");
           }
         }}
         onError={() => {
