@@ -1,18 +1,20 @@
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import Router from "./components/router";
 import { useEffect, useState } from "react";
 import { userSessionContext, TUser } from "./context/userSessionContext";
 import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/fetch-user";
-// import { appleMusicContext } from "./context/appleMusicContext";
+import AuthPage from "./pages/auth-page";
+import OnBoardPage from "./pages/onboard-page";
+import HomePage from "./pages/home-page";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [musicInstance, setMusicInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
+
+  const [existingAccount, setExistingAccount] = useState<boolean>(true);
+  const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
 
   useEffect(() => {
     const sessionUpdate = async () => {
@@ -29,14 +31,6 @@ const App = () => {
       }
     };
 
-    // const initAppleMusic = async () => {
-    //   try {
-    //     setMusicInstance(await appleMusicConfigure());
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
-
     // Dynamically loaded Apple Musickit
     const script = document.createElement("script");
     script.src = "https://js-cdn.music.apple.com/musickit/v1/musickit.js";
@@ -52,7 +46,9 @@ const App = () => {
         },
       });
       setMusicInstance(MusicKit.getInstance());
-      sessionUpdate();
+      sessionUpdate().then(() => {
+        setSessionUpdated(true);
+      });
     };
 
     return () => {
@@ -64,6 +60,21 @@ const App = () => {
     return <div>rendering music instance</div>;
   }
 
+  if (sessionUpdated) {
+    if (user && isLoggedIn) {
+      if (
+        !existingAccount ||
+        (user.appleToken == null && user.spotifyToken == null)
+      ) {
+        return <OnBoardPage musicInstance={musicInstance} />;
+      } else {
+        return <HomePage musicInstance={musicInstance} />;
+      }
+    } else {
+      return <AuthPage />;
+    }
+  }
+
   return (
     <>
       <userSessionContext.Provider
@@ -72,15 +83,11 @@ const App = () => {
           setIsLoggedIn,
           user,
           setUser,
+          existingAccount,
+          setExistingAccount,
         }}
       >
-        <GoogleOAuthProvider
-          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
-        >
-          <BrowserRouter>
-            <Router musicInstance={musicInstance} />
-          </BrowserRouter>
-        </GoogleOAuthProvider>
+        <Router musicInstance={musicInstance} />
       </userSessionContext.Provider>
     </>
   );

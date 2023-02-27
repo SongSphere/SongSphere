@@ -2,6 +2,7 @@ import { createContext } from "react";
 
 export type TUserWrapper = {
   user: TUser;
+  existingAccount: boolean;
 };
 
 export type TUser = {
@@ -22,6 +23,8 @@ export interface IUserSessionContext {
   setIsLoggedIn: Function;
   user: TUser | null;
   setUser: Function;
+  existingAccount: boolean;
+  setExistingAccount: Function;
 }
 
 export const userSessionContext = createContext<IUserSessionContext>({
@@ -29,4 +32,6 @@ export const userSessionContext = createContext<IUserSessionContext>({
   setIsLoggedIn: (isloggedin: boolean) => {},
   user: null,
   setUser: (user: TUser | null) => {},
+  existingAccount: true,
+  setExistingAccount: (existingAccount: boolean) => {},
 });
