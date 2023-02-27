@@ -4,6 +4,17 @@ import { appleMusicInstance } from "../services/apple-music-link";
 const MusicPlayerCard = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [music, setMusic] = useState<MusicKit.MusicKitInstance | null>(null);
+  const [progress, setProgress] = useState(0);
+
+  // useEffect(() => {
+  //   if (music) {
+  //     setProgress(music.player.currentPlaybackProgress);
+  //   }
+  // }, [MusicKit.Events.playbackTimeDidChange]);
+  music?.addEventListener("playbackTimeDidChange", () => {
+    // console.log(music.player.currentPlaybackProgress);
+    setProgress(music.player.currentPlaybackProgress * 100);
+  });
 
   useEffect(() => {
     const tempFetchSong = async () => {
@@ -37,14 +48,10 @@ const MusicPlayerCard = () => {
   useEffect(() => {
     const appleMusicConfigureHandler = async () => {
       await appleMusicInstance.then((musicInstance) => {
-        // console.log(musicInstance);
         setMusic(musicInstance);
       });
     };
-    appleMusicConfigureHandler().then(() => {
-      // console.log(music);
-      // tempFetchSong();
-    });
+    appleMusicConfigureHandler();
   }, []);
 
   const playMusicHandler = () => {
@@ -87,6 +94,18 @@ const MusicPlayerCard = () => {
               ></img>
             </div>
           </div>
+          <div className="flex justify-center mt-4">
+            <div className="w-5/6 h-1 bg-neutral-200 dark:bg-neutral-600">
+              <div
+                className={`h-1 bg-red-400`}
+                style={{
+                  width: `${progress}%`,
+                }}
+              ></div>
+            </div>
+          </div>
+
+          {/* <div>{time}</div> */}
         </div>
       </div>
     </div>
