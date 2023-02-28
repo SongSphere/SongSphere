@@ -7,23 +7,48 @@ import HomePage from "../pages/home-page";
 import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
+import { TUser } from "../types/user";
 
 interface IRouterProps {
-  musicInstance: MusicKit.MusicKitInstance;
+  appleMusicInstance: MusicKit.MusicKitInstance;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  user: TUser | null;
 }
 
 const Router = (props: IRouterProps) => {
   let element = useRoutes([
-    { path: "/auth", element: <AuthPage /> },
-    { path: "/", element: <HomePage musicInstance={props.musicInstance} /> },
+    {
+      path: "/auth",
+      element: (
+        <AuthPage setIsLoggedIn={props.setIsLoggedIn} setUser={props.setUser} />
+      ),
+    },
+    {
+      path: "/",
+      element: (
+        <HomePage
+          appleMusicInstance={props.appleMusicInstance}
+          setUser={props.setUser}
+          setIsLoggedIn={props.setIsLoggedIn}
+          user={props.user}
+        />
+      ),
+    },
     { path: "/posts", element: <PostPage /> },
     {
       path: "/profile",
-      element: <ProfilePage musicInstance={props.musicInstance} />,
+      element: <ProfilePage musicInstance={props.appleMusicInstance} />,
     },
     {
       path: "/onboard",
-      element: <OnBoardPage musicInstance={props.musicInstance} />,
+      element: (
+        <OnBoardPage
+          setUser={props.setUser}
+          user={props.user}
+          appleMusicInstance={props.appleMusicInstance}
+        />
+      ),
     },
   ]);
 

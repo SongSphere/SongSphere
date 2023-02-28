@@ -1,25 +1,64 @@
 import { useContext, useEffect, useState } from "react";
-// import { musicInstance } from "../services/apple-music-link";
-// import { appleMusicContext } from "../context/appleMusicContext";
+import { TUser } from "../types/user";
+
+interface ISpotifySong {
+  name: string;
+  album: {
+    images: [{ url: string }];
+  };
+  artists: [{ name: string }];
+  uri: string;
+}
 
 interface ISpotifyPlayerCardProps {
-  musicInstance: Spotify.Player;
+  user: TUser | null;
 }
 
 const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
-  const songId = 716192621;
+  const songId = "11dFghVXANMlKmJXsNCbNl";
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [song, setSong] = useState<MusicKit.Resource | null>(null);
-
-  const musicInstance = props.musicInstance;
-  // musicInstance.addEventListener("playbackTimeDidChange", () => {
-  //   setProgress(musicInstance.player.currentPlaybackProgress * 100);
-  // });
+  const [song, setSong] = useState<ISpotifySong | null>(null);
 
   useEffect(() => {
-    const fetchSong = async (songId: number) => {};
+    // const addSongToQueue = async (songUrl: string, song: ISpotifySong) => {
+    //   await fetch(
+    //     "https://api.spotify.com/v1/me/player/queue" +
+    //       new URLSearchParams({ uri: song.uri, device_id:  })
+    //   );
+    // };
+
+    const fetchSong = async (songId: string) => {
+      if (props.user) {
+        await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${props.user.spotifyToken}`,
+          },
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            const song: ISpotifySong = {
+              name: data.name,
+              album: {
+                images: data.album.images[0].url,
+              },
+              artists: data.album.artists.map((artist: any) => {
+                return artist.name;
+              }),
+              uri: data.uri,
+            };
+            console.log(data);
+            setSong(song);
+          });
+      } else {
+        console.error("user not set");
+      }
+    };
     fetchSong(songId);
   }, []);
 
@@ -43,7 +82,7 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
         <div className="bg-white w-80 h-5/6">
           <div className="flex justify-center">
             <div className="w-4/5 mt-5">
-              <img
+              {/* <img
                 src={
                   song
                     ? song.attributes.artwork.url
@@ -51,11 +90,11 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
                         .replace("{h}", 1000)
                     : ""
                 }
-              ></img>
+              ></img> */}
             </div>
           </div>
           <div className="px-6 mt-2 text-2xl text-center">
-            {song?.attributes.name}
+            {/* {song?.attributes.name} */}
           </div>
           <div className="flex justify-center mt-2">
             <div
