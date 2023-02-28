@@ -60,7 +60,7 @@ const OnBoardPage = () => {
       <div className="w-full sm:w-1/2 text-center sm:px-6">
         <AppleLink />
         <SpotifyLinkButton />
-    
+
         <input className="e-input" type="text" placeholder="Enter User Name" onChange={(e) => setUserName(e.target.value)} />
         <input className="e-input" type="text" placeholder="Enter Middle Name" onChange={(e) => setMiddleName(e.target.value)} />
         <AdjustNamesLink
