@@ -13,49 +13,45 @@ const ProfilePage = (props: IProfileProps) => {
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <NewNavbar />
 
-      
-      <div className="grid grid-cols-3">
-
-      <div className="float-right col-start-1 col-end-1">
-          <AppleMusicPlayerCard musicInstance={props.musicInstance} />
-        </div>
-        
-        <div className="col-start-2 col-end-2">
-          {/* Profile pic conatiner*/}
-          <p className="mx-7">place holder Guy Fieri</p>
+      <button className="float-right">
+            <img className="w-10 h-10 mt-5 mr-5"src="https://i.pinimg.com/originals/f1/a2/b2/f1a2b28af9d7aeafeec63cac6e1eb5ee.png" />
+      </button> 
+      <div className="flex">
+ 
+            <AppleMusicPlayerCard musicInstance={props.musicInstance} />
           
-          <img className="mx-10 my-5 rounded-3xl" height={150} width={150}src="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2014/08/guy_fieri.jpg"/>
-          <button className="mx-10 bg-white border-2 border-black rounded-full shadow-2xl">Edit Profile Image</button>
-        </div>
-
-        {/* Followers and bio container*/}
-        <div className="col-start-3 col-end-3">
+          <div className="">
+            {/* Profile pic conatiner*/}
+            <p className="mx-7">place holder Guy Fieri</p>
             
-            <ul className="my-10 lg:inline-flex :inline">
-              <li className="px-10 text-center">
-                # <br />
-                Posts
-              </li>
-              <li className="px-10 text-center">
-                # <br />
-                Followers 
-              </li>
-              <li className="px-10 text-center">
-                # <br />
-                Following
-              </li>
-            </ul>
-            <p>I am Guy and I like Cheeseburgers and Katy Perry. My favorite things to do in my
-              freetime are drive and go to dinners or drive ins.
-            </p>  
-            
-        </div>
-      
-          {/* Post Container */}
-        <div className="col-start-1 col-end-2">
+            <img className="mx-10 my-5 rounded-3xl" height={150} width={150}src="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2014/08/guy_fieri.jpg"/>
+            <button className="mx-10 bg-white border-2 border-black rounded-full shadow-2xl">Edit Profile Image</button>
+          </div>
 
-        </div>
-      </div>
+          {/* Followers and bio container*/}
+          <div className="">
+              
+              <ul className="my-10 lg:inline-flex :inline">
+                <li className="px-10 text-center">
+                  # <br />
+                  Posts
+                </li>
+                <li className="px-10 text-center">
+                  # <br />
+                  Followers 
+                </li>
+                <li className="px-10 text-center">
+                  # <br />
+                  Following
+                </li>
+              </ul>
+              <p>I am Guy and I like Cheeseburgers and Katy Perry. My favorite things to do in my
+                freetime are drive and go to dinners or drive ins.
+              </p>  
+              
+          </div>
+          
+      </div> {/** end of page grid */}
       
     </div>
   );

@@ -57,8 +57,8 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
   };
 
   return (
-    <div className="relative flex justify-center h-screen">
-      <div className="fixed flex h-full mt-8">
+    <div className="flex justify-center h-screen ">
+      <div className="flex h-full mt-8 ml-5">
         <div className="bg-white w-80 h-5/6">
           <div className="flex justify-center">
             <div className="w-4/5 mt-5">
