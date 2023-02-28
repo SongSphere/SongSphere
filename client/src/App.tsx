@@ -5,8 +5,7 @@ import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
-import HomePage from "./pages/home-page";
-import ProtectedRouter from "./components/protected-router";
+import { spotifySetup } from "./services/spotify-sdk-setup";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,29 +15,33 @@ const App = () => {
 
   const [existingAccount, setExistingAccount] = useState<boolean>(true);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
+  const [player, setPlayer] = useState<Spotify.Player | null>(null);
 
   useEffect(() => {
-    const sessionUpdate = async () => {
+    const updateSession = async () => {
       try {
-        setIsLoggedIn(await checkLoggedIn());
-      } catch (error) {
-        console.error(error);
-      }
-
-      try {
-        setUser(await fetchUser());
+        await checkLoggedIn().then(async (isLoggedIn) => {
+          setIsLoggedIn(isLoggedIn);
+          if (isLoggedIn) {
+            await fetchUser().then((userData) => {
+              setUser(userData);
+            });
+          }
+          setSessionUpdated(true);
+        });
       } catch (error) {
         console.error(error);
       }
     };
 
-    // Dynamically loaded Apple Musickit
-    const script = document.createElement("script");
-    script.src = "https://js-cdn.music.apple.com/musickit/v1/musickit.js";
-    script.async = true;
-    document.body.appendChild(script);
+    // dynamically import Musickit
+    const appleMusicScript = document.createElement("script");
+    appleMusicScript.src =
+      "https://js-cdn.music.apple.com/musickit/v1/musickit.js";
+    appleMusicScript.async = true;
+    document.body.appendChild(appleMusicScript);
 
-    script.onload = () => {
+    appleMusicScript.onload = () => {
       MusicKit.configure({
         developerToken: process.env.REACT_APP_APPLE_TOKEN,
         app: {
@@ -47,15 +50,23 @@ const App = () => {
         },
       });
       setMusicInstance(MusicKit.getInstance());
-      sessionUpdate().then(() => {
-        setSessionUpdated(true);
-      });
     };
 
+    updateSession();
+
     return () => {
-      document.body.removeChild(script);
+      document.body.removeChild(appleMusicScript);
     };
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      if (user.spotifyToken && !player) {
+        // TODO: if the user doesn't have spotify premium it will return 403
+        spotifySetup(user.spotifyToken, setPlayer);
+      }
+    }
+  }, [user]);
 
   if (!musicInstance) {
     return <div>rendering music instance</div>;
@@ -69,7 +80,7 @@ const App = () => {
       ) {
         return <OnBoardPage musicInstance={musicInstance} />;
       } else {
-        return <ProtectedRouter musicInstance={musicInstance} />;
+        <Router musicInstance={musicInstance} />;
       }
     } else {
       return <AuthPage />;

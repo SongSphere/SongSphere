@@ -40,6 +40,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
         <button
           onClick={() => {
             console.log("clicked");
+            navigate("/");
             window.location.reload();
           }}
         >

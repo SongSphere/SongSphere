@@ -1,4 +1,4 @@
-import MusicPlayerCard from "../components/music-player-card";
+import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import NewNavbar from "../components/new-navbar";
 import PImg from "../components/profile-image";
 import BImg from "../components/background-image";
@@ -12,6 +12,7 @@ const ProfilePage = (props: IProfileProps) => {
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <NewNavbar />
+
   
       <div className="grid grid-cols-3">
         <div className="col-start-1 col-end-1">
@@ -42,7 +43,7 @@ const ProfilePage = (props: IProfileProps) => {
             </p>
         </div>
         <div className="float-right col-start-3 col-end-3">
-          <MusicPlayerCard musicInstance={props.musicInstance} />
+          <AppleMusicPlayerCard musicInstance={props.musicInstance} />
         </div>
         
       </div>
