@@ -1,21 +1,14 @@
 const AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
 
-/*
- *  requestSpotifyAuthorization()
- *
- *  builds authorization request and links to spotify auth page
- */
-
 export const requestSpotifyAuthorization = async () => {
   try {
     let url = AUTHORIZE_ENDPOINT;
 
-    // build the url body
     url += "?client_id=" + process.env.REACT_APP_SPOTIFY_CLIENT_ID;
     url += "&response_type=code";
     url +=
       "&redirect_uri=" +
-      encodeURI(process.env.REACT_APP_DIR || window.location.href);
+      encodeURI(`${process.env.REACT_APP_DIR}/onboard` || window.location.href);
     url += "&show_dialog=true"; // leaving as true for now, can be removed when we don't want to go though auth every login
 
     url +=
@@ -29,6 +22,7 @@ export const requestSpotifyAuthorization = async () => {
 };
 
 export const spotifyAuth = async (code: string) => {
+  // TODO: use promise for return
   await fetch(`${process.env.REACT_APP_API}/api/auth/spotify`, {
     method: "POST",
     credentials: "include",
@@ -41,7 +35,9 @@ export const spotifyAuth = async (code: string) => {
   }).then(async (res) => {
     if (res.status != 201) {
       console.error(res);
+      return false;
     }
     console.log(res.json());
+    return true;
   });
 };

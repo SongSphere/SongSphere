@@ -1,31 +1,48 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { useContext } from "react";
-import { userSessionContext } from "../context/userSessionContext";
+import { useContext, useEffect } from "react";
 
 // import services
 import handleSignInUp from "../services/handle-sign-in-up";
 import fetchUser from "../services/fetch-user";
+import { useNavigate } from "react-router-dom";
+import { TUser } from "../types/user";
 
-const LoginButton = () => {
-  // you can use the isLoggedIn with useContext to see if the user is signed in
-  const { isLoggedIn, setIsLoggedIn, user, setUser } =
-    useContext(userSessionContext);
+interface ILoginButtonProps {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+}
+
+const LoginButton = (props: ILoginButtonProps) => {
+  let navigate = useNavigate();
 
   return (
     <div>
       <GoogleLogin
         onSuccess={async (credentialResponse) => {
           try {
-            const loginSuccess = await handleSignInUp(credentialResponse);
+            const [loginSuccess, existing] = await handleSignInUp(
+              credentialResponse
+            );
+
             if (loginSuccess) {
-              // login success
-              // redirect to home page
-              setIsLoggedIn(true);
-              setUser(await fetchUser());
+              props.setIsLoggedIn(true);
+              await fetchUser().then((user: TUser | null) => {
+                props.setUser(user);
+                if (user) {
+                  if (
+                    !existing ||
+                    (user.appleToken == null && user.spotifyToken == null)
+                  ) {
+                    navigate("/onboard");
+                  }
+                }
+                navigate("/");
+              });
+            } else {
+              throw new Error("login not sucess");
             }
           } catch (error) {
-            // error handling
-            console.error(error);
+            navigate("/auth");
           }
         }}
         onError={() => {

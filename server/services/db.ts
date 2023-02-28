@@ -14,7 +14,9 @@ export const createUser = async (
 ): Promise<mongoose.Document<unknown, any, IUser>> => {
   const user = new User({
     name: userData.name,
+    userName: "",
     givenName: userData.given_name,
+    middleName: "",
     familyName: userData.family_name,
     email: userData.email,
     emailVerified: userData.email_verified,
@@ -192,6 +194,32 @@ export const removePost = async (post: TPost) => {
   try {
     await Post.findByIdAndDelete(post.id);
   } catch (error) {
+    throw error;
+  }
+};
+export const updateNames = async (
+  email: string,
+  username: string,
+  givenName: string,
+  middleName: string,
+  familyName: string
+) => {
+  try {
+    await User.findOneAndUpdate({ email: email }, { userName: username });
+    await User.findOneAndUpdate({ email: email }, { givenName: givenName });
+    await User.findOneAndUpdate({ email: email }, { middleName: middleName });
+    await User.findOneAndUpdate({ email: email }, { familyName: familyName });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const deleteUserInServices = async (email: string) => {
+  try {
+    await User.deleteOne({ email: email });
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 };

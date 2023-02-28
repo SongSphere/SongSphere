@@ -1,4 +1,4 @@
-import { TUser, TUserWrapper } from "../context/userSessionContext";
+import { TUserWrapper } from "../types/user";
 
 const fetchUser = async () => {
   let user = null;
@@ -16,6 +16,7 @@ const fetchUser = async () => {
       user = (data as TUserWrapper).user;
     })
     .catch((error) => {
+      console.log("asdfasd")
       throw error;
     });
   return user;

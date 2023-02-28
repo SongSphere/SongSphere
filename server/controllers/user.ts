@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { fetchUserByEmail } from "../services/db";
+import {
+  deleteUserInServices,
+  fetchUserByEmail,
+  updateNames,
+} from "../services/db";
 
 export const sessionUpdate = async (
   req: Request,
@@ -8,10 +12,54 @@ export const sessionUpdate = async (
 ) => {
   try {
     const user = await fetchUserByEmail(req.session.user.email);
+    console.log(user);
     res.status(200);
     res.json({ user: user });
   } catch (error) {
     res.status(404);
     res.json({ msg: "cannot find user" });
+  }
+};
+
+export const changeNames = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email = req.session.user.email;
+
+  try {
+    await updateNames(
+      email,
+      req.body.username,
+      req.body.givenName,
+      req.body.middleName,
+      req.body.familyName
+    );
+    res.status(200);
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "cannot find user" });
+  }
+};
+
+/*
+    Author: David Kim
+    This is a service for Deleting a document associated with google email
+    @returns Promise<Void>
+*/
+export const deleteUserInControllers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email = req.session.user.email;
+
+  try {
+    await deleteUserInServices(email);
+    res.status(200);
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "Cannot find user in Delete User" });
   }
 };
