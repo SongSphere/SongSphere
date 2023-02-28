@@ -13,7 +13,7 @@ export const storePost = async (req: Request, res: Response) => {
       req.body.username,
       req.body.userEmail,
       req.body.caption,
-      req.body.song
+      req.body.music
     );
     await saveUser(post);
 

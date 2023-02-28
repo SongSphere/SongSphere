@@ -48,7 +48,7 @@ export const spotifySearch = async (
             albumName: track.album.name,
             id: track.id,
             service: "spotify",
-            category: type,
+            category: "song",
           });
         });
       } else if (type === "album") {

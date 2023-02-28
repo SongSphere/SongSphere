@@ -31,10 +31,10 @@ const Search = () => {
   const spotifyToken = user?.spotifyToken;
   let service = "";
 
-  if (appleToken !== "") {
-    service = "apple";
-  } else if (spotifyToken !== "") {
+  if (spotifyToken !== "") {
     service = "spotify";
+  } else if (appleToken !== "") {
+    service = "apple";
   } else {
     console.log("NO SERVICE");
   }
