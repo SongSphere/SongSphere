@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 // import models
 import User, { IUser } from "../db/user";
-import { TPost } from "../../client/src/types/post";
+import { TMusicContent } from "../../client/src/types/music-content";
 import Post, { IPost } from "../db/post";
 
 export const createUser = async (
@@ -138,19 +138,19 @@ export const createPost = async (
   username: string,
   userEmail: string,
   caption: string,
-  song: TPost
+  music: TMusicContent
 ): Promise<mongoose.Document<unknown, any, IPost>> => {
   const post = new Post({
     username: username,
     userEmail: userEmail,
     caption: caption,
-    song: {
-      name: song.name,
-      artist: song.artist,
-      albumName: song.albumName,
-      id: song.id,
-      service: song.service,
-      category: song.category,
+    music: {
+      name: music.name,
+      artist: music.artist,
+      albumName: music.albumName,
+      id: music.id,
+      service: music.service,
+      category: music.category,
     },
   });
 

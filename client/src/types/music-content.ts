@@ -1,4 +1,4 @@
-export type TPost = {
+export type TMusicContent = {
   name?: string;
   artist?: string;
   albumName?: string;

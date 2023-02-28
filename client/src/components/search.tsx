@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import appleSearch from "../services/apple-search";
 import { userSessionContext, TUser } from "../context/userSessionContext";
-import { TPost } from "../types/post";
+import { TMusicContent } from "../types/music-content";
 import { spotifySearch } from "../services/spotify-search";
 import sendPost from "../services/send-post";
 import SearchOption from "./search-option-button";
@@ -52,8 +52,8 @@ const Search = () => {
   };
 
   //let songs: [string, string][] = useState([]);
-  let [songs, setSongs] = useState<TPost[]>([]);
-  let [selected, setSelected] = useState<TPost>();
+  let [songs, setSongs] = useState<TMusicContent[]>([]);
+  let [selected, setSelected] = useState<TMusicContent>();
   let [song, setSong] = useState<string>("");
   let [category, setCategory] = useState<string>("songs");
   const [open, setOpen] = React.useState(false);

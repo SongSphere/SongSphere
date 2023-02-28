@@ -1,6 +1,6 @@
 import React, { Dispatch } from "react";
 import { textChangeRangeNewSpan } from "typescript";
-import { TPost } from "../types/post";
+import { TMusicContent } from "../types/music-content";
 
 const SPOTIFY_API = "https://api.spotify.com/v1";
 
@@ -10,18 +10,17 @@ export const spotifySearch = async (
   token: string,
   limit: number
 ) => {
-  let type = "";
   if (query === "") return [];
 
-  if (category === "songs") {
-    type = "track";
-  } else if (category === "albums") {
+  let type = "track"; // default to track
+
+  if (category === "albums") {
     type = "album";
   } else if (category === "artists") {
     type = "artist";
   }
 
-  let songs: TPost[] = [];
+  let content: TMusicContent[] = [];
 
   await fetch(
     `${SPOTIFY_API}/search?q=${encodeURIComponent(
@@ -35,13 +34,15 @@ export const spotifySearch = async (
     }
   )
     .then(async (res) => {
+      // passes json to the next handler function
       return res.json();
     })
     .then((data) => {
       if (type === "track") {
         const tracks = data.tracks.items;
+
         tracks.forEach(function (track: any) {
-          songs.push({
+          content.push({
             name: track.name,
             artist: track.artists[0].name,
             albumName: track.album.name,
@@ -52,8 +53,9 @@ export const spotifySearch = async (
         });
       } else if (type === "album") {
         const albums = data.albums.items;
+
         albums.forEach(function (track: any) {
-          songs.push({
+          content.push({
             name: track.name,
             artist: track.artists[0].name,
             id: track.id,
@@ -63,8 +65,9 @@ export const spotifySearch = async (
         });
       } else {
         const artists = data.artists.items;
+
         artists.forEach(function (track: any) {
-          songs.push({
+          content.push({
             name: track.name,
             id: track.id,
             service: "spotify",
@@ -72,10 +75,7 @@ export const spotifySearch = async (
           });
         });
       }
-      // }
     });
 
-  console.log(songs);
-
-  return songs;
+  return content;
 };

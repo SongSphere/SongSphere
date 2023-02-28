@@ -1,12 +1,12 @@
 import React, { Dispatch, useContext } from "react";
 import { textChangeRangeNewSpan } from "typescript";
-import { TPost } from "../types/post";
+import { TMusicContent } from "../types/music-content";
 import appleSearch from "./apple-search";
 import { userSessionContext, TUser } from "../context/userSessionContext";
 import { spotifySearch } from "./spotify-search";
 
-const selectService = async (postService: string, song: TPost) => {
-  let list: TPost[] = [];
+const selectService = async (postService: string, song: TMusicContent) => {
+  let list: TMusicContent[] = [];
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
     useContext(userSessionContext);
 

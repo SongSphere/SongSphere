@@ -1,9 +1,9 @@
 import React, { Dispatch } from "react";
 import { textChangeRangeNewSpan } from "typescript";
-import { TPost } from "../types/post";
+import { TMusicContent } from "../types/music-content";
 
 const appleSearch = async (term: string, types: string, limit: number) => {
-  const list: TPost[] = [];
+  const list: TMusicContent[] = [];
 
   if (term === "") return list;
 
