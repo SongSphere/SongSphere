@@ -18,8 +18,6 @@ const App = () => {
       try {
         setIsLoggedIn(await checkLoggedIn());
 
-        console.log(existingAccount);
-
         /*
             user does exist in the DB
             Spotify token exists or Apple token exists. 
@@ -27,9 +25,6 @@ const App = () => {
             Then go to the home page
           */
 
-        console.log(user?.givenName)
-        console.log(user?.appleToken)
-        console.log(user?.spotifyToken)
         if (
           existingAccount &&
           (user?.appleToken != null || user?.spotifyToken != null)
@@ -37,7 +32,6 @@ const App = () => {
           navigate("/");
         } else {
           // user doesn't exist in the DB, then go to onboarding page
-          console.log("Why going back to onboard")
           navigate("/onboard");
         }
       } catch (error) {

@@ -14,15 +14,13 @@ const AdjustName = async (username: string, givenName: string, middleName: strin
           "Content-Type": "application/json",
         },
       });
-      console.log("Middle name")
-      console.log(middleName);
-      console.log("Adjust names called in services client")
+
 
       
       return true;
       
     } catch (err) {
-      console.log(err);
+
       return false;
     }
   };
