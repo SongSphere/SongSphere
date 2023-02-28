@@ -23,7 +23,9 @@ const SettingsPage = () => {
     const [middleName, setMiddleName] = useState<string>(user?.middleName ? user?.middleName : "");
     const [familyName, setFamilyName] = useState<string>(user?.familyName ? user?.familyName : "");
     
-
+    const [appleAccountStatus, setAppleAccountStatus] = useState<string>(user?.appleToken != null ? "true" : "false");
+    const [spotifyAccountStatus, setSpotifyAccountStatus] = useState<string>(user?.spotifyToken != null ? "true" : "false");
+    
   return (
     <div className="flex flex-wrap items-center mt-20">
       <div className="w-full sm:w-1/2 text-center sm:px-6">
@@ -49,6 +51,15 @@ const SettingsPage = () => {
         />
 
       <DeleteGoogleAcountLink/>
+
+      <div>
+        `Apple API connected: ${appleAccountStatus}`
+      </div>
+
+      <div>
+        `Spotify API connected: ${spotifyAccountStatus}`
+      </div>
+
       <button> Next </button>
 
     
