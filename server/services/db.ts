@@ -22,6 +22,8 @@ export const createUser = async (
     emailVerified: userData.email_verified,
     profileImgUrl: userData.picture,
     token: token,
+    followers: {},
+    following: {},
   });
 
   return user;
@@ -220,6 +222,46 @@ export const deleteUserInServices = async (email: string) => {
     await User.deleteOne({ email: email });
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+};
+
+export const addFollow = async (
+  emailOfUserBeingFollowed: string,
+  emailOfUserFollowing: string
+) => {
+  try {
+    // add user being followed to following[] of the user doing the following
+    await User.updateOne(
+      { email: emailOfUserFollowing },
+      { $push: { following: emailOfUserBeingFollowed } }
+    );
+    // add user doing the following to followers[] of the user being followed
+    await User.updateOne(
+      { email: emailOfUserBeingFollowed },
+      { $push: { followers: emailOfUserFollowing } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const removeFollow = async (
+  emailOfUserBeingUnfollowed: string,
+  emailOfUserUnfollowing: string
+) => {
+  try {
+    // remove user being unfollowed from following[] of the user doing the unfollowing
+    await User.updateOne(
+      { email: emailOfUserUnfollowing },
+      { $pull: { following: emailOfUserBeingUnfollowed } }
+    );
+    // remove user doing the unfollowing from followers[] of the user being unfollowed
+    await User.updateOne(
+      { email: emailOfUserBeingUnfollowed },
+      { $pull: { followers: emailOfUserUnfollowing } }
+    );
+  } catch (error) {
     throw error;
   }
 };

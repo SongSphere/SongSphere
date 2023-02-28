@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Popup from "reactjs-popup";
 import { useNavigate } from "react-router-dom";
 import DeleteGoogleAccount from "../services/delete-google-account";
