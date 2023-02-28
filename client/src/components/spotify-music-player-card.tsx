@@ -20,60 +20,115 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [song, setSong] = useState<ISpotifySong | null>(null);
+  const [player, setPlayer] = useState<Spotify.Player | null>(null);
+  const [deviceId, setDeviceId] = useState<string>("");
 
   useEffect(() => {
-    // const addSongToQueue = async (songUrl: string, song: ISpotifySong) => {
-    //   await fetch(
-    //     "https://api.spotify.com/v1/me/player/queue" +
-    //       new URLSearchParams({ uri: song.uri, device_id:  })
-    //   );
+    // const addSongToQueue = async (token: string, deviceId: string) => {
+    //   await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
+    //     method: "get",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   })
+    //     .then((res) => {
+    //       return res.json();
+    //     })
+    //     .then(async (data) => {
+    //       const song: ISpotifySong = {
+    //         name: data.name,
+    //         album: {
+    //           images: data.album.images[0].url,
+    //         },
+    //         artists: data.album.artists.map((artist: any) => {
+    //           return artist.name;
+    //         }),
+    //         uri: data.uri,
+    //       };
+    //       setSong(song);
+    //       const url =
+    //         "https://api.spotify.com/v1/me/player/queue?" +
+    //         new URLSearchParams({ uri: song.uri, device_id: deviceId });
+    //       await fetch(url, {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       });
+    //     });
     // };
 
-    const fetchSong = async (songId: string) => {
-      if (props.user) {
-        await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
-          method: "get",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${props.user.spotifyToken}`,
+    if (props.user) {
+      // dynamically import Spotify
+      const script = document.createElement("script");
+      script.src = "https://sdk.scdn.co/spotify-player.js";
+      script.async = true;
+
+      document.body.appendChild(script);
+
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        const player = new window.Spotify.Player({
+          name: "Web Playback SDK",
+          getOAuthToken: (cb) => {
+            cb(props.user?.spotifyToken || "");
           },
-        })
-          .then((res) => {
-            return res.json();
-          })
-          .then((data) => {
-            const song: ISpotifySong = {
-              name: data.name,
-              album: {
-                images: data.album.images[0].url,
+          volume: 0.5,
+        });
+
+        setPlayer(player);
+        player.addListener("ready", async ({ device_id }) => {
+          console.log("Ready with Device ID", device_id);
+          const url =
+            "https://api.spotify.com/v1/me/player/play?" +
+            new URLSearchParams({ device_id: device_id });
+          await fetch(url, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${props.user?.spotifyToken}`,
+            },
+            body: JSON.stringify({
+              context_uri: "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr",
+              offset: {
+                position: 5,
               },
-              artists: data.album.artists.map((artist: any) => {
-                return artist.name;
-              }),
-              uri: data.uri,
-            };
-            console.log(data);
-            setSong(song);
-          });
-      } else {
-        console.error("waiting for user");
-      }
-    };
-    fetchSong(songId);
+              position_ms: 0,
+            }),
+          })
+            .then(() => {
+              console.log("playing");
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        });
+        player.addListener("not_ready", ({ device_id }) => {
+          console.log("Device ID has gone offline", device_id);
+        });
+
+        player.connect().then(async (success) => {
+          if (success) {
+            console.log("spotify player connected");
+          }
+        });
+      };
+    }
   }, [props.user]);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
 
-    // if (musicInstance != null) {
-    //   if (!isPlaying) {
-    //     musicInstance.play();
-    //   } else {
-    //     musicInstance.pause();
-    //   }
-    // } else {
-    //   console.error("music not instantiated");
-    // }
+    if (player) {
+      if (!isPlaying) {
+        player.resume();
+      } else {
+        player.pause();
+      }
+    } else {
+      console.error("music not instantiated");
+    }
   };
 
   return (
