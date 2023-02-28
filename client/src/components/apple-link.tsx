@@ -1,28 +1,26 @@
-import { userSessionContext } from "../context/userSessionContext";
 import fetchUser from "../services/fetch-user";
 import { appleAuth } from "../services/apple-music-link";
-import { useContext } from "react";
+import { TUser } from "../types/user";
 
 interface IAppleLinkProps {
-  musicInstance: MusicKit.MusicKitInstance;
+  appleMusicInstance: MusicKit.MusicKitInstance;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const AppleLink = (props: IAppleLinkProps) => {
-  const { setUser } = useContext(userSessionContext);
-
   return (
     <div>
       <button
         className="p-2 bg-red-400 rounded-md"
         onClick={async () => {
           try {
-            await appleAuth(props.musicInstance);
+            await appleAuth(props.appleMusicInstance);
           } catch (error) {
             console.error(error);
           }
 
           try {
-            await setUser(await fetchUser());
+            await props.setUser(await fetchUser());
           } catch (error) {
             console.error(error);
           }

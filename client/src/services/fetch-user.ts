@@ -1,4 +1,4 @@
-import { TUser, TUserWrapper } from "../context/userSessionContext";
+import { TUserWrapper } from "../types/user";
 
 const fetchUser = async () => {
   let user = null;
