@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AppleLink from "../components/apple-link";
 import SpotfiyLinkButton from "../components/spotify-link";
 import { userSessionContext } from "../context/userSessionContext";
+import { FollowButtons } from "../components/follow-test-button";
 import handleSignout from "../services/handle-sign-out";
 
 interface IHomePageProps {
@@ -18,6 +19,7 @@ const HomePage = (props: IHomePageProps) => {
       <div>Home</div>
       <AppleLink musicInstance={props.musicInstance} />
       <SpotfiyLinkButton />
+      <FollowButtons />
       <div>
         <button
           onClick={async () => {

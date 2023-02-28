@@ -21,7 +21,7 @@ export const follow = async (req: Request, res: Response) => {
 
 export const unfollow = async (req: Request, res: Response) => {
   const emailOfUserUnfollowing = req.session.user.email;
-  const emailOfUserGettingUnfollowed = req.body.emailOfUserGettingFollowed;
+  const emailOfUserGettingUnfollowed = req.body.emailOfUserGettingUnfollowed;
 
   try {
     await removeFollow(emailOfUserGettingUnfollowed, emailOfUserUnfollowing);
