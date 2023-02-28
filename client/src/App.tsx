@@ -19,15 +19,7 @@ const App = () => {
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
 
   useEffect(() => {
-    if (user) {
-      if (user.spotifyToken) {
-        spotifySetup(user.spotifyToken, setPlayer);
-      }
-    }
-  }, [user]);
-
-  useEffect(() => {
-    const sessionUpdate = async () => {
+    const updateSession = async () => {
       try {
         await checkLoggedIn().then(async (isLoggedIn) => {
           setIsLoggedIn(isLoggedIn);
@@ -43,6 +35,7 @@ const App = () => {
       }
     };
 
+    // dynamically import Musickit
     const appleMusicScript = document.createElement("script");
     appleMusicScript.src =
       "https://js-cdn.music.apple.com/musickit/v1/musickit.js";
@@ -60,12 +53,21 @@ const App = () => {
       setMusicInstance(MusicKit.getInstance());
     };
 
-    sessionUpdate();
+    updateSession();
 
     return () => {
       document.body.removeChild(appleMusicScript);
     };
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      if (user.spotifyToken && !player) {
+        // TODO: if the user doesn't have spotify premium it will return 403
+        spotifySetup(user.spotifyToken, setPlayer);
+      }
+    }
+  }, [user]);
 
   if (!musicInstance) {
     return <div>rendering music instance</div>;
