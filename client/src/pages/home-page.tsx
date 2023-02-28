@@ -4,9 +4,9 @@ import AppleLink from "../components/apple-link";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import NewNavbar from "../components/new-navbar";
-import SpotfiyLinkButton from "../components/spotify-link";
 import handleSignout from "../services/handle-sign-out";
 import { TUser } from "../types/user";
+import SpotfiyLinkButton from "../components/spotify-link";
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -16,6 +16,8 @@ interface IHomePageProps {
 }
 
 const HomePage = (props: IHomePageProps) => {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <NewNavbar />
@@ -42,6 +44,13 @@ const HomePage = (props: IHomePageProps) => {
               }}
             >
               logout
+            </button>
+            <button
+              onClick={async () => {
+                navigate("/settings");
+              }}
+            >
+              Settings
             </button>
           </div>
         </div>

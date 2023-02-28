@@ -1,8 +1,15 @@
-import { useContext, useEffect } from "react";
+/*
+  Author: David Kim
+  this is a onboard page for apple and spotify, when success goes to home
+  Note: When connecting with Spotify, redirect back to Onboard is unstable(janky) just for documentation
+*/
+
+import { useContext, useEffect, useState } from "react";
 import AppleLink from "../components/apple-link";
 import SpotifyLinkButton from "../components/spotify-link";
 import { useNavigate } from "react-router-dom";
 import { TUser } from "../types/user";
+import AdjustNamesLink from "../components/adjust-names-link";
 
 interface IOnBoardPageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -12,6 +19,9 @@ interface IOnBoardPageProps {
 
 const OnBoardPage = (props: IOnBoardPageProps) => {
   let navigate = useNavigate();
+
+  const [userName, setUserName] = useState<string>();
+  const [middleName, setMiddleName] = useState<string>();
 
   return (
     <div className="flex flex-wrap items-center mt-20">
@@ -34,14 +44,35 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
           appleMusicInstance={props.appleMusicInstance}
         />
         <SpotifyLinkButton setUser={props.setUser} />
+
+        <input
+          className="e-input"
+          type="text"
+          placeholder="Enter User Name"
+          onChange={(e) => setUserName(e.target.value)}
+        />
+        <input
+          className="e-input"
+          type="text"
+          placeholder="Enter Middle Name"
+          onChange={(e) => setMiddleName(e.target.value)}
+        />
+        <AdjustNamesLink
+          appleMusicInstance={props.appleMusicInstance}
+          setUser={props.setUser}
+          username={userName ? userName : ""}
+          givenName={props.user?.givenName ? props.user?.givenName : ""}
+          middleName={middleName ? middleName : ""}
+          familyName={props.user?.familyName ? props.user?.familyName : ""}
+        />
+
         <button
           onClick={() => {
             navigate("/");
             window.location.reload();
           }}
         >
-          {" "}
-          Next{" "}
+          Next
         </button>
       </div>
     </div>

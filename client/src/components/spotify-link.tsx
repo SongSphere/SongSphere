@@ -27,8 +27,6 @@ const SpotifyLinkButton = (props: ISpotfiyLinkButtonProps) => {
           setCalledSpotifyAuth(true);
           try {
             await spotifyAuth(code);
-            // handleNavigationToApple();
-
             // update session
             props.setUser(await fetchUser());
           } catch (error) {

@@ -7,6 +7,7 @@ import HomePage from "../pages/home-page";
 import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
+import SettingsPage from "../pages/settings-page";
 import { TUser } from "../types/user";
 
 interface IRouterProps {
@@ -16,9 +17,12 @@ interface IRouterProps {
   user: TUser | null;
 }
 
-const Router = (props: IRouterProps) => {
-  console.log("router: ", props.user);
+/**
+ * This sets all the routes for each pages
+ *
+ */
 
+const Router = (props: IRouterProps) => {
   let element = useRoutes([
     {
       path: "/auth",
@@ -48,6 +52,17 @@ const Router = (props: IRouterProps) => {
         <OnBoardPage
           setUser={props.setUser}
           user={props.user}
+          appleMusicInstance={props.appleMusicInstance}
+        />
+      ),
+    },
+    {
+      path: "/settings",
+      element: (
+        <SettingsPage
+          user={props.user}
+          setUser={props.setUser}
+          setIsLoggedIn={props.setIsLoggedIn}
           appleMusicInstance={props.appleMusicInstance}
         />
       ),
