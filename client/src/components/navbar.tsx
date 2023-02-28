@@ -18,7 +18,7 @@ const Navbar = (props: INavbarProps) => {
           <Link className="p-5" to="/profile">
             Profile
           </Link>
-          <Link className="p-5" to="/profile">
+          <Link className="p-5" to="/posts">
             Post
           </Link>
           <Link className="p-5" to="/settings">

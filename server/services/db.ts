@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 // import models
 import User, { IUser } from "../db/user";
 import { TMusicContent } from "../../client/src/types/music-content";
+import { TPost } from "../../client/src/types/post";
 import Post, { IPost } from "../db/post";
 
 export const createUser = async (
@@ -137,22 +138,19 @@ export const saveUser = async (
 
 // returns document based on post schema
 export const createPost = async (
-  username: string,
-  userEmail: string,
-  caption: string,
-  music: TMusicContent
+  newPost: TPost
 ): Promise<mongoose.Document<unknown, any, IPost>> => {
   const post = new Post({
-    username: username,
-    userEmail: userEmail,
-    caption: caption,
+    username: newPost.username,
+    userEmail: newPost.userEmail,
+    caption: newPost.caption,
     music: {
-      name: music.name,
-      artist: music.artist,
-      albumName: music.albumName,
-      id: music.id,
-      service: music.service,
-      category: music.category,
+      name: newPost.music.name,
+      artist: newPost.music.artist,
+      albumName: newPost.music.albumName,
+      id: newPost.music.id,
+      service: newPost.music.service,
+      category: newPost.music.category,
     },
   });
 
@@ -166,6 +164,35 @@ export const savePost = async (
   try {
     const savedPost = await post.save();
     return savedPost;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePost = async (newPost: TPost) => {
+  try {
+    // call mongoose updateOne function with data, this updates database
+    await Post.findByIdAndUpdate(newPost.id, {
+      username: newPost.username,
+      userEmail: newPost.userEmail,
+      caption: newPost.caption,
+      music: {
+        name: newPost.music.name,
+        artist: newPost.music.artist,
+        albumName: newPost.music.albumName,
+        id: newPost.music.id,
+        service: newPost.music.service,
+        category: newPost.music.category,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const removePost = async (post: TPost) => {
+  try {
+    await Post.findByIdAndDelete(post.id);
   } catch (error) {
     throw error;
   }
