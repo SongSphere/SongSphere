@@ -1,15 +1,18 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { useContext, useEffect } from "react";
-import { TUser, userSessionContext } from "../context/userSessionContext";
 
 // import services
 import handleSignInUp from "../services/handle-sign-in-up";
 import fetchUser from "../services/fetch-user";
 import { useNavigate } from "react-router-dom";
+import { TUser } from "../types/user";
 
-const LoginButton = () => {
-  const { setIsLoggedIn, setUser, setExistingAccount } =
-    useContext(userSessionContext);
+interface ILoginButtonProps {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+}
+
+const LoginButton = (props: ILoginButtonProps) => {
   let navigate = useNavigate();
 
   return (
@@ -21,22 +24,17 @@ const LoginButton = () => {
               credentialResponse
             );
 
-            setExistingAccount(existing);
-
             if (loginSuccess) {
-              setIsLoggedIn(true);
+              props.setIsLoggedIn(true);
               await fetchUser().then((user: TUser | null) => {
-                setUser(user);
+                props.setUser(user);
                 if (user) {
-                  console.log(user);
-
                   if (
                     !existing ||
                     (user.appleToken == null && user.spotifyToken == null)
                   ) {
                     navigate("/onboard");
                   }
-                  window.location.reload();
                 }
                 navigate("/");
               });

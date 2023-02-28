@@ -1,21 +1,19 @@
 import Router from "./components/router";
 import { useEffect, useState } from "react";
-import { userSessionContext, TUser } from "./context/userSessionContext";
 import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import { spotifySetup } from "./services/spotify-sdk-setup";
+import { TUser } from "./types/user";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [musicInstance, setMusicInstance] =
-    useState<MusicKit.MusicKitInstance | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
-
-  const [existingAccount, setExistingAccount] = useState<boolean>(true);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
-  const [player, setPlayer] = useState<Spotify.Player | null>(null);
+
+  const [appleMusicInstance, setAppleMusicInstance] =
+    useState<MusicKit.MusicKitInstance | null>(null);
 
   useEffect(() => {
     const updateSession = async () => {
@@ -49,7 +47,7 @@ const App = () => {
           build: "1978.4.1",
         },
       });
-      setMusicInstance(MusicKit.getInstance());
+      setAppleMusicInstance(MusicKit.getInstance());
     };
 
     updateSession();
@@ -59,48 +57,43 @@ const App = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      if (user.spotifyToken && !player) {
-        // TODO: if the user doesn't have spotify premium it will return 403
-        spotifySetup(user.spotifyToken, setPlayer);
-      }
-    }
-  }, [user]);
-
-  if (!musicInstance) {
-    return <div>rendering music instance</div>;
+  if (!appleMusicInstance) {
+    return <div>rendering apple music instance</div>;
   }
 
   if (sessionUpdated) {
     if (user && isLoggedIn) {
-      if (
-        !existingAccount ||
-        (user.appleToken == null && user.spotifyToken == null)
-      ) {
-        return <OnBoardPage musicInstance={musicInstance} />;
+      if (user.appleToken == null && user.spotifyToken == null) {
+        return (
+          <OnBoardPage
+            user={user}
+            setUser={setUser}
+            appleMusicInstance={appleMusicInstance}
+          />
+        );
       } else {
-        <Router musicInstance={musicInstance} />;
+        return (
+          <Router
+            user={user}
+            setUser={setUser}
+            setIsLoggedIn={setIsLoggedIn}
+            appleMusicInstance={appleMusicInstance}
+          />
+        );
       }
     } else {
-      return <AuthPage />;
+      return <AuthPage setIsLoggedIn={setIsLoggedIn} setUser={setUser} />;
     }
   }
 
   return (
     <>
-      <userSessionContext.Provider
-        value={{
-          isLoggedIn,
-          setIsLoggedIn,
-          user,
-          setUser,
-          existingAccount,
-          setExistingAccount,
-        }}
-      >
-        <Router musicInstance={musicInstance} />
-      </userSessionContext.Provider>
+      <Router
+        user={user}
+        setUser={setUser}
+        setIsLoggedIn={setIsLoggedIn}
+        appleMusicInstance={appleMusicInstance}
+      />
     </>
   );
 };
