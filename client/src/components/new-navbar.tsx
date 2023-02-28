@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 const NewNavbar = () => {
   return (
     <div className="relative h-16">
-      <div className="fixed w-screen bg-white">
+      <div className="fixed flex justify-between w-screen p-5 bg-navy border-lg-lgrey">
         <div className="flex flex-row justify-end">
-          <Link className="p-5" to="/">
+          <Link className="inline-block px-4 py-2 border rounded border-lgrey text-lgrey" to="/">
             Home
           </Link>
-          <Link className="p-5" to="/profile">
+          <Link className="inline-block px-4 py-2 border rounded border-lgrey text-lgrey"to="/profile">
             Profile
           </Link>
-          <Link className="p-5" to="/profile">
+          <Link className="inline-block px-4 py-2 border rounded border-lgrey text-lgrey" to="/posts">
             Post
           </Link>
         </div>

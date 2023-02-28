@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 
 // import models
 import User, { IUser } from "../db/user";
+import { TMusicContent } from "../../client/src/types/music-content";
+import Post, { IPost } from "../db/post";
 
 export const createUser = async (
   userData: TokenPayload,
@@ -53,17 +55,6 @@ export const updateSpotifyTokens = async (
   }
 };
 
-/*
- *  removeSpotifyToken
- *
- *  Note code structure taken from Tony
- *  This funciton finds the user in the db and updates the spotify token with the one provided
- *
- *  @param email: string  the user email is used to find the user in the database
- *
- *  @param token: string  the users token from the frontend, will be stored in database
- *
- */
 export const removeSpotifyTokens = async (email: string) => {
   try {
     // call mongoose findOneAndUpdate function with data, this updates database
@@ -88,8 +79,6 @@ export const updateAppleToken = async (email: string, token: string) => {
     throw error;
   }
 };
-
-
 
 export const removeAppleToken = async (email: string) => {
   try {
@@ -146,25 +135,53 @@ export const saveUser = async (
   }
 };
 
-export const updateNames = async (email: string, username: string, givenName: string, middleName: string, familyName: string) => {
+// returns document based on post schema
+export const createPost = async (
+  username: string,
+  userEmail: string,
+  caption: string,
+  music: TMusicContent
+): Promise<mongoose.Document<unknown, any, IPost>> => {
+  const post = new Post({
+    username: username,
+    userEmail: userEmail,
+    caption: caption,
+    music: {
+      name: music.name,
+      artist: music.artist,
+      albumName: music.albumName,
+      id: music.id,
+      service: music.service,
+      category: music.category,
+    },
+  });
+
+  return post;
+};
+
+// saves the given post document to the db
+export const savePost = async (
+  post: mongoose.Document<unknown, any, IPost>
+) => {
   try {
-    await User.findOneAndUpdate(
-      { email: email },
-      { userName: username }
-    );
-    await User.findOneAndUpdate(
-      { email: email },
-      { givenName: givenName }
-    );
-    await User.findOneAndUpdate(
-      { email: email },
-      { middleName: middleName }
-    );
-    await User.findOneAndUpdate(
-      { email: email },
-      { familyName: familyName }
-    );
-   
+    const savedPost = await post.save();
+    return savedPost;
+  } catch (error) {
+    throw error;
+  }
+};
+export const updateNames = async (
+  email: string,
+  username: string,
+  givenName: string,
+  middleName: string,
+  familyName: string
+) => {
+  try {
+    await User.findOneAndUpdate({ email: email }, { userName: username });
+    await User.findOneAndUpdate({ email: email }, { givenName: givenName });
+    await User.findOneAndUpdate({ email: email }, { middleName: middleName });
+    await User.findOneAndUpdate({ email: email }, { familyName: familyName });
   } catch (error) {
     console.log(error);
     throw error;
@@ -173,12 +190,9 @@ export const updateNames = async (email: string, username: string, givenName: st
 
 export const deleteUserInServices = async (email: string) => {
   try {
-    await User.deleteOne(
-      { email: email }
-    );
-
+    await User.deleteOne({ email: email });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw error;
   }
 };

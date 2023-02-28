@@ -41,7 +41,12 @@ const Router = (props: IRouterProps) => {
         />
       ),
     },
-    { path: "/posts", element: <PostPage /> },
+    {
+      path: "/posts",
+      element: (
+        <PostPage musicInstance={props.appleMusicInstance} user={props.user} />
+      ),
+    },
     {
       path: "/profile",
       element: <ProfilePage musicInstance={props.appleMusicInstance} />,
