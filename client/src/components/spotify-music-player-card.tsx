@@ -56,11 +56,11 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
             setSong(song);
           });
       } else {
-        console.error("user not set");
+        console.error("waiting for user");
       }
     };
     fetchSong(songId);
-  }, []);
+  }, [props.user]);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);

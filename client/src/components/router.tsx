@@ -17,6 +17,8 @@ interface IRouterProps {
 }
 
 const Router = (props: IRouterProps) => {
+  console.log("router: ", props.user);
+
   let element = useRoutes([
     {
       path: "/auth",
