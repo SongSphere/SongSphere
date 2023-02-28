@@ -13,7 +13,7 @@ const PImg = () => {
       {selectedImage && (
         <div>
           <img
-          className="h-auto max-w-full align-middle border-none rounded-full shadow-lg"
+          className="h-auto max-w-full align-middle border-none shadow-lg rounded-3xl"
             alt="not found"
             width={"150px"}
             height={"150px"}
