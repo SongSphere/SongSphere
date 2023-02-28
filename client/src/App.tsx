@@ -18,8 +18,6 @@ const App = () => {
       try {
         setIsLoggedIn(await checkLoggedIn());
 
-        console.log(existingAccount);
-
         /*
             user does exist in the DB
             Spotify token exists or Apple token exists. 
@@ -64,7 +62,7 @@ const App = () => {
         <GoogleOAuthProvider
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
         >
-          <Router user={user} />
+          <Router />
         </GoogleOAuthProvider>
       </userSessionContext.Provider>
     </>

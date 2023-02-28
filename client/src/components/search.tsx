@@ -3,8 +3,6 @@
 */
 
 import React, { useState } from "react";
-
-// import services
 import { useEffect } from "react";
 import styled from "styled-components";
 import search from "../services/apple-search";

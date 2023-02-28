@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AppleLink from "../components/apple-link";
-import SpotfiyLinkButton from "../components/spotify-link";
 import { userSessionContext } from "../context/userSessionContext";
 import handleSignout from "../services/handle-sign-out";
+
+/* This is the homepage, anytime the user finishes onboarding or already a user they are directed here */
 
 const HomePage = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
@@ -13,7 +13,7 @@ const HomePage = () => {
 
   
   useEffect(() => {
-    // If the user is not logged in: Checks for bad session ID
+    // Checks for bad session ID, if it is redirect to authentication page
     if (!isLoggedIn) {
       navigate('/auth')
     }
@@ -23,8 +23,6 @@ const HomePage = () => {
   return (
     <div>
       <div>Home</div>
-      <AppleLink />
-      <SpotfiyLinkButton />
       <div>
       <button
         onClick={async () => {
@@ -41,6 +39,13 @@ const HomePage = () => {
       >
         logout
       </button>
+      
+      <button onClick={async () => {
+          navigate('/settings')
+      }}>
+        Settings
+      </button>
+
       </div>
     </div>
   );

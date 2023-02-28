@@ -2,23 +2,18 @@ import { useContext, useEffect, useState } from "react";
 import { requestSpotifyAuthorization } from "../services/spotify-link";
 import { spotifyAuth } from "../services/spotify-link";
 import { userSessionContext } from "../context/userSessionContext";
-import { useNavigate } from "react-router-dom";
-
 import fetchUser from "../services/fetch-user";
+
+/**
+ * This component is responsible for 
+ * 
+ */
 
 const SpotifyLinkButton = () => {
 
   const [calledSpotifyAuth, setCalledSpotifyAuth] = useState(false);
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
     useContext(userSessionContext);
-
-  let navigate = useNavigate();
-
-
-  const handleNavigationToApple = () => {
-    navigate("auth/apple");
-  };
-
 
 
   useEffect(() => {
@@ -36,7 +31,6 @@ const SpotifyLinkButton = () => {
           setCalledSpotifyAuth(true);
           try {
             await spotifyAuth(code);
-           // handleNavigationToApple();
 
             // update session
             setUser(await fetchUser());

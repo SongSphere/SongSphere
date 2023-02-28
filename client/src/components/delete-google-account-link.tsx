@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { userSessionContext } from "../context/userSessionContext";
-import fetchUser from "../services/fetch-user";
 import { useContext, useState } from "react";
-import AdjustName from "../services/adjust-name";
 import Popup from "reactjs-popup";
+import { useNavigate } from "react-router-dom";
+import DeleteGoogleAccount from "../services/delete-google-account";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name
@@ -30,20 +30,19 @@ const Button = styled.button`
   }
 `;
 
-// This argument is filled out in settings-page
-type names = {
-  username: string;
-  givenName: string;
-  middleName: string;
-  familyName: string;
-};
 
-const AdjustNamesLink = (props: names) => {
+
+const DeleteGoogleAcountLink = () => {
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
     useContext(userSessionContext);
 
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
+  const [email, setEmail] = useState<string>(user?.email ? user?.email : "" );
+
+  let navigate = useNavigate();
+
+
 
   return (
     <div>
@@ -52,22 +51,19 @@ const AdjustNamesLink = (props: names) => {
           // Open Modal that prints Success
           setOpen(true);
 
-          await AdjustName(
-            props.username,
-            props.givenName,
-            props.middleName,
-            props.familyName
-          );
+          DeleteGoogleAccount(email);
 
           // Update the user fields with the updated fields
           try {
-            await setUser(await fetchUser());
+            await setUser(null);
+            setIsLoggedIn(false);
+            navigate('/auth')
           } catch (error) {
             console.error(error);
           }
         }}
       >
-        Update Names
+        Delete account
       </Button>
 
       <Popup open={open} closeOnDocumentClick onClose={closeModal}>
@@ -82,4 +78,4 @@ const AdjustNamesLink = (props: names) => {
   );
 };
 
-export default AdjustNamesLink;
+export default DeleteGoogleAcountLink;

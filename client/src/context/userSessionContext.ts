@@ -7,7 +7,9 @@ export type TUserWrapper = {
 
 export type TUser = {
   name: string;
+  userName: string;
   givenName: string;
+  middleName: string;
   familyName: string;
   email: string;
   emailVerified: Boolean;

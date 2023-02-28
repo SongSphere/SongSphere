@@ -1,3 +1,5 @@
+
+
 const MusicPlayerCard = () => {
   return (
     <div className="relative flex justify-center h-screen">

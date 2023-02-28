@@ -1,4 +1,10 @@
+/*
+  
+  Author: 
+  this is a page for Post Page
+  only UI here currently
 
+*/
 
 const PostPage = () => {
     return (
