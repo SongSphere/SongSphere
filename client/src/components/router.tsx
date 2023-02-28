@@ -15,12 +15,12 @@ interface IRouterProps {
 const Router = (props: IRouterProps) => {
   let element = useRoutes([
     { path: "/auth", element: <AuthPage /> },
-    // { path: "/", element: <HomePage musicInstance={props.musicInstance} /> },
-    // { path: "/posts", element: <PostPage /> },
-    // {
-    //   path: "/profile",
-    //   element: <ProfilePage musicInstance={props.musicInstance} />,
-    // },
+    { path: "/", element: <HomePage musicInstance={props.musicInstance} /> },
+    { path: "/posts", element: <PostPage /> },
+    {
+      path: "/profile",
+      element: <ProfilePage musicInstance={props.musicInstance} />,
+    },
     {
       path: "/onboard",
       element: <OnBoardPage musicInstance={props.musicInstance} />,

@@ -2,75 +2,39 @@ import { useContext, useEffect, useState } from "react";
 // import { musicInstance } from "../services/apple-music-link";
 // import { appleMusicContext } from "../context/appleMusicContext";
 
-interface IMusicPlayerCardProps {
-  musicInstance: MusicKit.MusicKitInstance;
+interface ISpotifyPlayerCardProps {
+  musicInstance: Spotify.Player;
 }
 
-const MusicPlayerCard = (props: IMusicPlayerCardProps) => {
+const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   const songId = 716192621;
 
   const [isPlaying, setIsPlaying] = useState(false);
-  // const [music, setMusic] = useState<MusicKit.MusicKitInstance | null>(null);
   const [progress, setProgress] = useState(0);
   const [song, setSong] = useState<MusicKit.Resource | null>(null);
 
-  // const { musicInstance } = useContext(appleMusicContext);
-
   const musicInstance = props.musicInstance;
-  musicInstance.addEventListener("playbackTimeDidChange", () => {
-    setProgress(musicInstance.player.currentPlaybackProgress * 100);
-  });
+  // musicInstance.addEventListener("playbackTimeDidChange", () => {
+  //   setProgress(musicInstance.player.currentPlaybackProgress * 100);
+  // });
 
   useEffect(() => {
-    const fetchSong = async (songId: number) => {
-      if (musicInstance) {
-        const song = await musicInstance.api.song(songId.toString());
-        setSong(song);
-
-        const mediaItemOptions: MusicKit.MediaItemOptions = {
-          id: song.id,
-          attributes: song.attributes,
-          type: song.type,
-        };
-
-        const mediaItem = new MusicKit.MediaItem(mediaItemOptions);
-
-        musicInstance.setQueue({
-          items: [mediaItem],
-        });
-        // if (musicInstance) {
-        // }
-      } else {
-        console.log("music not set");
-        // await appleMusicInstance.then((musicInstance) => {
-        // setMusic(musicInstance);
-        // });
-      }
-    };
+    const fetchSong = async (songId: number) => {};
     fetchSong(songId);
   }, []);
-
-  // useEffect(() => {
-  //   const appleMusicConfigureHandler = async () => {
-  //     await appleMusicInstance.then((musicInstance) => {
-  //       setMusic(musicInstance);
-  //     });
-  //   };
-  //   appleMusicConfigureHandler();
-  // }, []);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
 
-    if (musicInstance != null) {
-      if (!isPlaying) {
-        musicInstance.play();
-      } else {
-        musicInstance.pause();
-      }
-    } else {
-      console.error("music not instantiated");
-    }
+    // if (musicInstance != null) {
+    //   if (!isPlaying) {
+    //     musicInstance.play();
+    //   } else {
+    //     musicInstance.pause();
+    //   }
+    // } else {
+    //   console.error("music not instantiated");
+    // }
   };
 
   return (
@@ -124,4 +88,4 @@ const MusicPlayerCard = (props: IMusicPlayerCardProps) => {
     </div>
   );
 };
-export default MusicPlayerCard;
+export default SpotifyPlayerCard;
