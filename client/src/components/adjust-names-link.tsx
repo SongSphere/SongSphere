@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { userSessionContext } from "../context/userSessionContext";
 import fetchUser from "../services/fetch-user";
 import { useContext, useState } from "react";
 import AdjustName from "../services/adjust-name";
 import Popup from "reactjs-popup";
+import { TUser } from "../types/user";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name
@@ -30,18 +30,16 @@ const Button = styled.button`
   }
 `;
 
-// This argument is filled out in settings-page
-type names = {
+interface IAdjustNamesLinkProps {
+  appleMusicInstance: MusicKit.MusicKitInstance | null;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   username: string;
   givenName: string;
   middleName: string;
   familyName: string;
-};
+}
 
-const AdjustNamesLink = (props: names) => {
-  const { isLoggedIn, setIsLoggedIn, user, setUser } =
-    useContext(userSessionContext);
-
+const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
 
@@ -61,7 +59,7 @@ const AdjustNamesLink = (props: names) => {
 
           // Update the user fields with the updated fields
           try {
-            await setUser(await fetchUser());
+            await props.setUser(await fetchUser());
           } catch (error) {
             console.error(error);
           }

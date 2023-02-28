@@ -1,46 +1,48 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { useContext } from "react";
-import { userSessionContext } from "../context/userSessionContext";
+import { useContext, useEffect } from "react";
+
+// import services
 import handleSignInUp from "../services/handle-sign-in-up";
 import fetchUser from "../services/fetch-user";
 import { useNavigate } from "react-router-dom";
+import { TUser } from "../types/user";
 
-/*
-  This is a component that allows for google authentication
-  Author: Willy
-*/
+interface ILoginButtonProps {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+}
 
-const LoginButton = () => {
-  // you can use the isLoggedIn with useContext to see if the user is signed in
-  const { setIsLoggedIn, setUser, setExistingAccount } =
-    useContext(userSessionContext);
+const LoginButton = (props: ILoginButtonProps) => {
   let navigate = useNavigate();
+
   return (
     <div>
       <GoogleLogin
         onSuccess={async (credentialResponse) => {
           try {
-            const [loginSuccess, existingAccount] = await handleSignInUp(
+            const [loginSuccess, existing] = await handleSignInUp(
               credentialResponse
             );
-            setExistingAccount(existingAccount);
 
             if (loginSuccess) {
-              setIsLoggedIn(true);
-              setUser(await fetchUser());
-
-              /*
-            user does exist in the DB
-            Then go to the home page
-            */
-              if (existingAccount) {
+              props.setIsLoggedIn(true);
+              await fetchUser().then((user: TUser | null) => {
+                props.setUser(user);
+                if (user) {
+                  if (
+                    !existing ||
+                    (user.appleToken == null && user.spotifyToken == null)
+                  ) {
+                    navigate("/onboard");
+                  }
+                }
                 navigate("/");
-              } else {
-                navigate("/onboard");
-              }
+              });
+            } else {
+              throw new Error("login not sucess");
             }
           } catch (error) {
-            console.error(error);
+            navigate("/auth");
           }
         }}
         onError={() => {

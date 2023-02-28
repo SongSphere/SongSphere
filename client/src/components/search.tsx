@@ -1,14 +1,14 @@
-/*
-  This is a temporary test component for linking to Apple Music API
-*/
-
 import React, { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import search from "../services/apple-search";
 import checkService from "../services/check-service";
 
-const Search = () => {
+interface ISearchProps {
+  musicInstance: MusicKit.MusicKitInstance;
+}
+
+const Search = (props: ISearchProps) => {
   //let songs: [string, string][] = useState([]);
   let [songs, setSongs] = useState<any[]>([]);
   let [selected, setSelected] = useState<string[]>([]);
@@ -36,7 +36,11 @@ const Search = () => {
       <input
         placeholder="Enter Post Title"
         onChange={(event) =>
-          search(event.target.value as string, category).then((result) => {
+          search(
+            event.target.value as string,
+            category,
+            props.musicInstance
+          ).then((result) => {
             setSong(event.target.value);
             songs = result!;
             setSongs(result!);
@@ -50,12 +54,14 @@ const Search = () => {
             <li className="songs">
               <button
                 onClick={() =>
-                  search(song as string, "songs").then((result) => {
-                    setCategory("songs");
-                    console.log(result);
-                    songs = result!;
-                    setSongs(result!);
-                  })
+                  search(song as string, "songs", props.musicInstance).then(
+                    (result) => {
+                      setCategory("songs");
+                      console.log(result);
+                      songs = result!;
+                      setSongs(result!);
+                    }
+                  )
                 }
               >
                 Songs
@@ -64,12 +70,14 @@ const Search = () => {
             <li className="albums">
               <button
                 onClick={() =>
-                  search(song as string, "albums").then((result) => {
-                    setCategory("albums");
-                    console.log(result);
-                    songs = result!;
-                    setSongs(result!);
-                  })
+                  search(song as string, "albums", props.musicInstance).then(
+                    (result) => {
+                      setCategory("albums");
+                      console.log(result);
+                      songs = result!;
+                      setSongs(result!);
+                    }
+                  )
                 }
               >
                 Albums
@@ -78,12 +86,14 @@ const Search = () => {
             <li className="artists">
               <button
                 onClick={() =>
-                  search(song as string, "artists").then((result) => {
-                    setCategory("artists");
-                    console.log(result);
-                    songs = result!;
-                    setSongs(result!);
-                  })
+                  search(song as string, "artists", props.musicInstance).then(
+                    (result) => {
+                      setCategory("artists");
+                      console.log(result);
+                      songs = result!;
+                      setSongs(result!);
+                    }
+                  )
                 }
               >
                 Artists
