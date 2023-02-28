@@ -18,6 +18,9 @@ const Navbar = (props: INavbarProps) => {
           <Link className="p-5" to="/profile">
             Profile
           </Link>
+          <Link className="p-5" to="/searchUsers">
+            Search
+          </Link>
           <Link className="p-5" to="/profile">
             Post
           </Link>

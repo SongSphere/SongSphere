@@ -7,6 +7,7 @@ import HomePage from "../pages/home-page";
 import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
+import SearchUsersPage from "../pages/search-users-page";
 import SettingsPage from "../pages/settings-page";
 import { TUser } from "../types/user";
 
@@ -51,6 +52,16 @@ const Router = (props: IRouterProps) => {
       path: "/profile",
       element: (
         <ProfilePage
+          setUser={props.setUser}
+          setIsLoggedIn={props.setIsLoggedIn}
+          musicInstance={props.appleMusicInstance}
+        />
+      ),
+    },
+    {
+      path: "/searchUsers",
+      element: (
+        <SearchUsersPage
           setUser={props.setUser}
           setIsLoggedIn={props.setIsLoggedIn}
           musicInstance={props.appleMusicInstance}
