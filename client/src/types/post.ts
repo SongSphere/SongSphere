@@ -1,7 +1,7 @@
 import { TMusicContent } from "./music-content";
 
 export type TPost = {
-  id: string;
+  id?: string;
   username: string;
   userEmail: string;
   caption: string;
