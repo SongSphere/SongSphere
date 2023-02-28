@@ -4,4 +4,5 @@ export type TSong = {
   albumName?: string;
   id?: string;
   service?: string;
+  type?: string;
 };

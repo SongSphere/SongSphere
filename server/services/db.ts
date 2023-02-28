@@ -150,6 +150,7 @@ export const createPost = async (
       albumName: song.albumName,
       id: song.id,
       service: song.service,
+      type: song.type,
     },
   });
 

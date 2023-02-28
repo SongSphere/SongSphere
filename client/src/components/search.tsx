@@ -4,7 +4,6 @@ import React, { useState, useContext } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import appleSearch from "../services/apple-search";
-import checkService from "../services/check-service";
 import { userSessionContext, TUser } from "../context/userSessionContext";
 import { TSong } from "../types/song";
 import { spotifySearch } from "../services/spotify-search";
@@ -78,45 +77,50 @@ const Search = () => {
         {open ? (
           <ul className="mx-2 text-left menu">
             <li className="songs">
-              <SearchOption
-                caption="Songs"
-                onClick={() =>
-                  selectService(song as string, "songs", 10).then((result) => {
-                    setCategory("songs");
-                    console.log(result);
-                    songs = result!;
-                    setSongs(result!);
-                  })
-                }
-              />
-            </li>
-            <li className="albums">
-              <SearchOption
-                caption="Albums"
-                onClick={() =>
-                  selectService(song as string, "albums", 10).then((result) => {
-                    setCategory("albums");
-                    console.log(result);
-                    songs = result!;
-                    setSongs(result!);
-                  })
-                }
-              />
-            </li>
-            <li className="artists">
-              <SearchOption
-                caption="Artists"
-                onClick={() =>
-                  selectService(song as string, "artists", 10).then(
+              <button
+                onClick={async () =>
+                  await selectService(song as string, "songs", 10).then(
                     (result) => {
-                      setCategory("artists");
-                      console.log(result);
+                      setCategory("songs");
                       songs = result!;
                       setSongs(result!);
                     }
                   )
                 }
-              />
+              >
+                {" "}
+                Songs{" "}
+              </button>
+            </li>
+            <li className="albums">
+              <button
+                onClick={() =>
+                  selectService(song as string, "albums", 10).then((result) => {
+                    setCategory("albums");
+                    songs = result!;
+                    setSongs(result!);
+                  })
+                }
+              >
+                {" "}
+                Albums{" "}
+              </button>
+            </li>
+            <li className="artists">
+              <button
+                onClick={() =>
+                  selectService(song as string, "artists", 10).then(
+                    (result) => {
+                      setCategory("artists");
+                      songs = result!;
+                      setSongs(result!);
+                    }
+                  )
+                }
+              >
+                {" "}
+                Artists{" "}
+              </button>
             </li>
           </ul>
         ) : null}
@@ -134,12 +138,6 @@ const Search = () => {
           }
         />
       </div>
-      <button data-apple-music-skip-to-previous-item></button>
-      <h1 id="name"></h1>
-      <script>
-        const artworkElement = document.querySelector('apple-music-artwork');
-        artworkElement.source = album.attributes.artwork;
-      </script>
       {songs.map((s) => (
         <div>
           <button key={s.id} onClick={() => setSelected(s)}>
@@ -160,6 +158,7 @@ const Search = () => {
           />
         </label>
       </form>
+      {/* This will be edited once merged to incoroporate username userSessionContext */}
       <button
         className="my-5 border-black rounded-md text-lgrey bg-navy"
         onClick={() => sendPost("useruser", user?.name!, caption, selected!)}

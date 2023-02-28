@@ -38,17 +38,41 @@ export const spotifySearch = async (
       return res.json();
     })
     .then((data) => {
-      const tracks = data.tracks.items;
-
-      tracks.forEach(function (track: any) {
-        songs.push({
-          name: track.name,
-          artist: track.artists[0].name,
-          albumName: "empty",
-          id: track.id,
-          service: "spotify",
+      if (type === "track") {
+        const tracks = data.tracks.items;
+        tracks.forEach(function (track: any) {
+          songs.push({
+            name: track.name,
+            artist: track.artists[0].name,
+            albumName: track.albumName,
+            id: track.id,
+            service: "spotify",
+            type: type,
+          });
         });
-      });
+      } else if (type === "album") {
+        const albums = data.albums.items;
+        albums.forEach(function (track: any) {
+          songs.push({
+            name: track.name,
+            artist: track.artists[0].name,
+            id: track.id,
+            service: "spotify",
+            type: type,
+          });
+        });
+      } else {
+        const artists = data.artists.items;
+        artists.forEach(function (track: any) {
+          songs.push({
+            name: track.name,
+            id: track.id,
+            service: "spotify",
+            type: type,
+          });
+        });
+      }
+      // }
     });
 
   console.log(songs);

@@ -29,6 +29,7 @@ const PostSchema = new Schema<IPost>(
         albumName: String,
         id: String,
         service: String,
+        //type: String,
       },
       required: true,
     },
