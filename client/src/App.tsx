@@ -5,8 +5,8 @@ import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
-import HomePage from "./pages/home-page";
 import ProtectedRouter from "./components/protected-router";
+import { spotifySetup } from "./services/spotify-sdk-setup";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,22 +16,28 @@ const App = () => {
 
   const [existingAccount, setExistingAccount] = useState<boolean>(true);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
+  const [player, setPlayer] = useState<Spotify.Player | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      if (user.spotifyToken) {
+        spotifySetup(user.spotifyToken, setPlayer);
+      }
+    }
+  }, [user]);
 
   useEffect(() => {
     const sessionUpdate = async () => {
       try {
-        await checkLoggedIn()
-          .then(async (isLoggedIn) => {
-            setIsLoggedIn(isLoggedIn);
-            if (isLoggedIn) {
-              await fetchUser().then((user) => {
-                setUser(user);
-              });
-            }
-          })
-          .then(() => {
-            setSessionUpdated(true);
-          });
+        await checkLoggedIn().then(async (isLoggedIn) => {
+          setIsLoggedIn(isLoggedIn);
+          if (isLoggedIn) {
+            await fetchUser().then((userData) => {
+              setUser(userData);
+            });
+          }
+          setSessionUpdated(true);
+        });
       } catch (error) {
         console.error(error);
       }
@@ -73,7 +79,7 @@ const App = () => {
       ) {
         return <OnBoardPage musicInstance={musicInstance} />;
       } else {
-        return <ProtectedRouter musicInstance={musicInstance} />;
+        <Router musicInstance={musicInstance} />;
       }
     } else {
       return <AuthPage />;
