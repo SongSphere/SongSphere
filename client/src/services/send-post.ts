@@ -1,4 +1,4 @@
-import { TSong } from "../types/song";
+import { TPost } from "../types/post";
 import PostFailure from "../components/post-failure";
 import PostSucess from "../components/post-sucess";
 
@@ -6,7 +6,7 @@ const sendPost = async (
   username: string,
   name: string,
   caption: string,
-  song: TSong
+  song: TPost
 ) => {
   try {
     await fetch(`${process.env.REACT_APP_API}/api/makepost`, {

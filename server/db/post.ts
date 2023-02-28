@@ -1,11 +1,11 @@
 import mongoose, { Schema } from "mongoose";
-import { TSong } from "../../client/src/types/song";
+import { TPost } from "../../client/src/types/post";
 
 export interface IPost {
   username: string;
   userEmail: string;
   caption: string;
-  song: TSong;
+  song: TPost;
 }
 
 const PostSchema = new Schema<IPost>(
@@ -29,7 +29,7 @@ const PostSchema = new Schema<IPost>(
         albumName: String,
         id: String,
         service: String,
-        //type: String,
+        category: String,
       },
       required: true,
     },

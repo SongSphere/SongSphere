@@ -1,6 +1,6 @@
 import React, { Dispatch } from "react";
 import { textChangeRangeNewSpan } from "typescript";
-import { TSong } from "../types/song";
+import { TPost } from "../types/post";
 
 const SPOTIFY_API = "https://api.spotify.com/v1";
 
@@ -21,7 +21,7 @@ export const spotifySearch = async (
     type = "artist";
   }
 
-  let songs: TSong[] = [];
+  let songs: TPost[] = [];
 
   await fetch(
     `${SPOTIFY_API}/search?q=${encodeURIComponent(
@@ -44,10 +44,10 @@ export const spotifySearch = async (
           songs.push({
             name: track.name,
             artist: track.artists[0].name,
-            albumName: track.albumName,
+            albumName: track.album.name,
             id: track.id,
             service: "spotify",
-            type: type,
+            category: type,
           });
         });
       } else if (type === "album") {
@@ -58,7 +58,7 @@ export const spotifySearch = async (
             artist: track.artists[0].name,
             id: track.id,
             service: "spotify",
-            type: type,
+            category: type,
           });
         });
       } else {
@@ -68,7 +68,7 @@ export const spotifySearch = async (
             name: track.name,
             id: track.id,
             service: "spotify",
-            type: type,
+            category: type,
           });
         });
       }

@@ -1,12 +1,12 @@
 import React, { Dispatch, useContext } from "react";
 import { textChangeRangeNewSpan } from "typescript";
-import { TSong } from "../types/song";
+import { TPost } from "../types/post";
 import appleSearch from "./apple-search";
 import { userSessionContext, TUser } from "../context/userSessionContext";
 import { spotifySearch } from "./spotify-search";
 
-const selectService = async (postService: string, song: TSong) => {
-  let list: TSong[] = [];
+const selectService = async (postService: string, song: TPost) => {
+  let list: TPost[] = [];
   const { isLoggedIn, setIsLoggedIn, user, setUser } =
     useContext(userSessionContext);
 
@@ -26,13 +26,15 @@ const selectService = async (postService: string, song: TSong) => {
   if (service === postService) {
     return song.id;
   } else if (service === "apple") {
-    appleSearch(song.name!, "song", 1).then((result) => {
+    appleSearch(song.name!, "songs", 1).then((result) => {
       list = result;
     });
   } else {
-    spotifySearch(song.name!, "song", user?.spotifyToken!, 1).then((result) => {
-      list = result;
-    });
+    spotifySearch(song.name!, "tracks", user?.spotifyToken!, 1).then(
+      (result) => {
+        list = result;
+      }
+    );
   }
 
   return list[0].id;
