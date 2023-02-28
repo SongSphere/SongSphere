@@ -41,6 +41,8 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
           },
           position_ms: 0,
         }),
+      }).then(() => {
+        player?.pause();
       });
     };
 
