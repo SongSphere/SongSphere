@@ -2,16 +2,16 @@ import React, { Dispatch } from "react";
 import { textChangeRangeNewSpan } from "typescript";
 import { TMusicContent } from "../types/music-content";
 
-const appleSearch = async (term: string, types: string, limit: number) => {
+const appleSearch = async (
+  term: string,
+  types: string,
+  limit: number,
+  musicInstance: MusicKit.MusicKitInstance
+) => {
   const list: TMusicContent[] = [];
-
   if (term === "") return list;
 
-  const music = MusicKit.getInstance();
-
-  await music.authorize();
-
-  await music.api
+  await musicInstance.api
     .search(term, {
       types: "library-songs",
       limit: limit,

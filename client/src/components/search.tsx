@@ -1,17 +1,20 @@
-import React, { useState, useContext } from "react";
-
-// import services
+import React, { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import appleSearch from "../services/apple-search";
-import { userSessionContext, TUser } from "../context/userSessionContext";
 import { TMusicContent } from "../types/music-content";
 import { spotifySearch } from "../services/spotify-search";
 import sendPost from "../services/send-post";
+import { TUser } from "../types/user";
 import SearchOption from "./search-option-button";
 
-const AppleSearch = async (term: string, category: string, limit: number) => {
-  return appleSearch(term, category, limit);
+const AppleSearch = async (
+  term: string,
+  category: string,
+  limit: number,
+  musicInstance: MusicKit.MusicKitInstance
+) => {
+  return appleSearch(term, category, limit, musicInstance);
 };
 
 const SpotifySearch = async (
@@ -23,12 +26,18 @@ const SpotifySearch = async (
   return spotifySearch(term, category, token, limit);
 };
 
-const Search = () => {
-  const { isLoggedIn, setIsLoggedIn, user, setUser } =
-    useContext(userSessionContext);
+interface ISearchProps {
+  musicInstance: MusicKit.MusicKitInstance;
+  user: TUser | null;
+}
 
-  const appleToken = user?.appleToken;
-  const spotifyToken = user?.spotifyToken;
+interface ISearchProps {
+  musicInstance: MusicKit.MusicKitInstance;
+}
+
+const Search = (props: ISearchProps) => {
+  const appleToken = props.user?.appleToken;
+  const spotifyToken = props.user?.spotifyToken;
   let service = "";
 
   if (spotifyToken !== "") {
@@ -45,9 +54,9 @@ const Search = () => {
     limit: number
   ) => {
     if (service === "apple") {
-      return AppleSearch(term, category, limit);
+      return AppleSearch(term, category, limit, props.musicInstance);
     } else {
-      return SpotifySearch(term, category, user?.spotifyToken!, limit);
+      return SpotifySearch(term, category, props.user?.spotifyToken!, limit);
     }
   };
 
@@ -161,7 +170,9 @@ const Search = () => {
       {/* This will be edited once merged to incoroporate username userSessionContext */}
       <button
         className="my-5 border-black rounded-md text-lgrey bg-navy"
-        onClick={() => sendPost("useruser", user?.name!, caption, selected!)}
+        onClick={() =>
+          sendPost(props.user?.userName!, props.user?.name!, caption, selected!)
+        }
       >
         Submit
       </button>
