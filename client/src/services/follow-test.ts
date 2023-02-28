@@ -1,9 +1,9 @@
-export const followSomeone = async () => {
+export const followSomeone = async (emailOfUserGettingFollowed: string) => {
   await fetch(`${process.env.REACT_APP_API}/api/addfollower`, {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({
-      emailOfUserGettingFollowed: "dominicdanborncollege@gmail.com",
+      emailOfUserGettingFollowed: emailOfUserGettingFollowed,
     }),
     headers: {
       "Content-Type": "application/json",
@@ -18,12 +18,12 @@ export const followSomeone = async () => {
   });
 };
 
-export const unfollowSomeone = async () => {
+export const unfollowSomeone = async (emailOfUserGettingUnfollowed: string) => {
   await fetch(`${process.env.REACT_APP_API}/api/removefollower`, {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({
-      emailOfUserGettingUnfollowed: "dominicdanborncollege@gmail.com",
+      emailOfUserGettingUnfollowed: emailOfUserGettingUnfollowed,
     }),
     headers: {
       "Content-Type": "application/json",

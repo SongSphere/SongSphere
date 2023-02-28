@@ -17,6 +17,7 @@ const MongoDBStore = connectMongoDBSession(session);
 import sampleRouter from "./routes/sample";
 import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
+import postRouter from "./routes/posting";
 import followRouter from "./routes/follow";
 
 // import middleware
@@ -80,6 +81,7 @@ const createApp = (dbname: string) => {
   app.use(sampleRouter);
   app.use(authRouter);
   app.use(userRouter);
+  app.use(postRouter);
   app.use(followRouter);
 
   // Attached below is how to generate a MusicKit Developer Token for this project

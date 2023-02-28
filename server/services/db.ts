@@ -4,6 +4,9 @@ import mongoose from "mongoose";
 
 // import models
 import User, { IUser } from "../db/user";
+import { TMusicContent } from "../../client/src/types/music-content";
+import { TPost } from "../../client/src/types/post";
+import Post, { IPost } from "../db/post";
 
 export const createUser = async (
   userData: TokenPayload,
@@ -11,7 +14,9 @@ export const createUser = async (
 ): Promise<mongoose.Document<unknown, any, IUser>> => {
   const user = new User({
     name: userData.name,
+    userName: "",
     givenName: userData.given_name,
+    middleName: "",
     familyName: userData.family_name,
     email: userData.email,
     emailVerified: userData.email_verified,
@@ -53,17 +58,6 @@ export const updateSpotifyTokens = async (
   }
 };
 
-/*
- *  removeSpotifyToken
- *
- *  Note code structure taken from Tony
- *  This funciton finds the user in the db and updates the spotify token with the one provided
- *
- *  @param email: string  the user email is used to find the user in the database
- *
- *  @param token: string  the users token from the frontend, will be stored in database
- *
- */
 export const removeSpotifyTokens = async (email: string) => {
   try {
     // call mongoose findOneAndUpdate function with data, this updates database
@@ -140,6 +134,94 @@ export const saveUser = async (
     const savedUser = await user.save();
     return savedUser;
   } catch (error) {
+    throw error;
+  }
+};
+
+// returns document based on post schema
+export const createPost = async (
+  newPost: TPost
+): Promise<mongoose.Document<unknown, any, IPost>> => {
+  const post = new Post({
+    username: newPost.username,
+    userEmail: newPost.userEmail,
+    caption: newPost.caption,
+    music: {
+      name: newPost.music.name,
+      artist: newPost.music.artist,
+      albumName: newPost.music.albumName,
+      id: newPost.music.id,
+      service: newPost.music.service,
+      category: newPost.music.category,
+    },
+  });
+
+  return post;
+};
+
+// saves the given post document to the db
+export const savePost = async (
+  post: mongoose.Document<unknown, any, IPost>
+) => {
+  try {
+    const savedPost = await post.save();
+    return savedPost;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePost = async (newPost: TPost) => {
+  try {
+    // call mongoose updateOne function with data, this updates database
+    await Post.findByIdAndUpdate(newPost.id, {
+      username: newPost.username,
+      userEmail: newPost.userEmail,
+      caption: newPost.caption,
+      music: {
+        name: newPost.music.name,
+        artist: newPost.music.artist,
+        albumName: newPost.music.albumName,
+        id: newPost.music.id,
+        service: newPost.music.service,
+        category: newPost.music.category,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const removePost = async (post: TPost) => {
+  try {
+    await Post.findByIdAndDelete(post.id);
+  } catch (error) {
+    throw error;
+  }
+};
+export const updateNames = async (
+  email: string,
+  username: string,
+  givenName: string,
+  middleName: string,
+  familyName: string
+) => {
+  try {
+    await User.findOneAndUpdate({ email: email }, { userName: username });
+    await User.findOneAndUpdate({ email: email }, { givenName: givenName });
+    await User.findOneAndUpdate({ email: email }, { middleName: middleName });
+    await User.findOneAndUpdate({ email: email }, { familyName: familyName });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const deleteUserInServices = async (email: string) => {
+  try {
+    await User.deleteOne({ email: email });
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 };

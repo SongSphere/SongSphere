@@ -1,44 +1,45 @@
 import Router from "./components/router";
 import { useEffect, useState } from "react";
-import { userSessionContext, TUser } from "./context/userSessionContext";
 import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
-import HomePage from "./pages/home-page";
-import ProtectedRouter from "./components/protected-router";
+import { spotifySetup } from "./services/spotify-sdk-setup";
+import { TUser } from "./types/user";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [musicInstance, setMusicInstance] =
-    useState<MusicKit.MusicKitInstance | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
-
-  const [existingAccount, setExistingAccount] = useState<boolean>(true);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
 
-  useEffect(() => {
-    const sessionUpdate = async () => {
-      try {
-        setIsLoggedIn(await checkLoggedIn());
-      } catch (error) {
-        console.error(error);
-      }
+  const [appleMusicInstance, setAppleMusicInstance] =
+    useState<MusicKit.MusicKitInstance | null>(null);
 
+  useEffect(() => {
+    const updateSession = async () => {
       try {
-        setUser(await fetchUser());
+        await checkLoggedIn().then(async (isLoggedIn) => {
+          setIsLoggedIn(isLoggedIn);
+          if (isLoggedIn) {
+            await fetchUser().then((userData) => {
+              setUser(userData);
+            });
+          }
+          setSessionUpdated(true);
+        });
       } catch (error) {
         console.error(error);
       }
     };
 
-    // Dynamically loaded Apple Musickit
-    const script = document.createElement("script");
-    script.src = "https://js-cdn.music.apple.com/musickit/v1/musickit.js";
-    script.async = true;
-    document.body.appendChild(script);
+    // dynamically import Musickit
+    const appleMusicScript = document.createElement("script");
+    appleMusicScript.src =
+      "https://js-cdn.music.apple.com/musickit/v1/musickit.js";
+    appleMusicScript.async = true;
+    document.body.appendChild(appleMusicScript);
 
-    script.onload = () => {
+    appleMusicScript.onload = () => {
       MusicKit.configure({
         developerToken: process.env.REACT_APP_APPLE_TOKEN,
         app: {
@@ -46,50 +47,53 @@ const App = () => {
           build: "1978.4.1",
         },
       });
-      setMusicInstance(MusicKit.getInstance());
-      sessionUpdate().then(() => {
-        setSessionUpdated(true);
-      });
+      setAppleMusicInstance(MusicKit.getInstance());
     };
 
+    updateSession();
+
     return () => {
-      document.body.removeChild(script);
+      document.body.removeChild(appleMusicScript);
     };
   }, []);
 
-  if (!musicInstance) {
-    return <div>rendering music instance</div>;
+  if (!appleMusicInstance) {
+    return <div>rendering apple music instance</div>;
   }
 
   if (sessionUpdated) {
     if (user && isLoggedIn) {
-      if (
-        !existingAccount ||
-        (user.appleToken == null && user.spotifyToken == null)
-      ) {
-        return <OnBoardPage musicInstance={musicInstance} />;
+      if (user.appleToken == null && user.spotifyToken == null) {
+        return (
+          <OnBoardPage
+            user={user}
+            setUser={setUser}
+            appleMusicInstance={appleMusicInstance}
+          />
+        );
       } else {
-        return <ProtectedRouter musicInstance={musicInstance} />;
+        return (
+          <Router
+            user={user}
+            setUser={setUser}
+            setIsLoggedIn={setIsLoggedIn}
+            appleMusicInstance={appleMusicInstance}
+          />
+        );
       }
     } else {
-      return <AuthPage />;
+      return <AuthPage setIsLoggedIn={setIsLoggedIn} setUser={setUser} />;
     }
   }
 
   return (
     <>
-      <userSessionContext.Provider
-        value={{
-          isLoggedIn,
-          setIsLoggedIn,
-          user,
-          setUser,
-          existingAccount,
-          setExistingAccount,
-        }}
-      >
-        <Router musicInstance={musicInstance} />
-      </userSessionContext.Provider>
+      <Router
+        user={user}
+        setUser={setUser}
+        setIsLoggedIn={setIsLoggedIn}
+        appleMusicInstance={appleMusicInstance}
+      />
     </>
   );
 };

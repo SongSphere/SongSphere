@@ -2,7 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 export interface IUser {
   name: string;
+  userName: string;
   givenName: string;
+  middleName: string;
   familyName: string;
   email: string;
   emailVerified: Boolean;
@@ -21,9 +23,17 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
+    userName: {
+      type: String,
+      required: false,
+    },
     givenName: {
       type: String,
       required: true,
+    },
+    middleName: {
+      type: String,
+      required: false,
     },
     familyName: {
       type: String,

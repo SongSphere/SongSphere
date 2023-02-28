@@ -1,15 +1,12 @@
-/*
-  
-  Author: David Kim
-  this is a page for login/sign up page
-*/
-
 import LoginButton from "../components/google-login-button";
+import { TUser } from "../types/user";
 
+interface IAuthPageProps {
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+}
 
-const AuthPage = () => {
-
-
+const AuthPage = (props: IAuthPageProps) => {
   return (
     <div className="flex justify-center w-screen h-screen bg-background place-items-center">
       <div className="flex flex-row w-4/5 bg-white h-4/5 rounded-xl">
@@ -22,7 +19,10 @@ const AuthPage = () => {
             <div>Continue with Google</div>
             <div>
               <div>
-                <LoginButton/>
+                <LoginButton
+                  setIsLoggedIn={props.setIsLoggedIn}
+                  setUser={props.setUser}
+                />
               </div>
             </div>
           </div>

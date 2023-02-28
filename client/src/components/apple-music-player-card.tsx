@@ -6,15 +6,12 @@ interface IMusicPlayerCardProps {
   musicInstance: MusicKit.MusicKitInstance;
 }
 
-const MusicPlayerCard = (props: IMusicPlayerCardProps) => {
+const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
   const songId = 716192621;
 
   const [isPlaying, setIsPlaying] = useState(false);
-  // const [music, setMusic] = useState<MusicKit.MusicKitInstance | null>(null);
   const [progress, setProgress] = useState(0);
   const [song, setSong] = useState<MusicKit.Resource | null>(null);
-
-  // const { musicInstance } = useContext(appleMusicContext);
 
   const musicInstance = props.musicInstance;
   musicInstance.addEventListener("playbackTimeDidChange", () => {
@@ -38,26 +35,12 @@ const MusicPlayerCard = (props: IMusicPlayerCardProps) => {
         musicInstance.setQueue({
           items: [mediaItem],
         });
-        // if (musicInstance) {
-        // }
       } else {
-        console.log("music not set");
-        // await appleMusicInstance.then((musicInstance) => {
-        // setMusic(musicInstance);
-        // });
+        console.error("music not set");
       }
     };
     fetchSong(songId);
   }, []);
-
-  // useEffect(() => {
-  //   const appleMusicConfigureHandler = async () => {
-  //     await appleMusicInstance.then((musicInstance) => {
-  //       setMusic(musicInstance);
-  //     });
-  //   };
-  //   appleMusicConfigureHandler();
-  // }, []);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
@@ -124,4 +107,4 @@ const MusicPlayerCard = (props: IMusicPlayerCardProps) => {
     </div>
   );
 };
-export default MusicPlayerCard;
+export default AppleMusicPlayerCard;

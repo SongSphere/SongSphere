@@ -10,6 +10,7 @@ const checkService = async (): Promise<string> => {
         "Content-Type": "application/json",
       },
     }).then(async (res) => {
+      console.log(res);
       await res.json().then(function (text) {
         if (text.msg == "apple") {
           return "apple";

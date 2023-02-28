@@ -1,40 +1,37 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AppleLink from "../components/apple-link";
+import AppleMusicPlayerCard from "../components/apple-music-player-card";
+import SpotifyPlayerCard from "../components/spotify-music-player-card";
+import Navbar from "../components/navbar";
+import { TUser } from "../types/user";
 import SpotfiyLinkButton from "../components/spotify-link";
-import { userSessionContext } from "../context/userSessionContext";
-import { FollowButtons } from "../components/follow-test-button";
-import handleSignout from "../services/handle-sign-out";
 
 interface IHomePageProps {
-  musicInstance: MusicKit.MusicKitInstance;
+  appleMusicInstance: MusicKit.MusicKitInstance;
+  user: TUser | null;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const HomePage = (props: IHomePageProps) => {
-  const { isLoggedIn, setIsLoggedIn, user, setUser } =
-    useContext(userSessionContext);
+  const navigate = useNavigate();
 
   return (
-    <div>
-      <div>Home</div>
-      <AppleLink musicInstance={props.musicInstance} />
-      <SpotfiyLinkButton />
-      <FollowButtons />
-      <div>
-        <button
-          onClick={async () => {
-            // If sign out success then set loggedin to false
-            // Redirect to the authentication page
-            const logoutSuccesss = await handleSignout();
-            if (logoutSuccesss) {
-              setUser(null);
-              setIsLoggedIn(false);
-              window.location.reload();
-            }
-          }}
-        >
-          logout
-        </button>
+    <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
+      <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
+      <div className="grid grid-cols-4 gap-8">
+        <div>maybe friend activities</div>
+        <div className="col-span-2">
+          <div>temporary setting stuff:</div>
+          <AppleLink
+            setUser={props.setUser}
+            appleMusicInstance={props.appleMusicInstance}
+          />
+          <SpotfiyLinkButton setUser={props.setUser} />
+        </div>
+        {/* <AppleMusicPlayerCard musicInstance={props.appleMusicInstance} /> */}
+        <SpotifyPlayerCard user={props.user} />
       </div>
     </div>
   );

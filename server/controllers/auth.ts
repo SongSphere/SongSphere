@@ -127,7 +127,9 @@ export const signInUp = async (
 
     req.session.user = {
       name: userData.name,
+      userName: "",
       givenName: userData.given_name,
+      middleName: "",
       familyName: userData.family_name,
       email: userData.email,
       emailVerified: userData.email_verified,
