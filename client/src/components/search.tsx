@@ -171,7 +171,12 @@ const Search = (props: ISearchProps) => {
       <button
         className="my-5 border-black rounded-md text-lgrey bg-navy"
         onClick={() =>
-          sendPost(props.user?.userName!, props.user?.name!, caption, selected!)
+          sendPost({
+            username: props.user?.userName!,
+            userEmail: props.user?.email!,
+            caption: caption,
+            music: selected!,
+          })
         }
       >
         Submit

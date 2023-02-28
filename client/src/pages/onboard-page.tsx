@@ -4,7 +4,7 @@
   Note: When connecting with Spotify, redirect back to Onboard is unstable(janky) just for documentation
 */
 
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import AppleLink from "../components/apple-link";
 import SpotifyLinkButton from "../components/spotify-link";
 import { useNavigate } from "react-router-dom";

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TUser } from "../types/user";
 
 interface ISpotifySong {
