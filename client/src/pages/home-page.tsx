@@ -1,4 +1,3 @@
-import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AppleLink from "../components/apple-link";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
