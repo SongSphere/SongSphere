@@ -24,10 +24,8 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
   const fetchSong = async (songId: string, token: string) => {
-    console.log("fetch song", songId);
-    console.log("fetch song", token);
     await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
-      method: "get",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -47,15 +45,14 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
           }),
           uri: data.uri,
         };
-        console.log(data);
         setSong(song);
       });
   };
 
   useEffect(() => {
     if (props.user) {
-      const song_uri = "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr";
-      fetchSong(song_uri, props.user.spotifyToken);
+      const song_id = "11dFghVXANMlKmJXsNCbNl";
+      fetchSong(song_id, props.user.spotifyToken);
     }
   }, [props.user]);
 
@@ -71,10 +68,7 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
           Authorization: `Bearer ${props.user?.spotifyToken}`,
         },
         body: JSON.stringify({
-          context_uri: song_uri,
-          offset: {
-            position: 5,
-          },
+          uris: [song_uri],
           position_ms: 0,
         }),
       }).then(() => {
@@ -82,11 +76,10 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
       });
     };
 
-    if (deviceId) {
-      playSong(song?.uri || "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr", deviceId);
-      // const song_uri = "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr";
+    if (deviceId && song) {
+      playSong(song.uri, deviceId);
     }
-  }, [deviceId]);
+  }, [deviceId, song]);
 
   useEffect(() => {
     if (props.user) {
