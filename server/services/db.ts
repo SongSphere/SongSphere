@@ -144,7 +144,7 @@ export const saveUser = async (
   }
 };
 
-export const addFollowerToUser = async (
+export const addFollow = async (
   emailOfUserBeingFollowed: string,
   emailOfUserFollowing: string
 ) => {
@@ -164,7 +164,7 @@ export const addFollowerToUser = async (
   }
 };
 
-export const removeFollowerFromUser = async (
+export const removeFollow = async (
   emailOfUserBeingUnfollowed: string,
   emailOfUserUnfollowing: string
 ) => {
