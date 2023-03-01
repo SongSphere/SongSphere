@@ -3,9 +3,7 @@ import { TUser } from "../types/user";
 
 interface ISpotifySong {
   name: string;
-  album: {
-    images: [{ url: string }];
-  };
+  img: string;
   artists: [{ name: string }];
   uri: string;
 }
@@ -18,10 +16,10 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   const songId = "11dFghVXANMlKmJXsNCbNl";
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [song, setSong] = useState<ISpotifySong | null>(null);
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
   const [deviceId, setDeviceId] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
@@ -51,9 +49,7 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
       .then((data) => {
         const song: ISpotifySong = {
           name: data.name,
-          album: {
-            images: data.album.images[0].url,
-          },
+          img: data.album.images[0].url,
           artists: data.album.artists.map((artist: any) => {
             return artist.name;
           }),
@@ -125,6 +121,43 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
             console.log("spotify player connected");
           }
         });
+
+        // reference: https://github.com/spotify/web-playback-sdk/issues/106
+        let currState = {
+          paused: false,
+          position: 0,
+          duration: 0,
+          updateTime: 0,
+        };
+
+        player.addListener("player_state_changed", (state) => {
+          currState.paused = state.paused;
+          currState.position = state.position;
+          currState.duration = state.duration;
+          currState.updateTime = performance.now();
+        });
+
+        const getStatePosition = () => {
+          if (currState.paused) {
+            return currState.position
+              ? (currState.position * 100) / currState.duration
+              : 0;
+          }
+          const position =
+            ((currState.position + (performance.now() - currState.updateTime)) *
+              100) /
+            currState.duration;
+          return position > currState.duration
+            ? (currState.duration * 100) / currState.duration
+            : position;
+        };
+
+        const interval = setInterval(() => {
+          const position = getStatePosition();
+          setProgress(position);
+        }, 2000);
+
+        return () => clearInterval(interval);
       };
     }
   }, [props.user]);
@@ -135,20 +168,10 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
         <div className="bg-white w-80 h-5/6">
           <div className="flex justify-center">
             <div className="w-4/5 mt-5">
-              {/* <img
-                src={
-                  song
-                    ? song.attributes.artwork.url
-                        .replace("{w}", 1000)
-                        .replace("{h}", 1000)
-                    : ""
-                }
-              ></img> */}
+              <img src={song?.img}></img>
             </div>
           </div>
-          <div className="px-6 mt-2 text-2xl text-center">
-            {/* {song?.attributes.name} */}
-          </div>
+          <div className="px-6 mt-2 text-2xl text-center">{song?.name}</div>
           <div className="flex justify-center mt-2">
             <div
               className="w-5 h-5 cursor-pointer"
