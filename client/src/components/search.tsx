@@ -29,38 +29,24 @@ const SpotifySearch = async (
 interface ISearchProps {
   musicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
-}
-
-interface ISearchProps {
-  musicInstance: MusicKit.MusicKitInstance;
+  service: string;
 }
 
 const Search = (props: ISearchProps) => {
-  const appleToken = props.user?.appleToken;
-  const spotifyToken = props.user?.spotifyToken;
-  let service = "";
-
-  if (spotifyToken !== "") {
-    service = "spotify";
-  } else if (appleToken !== "") {
-    service = "apple";
-  } else {
-    console.log("NO SERVICE");
-  }
-
   const selectService = async (
     term: string,
     category: string,
     limit: number
   ) => {
-    if (service === "apple") {
+    if (props.service === "apple") {
       return AppleSearch(term, category, limit, props.musicInstance);
-    } else {
+    } else if (props.service === "spotify") {
       return SpotifySearch(term, category, props.user?.spotifyToken!, limit);
+    } else {
+      console.error("no service available");
     }
   };
 
-  //let songs: [string, string][] = useState([]);
   let [songs, setSongs] = useState<TMusicContent[]>([]);
   let [selected, setSelected] = useState<TMusicContent>();
   let [song, setSong] = useState<string>("");
@@ -170,14 +156,14 @@ const Search = (props: ISearchProps) => {
       {/* This will be edited once merged to incoroporate username userSessionContext */}
       <button
         className="my-5 border-black rounded-md text-lgrey bg-navy"
-        onClick={() =>
+        onClick={() => {
           sendPost({
             username: props.user?.userName!,
             userEmail: props.user?.email!,
             caption: caption,
             music: selected!,
-          })
-        }
+          });
+        }}
       >
         Submit
       </button>
