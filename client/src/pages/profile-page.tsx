@@ -14,6 +14,7 @@ interface IProfileProps {
   user: TUser | null;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  service: string;
 }
 
 const ProfilePage = (props: IProfileProps) => {
@@ -57,7 +58,7 @@ const ProfilePage = (props: IProfileProps) => {
             <div>fetching posts</div>
           )}
         </div>
-        {props.user.appleToken ? (
+        {props.service === "apple" ? (
           <AppleMusicPlayerCard
             musicInstance={props.appleMusicInstance}
             selectedSong={song}

@@ -46,8 +46,6 @@ const SettingsPage = (props: ISettingPageProps) => {
   if (!props.user) {
     return <div>fetching user data</div>;
   } else {
-    console.log(props.user);
-
     return (
       <div>
         <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
