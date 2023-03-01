@@ -1,8 +1,11 @@
 import { SetStateAction } from "react";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import Navbar from "../components/navbar";
+
 import { TUser } from "../types/user";
 import {TPost}  from "../types/post"
+import { Link } from "react-router-dom";
+
 
 interface IProfileProps {
   musicInstance: MusicKit.MusicKitInstance;
@@ -11,6 +14,7 @@ interface IProfileProps {
 }
 
 const ProfilePage = (props: IProfileProps) => {
+
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <Navbar setUser={function (value: SetStateAction<TUser | null>): void {
@@ -18,10 +22,12 @@ const ProfilePage = (props: IProfileProps) => {
       } } setIsLoggedIn={function (value: SetStateAction<boolean>): void {
         throw new Error("Function not implemented.");
       } } />
-
+      <Link to="/settings">
       <button className="float-right">
+        
             <img className="w-10 h-10 mt-5 mr-5"src="https://i.pinimg.com/originals/f1/a2/b2/f1a2b28af9d7aeafeec63cac6e1eb5ee.png" />
       </button> 
+      </Link>
       <div className="flex">
  
             <AppleMusicPlayerCard musicInstance={props.musicInstance} />
