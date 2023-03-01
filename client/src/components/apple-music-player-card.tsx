@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { TMusicContent } from "../types/music-content";
 // import { musicInstance } from "../services/apple-music-link";
 // import { appleMusicContext } from "../context/appleMusicContext";
 
 interface IMusicPlayerCardProps {
   musicInstance: MusicKit.MusicKitInstance;
-  id: string | undefined;
+  selectedSong: TMusicContent | null;
 }
 
 const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
@@ -38,9 +39,11 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
         console.error("music not set");
       }
     };
-    fetchSong(props.id || "716192621");
-    console.log(props.id);
-  }, [props.id]);
+
+    if (props.selectedSong) {
+      fetchSong(props.selectedSong.id);
+    }
+  }, [props.selectedSong]);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);

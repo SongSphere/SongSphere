@@ -66,7 +66,7 @@ const ProfilePage = (props: IProfileProps) => {
         {props.user.appleToken ? (
           <AppleMusicPlayerCard
             musicInstance={props.appleMusicInstance}
-            id={song?.id}
+            selectedSong={song}
           />
         ) : (
           <SpotifyPlayerCard user={props.user} />
