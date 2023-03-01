@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { TMusicContent } from "../types/music-content";
 import { TUser } from "../types/user";
 
 interface ISpotifySong {
@@ -10,11 +11,10 @@ interface ISpotifySong {
 
 interface ISpotifyPlayerCardProps {
   user: TUser | null;
+  selectedSong: TMusicContent | null;
 }
 
 const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
-  const songId = "11dFghVXANMlKmJXsNCbNl";
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [song, setSong] = useState<ISpotifySong | null>(null);
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
@@ -60,11 +60,10 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   };
 
   useEffect(() => {
-    if (props.user) {
-      const song_id = "11dFghVXANMlKmJXsNCbNl";
-      fetchSong(song_id, props.user.spotifyToken);
+    if (props.user && props.selectedSong) {
+      fetchSong(props.selectedSong.id, props.user.spotifyToken);
     }
-  }, [props.user]);
+  }, [props.user, props.selectedSong]);
 
   useEffect(() => {
     const setSong = async (song_uri: string, deviceId: string) => {

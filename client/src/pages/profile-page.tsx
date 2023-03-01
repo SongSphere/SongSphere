@@ -63,7 +63,7 @@ const ProfilePage = (props: IProfileProps) => {
             selectedSong={song}
           />
         ) : (
-          <SpotifyPlayerCard user={props.user} />
+          <SpotifyPlayerCard user={props.user} selectedSong={song} />
         )}
       </div>
     </div>
