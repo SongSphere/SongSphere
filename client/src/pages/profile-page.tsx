@@ -2,6 +2,8 @@ import { SetStateAction } from "react";
 import { useState } from "react";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import Navbar from "../components/navbar";
+import { NoPosts } from "../components/no-posts";
+import { PostGrid } from "../components/post-grid";
 
 import { TUser } from "../types/user";
 import {TPost}  from "../types/post"
@@ -70,9 +72,11 @@ const ProfilePage = (props: IProfileProps) => {
           <p>I am Guy and I like Cheeseburgers and Katy Perry. My favorite things to do in my
                 freetime are drive and go to dinners or drive ins.
           </p>  
+
           <div>
-          
+            {posts ?  PostGrid(posts) : <NoPosts /> }
           </div>
+
         </div>
           
         
