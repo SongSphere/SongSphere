@@ -29,40 +29,24 @@ const SpotifySearch = async (
 interface ISearchProps {
   musicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
-}
-
-interface ISearchProps {
-  musicInstance: MusicKit.MusicKitInstance;
+  service: string;
 }
 
 const Search = (props: ISearchProps) => {
-  const appleToken = props.user?.appleToken;
-  const spotifyToken = props.user?.spotifyToken;
-  let service = "";
-
-  console.log(appleToken, spotifyToken);
-
-  if (appleToken !== "") {
-    service = "apple";
-  } else if (spotifyToken !== "") {
-    service = "spotify";
-  } else {
-    console.log("NO SERVICE");
-  }
-
   const selectService = async (
     term: string,
     category: string,
     limit: number
   ) => {
-    if (service === "apple") {
+    if (props.service === "apple") {
       return AppleSearch(term, category, limit, props.musicInstance);
-    } else {
+    } else if (props.service === "spotify") {
       return SpotifySearch(term, category, props.user?.spotifyToken!, limit);
+    } else {
+      console.error("no service available");
     }
   };
 
-  //let songs: [string, string][] = useState([]);
   let [songs, setSongs] = useState<TMusicContent[]>([]);
   let [selected, setSelected] = useState<TMusicContent>();
   let [song, setSong] = useState<string>("");

@@ -46,7 +46,7 @@ export const spotifySearch = async (
             name: track.name,
             artist: track.artists[0].name,
             albumName: track.album.name,
-            id: track.uri,
+            id: track.id,
             service: "spotify",
             category: "song",
             cover: track.album.images[0].url,
@@ -59,7 +59,7 @@ export const spotifySearch = async (
           content.push({
             name: track.name,
             artist: track.artists[0].name,
-            id: track.uri,
+            id: track.id,
             service: "spotify",
             category: type,
             cover: track.album.images[0].url,
@@ -71,7 +71,7 @@ export const spotifySearch = async (
         artists.forEach(function (track: any) {
           content.push({
             name: track.name,
-            id: track.uri,
+            id: track.id,
             service: "spotify",
             category: type,
             cover: track.album.images[0].url,

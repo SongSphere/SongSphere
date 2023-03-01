@@ -87,6 +87,7 @@ const App = () => {
             setUser={setUser}
             setIsLoggedIn={setIsLoggedIn}
             appleMusicInstance={appleMusicInstance}
+            service={service}
           />
         );
       }
@@ -102,6 +103,7 @@ const App = () => {
         setUser={setUser}
         setIsLoggedIn={setIsLoggedIn}
         appleMusicInstance={appleMusicInstance}
+        service={service}
       />
     </>
   );

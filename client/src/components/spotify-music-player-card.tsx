@@ -56,6 +56,9 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
           uri: data.uri,
         };
         setSong(song);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
