@@ -20,61 +20,114 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [song, setSong] = useState<ISpotifySong | null>(null);
-
-  useEffect(() => {
-    // const addSongToQueue = async (songUrl: string, song: ISpotifySong) => {
-    //   await fetch(
-    //     "https://api.spotify.com/v1/me/player/queue" +
-    //       new URLSearchParams({ uri: song.uri, device_id:  })
-    //   );
-    // };
-
-    const fetchSong = async (songId: string) => {
-      if (props.user) {
-        await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
-          method: "get",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${props.user.spotifyToken}`,
-          },
-        })
-          .then((res) => {
-            return res.json();
-          })
-          .then((data) => {
-            const song: ISpotifySong = {
-              name: data.name,
-              album: {
-                images: data.album.images[0].url,
-              },
-              artists: data.album.artists.map((artist: any) => {
-                return artist.name;
-              }),
-              uri: data.uri,
-            };
-            console.log(data);
-            setSong(song);
-          });
-      } else {
-        console.error("waiting for user");
-      }
-    };
-    fetchSong(songId);
-  }, [props.user]);
+  const [player, setPlayer] = useState<Spotify.Player | null>(null);
+  const [deviceId, setDeviceId] = useState<string | null>(null);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
 
-    // if (musicInstance != null) {
-    //   if (!isPlaying) {
-    //     musicInstance.play();
-    //   } else {
-    //     musicInstance.pause();
-    //   }
-    // } else {
-    //   console.error("music not instantiated");
-    // }
+    if (player) {
+      if (!isPlaying) {
+        player.resume();
+      } else {
+        player.pause();
+      }
+    } else {
+      console.error("music not instantiated");
+    }
   };
+
+  const fetchSong = async (songId: string, token: string) => {
+    await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        const song: ISpotifySong = {
+          name: data.name,
+          album: {
+            images: data.album.images[0].url,
+          },
+          artists: data.album.artists.map((artist: any) => {
+            return artist.name;
+          }),
+          uri: data.uri,
+        };
+        setSong(song);
+      });
+  };
+
+  useEffect(() => {
+    if (props.user) {
+      const song_id = "11dFghVXANMlKmJXsNCbNl";
+      fetchSong(song_id, props.user.spotifyToken);
+    }
+  }, [props.user]);
+
+  useEffect(() => {
+    const setSong = async (song_uri: string, deviceId: string) => {
+      const url =
+        "https://api.spotify.com/v1/me/player/play?" +
+        new URLSearchParams({ device_id: deviceId });
+      await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props.user?.spotifyToken}`,
+        },
+        body: JSON.stringify({
+          uris: [song_uri],
+          position_ms: 0,
+        }),
+      });
+    };
+
+    if (deviceId && song && player) {
+      setSong(song.uri, deviceId);
+    }
+  }, [deviceId, song]);
+
+  useEffect(() => {
+    if (props.user) {
+      // dynamically import Spotify
+      const script = document.createElement("script");
+      script.src = "https://sdk.scdn.co/spotify-player.js";
+      script.async = true;
+
+      document.body.appendChild(script);
+
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        const player = new window.Spotify.Player({
+          name: "Web Playback SDK",
+          getOAuthToken: (cb) => {
+            cb(props.user?.spotifyToken || "");
+          },
+          volume: 0.5,
+        });
+
+        setPlayer(player);
+        player.addListener("ready", async ({ device_id }) => {
+          console.log("Ready with Device ID", device_id);
+          setDeviceId(device_id);
+        });
+        player.addListener("not_ready", ({ device_id }) => {
+          console.log("Device ID has gone offline", device_id);
+        });
+
+        player.connect().then(async (success) => {
+          if (success) {
+            console.log("spotify player connected");
+          }
+        });
+      };
+    }
+  }, [props.user]);
 
   return (
     <div className="relative flex justify-center h-screen">
