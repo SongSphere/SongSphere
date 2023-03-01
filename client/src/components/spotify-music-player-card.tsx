@@ -16,10 +16,10 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   const songId = "11dFghVXANMlKmJXsNCbNl";
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [song, setSong] = useState<ISpotifySong | null>(null);
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
   const [deviceId, setDeviceId] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
@@ -121,6 +121,43 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
             console.log("spotify player connected");
           }
         });
+
+        // reference: https://github.com/spotify/web-playback-sdk/issues/106
+        let currState = {
+          paused: false,
+          position: 0,
+          duration: 0,
+          updateTime: 0,
+        };
+
+        player.addListener("player_state_changed", (state) => {
+          currState.paused = state.paused;
+          currState.position = state.position;
+          currState.duration = state.duration;
+          currState.updateTime = performance.now();
+        });
+
+        const getStatePosition = () => {
+          if (currState.paused) {
+            return currState.position
+              ? (currState.position * 100) / currState.duration
+              : 0;
+          }
+          const position =
+            ((currState.position + (performance.now() - currState.updateTime)) *
+              100) /
+            currState.duration;
+          return position > currState.duration
+            ? (currState.duration * 100) / currState.duration
+            : position;
+        };
+
+        const interval = setInterval(() => {
+          const position = getStatePosition();
+          setProgress(position);
+        }, 2000);
+
+        return () => clearInterval(interval);
       };
     }
   }, [props.user]);
