@@ -4,13 +4,13 @@ import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
-import { spotifySetup } from "./services/spotify-sdk-setup";
 import { TUser } from "./types/user";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
+  const [service, setService] = useState("");
 
   const [appleMusicInstance, setAppleMusicInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
@@ -23,6 +23,15 @@ const App = () => {
           if (isLoggedIn) {
             await fetchUser().then((userData) => {
               setUser(userData);
+
+              // set user's music service
+              if (userData) {
+                if (userData.spotifyToken != undefined) {
+                  setService("spotify");
+                } else if (userData.appleToken != undefined) {
+                  setService("apple");
+                }
+              }
             });
           }
           setSessionUpdated(true);
@@ -78,6 +87,7 @@ const App = () => {
             setUser={setUser}
             setIsLoggedIn={setIsLoggedIn}
             appleMusicInstance={appleMusicInstance}
+            service={service}
           />
         );
       }
@@ -93,6 +103,7 @@ const App = () => {
         setUser={setUser}
         setIsLoggedIn={setIsLoggedIn}
         appleMusicInstance={appleMusicInstance}
+        service={service}
       />
     </>
   );

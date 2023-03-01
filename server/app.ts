@@ -18,6 +18,7 @@ import sampleRouter from "./routes/sample";
 import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
 import postRouter from "./routes/posting";
+import followRouter from "./routes/follow";
 
 // import middleware
 import logger from "./middleware/logger";
@@ -81,6 +82,7 @@ const createApp = (dbname: string) => {
   app.use(authRouter);
   app.use(userRouter);
   app.use(postRouter);
+  app.use(followRouter);
 
   // Attached below is how to generate a MusicKit Developer Token for this project
   // I would recommend using the apple-music-token-generator repo though

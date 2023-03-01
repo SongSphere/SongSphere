@@ -2,7 +2,25 @@
 import { Request, Response, NextFunction } from "express";
 
 // import services
-import { createPost, removePost, savePost, updatePost } from "../services/db";
+import {
+  createPost,
+  removePost,
+  savePost,
+  updatePost,
+  getUserPostsByEmail,
+} from "../services/db";
+
+export const getUserPosts = async (req: Request, res: Response) => {
+  try {
+    const posts = await getUserPostsByEmail(req.body.email);
+    console.log(posts);
+    res.status(201);
+    res.json({ posts: posts });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
 
 export const storePost = async (req: Request, res: Response) => {
   try {

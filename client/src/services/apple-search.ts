@@ -36,6 +36,9 @@ const appleSearch = async (
           id: entry.id,
           service: "apple",
           category: types.slice(0, -1),
+          cover: entry.attributes.artwork.url
+            .replace("{w}", 1000)
+            .replace("{h}", 1000),
         });
       });
     });

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 interface IPostPageProps {
   musicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
+  service: string;
 }
 
 const PostPage = (props: IPostPageProps) => {
@@ -15,6 +16,7 @@ const PostPage = (props: IPostPageProps) => {
     <div className="grid justify-center w-screen h-screen grid-cols-4 grid-rows-4 bg-navy">
       <div className="grid grid-cols-3 col-start-2 col-end-4 row-start-1 row-end-4 rounded-lg bg-lgrey">
         <div className="col-span-2 rounded-lg">
+
         <Link className="p-5" to="/">
           
           <button type="button" className="inline-flex items-center justify-center p-2 mt-5 text-gray-400 bg-white rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">

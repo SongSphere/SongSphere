@@ -1,4 +1,3 @@
-import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AppleLink from "../components/apple-link";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
@@ -17,6 +16,10 @@ interface IHomePageProps {
 const HomePage = (props: IHomePageProps) => {
   const navigate = useNavigate();
 
+  if (!props.user) {
+    return <div>fetching user</div>;
+  }
+
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
@@ -30,8 +33,11 @@ const HomePage = (props: IHomePageProps) => {
           />
           <SpotfiyLinkButton setUser={props.setUser} />
         </div>
-        {/* <AppleMusicPlayerCard musicInstance={props.appleMusicInstance} /> */}
-        <SpotifyPlayerCard user={props.user} />
+        {/* {props.user.appleToken ? (
+          <AppleMusicPlayerCard musicInstance={props.appleMusicInstance} />
+        ) : (
+          <SpotifyPlayerCard user={props.user} />
+        )} */}
       </div>
     </div>
   );

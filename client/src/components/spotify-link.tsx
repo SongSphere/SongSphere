@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { requestSpotifyAuthorization } from "../services/spotify-link";
 import { spotifyAuth } from "../services/spotify-link";
 import { TUser } from "../types/user";
