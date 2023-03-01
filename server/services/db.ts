@@ -265,3 +265,19 @@ export const removeFollow = async (
     throw error;
   }
 };
+
+export const getUsersSearch = async () => {
+  let users = Array<[String, String]>();
+
+  try {
+    const allUsers = await User.find({});
+
+    allUsers.forEach((u) => {
+      users.push([u.userName, u.email]);
+    });
+  } catch (error) {
+    throw error;
+  }
+
+  return users;
+};
