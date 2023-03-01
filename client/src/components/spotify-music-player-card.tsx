@@ -23,6 +23,20 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
+  const playMusicHandler = () => {
+    setIsPlaying(!isPlaying);
+
+    if (player) {
+      if (!isPlaying) {
+        player.resume();
+      } else {
+        player.pause();
+      }
+    } else {
+      console.error("music not instantiated");
+    }
+  };
+
   const fetchSong = async (songId: string, token: string) => {
     await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
       method: "GET",
@@ -57,7 +71,7 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   }, [props.user]);
 
   useEffect(() => {
-    const playSong = async (song_uri: string, deviceId: string) => {
+    const setSong = async (song_uri: string, deviceId: string) => {
       const url =
         "https://api.spotify.com/v1/me/player/play?" +
         new URLSearchParams({ device_id: deviceId });
@@ -71,13 +85,11 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
           uris: [song_uri],
           position_ms: 0,
         }),
-      }).then(() => {
-        player?.pause();
       });
     };
 
-    if (deviceId && song) {
-      playSong(song.uri, deviceId);
+    if (deviceId && song && player) {
+      setSong(song.uri, deviceId);
     }
   }, [deviceId, song]);
 
@@ -116,20 +128,6 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
       };
     }
   }, [props.user]);
-
-  const playMusicHandler = () => {
-    setIsPlaying(!isPlaying);
-
-    if (player) {
-      if (!isPlaying) {
-        player.resume();
-      } else {
-        player.pause();
-      }
-    } else {
-      console.error("music not instantiated");
-    }
-  };
 
   return (
     <div className="relative flex justify-center h-screen">
