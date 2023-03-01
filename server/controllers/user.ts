@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import {
   deleteUserInServices,
   fetchUserByEmail,
+  fetchUserbyUserName,
   updateNames,
 } from "../services/db";
 
@@ -12,7 +13,7 @@ export const sessionUpdate = async (
 ) => {
   try {
     const user = await fetchUserByEmail(req.session.user.email);
-    console.log(user);
+  //  console.log(user);
     res.status(200);
     res.json({ user: user });
   } catch (error) {
@@ -20,6 +21,25 @@ export const sessionUpdate = async (
     res.json({ msg: "cannot find user" });
   }
 };
+
+export const findUserByUserName = async(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log("Printed in user.ts in controllers backend");
+    console.log(req.body.userName.toString);
+    //console.log(req.body.userName.toString);
+    const user = await fetchUserbyUserName(req.body.userName);
+    res.status(200);
+    res.json({ user: user });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "cannot find user" });
+  }
+}
+
 
 export const changeNames = async (
   req: Request,

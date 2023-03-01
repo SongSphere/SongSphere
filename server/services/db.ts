@@ -124,6 +124,8 @@ export const fetchUserByEmail = async (email: string) => {
   }
 };
 
+
+
 export const saveUser = async (
   user: mongoose.Document<unknown, any, IUser>
 ) => {
@@ -134,6 +136,22 @@ export const saveUser = async (
     throw error;
   }
 };
+
+
+export const fetchUserbyUserName = async (
+  userName: string) => {
+    console.log("Called Fetchuserbyusername in services/db.ts")
+    console.log(userName);
+    var regexp = new RegExp("^"+ userName);
+
+    try {
+      const user = await User.findOne({ userName: regexp });
+      return user;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+}
 
 // returns document based on post schema
 export const createPost = async (
