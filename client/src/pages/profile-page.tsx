@@ -1,20 +1,30 @@
 import { SetStateAction } from "react";
+import { useState } from "react";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import Navbar from "../components/navbar";
 
 import { TUser } from "../types/user";
 import {TPost}  from "../types/post"
 import { Link } from "react-router-dom";
-
+import { UPosts } from "../services/fetch-uposts";
 
 interface IProfileProps {
   musicInstance: MusicKit.MusicKitInstance;
+  user: TUser | null;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ProfilePage = (props: IProfileProps) => {
 
+
+const ProfilePage = (props: IProfileProps) => {
+  let [posts, setPosts] = useState<TPost[]>([]);
+  UPosts(props.user).then(
+    (result) => {
+      posts = result!;
+      setPosts(result!);
+    }
+  )
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <Navbar setUser={function (value: SetStateAction<TUser | null>): void {
@@ -34,7 +44,7 @@ const ProfilePage = (props: IProfileProps) => {
           
         <div className="">
            {/* Profile pic conatiner*/}
-          <p className="mx-7">place holder Guy Fieri</p>
+          <p className="mx-7">{props.user?.givenName} {props.user?.familyName}</p>
             
           <img className="mx-10 my-5 rounded-3xl" height={150} width={150}src="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2014/08/guy_fieri.jpg"/>
           <button className="mx-10 bg-white border-2 border-black rounded-full shadow-2xl">Edit Profile Image</button>
@@ -45,7 +55,7 @@ const ProfilePage = (props: IProfileProps) => {
               
           <ul className="my-10 lg:inline-flex :inline">
             <li className="px-10 text-center">
-                  # <br />
+                  {posts ? '{posts.length}' : '0'} <br />
                   Posts
             </li>
             <li className="px-10 text-center">
@@ -60,15 +70,14 @@ const ProfilePage = (props: IProfileProps) => {
           <p>I am Guy and I like Cheeseburgers and Katy Perry. My favorite things to do in my
                 freetime are drive and go to dinners or drive ins.
           </p>  
-            
+          <div>
+          
+          </div>
         </div>
           
-        <div> {/** Post grid */}
-            
-        </div>
-
+        
       </div> {/** end of page grid */}
-      
+
     </div>
   );
 };
