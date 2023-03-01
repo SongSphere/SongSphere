@@ -1,7 +1,7 @@
-import { TPost } from "../types/post";
-import Post from "../components/post";
+import { TPost } from "../../types/post";
+import Post from "../post";
 import { useState } from "react";
-import { TMusicContent } from "../types/music-content";
+import { TMusicContent } from "../../types/music-content";
 
 interface IProfileFeedProps {
   posts: TPost[];

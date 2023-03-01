@@ -107,8 +107,6 @@ const SettingsPage = (props: ISettingPageProps) => {
             <div>{`Apple API connected: ${appleAccountStatus}`}</div>
 
             <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
-
-            <button> Next </button>
           </div>
         </div>
       </div>

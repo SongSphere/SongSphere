@@ -8,7 +8,7 @@ interface IPostProps {
 
 const Post = (props: IPostProps) => {
   return (
-    <div className="flex w-full p-6 mb-8 bg-white">
+    <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
       <div
         className="w-32 h-32 cursor-pointer"
         onClick={() => {

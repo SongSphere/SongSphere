@@ -36,6 +36,7 @@ export const changeNames = async (
       req.body.familyName
     );
     res.status(200);
+    res.json({ msg: "success" });
   } catch (error) {
     res.status(404);
     res.json({ msg: "cannot find user" });
