@@ -1,7 +1,9 @@
 
+import { SetStateAction } from "react";
 import Navbar from "../components/navbar";
 import UserFind from "../components/user-find";
-import { TUser } from "../types/user";
+import { TUser } from "../types/user";;
+
 
 interface ISearchUsersProps {
   musicInstance: MusicKit.MusicKitInstance;
@@ -12,9 +14,14 @@ interface ISearchUsersProps {
 
 const SearchUsersPage = (props: ISearchUsersProps) => {
     return(
-        <div>
-            Search users page
-            <div>
+        <div className="fixed w-screen h-screen bg-navy">
+            <Navbar setUser={function (value: SetStateAction<TUser | null>): void {
+                throw new Error("Function not implemented.");
+            } } setIsLoggedIn={function (value: SetStateAction<boolean>): void {
+                throw new Error("Function not implemented.");
+            } } />
+            <div className="text-center translate-y-1/3">
+                <h1 className="text-lg text-lgrey">Find Friends</h1>
                 <UserFind/>
             </div>
         </div>
