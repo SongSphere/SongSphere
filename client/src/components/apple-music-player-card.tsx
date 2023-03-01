@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 
 interface IMusicPlayerCardProps {
   musicInstance: MusicKit.MusicKitInstance;
+  id: string | undefined;
 }
 
 const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
-  const songId = 716192621;
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [song, setSong] = useState<MusicKit.Resource | null>(null);
@@ -19,7 +18,7 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
   });
 
   useEffect(() => {
-    const fetchSong = async (songId: number) => {
+    const fetchSong = async (songId: string) => {
       if (musicInstance) {
         const song = await musicInstance.api.song(songId.toString());
         setSong(song);
@@ -39,8 +38,9 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
         console.error("music not set");
       }
     };
-    fetchSong(songId);
-  }, []);
+    fetchSong(props.id || "716192621");
+    console.log(props.id);
+  }, [props.id]);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);

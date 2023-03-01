@@ -7,6 +7,7 @@ import { TPost } from "../types/post";
 
 import fetchUserPosts from "../services/fetch-user-posts";
 import ProfileFeed from "../components/profile-feed";
+import { TMusicContent } from "../types/music-content";
 
 interface IProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -17,6 +18,7 @@ interface IProfileProps {
 
 const ProfilePage = (props: IProfileProps) => {
   const [posts, setPosts] = useState<TPost[] | null>(null);
+  const [song, setSong] = useState<TMusicContent | null>(null);
 
   useEffect(() => {
     const updatePosts = async (email: string) => {
@@ -55,10 +57,17 @@ const ProfilePage = (props: IProfileProps) => {
             </div>
           </div> */}
 
-          {posts ? <ProfileFeed posts={posts} /> : <div>fetching posts</div>}
+          {posts ? (
+            <ProfileFeed posts={posts} setSong={setSong} />
+          ) : (
+            <div>fetching posts</div>
+          )}
         </div>
         {props.user.appleToken ? (
-          <AppleMusicPlayerCard musicInstance={props.appleMusicInstance} />
+          <AppleMusicPlayerCard
+            musicInstance={props.appleMusicInstance}
+            id={song?.id}
+          />
         ) : (
           <SpotifyPlayerCard user={props.user} />
         )}

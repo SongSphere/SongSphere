@@ -33,11 +33,11 @@ const HomePage = (props: IHomePageProps) => {
           />
           <SpotfiyLinkButton setUser={props.setUser} />
         </div>
-        {props.user.appleToken ? (
+        {/* {props.user.appleToken ? (
           <AppleMusicPlayerCard musicInstance={props.appleMusicInstance} />
         ) : (
           <SpotifyPlayerCard user={props.user} />
-        )}
+        )} */}
       </div>
     </div>
   );

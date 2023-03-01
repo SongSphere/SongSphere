@@ -40,10 +40,10 @@ const Search = (props: ISearchProps) => {
   const spotifyToken = props.user?.spotifyToken;
   let service = "";
 
-  if (spotifyToken !== "") {
-    service = "spotify";
-  } else if (appleToken !== "") {
+  if (appleToken !== "") {
     service = "apple";
+  } else if (spotifyToken !== "") {
+    service = "spotify";
   } else {
     console.log("NO SERVICE");
   }
