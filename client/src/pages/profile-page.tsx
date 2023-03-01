@@ -42,23 +42,12 @@ const ProfilePage = (props: IProfileProps) => {
   }
 
   return (
-    <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
+    <div className="w-full h-full min-h-screen min-w-screen bg-lblue">
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
-      <div className="grid grid-cols-4 gap-8">
-        <ProfileCard user={props.user} />
-        {/* <div>
-          <p className="mx-7">place holder Guy Fieri</p>
-          <img
-            className="mx-10 my-5 rounded-3xl"
-            height={150}
-            width={150}
-            src="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2014/08/guy_fieri.jpg"
-          />
-
-          <button className="mx-10 bg-white border-2 border-black rounded-full shadow-2xl">
-            Edit Profile Image
-          </button>
-        </div> */}
+      <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
+        <div className="">
+          <ProfileCard  user={props.user} />
+        </div>
         <div className="col-span-2">
           {posts ? (
             <ProfileFeed posts={posts} setSong={setSong} />
@@ -66,14 +55,16 @@ const ProfilePage = (props: IProfileProps) => {
             <div>fetching posts</div>
           )}
         </div>
-        {props.service === "apple" ? (
-          <AppleMusicPlayerCard
-            musicInstance={props.appleMusicInstance}
-            selectedSong={song}
-          />
-        ) : (
-          <SpotifyPlayerCard user={props.user} selectedSong={song} />
-        )}
+        <div className="">
+          {props.service === "apple" ? (
+            <AppleMusicPlayerCard
+              musicInstance={props.appleMusicInstance}
+              selectedSong={song}
+            />
+          ) : (
+            <SpotifyPlayerCard user={props.user} selectedSong={song} />
+          )}
+        </div>
       </div>
     </div>
   );
