@@ -3,6 +3,7 @@ import {
   deleteUserInServices,
   fetchUserByEmail,
   updateNames,
+  updatePFP,
 } from "../services/db";
 
 export const sessionUpdate = async (
@@ -61,5 +62,16 @@ export const deleteUserInControllers = async (
   } catch (error) {
     res.status(404);
     res.json({ msg: "Cannot find user in Delete User" });
+  }
+};
+
+export const updateProfilePhoto = async (req: Request, res: Response) => {
+  const email = req.session.user.email;
+
+  try {
+    await updatePFP(email, req.body.blob);
+    res.status(200);
+  } catch (error) {
+    console.log(error);
   }
 };
