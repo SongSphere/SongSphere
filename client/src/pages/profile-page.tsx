@@ -51,12 +51,6 @@ const ProfilePage = (props: IProfileProps) => {
           </button>
         </div>
         <div className="col-span-2">
-          {/* <div className="flex justify-center mt-8">
-            <div className="w-full bg-white">
-              <div>hi</div>
-            </div>
-          </div> */}
-
           {posts ? (
             <ProfileFeed posts={posts} setSong={setSong} />
           ) : (

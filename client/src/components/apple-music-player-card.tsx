@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { TMusicContent } from "../types/music-content";
-// import { musicInstance } from "../services/apple-music-link";
-// import { appleMusicContext } from "../context/appleMusicContext";
 
 interface IMusicPlayerCardProps {
   musicInstance: MusicKit.MusicKitInstance;

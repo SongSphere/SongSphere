@@ -3,9 +3,8 @@ import { TokenPayload } from "google-auth-library";
 import mongoose from "mongoose";
 
 // import models
+import { TPost } from "../types/post";
 import User, { IUser } from "../db/user";
-import { TMusicContent } from "../../client/src/types/music-content";
-import { TPost } from "../../client/src/types/post";
 import Post, { IPost } from "../db/post";
 
 export const createUser = async (
