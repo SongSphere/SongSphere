@@ -199,6 +199,19 @@ export const removePost = async (post: TPost) => {
     throw error;
   }
 };
+
+export const getPostsOfUser = async (email: string) => {
+  let posts = Array<TPost>();
+
+  try {
+    posts = await Post.find({ userEmail: email });
+  } catch (error) {
+    throw error;
+  }
+
+  return posts;
+};
+
 export const updateNames = async (
   email: string,
   username: string,
