@@ -1,5 +1,6 @@
 
 import Navbar from "../components/navbar";
+import UserFind from "../components/user-find";
 import { TUser } from "../types/user";
 
 interface ISearchUsersProps {
@@ -13,7 +14,11 @@ const SearchUsersPage = (props: ISearchUsersProps) => {
     return(
         <div>
             Search users page
+            <div>
+                <UserFind/>
+            </div>
         </div>
+       
     );
 
 }
