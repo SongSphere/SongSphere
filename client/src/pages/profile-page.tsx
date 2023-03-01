@@ -1,11 +1,11 @@
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
-import NewNavbar from "../components/new-navbar";
-import PImg from "../components/profile-image";
-import BImg from "../components/background-image";
-import { render } from "@testing-library/react";
+import Navbar from "../components/navbar";
+import { TUser } from "../types/user";
 
 interface IProfileProps {
   musicInstance: MusicKit.MusicKitInstance;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ProfilePage = (props: IProfileProps) => {

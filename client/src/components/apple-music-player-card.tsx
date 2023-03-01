@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import { musicInstance } from "../services/apple-music-link";
 // import { appleMusicContext } from "../context/appleMusicContext";
 

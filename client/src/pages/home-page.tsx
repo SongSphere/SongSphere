@@ -1,12 +1,10 @@
-import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AppleLink from "../components/apple-link";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import SpotifyPlayerCard from "../components/spotify-music-player-card";
-import NewNavbar from "../components/new-navbar";
-import SpotfiyLinkButton from "../components/spotify-link";
-import handleSignout from "../services/handle-sign-out";
+import Navbar from "../components/navbar";
 import { TUser } from "../types/user";
+import SpotfiyLinkButton from "../components/spotify-link";
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -16,40 +14,49 @@ interface IHomePageProps {
 }
 
 const HomePage = (props: IHomePageProps) => {
-  return (
-    <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
-      <NewNavbar />
-      <div className="grid grid-cols-4 gap-8">
-        <div>maybe friend activities</div>
-        <div className="col-span-2">
-          <div>temporary setting stuff:</div>
-          <AppleLink
-            setUser={props.setUser}
-            appleMusicInstance={props.appleMusicInstance}
-          />
-          <SpotfiyLinkButton setUser={props.setUser} />
-          <div>
-            <button
-              className="p-2 rounded-md bg-amber-400"
-              onClick={async () => {
-                // If sign out success then set loggedin to false
-                // Redirect to the authentication page
-                const logoutSuccesss = await handleSignout();
-                if (logoutSuccesss) {
-                  props.setUser(null);
-                  props.setIsLoggedIn(false);
-                }
-              }}
-            >
-              logout
-            </button>
+  const navigate = useNavigate();
+
+  if (!props.user) {
+    return <div>fetching user</div>;
+  }
+
+  if (props.user.appleToken) {
+    return (
+      <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
+        <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
+        <div className="grid grid-cols-4 gap-8">
+          <div>maybe friend activities</div>
+          <div className="col-span-2">
+            <div>temporary setting stuff:</div>
+            <AppleLink
+              setUser={props.setUser}
+              appleMusicInstance={props.appleMusicInstance}
+            />
+            <SpotfiyLinkButton setUser={props.setUser} />
           </div>
+          <AppleMusicPlayerCard musicInstance={props.appleMusicInstance} />
         </div>
-        {/* <AppleMusicPlayerCard musicInstance={props.appleMusicInstance} /> */}
-        <SpotifyPlayerCard user={props.user} />
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
+        <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
+        <div className="grid grid-cols-4 gap-8">
+          <div>maybe friend activities</div>
+          <div className="col-span-2">
+            <div>temporary setting stuff:</div>
+            <AppleLink
+              setUser={props.setUser}
+              appleMusicInstance={props.appleMusicInstance}
+            />
+            <SpotfiyLinkButton setUser={props.setUser} />
+          </div>
+          <SpotifyPlayerCard user={props.user} />
+        </div>
+      </div>
+    );
+  }
 };
 
 export default HomePage;

@@ -2,7 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 export interface IUser {
   name: string;
+  userName: string;
   givenName: string;
+  middleName: string;
   familyName: string;
   email: string;
   emailVerified: Boolean;
@@ -11,6 +13,8 @@ export interface IUser {
   spotifyToken: string;
   spotifyRefreshToken: string;
   appleToken: string;
+  following: Array<String>;
+  followers: Array<String>;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -19,9 +23,17 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
+    userName: {
+      type: String,
+      required: false,
+    },
     givenName: {
       type: String,
       required: true,
+    },
+    middleName: {
+      type: String,
+      required: false,
     },
     familyName: {
       type: String,
@@ -53,6 +65,14 @@ const UserSchema = new Schema<IUser>(
     },
     appleToken: {
       type: String,
+      required: false,
+    },
+    following: {
+      type: Array<String>(),
+      required: false,
+    },
+    followers: {
+      type: Array<String>(),
       required: false,
     },
   },
