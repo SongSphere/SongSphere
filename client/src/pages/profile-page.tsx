@@ -20,37 +20,41 @@ const ProfilePage = (props: IProfileProps) => {
  
             <AppleMusicPlayerCard musicInstance={props.musicInstance} />
           
-          <div className="">
-            {/* Profile pic conatiner*/}
-            <p className="mx-7">place holder Guy Fieri</p>
+        <div className="">
+           {/* Profile pic conatiner*/}
+          <p className="mx-7">place holder Guy Fieri</p>
             
-            <img className="mx-10 my-5 rounded-3xl" height={150} width={150}src="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2014/08/guy_fieri.jpg"/>
-            <button className="mx-10 bg-white border-2 border-black rounded-full shadow-2xl">Edit Profile Image</button>
-          </div>
+          <img className="mx-10 my-5 rounded-3xl" height={150} width={150}src="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2014/08/guy_fieri.jpg"/>
+          <button className="mx-10 bg-white border-2 border-black rounded-full shadow-2xl">Edit Profile Image</button>
+        </div>
 
           {/* Followers and bio container*/}
-          <div className="">
+        <div className="">
               
-              <ul className="my-10 lg:inline-flex :inline">
-                <li className="px-10 text-center">
+          <ul className="my-10 lg:inline-flex :inline">
+            <li className="px-10 text-center">
                   # <br />
                   Posts
-                </li>
-                <li className="px-10 text-center">
+            </li>
+            <li className="px-10 text-center">
                   # <br />
                   Followers 
-                </li>
-                <li className="px-10 text-center">
+            </li>
+            <li className="px-10 text-center">
                   # <br />
                   Following
-                </li>
-              </ul>
-              <p>I am Guy and I like Cheeseburgers and Katy Perry. My favorite things to do in my
+            </li>
+          </ul>
+          <p>I am Guy and I like Cheeseburgers and Katy Perry. My favorite things to do in my
                 freetime are drive and go to dinners or drive ins.
-              </p>  
-              
-          </div>
+          </p>  
+            
+        </div>
           
+        <div> {/** Post grid */}
+  
+        </div>
+
       </div> {/** end of page grid */}
       
     </div>
