@@ -49,6 +49,7 @@ export const spotifySearch = async (
             id: track.uri,
             service: "spotify",
             category: "song",
+            cover: track.album.images[0].url,
           });
         });
       } else if (type === "album") {
@@ -61,6 +62,7 @@ export const spotifySearch = async (
             id: track.uri,
             service: "spotify",
             category: type,
+            cover: track.album.images[0].url,
           });
         });
       } else {
@@ -72,6 +74,7 @@ export const spotifySearch = async (
             id: track.uri,
             service: "spotify",
             category: type,
+            cover: track.album.images[0].url,
           });
         });
       }

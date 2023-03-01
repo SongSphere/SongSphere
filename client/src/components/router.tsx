@@ -51,9 +51,10 @@ const Router = (props: IRouterProps) => {
       path: "/profile",
       element: (
         <ProfilePage
+          user={props.user}
           setUser={props.setUser}
           setIsLoggedIn={props.setIsLoggedIn}
-          musicInstance={props.appleMusicInstance}
+          appleMusicInstance={props.appleMusicInstance}
         />
       ),
     },

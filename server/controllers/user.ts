@@ -12,7 +12,6 @@ export const sessionUpdate = async (
 ) => {
   try {
     const user = await fetchUserByEmail(req.session.user.email);
-    console.log(user);
     res.status(200);
     res.json({ user: user });
   } catch (error) {

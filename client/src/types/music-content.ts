@@ -5,4 +5,5 @@ export type TMusicContent = {
   id?: string;
   service?: string;
   category?: string;
+  cover: string;
 };

@@ -20,43 +20,27 @@ const HomePage = (props: IHomePageProps) => {
     return <div>fetching user</div>;
   }
 
-  if (props.user.appleToken) {
-    return (
-      <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
-        <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
-        <div className="grid grid-cols-4 gap-8">
-          <div>maybe friend activities</div>
-          <div className="col-span-2">
-            <div>temporary setting stuff:</div>
-            <AppleLink
-              setUser={props.setUser}
-              appleMusicInstance={props.appleMusicInstance}
-            />
-            <SpotfiyLinkButton setUser={props.setUser} />
-          </div>
+  return (
+    <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
+      <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
+      <div className="grid grid-cols-4 gap-8">
+        <div>maybe friend activities</div>
+        <div className="col-span-2">
+          <div>temporary setting stuff:</div>
+          <AppleLink
+            setUser={props.setUser}
+            appleMusicInstance={props.appleMusicInstance}
+          />
+          <SpotfiyLinkButton setUser={props.setUser} />
+        </div>
+        {props.user.appleToken ? (
           <AppleMusicPlayerCard musicInstance={props.appleMusicInstance} />
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
-        <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
-        <div className="grid grid-cols-4 gap-8">
-          <div>maybe friend activities</div>
-          <div className="col-span-2">
-            <div>temporary setting stuff:</div>
-            <AppleLink
-              setUser={props.setUser}
-              appleMusicInstance={props.appleMusicInstance}
-            />
-            <SpotfiyLinkButton setUser={props.setUser} />
-          </div>
+        ) : (
           <SpotifyPlayerCard user={props.user} />
-        </div>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default HomePage;

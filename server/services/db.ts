@@ -153,10 +153,20 @@ export const createPost = async (
       id: newPost.music.id,
       service: newPost.music.service,
       category: newPost.music.category,
+      cover: newPost.music.cover,
     },
   });
 
   return post;
+};
+
+export const getUserPostsByEmail = async (email: string) => {
+  try {
+    const posts = await Post.find({ userEmail: email });
+    return posts;
+  } catch (error) {
+    throw error;
+  }
 };
 
 // saves the given post document to the db

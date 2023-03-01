@@ -170,14 +170,14 @@ const Search = (props: ISearchProps) => {
       {/* This will be edited once merged to incoroporate username userSessionContext */}
       <button
         className="my-5 border-black rounded-md text-lgrey bg-navy"
-        onClick={() =>
+        onClick={() => {
           sendPost({
             username: props.user?.userName!,
             userEmail: props.user?.email!,
             caption: caption,
             music: selected!,
-          })
-        }
+          });
+        }}
       >
         Submit
       </button>

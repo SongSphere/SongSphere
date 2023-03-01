@@ -35,6 +35,7 @@ const PostSchema = new Schema<IPost>(
         id: String,
         service: String,
         category: String,
+        cover: String,
       },
       required: true,
     },
