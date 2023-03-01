@@ -4,7 +4,6 @@ import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
-import { spotifySetup } from "./services/spotify-sdk-setup";
 import { TUser } from "./types/user";
 
 const App = () => {

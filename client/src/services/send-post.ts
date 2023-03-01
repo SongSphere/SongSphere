@@ -1,22 +1,16 @@
 import { TMusicContent } from "../types/music-content";
 import PostFailure from "../components/post-failure";
 import PostSucess from "../components/post-sucess";
+import { TPost } from "../types/post";
+import { textSpanContainsPosition } from "typescript";
 
-const sendPost = async (
-  username: string,
-  name: string,
-  caption: string,
-  music: TMusicContent
-) => {
+const sendPost = async (post: TPost) => {
   try {
     await fetch(`${process.env.REACT_APP_API}/api/makepost`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
-        username: username,
-        userEmail: name,
-        caption: caption,
-        music: music,
+        post: post,
       }),
       headers: {
         "Content-Type": "application/json",
