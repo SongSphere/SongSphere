@@ -2,7 +2,13 @@
 import { Request, Response, NextFunction } from "express";
 
 // import services
-import { createPost, removePost, savePost, updatePost } from "../services/db";
+import {
+  createPost,
+  getPostsOfUser,
+  removePost,
+  savePost,
+  updatePost,
+} from "../services/db";
 
 export const storePost = async (req: Request, res: Response) => {
   try {
@@ -35,6 +41,18 @@ export const deletePost = async (req: Request, res: Response) => {
 
     res.status(201);
     res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getPostsOfGivenUser = async (req: Request, res: Response) => {
+  try {
+    const posts = await getPostsOfUser(req.body.email);
+
+    res.status(201);
+    res.json(posts);
   } catch (error) {
     res.status(500);
     res.json({ error: error });

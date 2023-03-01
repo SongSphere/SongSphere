@@ -5,6 +5,7 @@ import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import Navbar from "../components/navbar";
 import { TUser } from "../types/user";
 import SpotfiyLinkButton from "../components/spotify-link";
+import { GetPostButton } from "../components/test-getpost";
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -51,6 +52,7 @@ const HomePage = (props: IHomePageProps) => {
               appleMusicInstance={props.appleMusicInstance}
             />
             <SpotfiyLinkButton setUser={props.setUser} />
+            <GetPostButton />
           </div>
           <SpotifyPlayerCard user={props.user} />
         </div>
