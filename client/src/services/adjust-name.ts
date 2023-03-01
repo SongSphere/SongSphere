@@ -1,5 +1,10 @@
-const AdjustName = async (username: string, givenName: string, middleName: string, familyName: string ) => {
-    // Call configure() to configure an instance of MusicKit on the Web.
+const AdjustName = async (
+  username: string,
+  givenName: string,
+  middleName: string,
+  familyName: string
+): Promise<boolean> => {
+  return new Promise<boolean>(async (resolve, reject) => {
     try {
       await fetch(`${process.env.REACT_APP_API}/user/adjustNames`, {
         method: "POST",
@@ -13,17 +18,13 @@ const AdjustName = async (username: string, givenName: string, middleName: strin
         headers: {
           "Content-Type": "application/json",
         },
+      }).then(() => {
+        resolve(true);
       });
-
-
-      
-      return true;
-      
     } catch (err) {
-
-      return false;
+      reject(err);
     }
-  };
-  
-  export default AdjustName;
-  
+  });
+};
+
+export default AdjustName;
