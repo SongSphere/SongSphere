@@ -1,25 +1,25 @@
-import { TUserWrapper } from "../types/user";
+import { TUser, TUserWrapper } from "../types/user";
 
 const fetchUser = async () => {
-  let user = null;
-  await fetch(`${process.env.REACT_APP_API}/user`, {
-    method: "get",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then(async (res) => {
-      return res.json();
+  return new Promise<TUser | null>(async (resolve, reject) => {
+    await fetch(`${process.env.REACT_APP_API}/user`, {
+      method: "get",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((data) => {
-      user = (data as TUserWrapper).user;
-    })
-    .catch((error) => {
-      console.log("asdfasd")
-      throw error;
-    });
-  return user;
+      .then(async (res) => {
+        return res.json();
+      })
+      .then((data) => {
+        const user = (data as TUserWrapper).user;
+        resolve(user);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 };
 
 export default fetchUser;
