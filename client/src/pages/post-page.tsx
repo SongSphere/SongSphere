@@ -26,7 +26,7 @@ const PostPage = (props: IPostPageProps) => {
               </svg>
             </button>
             </Link>
-          <Search musicInstance={props.musicInstance} user={props.user} />
+          <Search musicInstance={props.musicInstance} user={props.user} service={props.service}/>
           
         </div>
         
