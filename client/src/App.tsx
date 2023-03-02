@@ -26,6 +26,12 @@ const App = () => {
 
               // set user's music service
               if (userData) {
+                if (
+                  userData.spotifyToken != undefined &&
+                  userData.appleToken != undefined
+                ) {
+                  setService("both");
+                }
                 if (userData.spotifyToken != undefined) {
                   setService("spotify");
                 } else if (userData.appleToken != undefined) {
