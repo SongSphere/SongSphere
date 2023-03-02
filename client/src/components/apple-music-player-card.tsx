@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
+import selectService from "../services/select-service";
 import { TMusicContent } from "../types/music-content";
+import { TUser } from "../types/user";
 
 interface IMusicPlayerCardProps {
   musicInstance: MusicKit.MusicKitInstance;
   selectedSong: TMusicContent | null;
+  user: TUser;
+  service: string;
 }
 
 const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
@@ -37,6 +41,30 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
         console.error("music not set");
       }
     };
+
+    const selectServiceHandler = async (
+      selectedSong: TMusicContent,
+      appleMusicInstance: MusicKit.MusicKitInstance,
+      user: TUser,
+      service: string
+    ) => {
+      await selectService(selectedSong, appleMusicInstance, user, service).then(
+        (bestFitId) => {
+          if (bestFitId != "-1") {
+            fetchSong(bestFitId);
+          }
+        }
+      );
+    };
+
+    if (props.selectedSong) {
+      selectServiceHandler(
+        props.selectedSong,
+        props.musicInstance,
+        props.user,
+        props.service
+      );
+    }
 
     if (props.selectedSong) {
       fetchSong(props.selectedSong.id);

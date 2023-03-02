@@ -28,6 +28,8 @@ const ProfilePage = (props: IProfileProps) => {
   const [posts, setPosts] = useState<TPost[] | null>(null);
   const [song, setSong] = useState<TMusicContent | null>(null);
 
+  console.log(props.service);
+
   useEffect(() => {
     const updatePosts = async (email: string) => {
       setPosts(await fetchUserPosts(email));
@@ -68,11 +70,18 @@ const ProfilePage = (props: IProfileProps) => {
         </div>
         {props.service === "apple" ? (
           <AppleMusicPlayerCard
+            user={props.user}
+            service={props.service}
             musicInstance={props.appleMusicInstance}
             selectedSong={song}
           />
         ) : (
-          <SpotifyPlayerCard user={props.user} selectedSong={song} />
+          <SpotifyPlayerCard
+            user={props.user}
+            selectedSong={song}
+            appleMusicInstance={props.appleMusicInstance}
+            service={props.service}
+          />
         )}
       </div>
     </div>
