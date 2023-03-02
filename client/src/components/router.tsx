@@ -8,7 +8,9 @@ import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
 import SettingsPage from "../pages/settings-page";
+import EditPage from "../pages/edit-page"
 import { TUser } from "../types/user";
+import { TPost } from "../types/post";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -16,6 +18,7 @@ interface IRouterProps {
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   user: TUser | null;
   service: string;
+  post: TPost | null;
 }
 
 /**
@@ -82,6 +85,14 @@ const Router = (props: IRouterProps) => {
           setUser={props.setUser}
           setIsLoggedIn={props.setIsLoggedIn}
           appleMusicInstance={props.appleMusicInstance}
+        />
+      ),
+    },
+    {
+      path: "/edit",
+      element: (
+        <EditPage
+          post={props.post}
         />
       ),
     },

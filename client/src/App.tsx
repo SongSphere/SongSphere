@@ -5,12 +5,14 @@ import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import { TUser } from "./types/user";
+import { TPost } from "./types/post";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
   const [service, setService] = useState("");
+  const [post, editPost] = useState<TPost | null>(null);
 
   const [appleMusicInstance, setAppleMusicInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
@@ -94,6 +96,7 @@ const App = () => {
             setIsLoggedIn={setIsLoggedIn}
             appleMusicInstance={appleMusicInstance}
             service={service}
+            post={post}
           />
         );
       }
@@ -110,6 +113,7 @@ const App = () => {
         setIsLoggedIn={setIsLoggedIn}
         appleMusicInstance={appleMusicInstance}
         service={service}
+        post={post}
       />
     </>
   );

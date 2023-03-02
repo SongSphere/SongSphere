@@ -83,12 +83,17 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
           onClick={() => {
             if (props.user) {
               if (
-                props.user.spotifyToken != undefined ||
-                props.user.appleToken != undefined
+                (props.user.spotifyToken != undefined ||
+                  props.user.appleToken != undefined) &&
+                props.user.userName !== ""
               ) {
                 setOnboarded(props.user?.email);
                 navigate("/");
                 window.location.reload();
+              } else {
+                window.alert(
+                  "need to link with at least one music platform and have a username"
+                );
               }
             }
           }}
