@@ -34,6 +34,8 @@ export const ReactImageCropper = ({
     Area | undefined
   >();
 
+  const [imageName, setImageName] = useState();
+
   const { classes } = useStyles();
 
   const handleFileUpload = (file: File | null) => {
@@ -49,20 +51,39 @@ export const ReactImageCropper = ({
     if (!previewImage) return;
     try {
       const blob = await getCroppedImg(previewImage, croppedAreaPixels);
-      console.log("🚀 ~ file: index.tsx ~ line 34 ~ cropImage ~ blob", blob);
-
+      console.log("THIS IS BLOB");
+      console.log(blob);
       if (!blob) return;
 
       const file = new File([blob], "Cropped image");
+      console.log(file);
+      const b = new Blob([blob as BlobPart]);
+      // let b2 = await fetch(blob).then(r => r.blob());
+      // console.log(URL.createObjectURL(b2));
 
       const formData = new FormData();
-      formData.append("profileImage", file);
+      formData.append("image", file);
+      const ds = " hello ";
+      formData.append("Description", ds);
       onCropComplete(formData);
-      setCroppedImage(blob as string);
+      setCroppedImage(URL.createObjectURL(b) as string);
       setPreviewImage(undefined);
-      updateProfile(blob);
+
+      console.log("Blob");
+      console.log(b);
+
+      console.log(formData);
+      updateProfile(formData);
+
+      //const arrayBuffer = await blob["arrayBuffer"]();
+      // await new Response(b).arrayBuffer().then((arrayBuffer) => {
+      //   console.log("arrayBuffer");
+      //   console.log(arrayBuffer);
+      //   //const buffer = Buffer.from(arrayBuffer);
+      //   updateProfile(arrayBuffer);
+      // });
     } catch (error) {
-      console.log("Error cropping image");
+      console.log("Error cropping image " + error);
     }
   };
 

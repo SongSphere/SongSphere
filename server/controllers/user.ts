@@ -5,6 +5,7 @@ import {
   updateNames,
   updatePFP,
 } from "../services/db";
+import multer from "multer";
 
 export const sessionUpdate = async (
   req: Request,
@@ -65,13 +66,21 @@ export const deleteUserInControllers = async (
   }
 };
 
-export const updateProfilePhoto = async (req: Request, res: Response) => {
+export const updateProfilePhoto = (req: Request, res: Response) => {
   const email = req.session.user.email;
+  console.log(req.body.formData);
+  console.log(req.body.file);
+  const imageName = req.file.filename;
+  console.log("NAME");
+  console.log(imageName);
 
   try {
-    await updatePFP(email, req.body.blob);
+    updatePFP(email, req.body.formData.file);
     res.status(200);
+    res.send({ imageName });
   } catch (error) {
     console.log(error);
   }
+
+  res.send({ imageName });
 };
