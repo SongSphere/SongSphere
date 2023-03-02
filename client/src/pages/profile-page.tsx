@@ -15,6 +15,7 @@ import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import ProfileCard from "../components/profile/profile-card";
 import ProfileFeed from "../components/profile/profile-feed";
+import { NoPosts } from "../components/profile/no-post";
 
 interface IProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -27,6 +28,9 @@ interface IProfileProps {
 const ProfilePage = (props: IProfileProps) => {
   const [posts, setPosts] = useState<TPost[] | null>(null);
   const [song, setSong] = useState<TMusicContent | null>(null);
+  const [post, setPost] = useState<TPost | null>(null);
+
+  console.log(props.service);
 
   useEffect(() => {
     const updatePosts = async (email: string) => {
@@ -42,37 +46,33 @@ const ProfilePage = (props: IProfileProps) => {
   }
 
   return (
-    <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
+    <div className="w-full h-full min-h-screen min-w-screen bg-lblue">
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
-      <div className="grid grid-cols-4 gap-8">
-        <ProfileCard user={props.user} setUser={props.setUser} />
-        {/* <div>
-          <p className="mx-7">place holder Guy Fieri</p>
-          <img
-            className="mx-10 my-5 rounded-3xl"
-            height={150}
-            width={150}
-            src="https://mediaproxy.salon.com/width/1200/https://media.salon.com/2014/08/guy_fieri.jpg"
-          />
-
-          <button className="mx-10 bg-white border-2 border-black rounded-full shadow-2xl">
-            Edit Profile Image
-          </button>
-        </div> */}
+      <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
+        <div className="">
+          <ProfileCard user={props.user} setUser={props.setUser} />
+        </div>
         <div className="col-span-2">
           {posts ? (
-            <ProfileFeed posts={posts} setSong={setSong} />
+            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
           ) : (
-            <div>fetching posts</div>
+            <NoPosts />
           )}
         </div>
         {props.service === "apple" ? (
           <AppleMusicPlayerCard
+            user={props.user}
+            service={props.service}
             musicInstance={props.appleMusicInstance}
             selectedSong={song}
           />
         ) : (
-          <SpotifyPlayerCard user={props.user} selectedSong={song} />
+          <SpotifyPlayerCard
+            user={props.user}
+            selectedSong={song}
+            appleMusicInstance={props.appleMusicInstance}
+            service={props.service}
+          />
         )}
       </div>
     </div>

@@ -23,6 +23,7 @@ export const createUser = async (
     token: token,
     followers: {},
     following: {},
+    onboarded: false,
   });
 
   return user;
@@ -98,6 +99,22 @@ export const updateUserToken = async (email: string, token: string) => {
     const user = await User.findOneAndUpdate(
       { email: email },
       { token: token },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateUserOnboarded = async (
+  email: string,
+  onboarded: boolean
+) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { onboarded: onboarded },
       { new: true }
     );
     return user;
@@ -183,7 +200,7 @@ export const savePost = async (
 export const updatePost = async (newPost: TPost) => {
   try {
     // call mongoose updateOne function with data, this updates database
-    await Post.findByIdAndUpdate(newPost.id, {
+    await Post.findByIdAndUpdate(newPost._id, {
       username: newPost.username,
       userEmail: newPost.userEmail,
       caption: newPost.caption,
@@ -203,7 +220,7 @@ export const updatePost = async (newPost: TPost) => {
 
 export const removePost = async (post: TPost) => {
   try {
-    await Post.findByIdAndDelete(post.id);
+    await Post.findByIdAndDelete(post._id);
   } catch (error) {
     throw error;
   }
