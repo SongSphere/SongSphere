@@ -78,7 +78,7 @@ const App = () => {
 
   if (sessionUpdated) {
     if (user && isLoggedIn) {
-      if (user.appleToken == null && user.spotifyToken == null) {
+      if (!user.onboarded) {
         return (
           <OnBoardPage
             user={user}
