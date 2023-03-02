@@ -23,6 +23,7 @@ interface IProfileProps {
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   service: string;
+  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>
 }
 
 const ProfilePage = (props: IProfileProps) => {
@@ -54,7 +55,7 @@ const ProfilePage = (props: IProfileProps) => {
         </div>
         <div className="col-span-2">
           {posts ? (
-            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
+            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} setSelectEditPost={props.setSelectEditPost} />
           ) : (
             <NoPosts />
           )}
