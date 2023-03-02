@@ -76,6 +76,7 @@ const UserFind = (props: IUserFindProps) => {
                     key={user.userName}
                     onClick={() => {
                       props.setSelectedUser(user);
+                      console.log(props.selectedUser);
 
                       navigate('/otherUsersProfilePage')
                     }}

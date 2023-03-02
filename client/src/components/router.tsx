@@ -17,10 +17,10 @@ import OtherUserProfilePage from "../pages/other-user-profile-page";
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  user: TUser | null;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   selectedUser: TUser | null;
-  setSelectedUser:  React.Dispatch<React.SetStateAction<TUser | null>>;
-  user: TUser | null;
+  setSelectedUser:  React.Dispatch<React.SetStateAction<TUser | null>>; 
   service: string;
   post: TPost | null;
 }
