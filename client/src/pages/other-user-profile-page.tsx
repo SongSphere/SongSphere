@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import Navbar from "../components/navbar";
 import { NoPosts } from "../components/profile/no-post";
-import ProfileCard from "../components/profile/profile-card";
+import OtherUserProfileCard from "../components/profile/other-user-profile-card";
 import ProfileFeed from "../components/profile/profile-feed";
 import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import fetchUserPosts from "../services/fetch-user-posts";
@@ -43,7 +43,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <ProfileCard user={props.user} />
+          <OtherUserProfileCard user={props.user} setUser={props.setUser} />
         </div>
         <div className="col-span-2">
           {posts ? (
