@@ -27,7 +27,7 @@ const UserFind = (props: IUserFindProps) => {
                 }}
                 onChange={async (event) => {
                   console.log(`Current value ${event.target.value}`);
-                  if (event.target.value as string == "") {
+                  if ((event.target.value as string) == "") {
                     console.log("Text box is empty");
                     setUsers(null);
                     console.log(users);
@@ -41,7 +41,6 @@ const UserFind = (props: IUserFindProps) => {
                       }
                     );
                   }
-                 
                 }}
               />
               <span className="inline-flex items-center px-2 py-2 m-1 rounded-md cursor-pointer bg-navy hover:bg-lblue">
@@ -65,11 +64,19 @@ const UserFind = (props: IUserFindProps) => {
               return (
                 <div key={user.email}>
                   <button key={user.userName}>
-                    <div className="absolute w-full mt-2 overflow-hidden bg-white rounded-md"></div>
-                    <div className="px-3 py-2 cursor-pointer hover:bg-slate-100">
-                      <p className="text-sm font-medium text-gray-600">
-                        {user.userName}
-                      </p>
+                    <div className=" flex-1 block w-full mt-2 px-3 py-2 overflow-hidden bg-white rounded-md">
+                      <div className="inline-flex items-center">
+                        <img
+                          className="w-10 h-10 rounded-full mr-4"
+                          src={user.profileImgUrl}
+                          alt="Avatar of Jonathan Reinink"
+                        ></img>
+                        <div className="text-sm">
+                          <p className="text-gray-900 leading-none pr-2">
+                            {user.userName}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </button>
                 </div>
