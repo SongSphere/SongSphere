@@ -30,6 +30,8 @@ const ProfilePage = (props: IProfileProps) => {
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
 
+  console.log(props.service);
+
   useEffect(() => {
     const updatePosts = async (email: string) => {
       setPosts(await fetchUserPosts(email));
@@ -48,25 +50,30 @@ const ProfilePage = (props: IProfileProps) => {
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <ProfileCard  user={props.user} />
+          <ProfileCard user={props.user} />
         </div>
         <div className="col-span-2">
           {posts ? (
-            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost}/>
+            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
           ) : (
             <NoPosts />
           )}
         </div>
-        <div className="">
-          {props.service === "apple" ? (
-            <AppleMusicPlayerCard
-              musicInstance={props.appleMusicInstance}
-              selectedSong={song}
-            />
-          ) : (
-            <SpotifyPlayerCard user={props.user} selectedSong={song} />
-          )}
-        </div>
+        {props.service === "apple" ? (
+          <AppleMusicPlayerCard
+            user={props.user}
+            service={props.service}
+            musicInstance={props.appleMusicInstance}
+            selectedSong={song}
+          />
+        ) : (
+          <SpotifyPlayerCard
+            user={props.user}
+            selectedSong={song}
+            appleMusicInstance={props.appleMusicInstance}
+            service={props.service}
+          />
+        )}
       </div>
     </div>
   );

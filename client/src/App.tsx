@@ -12,7 +12,7 @@ const App = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
   const [service, setService] = useState("");
-  const [post, editPost] = useState<TPost | null> (null);
+  const [post, editPost] = useState<TPost | null>(null);
 
   const [appleMusicInstance, setAppleMusicInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
@@ -28,6 +28,12 @@ const App = () => {
 
               // set user's music service
               if (userData) {
+                if (
+                  userData.spotifyToken != undefined &&
+                  userData.appleToken != undefined
+                ) {
+                  setService("both");
+                }
                 if (userData.spotifyToken != undefined) {
                   setService("spotify");
                 } else if (userData.appleToken != undefined) {
@@ -74,7 +80,7 @@ const App = () => {
 
   if (sessionUpdated) {
     if (user && isLoggedIn) {
-      if (user.appleToken == null && user.spotifyToken == null) {
+      if (!user.onboarded) {
         return (
           <OnBoardPage
             user={user}

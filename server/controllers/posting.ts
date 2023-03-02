@@ -30,6 +30,7 @@ export const storePost = async (req: Request, res: Response) => {
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
+    console.error(error);
     res.status(500);
     res.json({ error: error });
   }
