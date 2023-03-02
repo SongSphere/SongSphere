@@ -45,7 +45,7 @@ const ProfilePage = (props: IProfileProps) => {
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
       <div className="grid grid-cols-4 gap-8">
-        <ProfileCard user={props.user} />
+        <ProfileCard user={props.user} setUser={props.setUser} />
         {/* <div>
           <p className="mx-7">place holder Guy Fieri</p>
           <img

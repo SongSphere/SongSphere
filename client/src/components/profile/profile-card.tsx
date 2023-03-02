@@ -3,6 +3,7 @@ import { FollowButton } from "./follow-buttons";
 
 interface IProfileCardProps {
   user: TUser;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const ProfileCard = (props: IProfileCardProps) => {
@@ -22,7 +23,7 @@ const ProfileCard = (props: IProfileCardProps) => {
           <div className="text-center text-slate-600">
             {props.user.userName}
           </div>
-          <FollowButton user={props.user} />
+          <FollowButton user={props.user} setUser={props.setUser} />
         </div>
       </div>
     </div>
