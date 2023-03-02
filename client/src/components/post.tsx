@@ -1,8 +1,10 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import EditPage from "../pages/edit-page";
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
 import deletePost from "../services/delete-post";
+
 
 
 interface IPostProps {
@@ -12,18 +14,36 @@ interface IPostProps {
 }
 
 const Post = (props: IPostProps) => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
-      
-        <button className="flex text-lblue hover:text-navy" onClick={ () =>
-        {
-          props.setPost(props.post);
-        }}>Edit</button>
-        <br />
-        <button className="flex text-lblue hover:text-navy" onClick={ () =>
-        {
-          deletePost(props.post)
-        }}>Delete</button>
+        <div className="dropdown">
+          <button onClick={handleOpen} className="flex mr-5">
+            <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
+          </button>
+          { open ? (
+              <ul>
+                <li>
+                <button  onClick={ () => 
+                  {<EditPage post={props.post}/>}
+                  }>
+                  Edit 
+                  </button>
+                </li>
+                <li >
+                  <button onClick={ () => {deletePost(props.post)}}>
+                  Delete
+                  </button>
+                </li>
+              </ul>
+          ) : null }
+        </div>
+        
+       
       
       <div
         className="w-32 h-32 cursor-pointer"

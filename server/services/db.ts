@@ -183,7 +183,7 @@ export const savePost = async (
 export const updatePost = async (newPost: TPost) => {
   try {
     // call mongoose updateOne function with data, this updates database
-    await Post.findByIdAndUpdate(newPost.id, {
+    await Post.findByIdAndUpdate(newPost._id, {
       username: newPost.username,
       userEmail: newPost.userEmail,
       caption: newPost.caption,
@@ -203,7 +203,7 @@ export const updatePost = async (newPost: TPost) => {
 
 export const removePost = async (post: TPost) => {
   try {
-    await Post.findByIdAndDelete(post.id);
+    await Post.findByIdAndDelete(post._id);
   } catch (error) {
     throw error;
   }
