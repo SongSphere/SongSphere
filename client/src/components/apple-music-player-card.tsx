@@ -1,14 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-// import { musicInstance } from "../services/apple-music-link";
-// import { appleMusicContext } from "../context/appleMusicContext";
+import { useEffect, useState } from "react";
+import { TMusicContent } from "../types/music-content";
 
 interface IMusicPlayerCardProps {
   musicInstance: MusicKit.MusicKitInstance;
+  selectedSong: TMusicContent | null;
 }
 
 const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
-  const songId = 716192621;
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [song, setSong] = useState<MusicKit.Resource | null>(null);
@@ -19,7 +17,7 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
   });
 
   useEffect(() => {
-    const fetchSong = async (songId: number) => {
+    const fetchSong = async (songId: string) => {
       if (musicInstance) {
         const song = await musicInstance.api.song(songId.toString());
         setSong(song);
@@ -39,8 +37,11 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
         console.error("music not set");
       }
     };
-    fetchSong(songId);
-  }, []);
+
+    if (props.selectedSong) {
+      fetchSong(props.selectedSong.id);
+    }
+  }, [props.selectedSong]);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
@@ -59,7 +60,7 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
   return (
     <div className="relative flex justify-center h-screen">
       <div className="fixed flex h-full mt-8">
-        <div className="bg-white w-80 h-5/6">
+        <div className="bg-white w-80 h-5/6 drop-shadow-md">
           <div className="flex justify-center">
             <div className="w-4/5 mt-5">
               <img

@@ -13,7 +13,6 @@ export const sessionUpdate = async (
 ) => {
   try {
     const user = await fetchUserByEmail(req.session.user.email);
-  //  console.log(user);
     res.status(200);
     res.json({ user: user });
   } catch (error) {
@@ -57,6 +56,7 @@ export const changeNames = async (
       req.body.familyName
     );
     res.status(200);
+    res.json({ msg: "success" });
   } catch (error) {
     res.status(404);
     res.json({ msg: "cannot find user" });

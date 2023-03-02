@@ -17,6 +17,7 @@ interface IRouterProps {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   user: TUser | null;
+  service: string;
 }
 
 /**
@@ -46,16 +47,22 @@ const Router = (props: IRouterProps) => {
     {
       path: "/posts",
       element: (
-        <PostPage musicInstance={props.appleMusicInstance} user={props.user} />
+        <PostPage
+          musicInstance={props.appleMusicInstance}
+          user={props.user}
+          service={props.service}
+        />
       ),
     },
     {
       path: "/profile",
       element: (
         <ProfilePage
+          user={props.user}
           setUser={props.setUser}
           setIsLoggedIn={props.setIsLoggedIn}
-          musicInstance={props.appleMusicInstance}
+          appleMusicInstance={props.appleMusicInstance}
+          service={props.service}
         />
       ),
     },

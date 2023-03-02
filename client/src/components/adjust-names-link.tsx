@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import fetchUser from "../services/fetch-user";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import AdjustName from "../services/adjust-name";
 import Popup from "reactjs-popup";
 import { TUser } from "../types/user";
@@ -55,14 +55,13 @@ const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
             props.givenName,
             props.middleName,
             props.familyName
-          );
-
-          // Update the user fields with the updated fields
-          try {
-            await props.setUser(await fetchUser());
-          } catch (error) {
-            console.error(error);
-          }
+          )
+            .then(async () => {
+              await props.setUser(await fetchUser());
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         }}
       >
         Update Names

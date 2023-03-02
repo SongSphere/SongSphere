@@ -1,5 +1,4 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { useContext, useEffect } from "react";
 
 // import services
 import handleSignInUp from "../services/handle-sign-in-up";

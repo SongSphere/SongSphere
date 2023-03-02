@@ -1,5 +1,3 @@
-import React, { Dispatch, useContext } from "react";
-import { textChangeRangeNewSpan } from "typescript";
 import { TMusicContent } from "../types/music-content";
 import { TUser } from "../types/user";
 import appleSearch from "./apple-search";

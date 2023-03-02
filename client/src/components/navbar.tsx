@@ -9,8 +9,8 @@ interface INavbarProps {
 
 const Navbar = (props: INavbarProps) => {
   return (
-    <div className="relative h-16">
-      <div className="fixed w-screen bg-white">
+    <div className="relative z-10 h-16">
+      <div className="fixed w-screen bg-white drop-shadow-md">
         <div className="flex flex-row justify-end">
           <Link className="p-5" to="/">
             Home
@@ -21,7 +21,8 @@ const Navbar = (props: INavbarProps) => {
           <Link className="p-5" to="/searchUsers">
             Search
           </Link>
-          <Link className="p-5" to="/profile">
+
+          <Link className="p-5" to="/posts">
             Post
           </Link>
           <Link className="p-5" to="/settings">

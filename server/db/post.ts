@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { TMusicContent } from "../../client/src/types/music-content";
 
 export interface IPost {
+  id: string;
   username: string;
   userEmail: string;
   caption: string;
@@ -10,6 +11,10 @@ export interface IPost {
 
 const PostSchema = new Schema<IPost>(
   {
+    id: {
+      type: String,
+      required: false,
+    },
     username: {
       type: String,
       required: true,
@@ -30,6 +35,7 @@ const PostSchema = new Schema<IPost>(
         id: String,
         service: String,
         category: String,
+        cover: String,
       },
       required: true,
     },
