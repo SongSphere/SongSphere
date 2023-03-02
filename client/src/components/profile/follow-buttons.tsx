@@ -50,10 +50,82 @@ export const FollowButton = (props: IUser) => {
 
   return (
     <button
-      className={`ml-5 px-4 py-2 rounded text-white ${buttonColor}`}
+      className={`ml-3 px-3 w-1/4 text-sm py-2 rounded text-white ${buttonColor}`}
       onClick={() => handleClick()}
     >
       {buttonText}
     </button>
   );
+};
+
+export const FollowersButton = (props: IUser) => {
+  let nFollowers = 0;
+
+  const [buttonText, setButtonText] = useState(`${nFollowers} followers`);
+
+  useEffect(() => {
+    if (props.user) {
+      nFollowers = props.user.followers.length;
+      setButtonText(`${nFollowers} followers`);
+    }
+  }, [props.user]);
+
+  const handleClick = async () => {};
+
+  if (!props.user) {
+    return <div>fetching user data</div>;
+  }
+
+  return (
+    <button
+      className={`ml-3 px-2 text-sm py-2 rounded text-grey`}
+      onClick={() => handleClick()}
+    >
+      {buttonText}
+    </button>
+  );
+};
+
+export const FollowingButton = (props: IUser) => {
+  let nFollowing = 0;
+
+  const [buttonText, setButtonText] = useState(`${nFollowing} followers`);
+
+  useEffect(() => {
+    if (props.user) {
+      nFollowing = props.user.following.length;
+      setButtonText(`${nFollowing} following`);
+    }
+  }, [props.user]);
+
+  const handleClick = async () => {};
+
+  if (!props.user) {
+    return <div>fetching user data</div>;
+  }
+
+  return (
+    <button
+      className={`ml-3 px-2 text-sm py-2 rounded text-grey`}
+      onClick={() => handleClick()}
+    >
+      {buttonText}
+    </button>
+  );
+};
+
+export const ListFollowers = (props: IUser) => {
+  let [users, setUsers] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (props.user) {
+      setUsers(props.user.followers);
+    }
+  }, [props.user]);
+
+  if (!users) {
+    return <div>fetching users</div>;
+  }
+
+  return <div>hi</div>;
 };
