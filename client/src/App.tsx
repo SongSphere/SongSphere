@@ -10,6 +10,7 @@ import { TPost } from "./types/post";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
+  const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
   const [service, setService] = useState("");
   const [post, editPost] = useState<TPost | null>(null);
@@ -91,12 +92,14 @@ const App = () => {
       } else {
         return (
           <Router
-            user={user}
-            setUser={setUser}
-            setIsLoggedIn={setIsLoggedIn}
-            appleMusicInstance={appleMusicInstance}
-            service={service}
-            post={post}
+          user={user}
+          setUser={setUser}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+          setIsLoggedIn={setIsLoggedIn}
+          appleMusicInstance={appleMusicInstance}
+          service={service}
+          post={post}
           />
         );
       }
@@ -110,6 +113,8 @@ const App = () => {
       <Router
         user={user}
         setUser={setUser}
+        selectedUser={selectedUser}
+        setSelectedUser={setSelectedUser}
         setIsLoggedIn={setIsLoggedIn}
         appleMusicInstance={appleMusicInstance}
         service={service}

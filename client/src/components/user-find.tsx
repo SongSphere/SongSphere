@@ -1,15 +1,24 @@
 import React, { useState } from "react";
 import fetchUserName from "../services/fetch-userName";
 import { TUser } from "../types/user";
+import { useNavigate } from "react-router-dom";
+import { TPost } from "../types/post";
+import OtherUserProfilePage from "../pages/other-user-profile-page";
 
 interface IUserFindProps {
+  appleMusicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  selectedUser: TUser | null;
+  setSelectedUser:  React.Dispatch<React.SetStateAction<TUser | null>>;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  service: string;
 }
 
 const UserFind = (props: IUserFindProps) => {
   let [users, setUsers] = useState<TUser[] | null>([]);
 
-  let [selected, setSelected] = useState<TUser>();
+  const navigate = useNavigate();
 
   return (
     <div className="flex justify-center min-h-screen overflow-hidden">
@@ -63,7 +72,14 @@ const UserFind = (props: IUserFindProps) => {
             users.map((user) => {
               return (
                 <div key={user.email}>
-                  <button key={user.userName}>
+                  <button
+                    key={user.userName}
+                    onClick={() => {
+                      props.setSelectedUser(user);
+
+                      navigate('/otherUsersProfilePage')
+                    }}
+                  >
                     <div className=" flex-1 block w-full mt-2 px-3 py-2 overflow-hidden bg-white rounded-md">
                       <div className="inline-flex items-center">
                         <img
