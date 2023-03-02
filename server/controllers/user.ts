@@ -22,7 +22,7 @@ export const sessionUpdate = async (
   }
 };
 
-export const findUserByUserName = async(
+export const findUserByUserName = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -38,8 +38,7 @@ export const findUserByUserName = async(
     res.status(404);
     res.json({ msg: "cannot find user" });
   }
-}
-
+};
 
 export const changeNames = async (
   req: Request,
