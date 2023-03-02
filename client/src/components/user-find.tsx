@@ -10,13 +10,13 @@ interface IUserFindProps {
   user: TUser | null;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   selectedUser: TUser | null;
-  setSelectedUser:  React.Dispatch<React.SetStateAction<TUser | null>>;
+  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   service: string;
 }
 
 const UserFind = (props: IUserFindProps) => {
-  let [users, setUsers] = useState<TUser[] | null>([]);
+  let [users, setUsers] = useState<TUser[]>([]);
 
   const navigate = useNavigate();
 
@@ -30,23 +30,17 @@ const UserFind = (props: IUserFindProps) => {
                 type="text"
                 className="flex-1 block w-full px-3 py-2 focus:outline-none"
                 placeholder="Search for users"
-                onBeforeInput={() => {
-                  console.log("No input");
-                  setUsers(null);
-                }}
                 onChange={async (event) => {
-                  console.log(`Current value ${event.target.value}`);
                   if ((event.target.value as string) == "") {
-                    console.log("Text box is empty");
-                    setUsers(null);
-                    console.log(users);
+                    setUsers([]);
                   } else if ((event.target.value as string) != "") {
                     await fetchUserName(event.target.value as string).then(
                       (result) => {
-                        console.log("Text box in serach username has changed");
-                        console.log(event.target.value as string);
-                        console.log(result);
-                        setUsers(result);
+                        if (result) {
+                          setUsers(result);
+                        } else {
+                          setUsers([]);
+                        }
                       }
                     );
                   }
@@ -68,7 +62,7 @@ const UserFind = (props: IUserFindProps) => {
             </div>
           </form>
 
-          {users ? (
+          {users.length > 0 ? (
             users.map((user) => {
               return (
                 <div key={user.email}>
@@ -76,20 +70,18 @@ const UserFind = (props: IUserFindProps) => {
                     key={user.userName}
                     onClick={() => {
                       props.setSelectedUser(user);
-                      console.log(props.selectedUser);
-
-                      navigate('/otherUsersProfilePage')
+                      navigate("/otherUsersProfilePage");
                     }}
                   >
-                    <div className=" flex-1 block w-full mt-2 px-3 py-2 overflow-hidden bg-white rounded-md">
+                    <div className="flex-1 block w-full px-3 py-2 mt-2 overflow-hidden bg-white rounded-md ">
                       <div className="inline-flex items-center">
                         <img
-                          className="w-10 h-10 rounded-full mr-4"
+                          className="w-10 h-10 mr-4 rounded-full"
                           src={user.profileImgUrl}
                           alt="Avatar of Jonathan Reinink"
                         ></img>
                         <div className="text-sm">
-                          <p className="text-gray-900 leading-none pr-2">
+                          <p className="pr-2 leading-none text-gray-900">
                             {user.userName}
                           </p>
                         </div>
