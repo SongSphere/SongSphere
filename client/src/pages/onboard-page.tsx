@@ -4,7 +4,7 @@
   Note: When connecting with Spotify, redirect back to Onboard is unstable(janky) just for documentation
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppleLink from "../components/apple-link";
 import SpotifyLinkButton from "../components/spotify-link";
 import { useNavigate } from "react-router-dom";
@@ -24,9 +24,18 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
   const [userName, setUserName] = useState<string>();
   const [middleName, setMiddleName] = useState<string>();
 
+  useEffect(() => {
+    if (props.user) {
+      if (props.user.onboarded) {
+        navigate("/");
+      }
+    }
+  }, [props.user]);
+
   if (!props.user) {
     return <div>fetching user</div>;
   }
+
   return (
     <div className="flex flex-wrap items-center mt-20">
       <div className="w-full text-center sm:w-1/2 sm:px-6">
