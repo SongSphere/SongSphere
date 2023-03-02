@@ -87,9 +87,10 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
                   props.user.appleToken != undefined) &&
                 props.user.userName !== ""
               ) {
-                setOnboarded(props.user?.email);
-                navigate("/");
-                window.location.reload();
+                setOnboarded(props.user?.email).then(() => {
+                  navigate("/");
+                  window.location.reload();
+                });
               } else {
                 window.alert(
                   "need to link with at least one music platform and have a username"
