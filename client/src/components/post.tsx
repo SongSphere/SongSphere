@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import EditPage from "../pages/edit-page";
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
+import deletePost from "../services/delete-post";
 
 
 interface IPostProps {
@@ -18,6 +19,11 @@ const Post = (props: IPostProps) => {
         {
           props.setPost(props.post);
         }}>Edit</button>
+        <br />
+        <button className="flex text-lblue hover:text-navy" onClick={ () =>
+        {
+          deletePost(props.post)
+        }}>Delete</button>
       
       <div
         className="w-32 h-32 cursor-pointer"
