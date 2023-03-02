@@ -7,14 +7,22 @@ import HomePage from "../pages/home-page";
 import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import ProfilePage from "../pages/profile-page";
+import SearchUsersPage from "../pages/search-users-page";
 import SettingsPage from "../pages/settings-page";
 import { TUser } from "../types/user";
+import { TPost } from "../types/post";
+import EditPage from "../pages/edit-page";
+import OtherUserProfilePage from "../pages/other-user-profile-page";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   user: TUser | null;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  selectedUser: TUser | null;
+  setSelectedUser:  React.Dispatch<React.SetStateAction<TUser | null>>; 
+  service: string;
+  post: TPost | null;
 }
 
 /**
@@ -44,16 +52,48 @@ const Router = (props: IRouterProps) => {
     {
       path: "/posts",
       element: (
-        <PostPage musicInstance={props.appleMusicInstance} user={props.user} />
+        <PostPage
+          musicInstance={props.appleMusicInstance}
+          user={props.user}
+          service={props.service}
+        />
       ),
     },
     {
       path: "/profile",
       element: (
         <ProfilePage
+          user={props.user}
           setUser={props.setUser}
           setIsLoggedIn={props.setIsLoggedIn}
-          musicInstance={props.appleMusicInstance}
+          appleMusicInstance={props.appleMusicInstance}
+          service={props.service}
+        />
+      ),
+    },
+    {
+      path: "/searchUsers",
+      element: (
+        <SearchUsersPage
+          user={props.user}
+          setUser={props.setUser}
+          selectedUser={props.selectedUser}
+          setSelectedUser={props.setSelectedUser}
+          setIsLoggedIn={props.setIsLoggedIn}
+          appleMusicInstance={props.appleMusicInstance}
+          service={props.service}
+        />
+      ),
+    },
+    {
+      path: "/otherUsersProfilePage",
+      element: (
+        <OtherUserProfilePage 
+        appleMusicInstance={props.appleMusicInstance}
+        user={props.selectedUser} // Going to the user that the master user selected
+        setUser={props.setUser}
+        setIsLoggedIn={props.setIsLoggedIn}
+        service={props.service}
         />
       ),
     },
@@ -75,6 +115,14 @@ const Router = (props: IRouterProps) => {
           setUser={props.setUser}
           setIsLoggedIn={props.setIsLoggedIn}
           appleMusicInstance={props.appleMusicInstance}
+        />
+      ),
+    },
+    {
+      path: "/edit",
+      element: (
+        <EditPage
+          post={props.post}
         />
       ),
     },

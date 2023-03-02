@@ -6,7 +6,10 @@ import { TMusicContent } from "../types/music-content";
 import { spotifySearch } from "../services/spotify-search";
 import sendPost from "../services/send-post";
 import { TUser } from "../types/user";
-import SearchOption from "./search-option-button";
+import PostFailure from "./post-failure";
+import PostSucess from "./post-sucess";
+import Popup from "reactjs-popup";
+import { Navigate } from "react-router-dom";
 
 const AppleSearch = async (
   term: string,
@@ -29,64 +32,58 @@ const SpotifySearch = async (
 interface ISearchProps {
   musicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
-}
-
-interface ISearchProps {
-  musicInstance: MusicKit.MusicKitInstance;
+  service: string;
 }
 
 const Search = (props: ISearchProps) => {
-  const appleToken = props.user?.appleToken;
-  const spotifyToken = props.user?.spotifyToken;
-  let service = "";
-
-  if (spotifyToken !== "") {
-    service = "spotify";
-  } else if (appleToken !== "") {
-    service = "apple";
-  } else {
-    console.log("NO SERVICE");
-  }
-
   const selectService = async (
     term: string,
     category: string,
     limit: number
   ) => {
-    if (service === "apple") {
+    if (props.service === "apple") {
       return AppleSearch(term, category, limit, props.musicInstance);
-    } else {
+    } else if (props.service === "spotify") {
       return SpotifySearch(term, category, props.user?.spotifyToken!, limit);
+    } else {
+      console.error("no service available");
     }
   };
 
-  //let songs: [string, string][] = useState([]);
   let [songs, setSongs] = useState<TMusicContent[]>([]);
   let [selected, setSelected] = useState<TMusicContent>();
   let [song, setSong] = useState<string>("");
   let [category, setCategory] = useState<string>("songs");
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+
+  const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
 
   const [caption, setCaption] = useState<string>("");
+  const closeModal = () => setOpen2(false);
 
   const handleOpen = () => {
     setOpen(!open);
   };
+  const handleOpen2 = () => {
+    setOpen2(!open2);
+  };
 
   return (
-    <div>
+    <div className="p-2">
       <div className="dropdown">
         <button
-          className="mx-2 text-black bg-white border-2 border-solid border-lblue"
+          className="text-black bg-white border-2 border-solid border-lblue"
           onClick={handleOpen}
         >
           Search For:
         </button>
 
         {open ? (
-          <ul className="mx-2 text-left menu">
+          <ul className="text-left menu">
             <li className="songs">
               <button
+                className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
                 onClick={async () =>
                   await selectService(song as string, "songs", 10).then(
                     (result) => {
@@ -103,6 +100,7 @@ const Search = (props: ISearchProps) => {
             </li>
             <li className="albums">
               <button
+                className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
                 onClick={() =>
                   selectService(song as string, "albums", 10).then((result) => {
                     setCategory("albums");
@@ -117,6 +115,7 @@ const Search = (props: ISearchProps) => {
             </li>
             <li className="artists">
               <button
+                className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
                 onClick={() =>
                   selectService(song as string, "artists", 10).then(
                     (result) => {
@@ -135,6 +134,7 @@ const Search = (props: ISearchProps) => {
         ) : null}
         <br />
         <input
+          className="w-1/2"
           placeholder="Enter Post Title"
           onChange={(event) =>
             selectService(event.target.value as string, category, 10).then(
@@ -149,12 +149,18 @@ const Search = (props: ISearchProps) => {
       </div>
       {songs.map((s) => (
         <div>
-          <button key={s.id} onClick={() => setSelected(s)}>
-            {s.name}
+          <button
+            className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+            key={s.id}
+            onClick={() => setSelected(s)}
+          >
+            {s.name} {s.artist}
           </button>
         </div>
       ))}
-      <div>Selected: {selected?.name}</div>
+      <div>
+        Selected: {selected?.name} {selected?.artist}
+      </div>
       <h1>Enter Caption</h1>
       <form>
         <label>
@@ -170,17 +176,37 @@ const Search = (props: ISearchProps) => {
       {/* This will be edited once merged to incoroporate username userSessionContext */}
       <button
         className="my-5 border-black rounded-md text-lgrey bg-navy"
-        onClick={() =>
-          sendPost({
+        onClick={async () => {
+          setOpen2(true);
+          await sendPost({
             username: props.user?.userName!,
             userEmail: props.user?.email!,
             caption: caption,
             music: selected!,
           })
-        }
+            .then((res) => {
+              console.log(res);
+              if (!res) {
+                setPostSuccessFail(<PostFailure />);
+              } else {
+                setPostSuccessFail(<PostSucess />);
+              }
+            })
+            .catch((error) => {
+              <PostFailure />;
+            });
+        }}
       >
         Submit
       </button>
+      <Popup open={open2} closeOnDocumentClick onClose={closeModal}>
+        <div className="modal">
+          <a className="close" onClick={closeModal}>
+            &times;
+            {postSuccessFail}
+          </a>
+        </div>
+      </Popup>
     </div>
   );
 };

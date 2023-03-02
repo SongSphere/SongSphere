@@ -1,23 +1,16 @@
-// import packages
 import { useEffect, useState } from "react";
-
-// import services
+import AppleMusicPlayerCard from "../components/apple-music-player-card";
+import Navbar from "../components/navbar";
+import { NoPosts } from "../components/profile/no-post";
+import OtherUserProfileCard from "../components/profile/other-user-profile-card";
+import ProfileFeed from "../components/profile/profile-feed";
+import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import fetchUserPosts from "../services/fetch-user-posts";
-
-// import types
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
 import { TUser } from "../types/user";
 
-// import components
-import Navbar from "../components/navbar";
-import AppleMusicPlayerCard from "../components/apple-music-player-card";
-import SpotifyPlayerCard from "../components/spotify-music-player-card";
-import ProfileCard from "../components/profile/profile-card";
-import ProfileFeed from "../components/profile/profile-feed";
-import { NoPosts } from "../components/profile/no-post";
-
-interface IProfileProps {
+interface IOtherUserProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
@@ -25,7 +18,7 @@ interface IProfileProps {
   service: string;
 }
 
-const ProfilePage = (props: IProfileProps) => {
+const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
   const [posts, setPosts] = useState<TPost[] | null>(null);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
@@ -50,7 +43,7 @@ const ProfilePage = (props: IProfileProps) => {
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <ProfileCard user={props.user} setUser={props.setUser} />
+          <OtherUserProfileCard user={props.user} setUser={props.setUser} />
         </div>
         <div className="col-span-2">
           {posts ? (
@@ -79,4 +72,4 @@ const ProfilePage = (props: IProfileProps) => {
   );
 };
 
-export default ProfilePage;
+export default OtherUserProfilePage;

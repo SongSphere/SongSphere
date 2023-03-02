@@ -5,8 +5,10 @@ import {
   deleteUserInControllers,
   updateProfilePhoto,
   getProfilePhoto,
+  findUserByUserName,
+  changeOnboarded,
 } from "../controllers/user";
-import fs from "fs";
+import { getUserPosts } from "../controllers/posting";
 
 // import middleware
 import auth from "../middleware/auth";
@@ -14,8 +16,11 @@ import auth from "../middleware/auth";
 const router = express.Router();
 
 router.get("/user", auth, sessionUpdate);
+router.post("/api/user/posts", auth, getUserPosts);
+router.post("/api/user/onboard", auth, changeOnboarded);
 router.post("/user/adjustNames", auth, changeNames);
 router.post("/user/deleteAccount", auth, deleteUserInControllers);
+router.post("/user/queryUserName", auth, findUserByUserName);
 
 import multer from "multer";
 const upload = multer({ dest: "images/" });

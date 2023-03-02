@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { TMusicContent } from "../types/music-content";
 import { TUser } from "../types/user";
+import selectService from "../services/select-service";
 
 interface ISpotifySong {
   name: string;
@@ -10,11 +12,12 @@ interface ISpotifySong {
 
 interface ISpotifyPlayerCardProps {
   user: TUser | null;
+  selectedSong: TMusicContent | null;
+  appleMusicInstance: MusicKit.MusicKitInstance;
+  service: string;
 }
 
 const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
-  const songId = "11dFghVXANMlKmJXsNCbNl";
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [song, setSong] = useState<ISpotifySong | null>(null);
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
@@ -56,15 +59,39 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
           uri: data.uri,
         };
         setSong(song);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
   useEffect(() => {
-    if (props.user) {
-      const song_id = "11dFghVXANMlKmJXsNCbNl";
-      fetchSong(song_id, props.user.spotifyToken);
+    const selectServiceHandler = async (
+      selectedSong: TMusicContent,
+      appleMusicInstance: MusicKit.MusicKitInstance,
+      user: TUser,
+      service: string,
+      token: string
+    ) => {
+      await selectService(selectedSong, appleMusicInstance, user, service).then(
+        (bestFitId) => {
+          if (bestFitId != "-1") {
+            fetchSong(bestFitId, token);
+          }
+        }
+      );
+    };
+
+    if (props.user && props.selectedSong) {
+      selectServiceHandler(
+        props.selectedSong,
+        props.appleMusicInstance,
+        props.user,
+        props.service,
+        props.user.spotifyToken
+      );
     }
-  }, [props.user]);
+  }, [props.user, props.selectedSong]);
 
   useEffect(() => {
     const setSong = async (song_uri: string, deviceId: string) => {
@@ -165,7 +192,7 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   return (
     <div className="relative flex justify-center h-screen">
       <div className="fixed flex h-full mt-8">
-        <div className="bg-white w-80 h-5/6">
+        <div className="bg-white w-80 h-5/6 drop-shadow-md">
           <div className="flex justify-center">
             <div className="w-4/5 mt-5">
               <img src={song?.img}></img>

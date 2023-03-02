@@ -4,12 +4,13 @@
   Note: When connecting with Spotify, redirect back to Onboard is unstable(janky) just for documentation
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppleLink from "../components/apple-link";
 import SpotifyLinkButton from "../components/spotify-link";
 import { useNavigate } from "react-router-dom";
 import { TUser } from "../types/user";
 import AdjustNamesLink from "../components/adjust-names-link";
+import setOnboarded from "../services/set-onboarded";
 
 interface IOnBoardPageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -23,11 +24,23 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
   const [userName, setUserName] = useState<string>();
   const [middleName, setMiddleName] = useState<string>();
 
+  useEffect(() => {
+    if (props.user) {
+      if (props.user.onboarded) {
+        navigate("/");
+      }
+    }
+  }, [props.user]);
+
+  if (!props.user) {
+    return <div>fetching user</div>;
+  }
+
   return (
     <div className="flex flex-wrap items-center mt-20">
       <div className="w-full text-center sm:w-1/2 sm:px-6">
         <h3 className="text-3xl font-semibold text-gray-900">
-          Welcome {props.user?.givenName}
+          Welcome {props.user.givenName}
         </h3>
         <div className="mt-6 text-xl leading-9">
           Let's connect your Apple Music or Spotify account
@@ -68,8 +81,22 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
 
         <button
           onClick={() => {
-            navigate("/");
-            window.location.reload();
+            if (props.user) {
+              if (
+                (props.user.spotifyToken != undefined ||
+                  props.user.appleToken != undefined) &&
+                props.user.userName !== ""
+              ) {
+                setOnboarded(props.user?.email).then(() => {
+                  navigate("/");
+                  window.location.reload();
+                });
+              } else {
+                window.alert(
+                  "need to link with at least one music platform and have a username"
+                );
+              }
+            }
           }}
         >
           Next

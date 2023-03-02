@@ -3,9 +3,8 @@ import { TokenPayload } from "google-auth-library";
 import mongoose from "mongoose";
 
 // import models
+import { TPost } from "../types/post";
 import User, { IUser } from "../db/user";
-import { TMusicContent } from "../../client/src/types/music-content";
-import { TPost } from "../../client/src/types/post";
 import Post, { IPost } from "../db/post";
 import fs from "fs";
 
@@ -25,6 +24,7 @@ export const createUser = async (
     token: token,
     followers: {},
     following: {},
+    onboarded: false,
   });
 
   return user;
@@ -108,6 +108,22 @@ export const updateUserToken = async (email: string, token: string) => {
   }
 };
 
+export const updateUserOnboarded = async (
+  email: string,
+  onboarded: boolean
+) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { onboarded: onboarded },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const fetchUserById = async (
   id: string
 ): Promise<mongoose.Document<unknown, any, IUser>> => {
@@ -139,6 +155,20 @@ export const saveUser = async (
   }
 };
 
+export const fetchUsersbyUserName = async (userName: string) => {
+  console.log("Called Fetchuserbyusername in services/db.ts");
+  console.log(userName);
+  var regexp = new RegExp("^" + userName);
+
+  try {
+    const users = await User.find({ userName: regexp });
+    return users;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 // returns document based on post schema
 export const createPost = async (
   newPost: TPost
@@ -154,10 +184,20 @@ export const createPost = async (
       id: newPost.music.id,
       service: newPost.music.service,
       category: newPost.music.category,
+      cover: newPost.music.cover,
     },
   });
 
   return post;
+};
+
+export const getUserPostsByEmail = async (email: string) => {
+  try {
+    const posts = await Post.find({ userEmail: email });
+    return posts;
+  } catch (error) {
+    throw error;
+  }
 };
 
 // saves the given post document to the db
@@ -175,7 +215,7 @@ export const savePost = async (
 export const updatePost = async (newPost: TPost) => {
   try {
     // call mongoose updateOne function with data, this updates database
-    await Post.findByIdAndUpdate(newPost.id, {
+    await Post.findByIdAndUpdate(newPost._id, {
       username: newPost.username,
       userEmail: newPost.userEmail,
       caption: newPost.caption,
@@ -195,7 +235,7 @@ export const updatePost = async (newPost: TPost) => {
 
 export const removePost = async (post: TPost) => {
   try {
-    await Post.findByIdAndDelete(post.id);
+    await Post.findByIdAndDelete(post._id);
   } catch (error) {
     throw error;
   }
