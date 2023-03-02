@@ -1,7 +1,6 @@
 
 import { SetStateAction } from "react";
 import Navbar from "../components/navbar";
-import SearchUser from "../components/search-username";
 import UserFind from "../components/user-find";
 import { TUser } from "../types/user";;
 
