@@ -17,15 +17,15 @@ import { createStyles } from "@mantine/styles";
 import EasyCrop from "react-easy-crop";
 import type { Point, Area } from "react-easy-crop/types";
 import updateProfile from "../services/send-image";
+import { TUser } from "../types/user";
 
 import { getCroppedImg } from "../utils/crop-image";
 
 export interface ReactImageCropperProps {
   onCropComplete: (formData: FormData) => void;
+  user: TUser | null;
 }
-export const ReactImageCropper = ({
-  onCropComplete,
-}: ReactImageCropperProps) => {
+export const ReactImageCropper = (props: ReactImageCropperProps) => {
   const [previewImage, setPreviewImage] = useState<string | undefined>();
   const [croppedImage, setCroppedImage] = useState<string | undefined>();
   const [zoom, setZoom] = useState(1);
@@ -34,7 +34,7 @@ export const ReactImageCropper = ({
     Area | undefined
   >();
 
-  const [imageName, setImageName] = useState();
+  const [image, setImage] = useState(props.user?.profileImgUrl);
 
   const { classes } = useStyles();
 
@@ -51,37 +51,21 @@ export const ReactImageCropper = ({
     if (!previewImage) return;
     try {
       const blob = await getCroppedImg(previewImage, croppedAreaPixels);
-      console.log("THIS IS BLOB");
-      console.log(blob);
       if (!blob) return;
 
       const file = new File([blob], "Cropped image");
-      console.log(file);
       const b = new Blob([blob as BlobPart]);
-      // let b2 = await fetch(blob).then(r => r.blob());
-      // console.log(URL.createObjectURL(b2));
 
       const formData = new FormData();
       formData.append("image", file);
-      const ds = " hello ";
-      formData.append("Description", ds);
-      onCropComplete(formData);
-      setCroppedImage(URL.createObjectURL(b) as string);
+      props.onCropComplete(formData);
+      // I will keep this for debugging, just in case
+      //setCroppedImage(URL.createObjectURL(b) as string);
       setPreviewImage(undefined);
 
-      console.log("Blob");
-      console.log(b);
-
-      console.log(formData);
-      updateProfile(formData);
-
-      //const arrayBuffer = await blob["arrayBuffer"]();
-      // await new Response(b).arrayBuffer().then((arrayBuffer) => {
-      //   console.log("arrayBuffer");
-      //   console.log(arrayBuffer);
-      //   //const buffer = Buffer.from(arrayBuffer);
-      //   updateProfile(arrayBuffer);
-      // });
+      updateProfile(formData).then(() => {
+        setImage(URL.createObjectURL(b) as string);
+      });
     } catch (error) {
       console.log("Error cropping image " + error);
     }
@@ -123,7 +107,8 @@ export const ReactImageCropper = ({
           <Button onClick={cropImage}>Crop image</Button>
         </Stack>
       </Modal>
-      {croppedImage ? (
+      <img src={image}></img>
+      {/* {croppedImage ? (
         <Stack align="center" justify="center" sx={{ minHeight: "100vh" }}>
           <Title>Cropped Image</Title>
           <Image
@@ -136,16 +121,16 @@ export const ReactImageCropper = ({
             Crop another image
           </Button>
         </Stack>
-      ) : (
-        <Box className={classes.container}>
-          <FileInput
-            variant="filled"
-            placeholder="Upload Profile Photo"
-            accept="image/*"
-            onChange={handleFileUpload}
-          />
-        </Box>
-      )}
+      ) : ( */}
+      <Box className={classes.container}>
+        <FileInput
+          variant="filled"
+          placeholder="Upload Profile Photo"
+          accept="image/*"
+          onChange={handleFileUpload}
+        />
+      </Box>
+      {/*)}*/}
     </>
   );
 };

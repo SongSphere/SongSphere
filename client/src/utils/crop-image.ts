@@ -12,9 +12,6 @@ export function getRadianAngle(degreeValue: number) {
   return (degreeValue * Math.PI) / 180;
 }
 
-/**
- * Returns the new bounding area of a rotated rectangle.
- */
 export function rotateSize(width: number, height: number, rotation: number) {
   const rotRad = getRadianAngle(rotation);
 
@@ -45,18 +42,15 @@ export async function getCroppedImg(
 
   const rotRad = getRadianAngle(rotation);
 
-  // calculate bounding box of the rotated image
   const { width: bBoxWidth, height: bBoxHeight } = rotateSize(
     image.width,
     image.height,
     rotation
   );
 
-  // set canvas size to match the bounding box
   canvas.width = bBoxWidth;
   canvas.height = bBoxHeight;
 
-  // translate canvas context to a central location to allow rotating and flipping around the center
   ctx.translate(bBoxWidth / 2, bBoxHeight / 2);
   ctx.rotate(rotRad);
   ctx.scale(flip.horizontal ? -1 : 1, flip.vertical ? -1 : 1);
@@ -65,8 +59,6 @@ export async function getCroppedImg(
   // draw rotated image
   ctx.drawImage(image, 0, 0);
 
-  // croppedAreaPixels values are bounding box relative
-  // extract the cropped image using these values
   if (!pixelCrop) return;
   const data = ctx.getImageData(
     pixelCrop.x,
@@ -88,7 +80,6 @@ export async function getCroppedImg(
   // As a blob
   return new Promise<BlobPart>((resolve, reject) => {
     canvas.toBlob((file) => {
-      // if (file) resolve(URL.createObjectURL(file));
       if (file) resolve(file);
     }, "image/jpeg");
   });

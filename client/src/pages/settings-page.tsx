@@ -116,7 +116,7 @@ const SettingsPage = (props: ISettingPageProps) => {
 
           <div>`Spotify API connected: ${spotifyAccountStatus}`</div>
 
-          <ReactImageCropper onCropComplete={console.log} />
+          <ReactImageCropper onCropComplete={console.log} user={props.user} />
 
           <button> Next </button>
         </div>

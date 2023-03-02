@@ -5,7 +5,7 @@ import {
   updateNames,
   updatePFP,
 } from "../services/db";
-import multer from "multer";
+import fs from "fs";
 
 export const sessionUpdate = async (
   req: Request,
@@ -68,19 +68,22 @@ export const deleteUserInControllers = async (
 
 export const updateProfilePhoto = (req: Request, res: Response) => {
   const email = req.session.user.email;
-  console.log(req.body.formData);
-  console.log(req.body.file);
   const imageName = req.file.filename;
-  console.log("NAME");
-  console.log(imageName);
 
   try {
-    updatePFP(email, req.body.formData.file);
+    updatePFP(email, req.file.filename);
     res.status(200);
-    res.send({ imageName });
+    res.json({ msg: "success" });
   } catch (error) {
     console.log(error);
+    res.json({ msg: "failed" });
   }
 
   res.send({ imageName });
+};
+
+export const getProfilePhoto = (req: Request, res: Response) => {
+  const imageName = req.params.imageName;
+  const readStream = fs.createReadStream(`images/${imageName}`);
+  readStream.pipe(res);
 };

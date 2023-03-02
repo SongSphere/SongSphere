@@ -267,60 +267,12 @@ export const removeFollow = async (
   }
 };
 
-export const updatePFP = async (email: string, arrayBufferStr: string) => {
+export const updatePFP = async (email: string, filename: string) => {
   try {
-    //const file = new File([blob], "Cropped image");
-    // var arrayBuffer;
-    // var fileReader = new FileReader();
-    // fileReader.onload = function (event: { target: { result: any } }) {
-    //   arrayBuffer = event.target.result;
-    // };
-    // fileReader.readAsArrayBuffer(blob);
-    //const arrayBuffer = await blob.arrayBuffer();
-    // const arrayBuffer = await blob["arrayBuffer"]();
-    //const arrayBuffer = await new Response(blob).arrayBuffer();
-
-    // var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
-    // var bufView = new Uint16Array(buf);
-    // for (var i = 0, strLen = str.length; i < strLen; i++) {
-    //   bufView[i] = str.charCodeAt(i);
-    // }
-
-    var enc = new TextEncoder(); // always utf-8
-    const arrayBuffer = enc.encode(arrayBufferStr).buffer;
-
-    // const stringLength = arrayBufferStr.length;
-    // const arrayBuffer = new ArrayBuffer(stringLength * 2);
-    // const bufferView = new Uint16Array(arrayBuffer);
-    // for (let i = 0; i < stringLength; i++) {
-    //   bufferView[i] = arrayBufferStr.charCodeAt(i);
-    // }
-    //return buffer;
-
-    // console.log("THIS IS ARRAYBUFFER");
-    // //console.log(arrayBuffer);
-    // const buffer = Buffer.from(arrayBuffer);
-
-    // //const fileBuffer = Buffer.from(file);
-    // await fs.writeFile("./saturn.png", buffer, (err) => {
-    //   if (err) console.log(err);
-    //   else {
-    //     console.log("File written successfully\n");
-    //     console.log("The written has the following contents:");
-    //     //console.log(fs.readFileSync("books.txt", "utf8"));
-    //   }
-    // });
-    // const link = document.createElement("a");
-    // const url = URL.createObjectURL(file);
-    // link.href = url;
-    // link.download = file.name;
-    // document.body.appendChild(link);
-    // link.click();
-    // document.body.removeChild(link);
-    // window.URL.revokeObjectURL(url);
-    // console.log("hello?");
-    //fs.writeFileSync("name", buffer);
-    //await User.findOneAndUpdate({ email: email }, { })
+    await User.findOneAndUpdate(
+      { email: email },
+      { profileImgUrl: "http://localhost:8080/user/images/" + filename }
+    );
   } catch (error) {
     console.log(error);
     throw error;
