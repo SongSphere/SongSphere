@@ -138,15 +138,15 @@ export const saveUser = async (
 };
 
 
-export const fetchUserbyUserName = async (
+export const fetchUsersbyUserName = async (
   userName: string) => {
     console.log("Called Fetchuserbyusername in services/db.ts")
     console.log(userName);
     var regexp = new RegExp("^"+ userName);
 
     try {
-      const user = await User.findOne({ userName: regexp });
-      return user;
+      const users = await User.find({ userName: regexp });
+      return users;
     } catch (error) {
       console.log(error);
       throw error;

@@ -10,6 +10,7 @@ import ProfilePage from "../pages/profile-page";
 import SearchUsersPage from "../pages/search-users-page";
 import SettingsPage from "../pages/settings-page";
 import { TUser } from "../types/user";
+import UserFind from "./user-find";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -63,8 +64,10 @@ const Router = (props: IRouterProps) => {
       element: (
         <SearchUsersPage
           setUser={props.setUser}
+          user={props.user}
           setIsLoggedIn={props.setIsLoggedIn}
           musicInstance={props.appleMusicInstance}
+
         />
       ),
     },
@@ -89,6 +92,7 @@ const Router = (props: IRouterProps) => {
         />
       ),
     },
+    
   ]);
 
   return element;

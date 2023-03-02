@@ -1,6 +1,7 @@
 
 import { SetStateAction } from "react";
 import Navbar from "../components/navbar";
+import SearchUser from "../components/search-username";
 import UserFind from "../components/user-find";
 import { TUser } from "../types/user";;
 
@@ -8,6 +9,7 @@ import { TUser } from "../types/user";;
 interface ISearchUsersProps {
   musicInstance: MusicKit.MusicKitInstance;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  user: TUser | null;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -22,8 +24,10 @@ const SearchUsersPage = (props: ISearchUsersProps) => {
             } } />
             <div className="text-center translate-y-1/3">
                 <h1 className="text-lg text-lgrey">Find Friends</h1>
-                <UserFind/>
+                <UserFind user={props.user}/>
+               
             </div>
+        
         </div>
        
     );

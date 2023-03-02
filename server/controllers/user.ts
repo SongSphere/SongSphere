@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import {
   deleteUserInServices,
   fetchUserByEmail,
-  fetchUserbyUserName,
+  fetchUsersbyUserName,
   updateNames,
 } from "../services/db";
 
@@ -31,9 +31,9 @@ export const findUserByUserName = async(
     console.log("Printed in user.ts in controllers backend");
     console.log(req.body.userName.toString);
     //console.log(req.body.userName.toString);
-    const user = await fetchUserbyUserName(req.body.userName);
+    const users = await fetchUsersbyUserName(req.body.userName);
     res.status(200);
-    res.json({ user: user });
+    res.json({ users: users });
   } catch (error) {
     res.status(404);
     res.json({ msg: "cannot find user" });

@@ -16,7 +16,6 @@ const fetchUser = async () => {
       user = (data as TUserWrapper).user;
     })
     .catch((error) => {
-      console.log("asdfasd")
       throw error;
     });
   return user;
