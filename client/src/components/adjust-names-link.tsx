@@ -42,6 +42,7 @@ interface IAdjustNamesLinkProps {
 const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
+  const [successFailText, setSuccessFailText] = useState("");
 
   return (
     <div>
@@ -56,7 +57,12 @@ const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
             props.middleName,
             props.familyName
           )
-            .then(async () => {
+            .then(async (res) => {
+              if (res) {
+                setSuccessFailText("Success");
+              } else {
+                setSuccessFailText("Fail");
+              }
               await props.setUser(await fetchUser());
             })
             .catch((error) => {
@@ -72,7 +78,7 @@ const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
           <a className="close" onClick={closeModal}>
             &times;
           </a>
-          Success
+          {successFailText}
         </div>
       </Popup>
     </div>
