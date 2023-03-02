@@ -21,8 +21,8 @@ export const createUser = async (
     emailVerified: userData.email_verified,
     profileImgUrl: userData.picture,
     token: token,
-    followers: {},
-    following: {},
+    followers: [],
+    following: [],
   });
 
   return user;

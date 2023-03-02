@@ -65,6 +65,7 @@ export const FollowersButton = (props: IUser) => {
 
   useEffect(() => {
     if (props.user) {
+      console.log(props.user.followers);
       nFollowers = props.user.followers.length;
       setButtonText(`${nFollowers} followers`);
     }
@@ -126,6 +127,14 @@ export const ListFollowers = (props: IUser) => {
   if (!users) {
     return <div>fetching users</div>;
   }
+
+  return (
+    <div>
+      {users.map((user) => {
+        return <div>{user}</div>;
+      })}
+    </div>
+  );
 
   return <div>hi</div>;
 };
