@@ -1,4 +1,5 @@
 import { TUser } from "../../types/user";
+import { FollowButton } from "./follow-buttons";
 
 interface IProfileCardProps {
   user: TUser;
@@ -17,10 +18,11 @@ const ProfileCard = (props: IProfileCardProps) => {
               ></img>
             </div>
           </div>
-          <div className="mt-6 text-2xl font-bold text-center">{`${props.user.givenName} ${props.user.middleName} ${props.user.familyName}`}</div>
+          <div className="justify-center mt-6 text-2xl font-bold text-center">{`${props.user.givenName} ${props.user.middleName} ${props.user.familyName}`}</div>
           <div className="text-center text-slate-600">
             {props.user.userName}
           </div>
+          <FollowButton user={props.user} />
         </div>
       </div>
     </div>
