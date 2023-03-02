@@ -18,9 +18,8 @@ const sendPost = async (post: TPost) => {
     });
   } catch (err) {
     console.log(err);
-    PostFailure();
+
   }
-  PostSucess();
 };
 
 export default sendPost;

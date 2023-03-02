@@ -8,6 +8,7 @@ import sendPost from "../services/send-post";
 import { TUser } from "../types/user";
 import SearchOption from "./search-option-button";
 
+
 const AppleSearch = async (
   term: string,
   category: string,
@@ -60,19 +61,19 @@ const Search = (props: ISearchProps) => {
   };
 
   return (
-    <div>
+    <div className="p-2">
       <div className="dropdown">
         <button
-          className="mx-2 text-black bg-white border-2 border-solid border-lblue"
+          className="text-black bg-white border-2 border-solid border-lblue"
           onClick={handleOpen}
         >
           Search For:
         </button>
 
         {open ? (
-          <ul className="mx-2 text-left menu">
+          <ul className="text-left menu">
             <li className="songs">
-              <button
+              <button className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
                 onClick={async () =>
                   await selectService(song as string, "songs", 10).then(
                     (result) => {
@@ -88,7 +89,7 @@ const Search = (props: ISearchProps) => {
               </button>
             </li>
             <li className="albums">
-              <button
+              <button className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
                 onClick={() =>
                   selectService(song as string, "albums", 10).then((result) => {
                     setCategory("albums");
@@ -102,7 +103,7 @@ const Search = (props: ISearchProps) => {
               </button>
             </li>
             <li className="artists">
-              <button
+              <button className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
                 onClick={() =>
                   selectService(song as string, "artists", 10).then(
                     (result) => {
@@ -120,7 +121,7 @@ const Search = (props: ISearchProps) => {
           </ul>
         ) : null}
         <br />
-        <input
+        <input className="w-1/2"
           placeholder="Enter Post Title"
           onChange={(event) =>
             selectService(event.target.value as string, category, 10).then(
@@ -135,12 +136,14 @@ const Search = (props: ISearchProps) => {
       </div>
       {songs.map((s) => (
         <div>
-          <button key={s.id} onClick={() => setSelected(s)}>
+          <button  className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey" key={s.id} onClick={() => setSelected(s)}>
             {s.name}
+            {' '}
+            {s.artist}
           </button>
         </div>
       ))}
-      <div>Selected: {selected?.name}</div>
+      <div>Selected: {selected?.name} {selected?.artist}</div>
       <h1>Enter Caption</h1>
       <form>
         <label>
