@@ -18,10 +18,15 @@ const AdjustName = async (
         headers: {
           "Content-Type": "application/json",
         },
-      }).then(() => {
-        resolve(true);
+      }).then((res) => {
+        if (res.status == 200) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
       });
     } catch (err) {
+      resolve(false);
       reject(err);
     }
   });

@@ -23,6 +23,7 @@ const sendPost = async (post: TPost) => {
         } else resolve(false);
       });
     } catch (err) {
+      resolve(false);
       console.log(err);
       reject(err);
     }

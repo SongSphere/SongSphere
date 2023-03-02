@@ -46,7 +46,6 @@ export const changeNames = async (
   next: NextFunction
 ) => {
   const email = req.session.user.email;
-
   try {
     await updateNames(
       email,
