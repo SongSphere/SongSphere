@@ -17,7 +17,7 @@ const ProfileCard = (props: IProfileCardProps) => {
               ></img>
             </div>
           </div>
-          <div className="mt-6 text-2xl font-bold text-center">{`${props.user.givenName} ${props.user.middleName} ${props.user.familyName}`}</div>
+          <div className="mt-6 text-2xl font-bold text-center text-navy">{`${props.user.givenName} ${props.user.middleName} ${props.user.familyName}`}</div>
           <div className="text-center text-slate-600">
             {props.user.userName}
           </div>
