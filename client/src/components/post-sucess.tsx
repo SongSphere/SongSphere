@@ -9,6 +9,7 @@ const PostSucess = () => {
           <div>
             <p className="font-bold">Sucess</p>
             <p className="text-sm">Your post was succesfull!</p>
+            
           </div>
         </div>
         

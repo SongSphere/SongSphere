@@ -6,7 +6,10 @@ import { TMusicContent } from "../types/music-content";
 import { spotifySearch } from "../services/spotify-search";
 import sendPost from "../services/send-post";
 import { TUser } from "../types/user";
-import SearchOption from "./search-option-button";
+import PostFailure from "./post-failure";
+import PostSucess from "./post-sucess";
+import Popup from "reactjs-popup"
+import { Navigate } from "react-router-dom";
 
 
 const AppleSearch = async (
@@ -53,11 +56,17 @@ const Search = (props: ISearchProps) => {
   let [song, setSong] = useState<string>("");
   let [category, setCategory] = useState<string>("songs");
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+  
 
   const [caption, setCaption] = useState<string>("");
-
+  const closeModal = () => setOpen2(false);
+  
   const handleOpen = () => {
     setOpen(!open);
+  };
+  const handleOpen2 = () => {
+    setOpen2(!open2);
   };
 
   return (
@@ -159,17 +168,33 @@ const Search = (props: ISearchProps) => {
       {/* This will be edited once merged to incoroporate username userSessionContext */}
       <button
         className="my-5 border-black rounded-md text-lgrey bg-navy"
-        onClick={() => {
-          sendPost({
+        onClick={ async () => {
+          setOpen2(true);
+           await sendPost({
             username: props.user?.userName!,
             userEmail: props.user?.email!,
             caption: caption,
             music: selected!,
+          }).then((res) => {
+            if (!res) {
+              <PostFailure />
+            }
+          })
+          .catch((error) => {
+            <PostFailure />
           });
         }}
       >
         Submit
       </button>
+      <Popup open={open2} closeOnDocumentClick onClose={closeModal}>
+        <div className="modal">
+          <a className="close" onClick={closeModal}>
+            &times;
+          </a>
+         <PostSucess />
+        </div>
+      </Popup>
     </div>
   );
 };

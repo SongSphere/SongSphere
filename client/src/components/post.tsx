@@ -35,7 +35,8 @@ const Post = (props: IPostProps) => {
                   </button>
                 </li>
                 <li >
-                  <button onClick={ () => {deletePost(props.post)}}>
+                  <button onClick={ () => {deletePost(props.post);
+                     window.location.reload()}}>
                   Delete
                   </button>
                 </li>
