@@ -50,7 +50,7 @@ const ProfilePage = (props: IProfileProps) => {
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <ProfileCard user={props.user} />
+          <ProfileCard user={props.user} setUser={props.setUser} />
         </div>
         <div className="col-span-2">
           {posts ? (
