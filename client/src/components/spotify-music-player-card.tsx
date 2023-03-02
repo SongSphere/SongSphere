@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { TMusicContent } from "../types/music-content";
 import { TUser } from "../types/user";
+import selectService from "../services/select-service";
 
 interface ISpotifySong {
   name: string;
@@ -12,6 +13,8 @@ interface ISpotifySong {
 interface ISpotifyPlayerCardProps {
   user: TUser | null;
   selectedSong: TMusicContent | null;
+  appleMusicInstance: MusicKit.MusicKitInstance;
+  service: string;
 }
 
 const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
@@ -63,8 +66,30 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   };
 
   useEffect(() => {
+    const selectServiceHandler = async (
+      selectedSong: TMusicContent,
+      appleMusicInstance: MusicKit.MusicKitInstance,
+      user: TUser,
+      service: string,
+      token: string
+    ) => {
+      await selectService(selectedSong, appleMusicInstance, user, service).then(
+        (bestFitId) => {
+          if (bestFitId != "-1") {
+            fetchSong(bestFitId, token);
+          }
+        }
+      );
+    };
+
     if (props.user && props.selectedSong) {
-      fetchSong(props.selectedSong.id, props.user.spotifyToken);
+      selectServiceHandler(
+        props.selectedSong,
+        props.appleMusicInstance,
+        props.user,
+        props.service,
+        props.user.spotifyToken
+      );
     }
   }, [props.user, props.selectedSong]);
 

@@ -10,7 +10,8 @@ import ProfilePage from "../pages/profile-page";
 import SearchUsersPage from "../pages/search-users-page";
 import SettingsPage from "../pages/settings-page";
 import { TUser } from "../types/user";
-import UserFind from "./user-find";
+import { TPost } from "../types/post";
+import EditPage from "../pages/edit-page";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -18,6 +19,7 @@ interface IRouterProps {
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   user: TUser | null;
   service: string;
+  post: TPost | null;
 }
 
 /**
@@ -99,7 +101,14 @@ const Router = (props: IRouterProps) => {
         />
       ),
     },
-    
+    {
+      path: "/edit",
+      element: (
+        <EditPage
+          post={props.post}
+        />
+      ),
+    },
   ]);
 
   return element;

@@ -6,8 +6,10 @@ import { TMusicContent } from "../types/music-content";
 import { spotifySearch } from "../services/spotify-search";
 import sendPost from "../services/send-post";
 import { TUser } from "../types/user";
-import SearchOption from "./search-option-button";
-
+import PostFailure from "./post-failure";
+import PostSucess from "./post-sucess";
+import Popup from "reactjs-popup";
+import { Navigate } from "react-router-dom";
 
 const AppleSearch = async (
   term: string,
@@ -53,11 +55,18 @@ const Search = (props: ISearchProps) => {
   let [song, setSong] = useState<string>("");
   let [category, setCategory] = useState<string>("songs");
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+
+  const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
 
   const [caption, setCaption] = useState<string>("");
+  const closeModal = () => setOpen2(false);
 
   const handleOpen = () => {
     setOpen(!open);
+  };
+  const handleOpen2 = () => {
+    setOpen2(!open2);
   };
 
   return (
@@ -73,7 +82,8 @@ const Search = (props: ISearchProps) => {
         {open ? (
           <ul className="text-left menu">
             <li className="songs">
-              <button className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+              <button
+                className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
                 onClick={async () =>
                   await selectService(song as string, "songs", 10).then(
                     (result) => {
@@ -89,7 +99,8 @@ const Search = (props: ISearchProps) => {
               </button>
             </li>
             <li className="albums">
-              <button className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+              <button
+                className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
                 onClick={() =>
                   selectService(song as string, "albums", 10).then((result) => {
                     setCategory("albums");
@@ -103,7 +114,8 @@ const Search = (props: ISearchProps) => {
               </button>
             </li>
             <li className="artists">
-              <button className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+              <button
+                className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
                 onClick={() =>
                   selectService(song as string, "artists", 10).then(
                     (result) => {
@@ -121,7 +133,8 @@ const Search = (props: ISearchProps) => {
           </ul>
         ) : null}
         <br />
-        <input className="w-1/2"
+        <input
+          className="w-1/2"
           placeholder="Enter Post Title"
           onChange={(event) =>
             selectService(event.target.value as string, category, 10).then(
@@ -136,14 +149,18 @@ const Search = (props: ISearchProps) => {
       </div>
       {songs.map((s) => (
         <div>
-          <button  className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey" key={s.id} onClick={() => setSelected(s)}>
-            {s.name}
-            {' '}
-            {s.artist}
+          <button
+            className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+            key={s.id}
+            onClick={() => setSelected(s)}
+          >
+            {s.name} {s.artist}
           </button>
         </div>
       ))}
-      <div>Selected: {selected?.name} {selected?.artist}</div>
+      <div>
+        Selected: {selected?.name} {selected?.artist}
+      </div>
       <h1>Enter Caption</h1>
       <form>
         <label>
@@ -159,17 +176,37 @@ const Search = (props: ISearchProps) => {
       {/* This will be edited once merged to incoroporate username userSessionContext */}
       <button
         className="my-5 border-black rounded-md text-lgrey bg-navy"
-        onClick={() => {
-          sendPost({
+        onClick={async () => {
+          setOpen2(true);
+          await sendPost({
             username: props.user?.userName!,
             userEmail: props.user?.email!,
             caption: caption,
             music: selected!,
-          });
+          })
+            .then((res) => {
+              console.log(res);
+              if (!res) {
+                setPostSuccessFail(<PostFailure />);
+              } else {
+                setPostSuccessFail(<PostSucess />);
+              }
+            })
+            .catch((error) => {
+              <PostFailure />;
+            });
         }}
       >
         Submit
       </button>
+      <Popup open={open2} closeOnDocumentClick onClose={closeModal}>
+        <div className="modal">
+          <a className="close" onClick={closeModal}>
+            &times;
+            {postSuccessFail}
+          </a>
+        </div>
+      </Popup>
     </div>
   );
 };

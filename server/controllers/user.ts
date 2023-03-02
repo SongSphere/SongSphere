@@ -4,6 +4,7 @@ import {
   fetchUserByEmail,
   fetchUsersbyUserName,
   updateNames,
+  updateUserOnboarded,
 } from "../services/db";
 
 export const sessionUpdate = async (
@@ -60,6 +61,23 @@ export const changeNames = async (
   } catch (error) {
     res.status(404);
     res.json({ msg: "cannot find user" });
+  }
+};
+
+export const changeOnboarded = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const email = req.session.user.email;
+    await updateUserOnboarded(email, req.body.onboarded).then(() => {
+      res.status(200);
+      res.json({ msg: "success" });
+    });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "update onboard fail" });
   }
 };
 

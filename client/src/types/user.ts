@@ -11,6 +11,7 @@ export type TUser = {
   spotifyToken: string;
   spotifyRefreshToken: string;
   appleToken: string;
+  onboarded: Boolean;
 };
 
 export type TUserWrapper = {
