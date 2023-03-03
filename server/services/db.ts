@@ -233,6 +233,7 @@ export const updatePost = async (newPost: TPost) => {
         albumName: newPost.music.albumName,
         id: newPost.music.id,
         service: newPost.music.service,
+        cover: newPost.music.cover,
         category: newPost.music.category,
       },
     });

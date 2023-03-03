@@ -1,9 +1,11 @@
+import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
 import { FollowButton } from "./follow-buttons";
 
 interface IProfileCardProps {
   user: TUser;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>
 }
 
 const OtherUserProfileCard = (props: IProfileCardProps) => {
