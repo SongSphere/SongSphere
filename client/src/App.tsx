@@ -14,6 +14,7 @@ const App = () => {
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
   const [service, setService] = useState("");
   const [post, editPost] = useState<TPost | null>(null);
+  const [selectEditPost, setSelectEditPost] = useState<TPost | null>(null);
 
   const [appleMusicInstance, setAppleMusicInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
@@ -100,6 +101,8 @@ const App = () => {
           appleMusicInstance={appleMusicInstance}
           service={service}
           post={post}
+          setSelectEditPost={setSelectEditPost}
+          selectEditPost={selectEditPost}
           />
         );
       }
@@ -119,6 +122,8 @@ const App = () => {
         appleMusicInstance={appleMusicInstance}
         service={service}
         post={post}
+        setSelectEditPost={setSelectEditPost}
+        selectEditPost={selectEditPost}
       />
     </>
   );

@@ -23,11 +23,25 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
 
   const [userName, setUserName] = useState<string>();
   const [middleName, setMiddleName] = useState<string>();
+  const [spotifyLinked, setSpotifyLinked] = useState(false);
+  const [appleLinked, setAppleLinked] = useState(false);
 
   useEffect(() => {
     if (props.user) {
       if (props.user.onboarded) {
         navigate("/");
+      }
+
+      if (props.user.spotifyToken !== undefined) {
+        setSpotifyLinked(true);
+      } else {
+        setSpotifyLinked(false);
+      }
+
+      if (props.user.appleToken !== undefined) {
+        setAppleLinked(true);
+      } else {
+        setAppleLinked(false);
       }
     }
   }, [props.user]);
@@ -56,7 +70,11 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
           setUser={props.setUser}
           appleMusicInstance={props.appleMusicInstance}
         />
+        <div>{`apple linked: ${appleLinked}`}</div>
+
         <SpotifyLinkButton setUser={props.setUser} />
+
+        <div>{`spotify linked: ${spotifyLinked}`}</div>
 
         <input
           className="e-input"

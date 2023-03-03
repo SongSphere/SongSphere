@@ -3,6 +3,8 @@ import {
   deleteUserInServices,
   fetchUserByEmail,
   fetchUsersbyUserName,
+  removeAppleToken,
+  removeSpotifyTokens,
   updateNames,
   updatePFP,
   updateUserOnboarded,
@@ -49,7 +51,6 @@ export const changeNames = async (
   next: NextFunction
 ) => {
   const email = req.session.user.email;
-
   try {
     await updateNames(
       email,
@@ -104,6 +105,40 @@ export const deleteUserInControllers = async (
   }
 };
 
+export const unlinkSpotify = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email = req.session.user.email;
+
+  try {
+    await removeSpotifyTokens(email);
+    res.status(200);
+    res.json({ msg: "spotify token removed" });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "Cannot remove spotify token" });
+  }
+};
+
+export const unlinkApple = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email = req.session.user.email;
+
+  try {
+    await removeAppleToken(email);
+    res.status(200);
+    res.json({ msg: "apple token removed" });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "Cannot remove apple token" });
+  }
+};
+
 export const updateProfilePhoto = (req: Request, res: Response) => {
   const email = req.session.user.email;
   const imageName = req.file.filename;
@@ -138,6 +173,15 @@ export const updateBackgroundPhoto = (req: Request, res: Response) => {
 
 export const getProfilePhoto = (req: Request, res: Response) => {
   const imageName = req.params.imageName;
-  const readStream = fs.createReadStream(`images/${imageName}`);
-  readStream.pipe(res);
+  try {
+    if (fs.existsSync(`images/${imageName}`)) {
+      const readStream = fs.createReadStream(`images/${imageName}`);
+      readStream.pipe(res);
+    }
+  } catch (error) {
+    console.log("hi");
+    res.status(500);
+    res.json({ msg: "failed to get image" });
+    console.error(error);
+  }
 };

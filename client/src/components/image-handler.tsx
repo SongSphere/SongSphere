@@ -1,6 +1,6 @@
 // This file was heavily inspired by react-image-crop-demo linked here https://github.com/optimus-prime343/react-image-crop-demo
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Box, FileInput, Divider, Modal, Slider, Stack } from "@mantine/core";
 import { createStyles } from "@mantine/styles";
 import EasyCrop from "react-easy-crop";
@@ -23,7 +23,14 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
     Area | undefined
   >();
 
-  const [image, setImage] = useState(props.user?.profileImgUrl);
+  // const [image, setImage] = useState(props.user?.profileImgUrl);
+  const [image, setImage] = useState("");
+
+  useEffect(() => {
+    if (props.user) {
+      setImage(props.user.profileImgUrl);
+    }
+  }, [props.user]);
 
   const { classes } = useStyles();
 

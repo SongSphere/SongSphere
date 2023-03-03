@@ -63,11 +63,15 @@ export const updateSpotifyTokens = async (
 export const removeSpotifyTokens = async (email: string) => {
   try {
     // call mongoose findOneAndUpdate function with data, this updates database
-    const user = await User.findOneAndUpdate(
-      { email: email },
-      { spotifyToken: "" },
-      { spotifyRefreshToken: "" }
-    );
+    const user = await User.findOne({ email: email });
+    user.spotifyToken = undefined;
+    user.spotifyRefreshToken = undefined;
+    await user.save();
+    // const user = await User.findOneAndUpdate(
+    //   { email: email },
+    //   { spotifyToken: "" },
+    //   { spotifyRefreshToken: "" }
+    // );
   } catch (error) {
     throw error;
   }
@@ -87,10 +91,14 @@ export const updateAppleToken = async (email: string, token: string) => {
 
 export const removeAppleToken = async (email: string) => {
   try {
-    const user = await User.findOneAndUpdate(
-      { email: email },
-      { appleToken: "" }
-    );
+    const user = await User.findOne({ email: email });
+    user.appleToken = undefined;
+    await user.save();
+
+    // const user = await User.findOneAndUpdate(
+    //   { email: email },
+    //   { appleToken: "" }
+    // );
   } catch (error) {
     throw error;
   }
@@ -226,6 +234,7 @@ export const updatePost = async (newPost: TPost) => {
         albumName: newPost.music.albumName,
         id: newPost.music.id,
         service: newPost.music.service,
+        cover: newPost.music.cover,
         category: newPost.music.category,
       },
     });

@@ -12,12 +12,12 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
   return (
     <div className="px-4 py-3 text-teal-900 bg-white border-t-4 border-white rounded-b shadow-md ">
       <div
-        className="w-128 h-128 cursor-pointer"
+        className="cursor-pointer w-128 h-128"
         onClick={() => {
           props.setSong(props.post.music);
         }}
       >
-        <img className="w-128 h-128" src={props.post.music.cover}></img>
+        <img className="w-96 h-96" src={props.post.music.cover}></img>
       </div>
 
       <div className="">
