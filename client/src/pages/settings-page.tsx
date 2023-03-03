@@ -10,10 +10,12 @@ import AdjustNamesLink from "../components/adjust-names-link";
 import DeleteGoogleAcountLink from "../components/delete-google-account-link";
 import { TUser } from "../types/user";
 import Navbar from "../components/navbar";
+import AppleLink from "../components/apple-link";
+import SpotifyLinkButton from "../components/spotify-link";
 
 interface ISettingPageProps {
   user: TUser | null;
-  appleMusicInstance: MusicKit.MusicKitInstance | null;
+  appleMusicInstance: MusicKit.MusicKitInstance;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -27,12 +29,9 @@ const SettingsPage = (props: ISettingPageProps) => {
   const [middleName, setMiddleName] = useState<string>("");
   const [familyName, setFamilyName] = useState<string>("");
 
-  const [appleAccountStatus, setAppleAccountStatus] = useState<string>(
-    props.user?.appleToken != null ? "true" : "false"
-  );
-  const [spotifyAccountStatus, setSpotifyAccountStatus] = useState<string>(
-    props.user?.spotifyToken != null ? "true" : "false"
-  );
+  const [appleAccountStatus, setAppleAccountStatus] = useState<boolean>(false);
+  const [spotifyAccountStatus, setSpotifyAccountStatus] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (props.user) {
@@ -40,6 +39,16 @@ const SettingsPage = (props: ISettingPageProps) => {
       setGivenName(props.user.givenName);
       setMiddleName(props.user.middleName);
       setFamilyName(props.user.familyName);
+      if (props.user.appleToken != undefined) {
+        setAppleAccountStatus(true);
+      } else {
+        setAppleAccountStatus(false);
+      }
+      if (props.user.spotifyToken != undefined) {
+        setSpotifyAccountStatus(true);
+      } else {
+        setSpotifyAccountStatus(false);
+      }
     }
   }, [props.user]);
 
@@ -103,9 +112,12 @@ const SettingsPage = (props: ISettingPageProps) => {
               setUser={props.setUser}
               setIsLoggedIn={props.setIsLoggedIn}
             />
-
+            <AppleLink
+              setUser={props.setUser}
+              appleMusicInstance={props.appleMusicInstance}
+            />
             <div>{`Apple API connected: ${appleAccountStatus}`}</div>
-
+            <SpotifyLinkButton setUser={props.setUser} />
             <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
           </div>
         </div>
