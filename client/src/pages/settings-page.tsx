@@ -157,7 +157,7 @@ const SettingsPage = (props: ISettingPageProps) => {
               setUser={props.setUser}
               user={props.user}
             />
-
+            {/* 
             <input
               className="e-input"
               type="text"
@@ -166,14 +166,14 @@ const SettingsPage = (props: ISettingPageProps) => {
               onChange={(e) => setProfileImgUrl(e.target.value)}
             />
 
-            <UpdateProfileURL url={profileImgUrl} />
+            <UpdateProfileURL url={profileImgUrl} /> */}
 
             <BackgroundImgCropper
               onCropComplete={console.log}
               setUser={props.setUser}
               user={props.user}
             />
-
+            {/* 
             <input
               className="e-input"
               type="text"
@@ -181,7 +181,7 @@ const SettingsPage = (props: ISettingPageProps) => {
               value={backgroundImgUrl}
               onChange={(e) => setBackgroundImgUrl(e.target.value)}
             />
-            <UpdateBackgroundURL url={backgroundImgUrl} />
+            <UpdateBackgroundURL url={backgroundImgUrl} /> */}
           </div>
         </div>
       </div>

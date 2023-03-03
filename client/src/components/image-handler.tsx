@@ -5,10 +5,16 @@ import { Box, FileInput, Divider, Modal, Slider, Stack } from "@mantine/core";
 import { createStyles } from "@mantine/styles";
 import EasyCrop from "react-easy-crop";
 import type { Point, Area } from "react-easy-crop/types";
-import { updateProfile, updateBackground } from "../services/send-image";
+import {
+  updateProfile,
+  updateBackground,
+  updateProfileURL,
+  updateBackgroundURL,
+} from "../services/send-image";
 import { TUser } from "../types/user";
 
 import { getCroppedImg } from "../utils/crop-image";
+import fetchUser from "../services/fetch-user";
 
 export interface ReactImageCropperProps {
   onCropComplete: (formData: FormData) => void;
@@ -26,6 +32,8 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
 
   // const [image, setImage] = useState(props.user?.profileImgUrl);
   const [image, setImage] = useState("");
+
+  const [ImgUrl, setImgUrl] = useState<string>("");
 
   useEffect(() => {
     if (props.user) {
@@ -127,16 +135,36 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
           onChange={handleFileUpload}
         />
       </Box>
+      <input
+        className="e-input"
+        type="text"
+        placeholder="Enter Profile Photo URL"
+        value={ImgUrl}
+        onChange={(e) => setImgUrl(e.target.value)}
+      />
+      <button
+        onClick={async () => {
+          // Open Modal that prints Success
+          //setOpen(true);
+
+          await updateProfileURL(ImgUrl).then(async () => {
+            await props.setUser(await fetchUser());
+          });
+        }}
+      >
+        Update Profile URL
+      </button>
       {/*)}*/}
     </>
   );
 };
 
-export interface ReactImageCropperProps {
+export interface BackgroundImgCropperProps {
   onCropComplete: (formData: FormData) => void;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   user: TUser | null;
 }
-export const BackgroundImgCropper = (props: ReactImageCropperProps) => {
+export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
   const [previewImage, setPreviewImage] = useState<string | undefined>();
   const [croppedImage, setCroppedImage] = useState<string | undefined>();
   const [zoom, setZoom] = useState(1);
@@ -146,6 +174,8 @@ export const BackgroundImgCropper = (props: ReactImageCropperProps) => {
   >();
 
   const [image, setImage] = useState(props.user?.backgroundImgUrl);
+
+  const [ImgUrl, setImgUrl] = useState<string>("");
 
   const { classes } = useStyles();
 
@@ -241,6 +271,30 @@ export const BackgroundImgCropper = (props: ReactImageCropperProps) => {
           onChange={handleFileUpload}
         />
       </Box>
+
+      <input
+        className="e-input"
+        type="text"
+        placeholder="Enter Background Photo URL"
+        value={ImgUrl}
+        onChange={(e) => setImgUrl(e.target.value)}
+      />
+      <button
+        onClick={async () => {
+          // Open Modal that prints Success
+          //setOpen(true);
+
+          await updateBackgroundURL(ImgUrl)
+            .then(async () => {
+              await props.setUser(await fetchUser());
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }}
+      >
+        Update Background URL
+      </button>
       {/*)}*/}
     </>
   );

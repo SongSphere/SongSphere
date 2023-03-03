@@ -68,7 +68,7 @@ export const UpdateBackgroundURL = (props: IAdjustNamesLinkProps) => {
           await updateBackgroundURL(props.url);
         }}
       >
-        Update Profile URL
+        Update Background URL
       </Button>
     </div>
   );
