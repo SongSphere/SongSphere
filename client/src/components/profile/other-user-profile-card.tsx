@@ -1,5 +1,5 @@
 import { TUser } from "../../types/user";
-import { FollowButton, OtherFollowerInformationCard } from "./follow-buttons";
+import { OtherFollowerInformationCard } from "./follow-buttons";
 
 interface IProfileCardProps {
   user: TUser | null;

@@ -100,6 +100,9 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
   const [followingButtonText, setFollowingButtonText] = useState(
     `${nFollowing} following`
   );
+  const [following, setFollowing] = useState(false);
+  const [buttonColor, setButtonColor] = useState("bg-blue-500");
+  const [buttonText, setButtonText] = useState("Follow");
 
   const handleOpenFollowers = () => {
     if (openFollowing) {
@@ -115,8 +118,43 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
     setOpenFollowing(!openFollowing);
   };
 
+  const handleClick = async () => {
+    if (!following) {
+      setButtonColor("bg-lgrey");
+      setButtonText("Unfollow");
+
+      await follow(
+        props.user?.userName!,
+        props.selectedUser?.userName!,
+        props.selectedUser?.email!
+      ).then(async () => {
+        props.setUser(await fetchUser());
+      });
+
+      setFollowing(true);
+    } else {
+      setButtonColor("bg-blue-500");
+      setButtonText("Follow");
+      unfollow(
+        props.user?.userName!,
+        props.selectedUser?.userName!,
+        props.selectedUser?.email!
+      ).then(async () => {
+        props.setUser(await fetchUser());
+      });
+
+      setFollowing(false);
+    }
+  };
+
   useEffect(() => {
     if (props.selectedUser) {
+      if (props.user!.following.includes(props.selectedUser!.userName)) {
+        setFollowing(true);
+        setButtonColor("bg-lgrey");
+        setButtonText("Unfollow");
+      }
+
       nFollowers = props.selectedUser!.followers.length;
       nFollowing = props.selectedUser!.following.length;
       setFollowerButtonText(`${nFollowers} followers`);
@@ -131,12 +169,12 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
   return (
     <div>
       <div>
-        <FollowButton
-          user={props.user}
-          setUser={props.setUser}
-          selectedUser={props.selectedUser}
-          setSelectedUser={props.setSelectedUser}
-        />
+        <button
+          className={`ml-3 px-3 w-1/4 text-sm py-2 rounded text-white ${buttonColor}`}
+          onClick={() => handleClick()}
+        >
+          {buttonText}
+        </button>
 
         <button
           className={`ml-3 px-2 text-sm py-2 rounded text-grey`}
@@ -171,68 +209,6 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
         ) : null}
       </div>
     </div>
-  );
-};
-
-export const FollowButton = (props: ISelectedUser) => {
-  const [following, setFollowing] = useState(false);
-  const [buttonColor, setButtonColor] = useState("bg-blue-500");
-  const [buttonText, setButtonText] = useState("Follow");
-
-  useEffect(() => {
-    if (props.user) {
-      if (props.user!.following.includes(props.selectedUser!.userName)) {
-        setFollowing(true);
-        setButtonColor("bg-lgrey");
-        setButtonText("Unfollow");
-      }
-    }
-  }, [props.user]);
-
-  const handleClick = async () => {
-    if (!following) {
-      // console.log("inside follow");
-      // console.log("user: " + props.user!.email);
-      // console.log("selected: " + props.selectedUser?.email);
-
-      setButtonColor("bg-lgrey");
-      setButtonText("Unfollow");
-
-      await follow(
-        props.user?.userName!,
-        props.selectedUser?.userName!,
-        props.selectedUser?.email!
-      ).then(async () => {
-        props.setUser(await fetchUser());
-      });
-
-      setFollowing(true);
-    } else {
-      setButtonColor("bg-blue-500");
-      setButtonText("Follow");
-      unfollow(
-        props.user?.userName!,
-        props.selectedUser?.userName!,
-        props.selectedUser?.email!
-      ).then(async () => {
-        props.setUser(await fetchUser());
-      });
-
-      setFollowing(false);
-    }
-  };
-
-  if (!props.user) {
-    return <div>fetching user data</div>;
-  }
-
-  return (
-    <button
-      className={`ml-3 px-3 w-1/4 text-sm py-2 rounded text-white ${buttonColor}`}
-      onClick={() => handleClick()}
-    >
-      {buttonText}
-    </button>
   );
 };
 

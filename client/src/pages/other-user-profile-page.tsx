@@ -45,10 +45,6 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
     return <div>fetching user</div>;
   }
 
-  console.log("inside otheruserprofilepage");
-  console.log("user: " + props.user!.email);
-  console.log("selectedUser: " + props.selectedUser!.email);
-
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-lblue">
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
