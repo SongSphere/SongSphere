@@ -3,6 +3,8 @@ import {
   sessionUpdate,
   changeNames,
   deleteUserInControllers,
+  updateProfilePhoto,
+  getProfilePhoto,
   findUserByUserName,
   changeOnboarded,
   unlinkSpotify,
@@ -23,5 +25,16 @@ router.post("/api/user/unlinkApple", auth, unlinkApple);
 router.post("/user/adjustNames", auth, changeNames);
 router.post("/user/deleteAccount", auth, deleteUserInControllers);
 router.post("/user/queryUserName", auth, findUserByUserName);
+
+import multer from "multer";
+const upload = multer({ dest: "images/" });
+router.post(
+  "/user/updateProfile",
+  upload.single("image"),
+  auth,
+  updateProfilePhoto
+);
+
+router.get("/user/images/:imageName", getProfilePhoto);
 
 export default router;

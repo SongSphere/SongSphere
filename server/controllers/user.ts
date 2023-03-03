@@ -6,8 +6,10 @@ import {
   removeAppleToken,
   removeSpotifyTokens,
   updateNames,
+  updatePFP,
   updateUserOnboarded,
 } from "../services/db";
+import fs from "fs";
 
 export const sessionUpdate = async (
   req: Request,
@@ -134,4 +136,26 @@ export const unlinkApple = async (
     res.status(404);
     res.json({ msg: "Cannot remove apple token" });
   }
+};
+
+export const updateProfilePhoto = (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const imageName = req.file.filename;
+
+  try {
+    updatePFP(email, req.file.filename);
+    res.status(200);
+    res.json({ msg: "success" });
+  } catch (error) {
+    console.log(error);
+    res.json({ msg: "failed" });
+  }
+
+  res.send({ imageName });
+};
+
+export const getProfilePhoto = (req: Request, res: Response) => {
+  const imageName = req.params.imageName;
+  const readStream = fs.createReadStream(`images/${imageName}`);
+  readStream.pipe(res);
 };

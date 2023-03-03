@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import { TPost } from "../types/post";
 import User, { IUser } from "../db/user";
 import Post, { IPost } from "../db/post";
+import fs from "fs";
 
 export const createUser = async (
   userData: TokenPayload,
@@ -310,6 +311,18 @@ export const removeFollow = async (
       { $pull: { followers: emailOfUserUnfollowing } }
     );
   } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePFP = async (email: string, filename: string) => {
+  try {
+    await User.findOneAndUpdate(
+      { email: email },
+      { profileImgUrl: "http://localhost:8080/user/images/" + filename }
+    );
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 };
