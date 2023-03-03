@@ -7,6 +7,7 @@ import {
   getProfilePhoto,
   findUserByUserName,
   changeOnboarded,
+  updateBackgroundPhoto,
 } from "../controllers/user";
 import { getUserPosts } from "../controllers/posting";
 
@@ -30,7 +31,14 @@ router.post(
   auth,
   updateProfilePhoto
 );
+router.post(
+  "/user/updateBackground",
+  upload.single("image"),
+  auth,
+  updateBackgroundPhoto
+);
 
 router.get("/user/images/:imageName", getProfilePhoto);
+router.get("/user/background/:imageName", getProfilePhoto);
 
 export default router;

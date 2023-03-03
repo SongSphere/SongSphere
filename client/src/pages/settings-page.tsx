@@ -9,7 +9,10 @@ import { useContext, useEffect, useState } from "react";
 import AdjustNamesLink from "../components/adjust-names-link";
 import DeleteGoogleAcountLink from "../components/delete-google-account-link";
 import { TUser } from "../types/user";
-import { ReactImageCropper } from "../components/image-handler";
+import {
+  BackgroundImgCropper,
+  ProfileImgCropper,
+} from "../components/image-handler";
 import Navbar from "../components/navbar";
 
 interface ISettingPageProps {
@@ -109,7 +112,12 @@ const SettingsPage = (props: ISettingPageProps) => {
 
             <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
 
-            <ReactImageCropper onCropComplete={console.log} user={props.user} />
+            <ProfileImgCropper onCropComplete={console.log} user={props.user} />
+
+            <BackgroundImgCropper
+              onCropComplete={console.log}
+              user={props.user}
+            />
 
             <button> Next </button>
           </div>

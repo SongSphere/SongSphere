@@ -21,6 +21,7 @@ export const createUser = async (
     email: userData.email,
     emailVerified: userData.email_verified,
     profileImgUrl: userData.picture,
+    backgroundImgUrl: userData.picture,
     token: token,
     followers: {},
     following: {},
@@ -312,6 +313,18 @@ export const updatePFP = async (email: string, filename: string) => {
     await User.findOneAndUpdate(
       { email: email },
       { profileImgUrl: "http://localhost:8080/user/images/" + filename }
+    );
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const updateBackground = async (email: string, filename: string) => {
+  try {
+    await User.findOneAndUpdate(
+      { email: email },
+      { backgroundImgUrl: "http://localhost:8080/user/images/" + filename }
     );
   } catch (error) {
     console.log(error);
