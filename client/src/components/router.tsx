@@ -57,6 +57,8 @@ const Router = (props: IRouterProps) => {
         <PostPage
           musicInstance={props.appleMusicInstance}
           user={props.user}
+          setUser={props.setUser}
+          setIsLoggedIn={props.setIsLoggedIn}
           service={props.service}
         />
       ),
