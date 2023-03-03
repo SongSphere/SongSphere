@@ -44,7 +44,7 @@ const ProfileCard = (props: IProfileCardProps) => {
                 navigate("/settings");
               }}
             >
-              Settings
+              edit
             </button>
           </div>
           

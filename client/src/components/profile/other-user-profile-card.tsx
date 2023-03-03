@@ -45,7 +45,7 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
                 navigate("/settings");
               }}
             >
-              Settings
+              edit
             </button>
           </div>
           <FollowButton user={props.user} setUser={props.setUser} />
