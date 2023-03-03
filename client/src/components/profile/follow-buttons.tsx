@@ -134,9 +134,6 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
       });
 
       setFollowing(true);
-      if (props.selectedUser?.userName) {
-        props.setSelectedUser(await fetchUserName(props.selectedUser.userName));
-      }
     } else {
       setButtonColor("bg-blue-500");
       setButtonText("Follow");
