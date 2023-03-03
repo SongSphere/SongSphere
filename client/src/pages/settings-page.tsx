@@ -5,10 +5,11 @@
   Contains modal, Calls Adjust Names Link to update toward DB
 */
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AdjustNamesLink from "../components/adjust-names-link";
 import DeleteGoogleAcountLink from "../components/delete-google-account-link";
 import { TUser } from "../types/user";
+import { ReactImageCropper } from "../components/image-handler";
 import Navbar from "../components/navbar";
 
 interface ISettingPageProps {
@@ -107,6 +108,10 @@ const SettingsPage = (props: ISettingPageProps) => {
             <div>{`Apple API connected: ${appleAccountStatus}`}</div>
 
             <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
+
+            <ReactImageCropper onCropComplete={console.log} user={props.user} />
+
+            <button> Next </button>
           </div>
         </div>
       </div>

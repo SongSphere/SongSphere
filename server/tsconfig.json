@@ -12,6 +12,7 @@
       "*": ["node_modules/*"]
     }
   },
+  "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
   "include": ["**/*.ts", "../client/src/services/spotify-link.ts"],
   "exclude": ["node_modules"]
 }
