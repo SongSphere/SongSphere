@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { TUser } from "../../types/user";
 import { FollowButton } from "./follow-buttons";
 
@@ -7,6 +9,10 @@ interface IProfileCardProps {
 }
 
 const ProfileCard = (props: IProfileCardProps) => {
+
+  let navigate = useNavigate();
+
+
   return (
     <div className="flex justify-center h-screen">
       <div className="fixed flex h-full mt-8">
@@ -22,6 +28,12 @@ const ProfileCard = (props: IProfileCardProps) => {
           <div className="mt-6 text-2xl font-bold text-center text-navy">{`${props.user.givenName} ${props.user.middleName} ${props.user.familyName}`}</div>
           <div className="text-center text-slate-600">
             {props.user.userName}
+          </div>
+          <div className="text-center">
+          <button className="rounded-full pt-6" onClick={() => {
+              navigate('/settings')
+            
+          }}>Settings</button>
           </div>
         </div>
       </div>
