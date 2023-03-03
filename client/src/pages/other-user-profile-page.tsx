@@ -19,18 +19,26 @@ interface IOtherUserProfileProps {
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
-  const [posts, setPosts] = useState<TPost[] | null>(null);
+  const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
 
-  console.log(props.service);
 
   useEffect(() => {
+
+    
     const updatePosts = async (email: string) => {
       setPosts(await fetchUserPosts(email));
     };
     if (props.user) {
       updatePosts(props.user.email);
+
+      if (posts) {
+        // Post does exist
+      } else {
+        // Posts doesn't exist
+        setPosts([]);
+      }
     }
   }, [props.user]);
 
@@ -46,7 +54,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
           <OtherUserProfileCard user={props.user} setUser={props.setUser} />
         </div>
         <div className="col-span-2">
-          {posts ? (
+          {posts.length > 0 ? (
             <OtherProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
           ) : (
             <NoPosts />
