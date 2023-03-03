@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import Navbar from "../components/navbar";
 import { NoPosts } from "../components/profile/no-post";
+import OtherProfileFeed from "../components/profile/other-profile-feed";
 import OtherUserProfileCard from "../components/profile/other-user-profile-card";
-import ProfileFeed from "../components/profile/profile-feed";
 import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import fetchUserPosts from "../services/fetch-user-posts";
 import { TMusicContent } from "../types/music-content";
@@ -19,18 +19,26 @@ interface IOtherUserProfileProps {
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
-  const [posts, setPosts] = useState<TPost[] | null>(null);
+  const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
 
-  console.log(props.service);
 
   useEffect(() => {
+
+    
     const updatePosts = async (email: string) => {
       setPosts(await fetchUserPosts(email));
     };
     if (props.user) {
       updatePosts(props.user.email);
+
+      if (posts) {
+        // Post does exist
+      } else {
+        // Posts doesn't exist
+        setPosts([]);
+      }
     }
   }, [props.user]);
 
@@ -46,8 +54,8 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
           <OtherUserProfileCard user={props.user} setUser={props.setUser} />
         </div>
         <div className="col-span-2">
-          {posts ? (
-            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
+          {posts.length > 0 ? (
+            <OtherProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
           ) : (
             <NoPosts />
           )}

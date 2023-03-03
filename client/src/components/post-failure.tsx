@@ -6,8 +6,8 @@ const PostFailure = () => {
       className="relative px-4 py-3 text-red-700 bg-red-100 border border-red-400 rounded"
       role="alert"
     >
-      <strong className="font-bold">Error </strong>
-      <span className="block sm:inline">Your post has failed.</span>
+      <strong className="font-bold">Your post was not posted </strong>
+      <span className="block sm:inline">Please try again later</span>
       <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
         <svg
           className="w-6 h-6 text-red-500 fill-current"
