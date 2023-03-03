@@ -4,41 +4,32 @@ import appleSearch from "./apple-search";
 import { spotifySearch } from "./spotify-search";
 
 const selectService = async (
-  postService: string,
   song: TMusicContent,
   musicInstance: MusicKit.MusicKitInstance,
-  user: TUser
+  user: TUser,
+  service: string
 ) => {
-  let list: TMusicContent[] = [];
+  let bestFitSongId = "-1";
 
-  const appleToken = user?.appleToken;
-  const spotifyToken = user?.spotifyToken;
-  let service = "";
-  let found = false;
-
-  if (spotifyToken !== "") {
-    service = "spotify";
-  } else if (appleToken !== "") {
-    service = "apple";
-  } else {
-    console.log("NO SERVICE");
-  }
-
-  if (service === postService) {
-    return song.id;
-  } else if (service === "apple") {
-    appleSearch(song.name!, "songs", 1, musicInstance).then((result) => {
-      list = result;
+  if (service === song.service || service === "both") {
+    bestFitSongId = song.id;
+  } else if (song.service === "spotify") {
+    await appleSearch(song.name!, "songs", 1, musicInstance).then((result) => {
+      if (result.length !== 0) {
+        bestFitSongId = result[0].id;
+      }
     });
   } else {
-    spotifySearch(song.name!, "tracks", user?.spotifyToken!, 1).then(
+    await spotifySearch(song.name!, "tracks", user?.spotifyToken!, 1).then(
       (result) => {
-        list = result;
+        if (result.length !== 0) {
+          bestFitSongId = result[0].id;
+        }
       }
     );
   }
 
-  return list[0].id;
+  return bestFitSongId;
 };
 
 export default selectService;

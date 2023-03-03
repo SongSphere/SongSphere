@@ -5,12 +5,15 @@ import fetchUser from "./services/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import { TUser } from "./types/user";
+import { TPost } from "./types/post";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
+  const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
   const [service, setService] = useState("");
+  const [post, editPost] = useState<TPost | null>(null);
 
   const [appleMusicInstance, setAppleMusicInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
@@ -26,6 +29,12 @@ const App = () => {
 
               // set user's music service
               if (userData) {
+                if (
+                  userData.spotifyToken != undefined &&
+                  userData.appleToken != undefined
+                ) {
+                  setService("both");
+                }
                 if (userData.spotifyToken != undefined) {
                   setService("spotify");
                 } else if (userData.appleToken != undefined) {
@@ -72,7 +81,7 @@ const App = () => {
 
   if (sessionUpdated) {
     if (user && isLoggedIn) {
-      if (user.appleToken == null && user.spotifyToken == null) {
+      if (!user.onboarded) {
         return (
           <OnBoardPage
             user={user}
@@ -83,11 +92,14 @@ const App = () => {
       } else {
         return (
           <Router
-            user={user}
-            setUser={setUser}
-            setIsLoggedIn={setIsLoggedIn}
-            appleMusicInstance={appleMusicInstance}
-            service={service}
+          user={user}
+          setUser={setUser}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+          setIsLoggedIn={setIsLoggedIn}
+          appleMusicInstance={appleMusicInstance}
+          service={service}
+          post={post}
           />
         );
       }
@@ -101,9 +113,12 @@ const App = () => {
       <Router
         user={user}
         setUser={setUser}
+        selectedUser={selectedUser}
+        setSelectedUser={setSelectedUser}
         setIsLoggedIn={setIsLoggedIn}
         appleMusicInstance={appleMusicInstance}
         service={service}
+        post={post}
       />
     </>
   );

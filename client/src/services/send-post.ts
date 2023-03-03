@@ -5,21 +5,29 @@ import { TPost } from "../types/post";
 import { textSpanContainsPosition } from "typescript";
 
 const sendPost = async (post: TPost) => {
-  try {
-    await fetch(`${process.env.REACT_APP_API}/api/makepost`, {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify({
-        post: post,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  } catch (err) {
-    console.log(err);
-
-  }
+  return new Promise(async (resolve, reject) => {
+    try {
+      await fetch(`${process.env.REACT_APP_API}/api/makepost`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({
+          post: post,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        console.log(res.status);
+        if (res.status == 201) {
+          resolve(true);
+        } else resolve(false);
+      });
+    } catch (err) {
+      resolve(false);
+      console.log(err);
+      reject(err);
+    }
+  });
 };
 
 export default sendPost;

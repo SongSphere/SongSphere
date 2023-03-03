@@ -1,12 +1,12 @@
 import { TUser } from "../../types/user";
-import { FollowerInformationCard } from "./follow-buttons";
+import { FollowButton } from "./follow-buttons";
 
 interface IProfileCardProps {
   user: TUser;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
-const ProfileCard = (props: IProfileCardProps) => {
+const OtherUserProfileCard = (props: IProfileCardProps) => {
   return (
     <div className="flex justify-center h-screen">
       <div className="fixed flex h-full mt-8">
@@ -23,11 +23,11 @@ const ProfileCard = (props: IProfileCardProps) => {
           <div className="text-center text-slate-600">
             {props.user.userName}
           </div>
-          <FollowerInformationCard user={props.user} setUser={props.setUser} />
+          <FollowButton user={props.user} setUser={props.setUser} />
         </div>
       </div>
     </div>
   );
 };
 
-export default ProfileCard;
+export default OtherUserProfileCard;

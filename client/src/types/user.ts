@@ -13,6 +13,7 @@ export type TUser = {
   appleToken: string;
   following: string[];
   followers: string[];
+  onboarded: Boolean;
 };
 
 export type TUserWrapper = {

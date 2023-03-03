@@ -140,6 +140,7 @@ export const signInUp = async (
       appleToken: "",
       followers: Array<String>(),
       following: Array<String>(),
+      onboarded: false,
     };
 
     res.status(201);
