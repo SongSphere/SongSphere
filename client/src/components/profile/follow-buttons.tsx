@@ -8,7 +8,14 @@ interface IUser {
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
-export const FollowerInformationCard = (props: IUser) => {
+interface ISelectedUser {
+  user: TUser | null;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  selectedUser: TUser | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+}
+
+export const MyFollowerInformationCard = (props: IUser) => {
   let nFollowers = 0;
   let nFollowing = 0;
 
@@ -37,8 +44,8 @@ export const FollowerInformationCard = (props: IUser) => {
 
   useEffect(() => {
     if (props.user) {
-      nFollowers = props.user.followers.length;
-      nFollowing = props.user.following.length;
+      nFollowers = props.user!.followers.length;
+      nFollowing = props.user!.following.length;
       setFollowerButtonText(`${nFollowers} followers`);
       setFollowingButtonText(`${nFollowing} following`);
     }
@@ -51,8 +58,6 @@ export const FollowerInformationCard = (props: IUser) => {
   return (
     <div>
       <div>
-        <FollowButton user={props.user} setUser={props.setUser} />
-
         <button
           className={`ml-3 px-2 text-sm py-2 rounded text-grey`}
           onClick={() => handleOpenFollowers()}
@@ -83,14 +88,100 @@ export const FollowerInformationCard = (props: IUser) => {
   );
 };
 
-export const FollowButton = (props: IUser) => {
+export const OtherFollowerInformationCard = (props: ISelectedUser) => {
+  let nFollowers = 0;
+  let nFollowing = 0;
+
+  const [openFollowers, setOpenFollowers] = useState(false);
+  const [openFollowing, setOpenFollowing] = useState(false);
+  const [followerButtonText, setFollowerButtonText] = useState(
+    `${nFollowers} followers`
+  );
+  const [followingButtonText, setFollowingButtonText] = useState(
+    `${nFollowing} following`
+  );
+
+  const handleOpenFollowers = () => {
+    if (openFollowing) {
+      setOpenFollowing(false);
+    }
+    setOpenFollowers(!openFollowers);
+  };
+
+  const handleOpenFollowing = () => {
+    if (openFollowers) {
+      setOpenFollowers(false);
+    }
+    setOpenFollowing(!openFollowing);
+  };
+
+  useEffect(() => {
+    if (props.selectedUser) {
+      nFollowers = props.selectedUser!.followers.length;
+      nFollowing = props.selectedUser!.following.length;
+      setFollowerButtonText(`${nFollowers} followers`);
+      setFollowingButtonText(`${nFollowing} following`);
+    }
+  }, [props.selectedUser]);
+
+  if (!props.selectedUser) {
+    return <div>fetching user data</div>;
+  }
+
+  return (
+    <div>
+      <div>
+        <FollowButton
+          user={props.user}
+          setUser={props.setUser}
+          selectedUser={props.selectedUser}
+          setSelectedUser={props.setSelectedUser}
+        />
+
+        <button
+          className={`ml-3 px-2 text-sm py-2 rounded text-grey`}
+          onClick={() => handleOpenFollowers()}
+        >
+          {followerButtonText}
+        </button>
+
+        <button
+          className={`ml-3 px-2 text-sm py-2 rounded text-grey`}
+          onClick={() => handleOpenFollowing()}
+        >
+          {followingButtonText}
+        </button>
+
+        {openFollowers ? (
+          <div>
+            <ListFollowers
+              user={props.selectedUser}
+              setUser={props.setSelectedUser}
+            />
+          </div>
+        ) : null}
+
+        {openFollowing ? (
+          <div>
+            <ListFollowing
+              user={props.selectedUser}
+              setUser={props.setSelectedUser}
+            />
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+};
+
+export const FollowButton = (props: ISelectedUser) => {
   const [following, setFollowing] = useState(false);
   const [buttonColor, setButtonColor] = useState("bg-blue-500");
   const [buttonText, setButtonText] = useState("Follow");
 
   useEffect(() => {
     if (props.user) {
-      if (props.user.following.includes(props.user.userName)) {
+      if (props.user!.following.includes(props.selectedUser!.userName)) {
         setFollowing(true);
         setButtonColor("bg-lgrey");
         setButtonText("Unfollow");
@@ -100,15 +191,17 @@ export const FollowButton = (props: IUser) => {
 
   const handleClick = async () => {
     if (!following) {
-      console.log("inside follow");
+      // console.log("inside follow");
+      // console.log("user: " + props.user!.email);
+      // console.log("selected: " + props.selectedUser?.email);
 
       setButtonColor("bg-lgrey");
       setButtonText("Unfollow");
 
       await follow(
         props.user?.userName!,
-        props.user?.userName!,
-        props.user?.email!
+        props.selectedUser?.userName!,
+        props.selectedUser?.email!
       ).then(async () => {
         props.setUser(await fetchUser());
       });
@@ -119,8 +212,8 @@ export const FollowButton = (props: IUser) => {
       setButtonText("Follow");
       unfollow(
         props.user?.userName!,
-        props.user?.userName!,
-        props.user?.email!
+        props.selectedUser?.userName!,
+        props.selectedUser?.email!
       ).then(async () => {
         props.setUser(await fetchUser());
       });
@@ -148,7 +241,7 @@ export const ListFollowers = (props: IUser) => {
 
   useEffect(() => {
     if (props.user) {
-      setUsers(props.user.followers);
+      setUsers(props.user!.followers);
     }
   }, [props.user]);
 
@@ -174,7 +267,7 @@ export const ListFollowing = (props: IUser) => {
 
   useEffect(() => {
     if (props.user) {
-      setUsers(props.user.following);
+      setUsers(props.user!.following);
     }
   }, [props.user]);
 

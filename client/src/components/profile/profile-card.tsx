@@ -1,9 +1,11 @@
 import { TUser } from "../../types/user";
-import { FollowerInformationCard } from "./follow-buttons";
+import { MyFollowerInformationCard } from "./follow-buttons";
 
 interface IProfileCardProps {
   user: TUser;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  selectedUser: TUser | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const ProfileCard = (props: IProfileCardProps) => {
@@ -23,7 +25,10 @@ const ProfileCard = (props: IProfileCardProps) => {
           <div className="text-center text-slate-600">
             {props.user.userName}
           </div>
-          <FollowerInformationCard user={props.user} setUser={props.setUser} />
+          <MyFollowerInformationCard
+            user={props.user}
+            setUser={props.setUser}
+          />
         </div>
       </div>
     </div>

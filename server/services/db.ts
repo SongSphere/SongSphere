@@ -23,6 +23,7 @@ export const createUser = async (
     token: token,
     followers: [],
     following: [],
+    onboarded: false,
   });
 
   return user;

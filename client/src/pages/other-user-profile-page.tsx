@@ -14,6 +14,8 @@ interface IOtherUserProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  selectedUser: TUser | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   service: string;
 }
@@ -23,15 +25,12 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
 
-
   useEffect(() => {
-
-    
     const updatePosts = async (email: string) => {
       setPosts(await fetchUserPosts(email));
     };
-    if (props.user) {
-      updatePosts(props.user.email);
+    if (props.selectedUser) {
+      updatePosts(props.selectedUser.email);
 
       if (posts) {
         // Post does exist
@@ -40,22 +39,35 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
         setPosts([]);
       }
     }
-  }, [props.user]);
+  }, [props.selectedUser]);
 
-  if (!props.user) {
+  if (!props.selectedUser) {
     return <div>fetching user</div>;
   }
+
+  console.log("inside otheruserprofilepage");
+  console.log("user: " + props.user!.email);
+  console.log("selectedUser: " + props.selectedUser!.email);
 
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-lblue">
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <OtherUserProfileCard user={props.user} setUser={props.setUser} />
+          <OtherUserProfileCard
+            user={props.user}
+            setUser={props.setUser}
+            selectedUser={props.selectedUser}
+            setSelectedUser={props.setSelectedUser}
+          />
         </div>
         <div className="col-span-2">
           {posts.length > 0 ? (
-            <OtherProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
+            <OtherProfileFeed
+              posts={posts}
+              setSong={setSong}
+              setPost={setPost}
+            />
           ) : (
             <NoPosts />
           )}

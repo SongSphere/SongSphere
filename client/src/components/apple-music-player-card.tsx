@@ -6,7 +6,7 @@ import { TUser } from "../types/user";
 interface IMusicPlayerCardProps {
   musicInstance: MusicKit.MusicKitInstance;
   selectedSong: TMusicContent | null;
-  user: TUser;
+  user: TUser | null;
   service: string;
 }
 
@@ -61,7 +61,7 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
       selectServiceHandler(
         props.selectedSong,
         props.musicInstance,
-        props.user,
+        props.user!,
         props.service
       );
     }
