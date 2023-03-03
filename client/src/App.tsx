@@ -6,6 +6,7 @@ import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import { TUser } from "./types/user";
 import { TPost } from "./types/post";
+import React from "react";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,6 +15,7 @@ const App = () => {
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
   const [service, setService] = useState("");
   const [post, editPost] = useState<TPost | null>(null);
+  const [selectEditPost, setSelectEditPost] = useState<TPost | null>(null);
 
   const [appleMusicInstance, setAppleMusicInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
@@ -92,14 +94,16 @@ const App = () => {
       } else {
         return (
           <Router
-          user={user}
-          setUser={setUser}
-          selectedUser={selectedUser}
-          setSelectedUser={setSelectedUser}
-          setIsLoggedIn={setIsLoggedIn}
-          appleMusicInstance={appleMusicInstance}
-          service={service}
-          post={post}
+            user={user}
+            setUser={setUser}
+            selectedUser={selectedUser}
+            setSelectedUser={setSelectedUser}
+            setIsLoggedIn={setIsLoggedIn}
+            appleMusicInstance={appleMusicInstance}
+            service={service}
+            post={post}
+            setSelectEditPost={setSelectEditPost}
+            selectEditPost={selectEditPost}
           />
         );
       }
@@ -119,6 +123,8 @@ const App = () => {
         appleMusicInstance={appleMusicInstance}
         service={service}
         post={post}
+        setSelectEditPost={setSelectEditPost}
+        selectEditPost={selectEditPost}
       />
     </>
   );

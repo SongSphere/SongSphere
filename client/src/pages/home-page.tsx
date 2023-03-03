@@ -24,20 +24,13 @@ const HomePage = (props: IHomePageProps) => {
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
       <div className="grid grid-cols-4 gap-8">
-        <div>maybe friend activities</div>
+        <div>here will show friend activities.</div>
         <div className="col-span-2">
-          <div>temporary setting stuff:</div>
-          <AppleLink
-            setUser={props.setUser}
-            appleMusicInstance={props.appleMusicInstance}
-          />
-          <SpotfiyLinkButton setUser={props.setUser} />
+          <div>
+            this will be the feed. Implementing the feed is not part of sprint
+            1.
+          </div>
         </div>
-        {/* {props.user.appleToken ? (
-          <AppleMusicPlayerCard musicInstance={props.appleMusicInstance} />
-        ) : (
-          <SpotifyPlayerCard user={props.user} />
-        )} */}
       </div>
     </div>
   );

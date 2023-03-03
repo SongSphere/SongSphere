@@ -5,15 +5,27 @@
   Contains modal, Calls Adjust Names Link to update toward DB
 */
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AdjustNamesLink from "../components/adjust-names-link";
 import DeleteGoogleAcountLink from "../components/delete-google-account-link";
 import { TUser } from "../types/user";
+import {
+  BackgroundImgCropper,
+  ProfileImgCropper,
+} from "../components/image-handler";
 import Navbar from "../components/navbar";
+import AppleLink from "../components/apple-link";
+import SpotifyLinkButton from "../components/spotify-link";
+import unlinkMusic from "../services/unlink-music";
+import fetchUser from "../services/fetch-user";
+import {
+  UpdateBackgroundURL,
+  UpdateProfileURL,
+} from "../components/image-url-handler";
 
 interface ISettingPageProps {
   user: TUser | null;
-  appleMusicInstance: MusicKit.MusicKitInstance | null;
+  appleMusicInstance: MusicKit.MusicKitInstance;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -26,13 +38,12 @@ const SettingsPage = (props: ISettingPageProps) => {
   const [givenName, setGivenName] = useState<string>("");
   const [middleName, setMiddleName] = useState<string>("");
   const [familyName, setFamilyName] = useState<string>("");
+  const [profileImgUrl, setProfileImgUrl] = useState<string>("");
+  const [backgroundImgUrl, setBackgroundImgUrl] = useState<string>("");
 
-  const [appleAccountStatus, setAppleAccountStatus] = useState<string>(
-    props.user?.appleToken != null ? "true" : "false"
-  );
-  const [spotifyAccountStatus, setSpotifyAccountStatus] = useState<string>(
-    props.user?.spotifyToken != null ? "true" : "false"
-  );
+  const [appleAccountStatus, setAppleAccountStatus] = useState<boolean>(false);
+  const [spotifyAccountStatus, setSpotifyAccountStatus] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (props.user) {
@@ -40,6 +51,16 @@ const SettingsPage = (props: ISettingPageProps) => {
       setGivenName(props.user.givenName);
       setMiddleName(props.user.middleName);
       setFamilyName(props.user.familyName);
+      if (props.user.appleToken != undefined) {
+        setAppleAccountStatus(true);
+      } else {
+        setAppleAccountStatus(false);
+      }
+      if (props.user.spotifyToken != undefined) {
+        setSpotifyAccountStatus(true);
+      } else {
+        setSpotifyAccountStatus(false);
+      }
     }
   }, [props.user]);
 
@@ -103,10 +124,64 @@ const SettingsPage = (props: ISettingPageProps) => {
               setUser={props.setUser}
               setIsLoggedIn={props.setIsLoggedIn}
             />
-
+            <AppleLink
+              setUser={props.setUser}
+              appleMusicInstance={props.appleMusicInstance}
+            />
             <div>{`Apple API connected: ${appleAccountStatus}`}</div>
-
+            <button
+              className="p-2 rounded-md bg-amber-300"
+              onClick={async () => {
+                await unlinkMusic("apple").then(async () => {
+                  props.setUser(await fetchUser());
+                });
+              }}
+            >
+              Unlink Apple Music
+            </button>
+            <SpotifyLinkButton setUser={props.setUser} />
             <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
+            <button
+              className="p-2 rounded-md bg-amber-300"
+              onClick={async () => {
+                await unlinkMusic("spotify").then(async () => {
+                  props.setUser(await fetchUser());
+                });
+              }}
+            >
+              Unlink Spotify
+            </button>
+
+            <ProfileImgCropper
+              onCropComplete={console.log}
+              setUser={props.setUser}
+              user={props.user}
+            />
+
+            <input
+              className="e-input"
+              type="text"
+              placeholder="Enter Profile Photo URL"
+              value={profileImgUrl}
+              onChange={(e) => setProfileImgUrl(e.target.value)}
+            />
+
+            <UpdateProfileURL url={profileImgUrl} />
+
+            <BackgroundImgCropper
+              onCropComplete={console.log}
+              setUser={props.setUser}
+              user={props.user}
+            />
+
+            <input
+              className="e-input"
+              type="text"
+              placeholder="Enter Background Photo URL"
+              value={backgroundImgUrl}
+              onChange={(e) => setBackgroundImgUrl(e.target.value)}
+            />
+            <UpdateBackgroundURL url={backgroundImgUrl} />
           </div>
         </div>
       </div>

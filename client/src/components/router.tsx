@@ -23,6 +23,8 @@ interface IRouterProps {
   setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   service: string;
   post: TPost | null;
+  selectEditPost: TPost | null;
+  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 /**
@@ -55,6 +57,8 @@ const Router = (props: IRouterProps) => {
         <PostPage
           musicInstance={props.appleMusicInstance}
           user={props.user}
+          setUser={props.setUser}
+          setIsLoggedIn={props.setIsLoggedIn}
           service={props.service}
         />
       ),
@@ -68,6 +72,7 @@ const Router = (props: IRouterProps) => {
           setIsLoggedIn={props.setIsLoggedIn}
           appleMusicInstance={props.appleMusicInstance}
           service={props.service}
+          setSelectEditPost={props.setSelectEditPost}
         />
       ),
     },
@@ -96,6 +101,7 @@ const Router = (props: IRouterProps) => {
           setSelectedUser={props.setSelectedUser}
           setIsLoggedIn={props.setIsLoggedIn}
           service={props.service}
+          setSelectEditPost={props.setSelectEditPost}
         />
       ),
     },
@@ -122,7 +128,12 @@ const Router = (props: IRouterProps) => {
     },
     {
       path: "/edit",
-      element: <EditPage post={props.post} />,
+      element: (
+        <EditPage
+          setUser={props.setUser}
+          selectEditPost={props.selectEditPost}
+        />
+      ),
     },
   ]);
 

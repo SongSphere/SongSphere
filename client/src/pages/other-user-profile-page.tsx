@@ -18,6 +18,7 @@ interface IOtherUserProfileProps {
   setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   service: string;
+  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
@@ -55,6 +56,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
             setUser={props.setUser}
             selectedUser={props.selectedUser}
             setSelectedUser={props.setSelectedUser}
+            setSelectEditPost={props.setSelectEditPost}
           />
         </div>
         <div className="col-span-2">
