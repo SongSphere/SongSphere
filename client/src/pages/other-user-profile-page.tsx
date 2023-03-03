@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import Navbar from "../components/navbar";
 import { NoPosts } from "../components/profile/no-post";
+import OtherProfileFeed from "../components/profile/other-profile-feed";
 import OtherUserProfileCard from "../components/profile/other-user-profile-card";
-import ProfileFeed from "../components/profile/profile-feed";
 import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import fetchUserPosts from "../services/fetch-user-posts";
 import { TMusicContent } from "../types/music-content";
@@ -16,16 +16,13 @@ interface IOtherUserProfileProps {
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   service: string;
-  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>
-
+  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
-  const [posts, setPosts] = useState<TPost[] | null>(null);
+  const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
-
-  console.log(props.service);
 
   useEffect(() => {
     const updatePosts = async (email: string) => {
@@ -33,6 +30,13 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
     };
     if (props.user) {
       updatePosts(props.user.email);
+
+      if (posts) {
+        // Post does exist
+      } else {
+        // Posts doesn't exist
+        setPosts([]);
+      }
     }
   }, [props.user]);
 
@@ -45,11 +49,19 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <OtherUserProfileCard user={props.user} setUser={props.setUser} setSelectEditPost={props.setSelectEditPost} />
+          <OtherUserProfileCard
+            user={props.user}
+            setUser={props.setUser}
+            setSelectEditPost={props.setSelectEditPost}
+          />
         </div>
         <div className="col-span-2">
-          {posts ? (
-            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} setSelectEditPost={props.setSelectEditPost}/>
+          {posts.length > 0 ? (
+            <OtherProfileFeed
+              posts={posts}
+              setSong={setSong}
+              setPost={setPost}
+            />
           ) : (
             <NoPosts />
           )}

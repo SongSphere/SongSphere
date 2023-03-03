@@ -17,6 +17,7 @@
     "jsx": "react-jsx",
     "typeRoots": ["node_modules/musickit-typescript", "node_modules/@types"]
   },
+  "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
   "include": ["src", "src/services", "src/components"]
 }
 // added so I can add

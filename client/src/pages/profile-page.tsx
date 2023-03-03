@@ -27,11 +27,10 @@ interface IProfileProps {
 }
 
 const ProfilePage = (props: IProfileProps) => {
-  const [posts, setPosts] = useState<TPost[] | null>(null);
+  const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
 
-  console.log(props.service);
 
   useEffect(() => {
     const updatePosts = async (email: string) => {
@@ -39,6 +38,13 @@ const ProfilePage = (props: IProfileProps) => {
     };
     if (props.user) {
       updatePosts(props.user.email);
+
+      if (posts) {
+        // Post exists
+      } else {
+        // Post doesn't exists
+        setPosts([]);
+      }
     }
   }, [props.user]);
 
@@ -54,8 +60,13 @@ const ProfilePage = (props: IProfileProps) => {
           <ProfileCard user={props.user} setUser={props.setUser} />
         </div>
         <div className="col-span-2">
+<<<<<<< HEAD
           {posts ? (
             <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} setSelectEditPost={props.setSelectEditPost} />
+=======
+        {posts.length > 0 ? (
+            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
+>>>>>>> master
           ) : (
             <NoPosts />
           )}

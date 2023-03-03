@@ -6,6 +6,8 @@ import EditPage from "../pages/edit-page";
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
 import deletePost from "../services/delete-post";
+import PostFocusPage from "../pages/post-focus-page";
+import Popup from "reactjs-popup";
 
 interface IPostProps {
   post: TPost;
@@ -16,10 +18,19 @@ interface IPostProps {
 
 const Post = (props: IPostProps) => {
   const [open, setOpen] = React.useState(false);
+  const [postFocusPage, setPostFocusPage] = React.useState(false);
+  const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
+  const closeModal = () => setPostFocusPage(false);
+
   const handleOpen = () => {
     setOpen(!open);
   };
+
+  const handlePostFocusPage = () => {
+    setPostFocusPage(!postFocusPage);
+  };
   let navigate = useNavigate();
+
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
       <div className="dropdown">
@@ -63,7 +74,30 @@ const Post = (props: IPostProps) => {
       >
         <img src={props.post.music.cover}></img>
       </div>
-      <div className="">
+
+      <Popup open={postFocusPage} closeOnDocumentClick onClose={closeModal}>
+        <div className="modal">
+          <a className="close" onClick={closeModal}>
+            &times;
+            {postSuccessFail}
+          </a>
+        </div>
+      </Popup>
+
+      <div
+        className=""
+        onClick={() => {
+          handlePostFocusPage();
+
+          setPostSuccessFail(
+            <PostFocusPage
+              post={props.post}
+              setSong={props.setSong}
+              setPost={props.setPost}
+            />
+          );
+        }}
+      >
         <div className="pl-4 text-lg text-navy">
           {props.post.music.name}{" "}
           {props.post.music.artist ? " by " + props.post.music.artist : ""}

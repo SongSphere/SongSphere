@@ -3,9 +3,13 @@ import {
   deleteUserInServices,
   fetchUserByEmail,
   fetchUsersbyUserName,
+  removeAppleToken,
+  removeSpotifyTokens,
   updateNames,
+  updatePFP,
   updateUserOnboarded,
 } from "../services/db";
+import fs from "fs";
 
 export const sessionUpdate = async (
   req: Request,
@@ -46,7 +50,6 @@ export const changeNames = async (
   next: NextFunction
 ) => {
   const email = req.session.user.email;
-
   try {
     await updateNames(
       email,
@@ -98,5 +101,70 @@ export const deleteUserInControllers = async (
   } catch (error) {
     res.status(404);
     res.json({ msg: "Cannot find user in Delete User" });
+  }
+};
+
+export const unlinkSpotify = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email = req.session.user.email;
+
+  try {
+    await removeSpotifyTokens(email);
+    res.status(200);
+    res.json({ msg: "spotify token removed" });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "Cannot remove spotify token" });
+  }
+};
+
+export const unlinkApple = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email = req.session.user.email;
+
+  try {
+    await removeAppleToken(email);
+    res.status(200);
+    res.json({ msg: "apple token removed" });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "Cannot remove apple token" });
+  }
+};
+
+export const updateProfilePhoto = (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const imageName = req.file.filename;
+
+  try {
+    updatePFP(email, req.file.filename);
+    res.status(200);
+    res.json({ msg: "success" });
+  } catch (error) {
+    console.log(error);
+    res.json({ msg: "failed" });
+  }
+
+  res.send({ imageName });
+};
+
+export const getProfilePhoto = (req: Request, res: Response) => {
+  const imageName = req.params.imageName;
+  try {
+    if (fs.existsSync(`images/${imageName}`)) {
+      const readStream = fs.createReadStream(`images/${imageName}`);
+      readStream.pipe(res);
+    }
+  } catch (error) {
+    console.log("hi");
+    res.status(500);
+    res.json({ msg: "failed to get image" });
+    console.error(error);
   }
 };
