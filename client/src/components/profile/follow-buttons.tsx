@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import fetchUser from "../../services/fetch-user";
+import fetchUserName from "../../services/fetch-userName";
+import fetchUserNames from "../../services/fetch-userNames";
 import { follow, unfollow } from "../../services/follow";
 import { TUser } from "../../types/user";
 
@@ -132,6 +134,9 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
       });
 
       setFollowing(true);
+      if (props.selectedUser?.userName) {
+        props.setSelectedUser(await fetchUserName(props.selectedUser.userName));
+      }
     } else {
       setButtonColor("bg-blue-500");
       setButtonText("Follow");
@@ -154,9 +159,10 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
         setButtonColor("bg-lgrey");
         setButtonText("Unfollow");
       }
-
-      nFollowers = props.selectedUser!.followers.length;
-      nFollowing = props.selectedUser!.following.length;
+      console.log(props.selectedUser);
+      console.log(props.selectedUser.followers);
+      nFollowers = props.selectedUser.followers.length;
+      nFollowing = props.selectedUser.following.length;
       setFollowerButtonText(`${nFollowers} followers`);
       setFollowingButtonText(`${nFollowing} following`);
     }

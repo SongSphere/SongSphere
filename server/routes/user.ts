@@ -3,8 +3,9 @@ import {
   sessionUpdate,
   changeNames,
   deleteUserInControllers,
+  findUsersByUserName,
+  changeOnboarded,
   findUserByUserName,
-  changeOnboarded
 } from "../controllers/user";
 import { getUserPosts } from "../controllers/posting";
 
@@ -18,6 +19,7 @@ router.post("/api/user/posts", auth, getUserPosts);
 router.post("/api/user/onboard", auth, changeOnboarded);
 router.post("/user/adjustNames", auth, changeNames);
 router.post("/user/deleteAccount", auth, deleteUserInControllers);
+router.post("/user/queryUserNames", auth, findUsersByUserName);
 router.post("/user/queryUserName", auth, findUserByUserName);
 
 export default router;
