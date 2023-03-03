@@ -3,6 +3,8 @@ import {
   deleteUserInServices,
   fetchUserByEmail,
   fetchUsersbyUserName,
+  removeAppleToken,
+  removeSpotifyTokens,
   updateNames,
   updateUserOnboarded,
 } from "../services/db";
@@ -97,5 +99,39 @@ export const deleteUserInControllers = async (
   } catch (error) {
     res.status(404);
     res.json({ msg: "Cannot find user in Delete User" });
+  }
+};
+
+export const unlinkSpotify = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email = req.session.user.email;
+
+  try {
+    await removeSpotifyTokens(email);
+    res.status(200);
+    res.json({ msg: "spotify token removed" });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "Cannot remove spotify token" });
+  }
+};
+
+export const unlinkApple = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email = req.session.user.email;
+
+  try {
+    await removeAppleToken(email);
+    res.status(200);
+    res.json({ msg: "apple token removed" });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "Cannot remove apple token" });
   }
 };

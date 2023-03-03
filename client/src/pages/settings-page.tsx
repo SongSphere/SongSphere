@@ -12,6 +12,8 @@ import { TUser } from "../types/user";
 import Navbar from "../components/navbar";
 import AppleLink from "../components/apple-link";
 import SpotifyLinkButton from "../components/spotify-link";
+import unlinkMusic from "../services/unlink-music";
+import fetchUser from "../services/fetch-user";
 
 interface ISettingPageProps {
   user: TUser | null;
@@ -117,8 +119,28 @@ const SettingsPage = (props: ISettingPageProps) => {
               appleMusicInstance={props.appleMusicInstance}
             />
             <div>{`Apple API connected: ${appleAccountStatus}`}</div>
+            <button
+              className="p-2 rounded-md bg-amber-300"
+              onClick={async () => {
+                await unlinkMusic("apple").then(async () => {
+                  props.setUser(await fetchUser());
+                });
+              }}
+            >
+              Unlink Apple Music
+            </button>
             <SpotifyLinkButton setUser={props.setUser} />
             <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
+            <button
+              className="p-2 rounded-md bg-amber-300"
+              onClick={async () => {
+                await unlinkMusic("spotify").then(async () => {
+                  props.setUser(await fetchUser());
+                });
+              }}
+            >
+              Unlink Spotify
+            </button>
           </div>
         </div>
       </div>
