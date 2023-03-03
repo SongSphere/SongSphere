@@ -23,14 +23,13 @@ interface IProfileProps {
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   service: string;
-  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>
+  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const ProfilePage = (props: IProfileProps) => {
   const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
-
 
   useEffect(() => {
     const updatePosts = async (email: string) => {
@@ -57,11 +56,21 @@ const ProfilePage = (props: IProfileProps) => {
       <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <ProfileCard user={props.user} setUser={props.setUser} />
+          <ProfileCard
+            user={props.user}
+            setUser={props.setUser}
+            selectedUser={props.user}
+            setSelectedUser={props.setUser}
+          />
         </div>
         <div className="col-span-2">
           {posts.length > 0 ? (
-            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} setSelectEditPost={props.setSelectEditPost} />
+            <ProfileFeed
+              posts={posts}
+              setSong={setSong}
+              setPost={setPost}
+              setSelectEditPost={props.setSelectEditPost}
+            />
           ) : (
             <NoPosts />
           )}

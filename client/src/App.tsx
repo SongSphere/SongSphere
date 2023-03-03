@@ -6,6 +6,7 @@ import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import { TUser } from "./types/user";
 import { TPost } from "./types/post";
+import React from "react";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -93,16 +94,16 @@ const App = () => {
       } else {
         return (
           <Router
-          user={user}
-          setUser={setUser}
-          selectedUser={selectedUser}
-          setSelectedUser={setSelectedUser}
-          setIsLoggedIn={setIsLoggedIn}
-          appleMusicInstance={appleMusicInstance}
-          service={service}
-          post={post}
-          setSelectEditPost={setSelectEditPost}
-          selectEditPost={selectEditPost}
+            user={user}
+            setUser={setUser}
+            selectedUser={selectedUser}
+            setSelectedUser={setSelectedUser}
+            setIsLoggedIn={setIsLoggedIn}
+            appleMusicInstance={appleMusicInstance}
+            service={service}
+            post={post}
+            setSelectEditPost={setSelectEditPost}
+            selectEditPost={selectEditPost}
           />
         );
       }

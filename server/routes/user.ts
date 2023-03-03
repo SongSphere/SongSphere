@@ -12,6 +12,7 @@ import {
   unlinkApple,
   updateProfileURL,
   updateBackgroundURL,
+  findUsersByUserName,
 } from "../controllers/user";
 import { getUserPosts } from "../controllers/posting";
 
@@ -27,6 +28,7 @@ router.post("/api/user/unlinkSpotify", auth, unlinkSpotify);
 router.post("/api/user/unlinkApple", auth, unlinkApple);
 router.post("/user/adjustNames", auth, changeNames);
 router.post("/user/deleteAccount", auth, deleteUserInControllers);
+router.post("/user/queryUserNames", auth, findUsersByUserName);
 router.post("/user/queryUserName", auth, findUserByUserName);
 
 import multer from "multer";
