@@ -236,6 +236,8 @@ export const deleteUserInServices = async (email: string) => {
 };
 
 export const addFollow = async (
+  usernameOfUserGettingFollowed: string,
+  usernameOfUserMakingFollow: string,
   emailOfUserBeingFollowed: string,
   emailOfUserFollowing: string
 ) => {
@@ -243,12 +245,12 @@ export const addFollow = async (
     // add user being followed to following[] of the user doing the following
     await User.updateOne(
       { email: emailOfUserFollowing },
-      { $push: { following: emailOfUserBeingFollowed } }
+      { $push: { following: usernameOfUserGettingFollowed } }
     );
     // add user doing the following to followers[] of the user being followed
     await User.updateOne(
       { email: emailOfUserBeingFollowed },
-      { $push: { followers: emailOfUserFollowing } }
+      { $push: { followers: usernameOfUserMakingFollow } }
     );
   } catch (error) {
     throw error;
@@ -256,6 +258,8 @@ export const addFollow = async (
 };
 
 export const removeFollow = async (
+  usernameOfUserUnfollowing: string,
+  usernameOfUserGettingUnfollowed: string,
   emailOfUserBeingUnfollowed: string,
   emailOfUserUnfollowing: string
 ) => {
@@ -263,12 +267,12 @@ export const removeFollow = async (
     // remove user being unfollowed from following[] of the user doing the unfollowing
     await User.updateOne(
       { email: emailOfUserUnfollowing },
-      { $pull: { following: emailOfUserBeingUnfollowed } }
+      { $pull: { following: usernameOfUserGettingUnfollowed } }
     );
     // remove user doing the unfollowing from followers[] of the user being unfollowed
     await User.updateOne(
       { email: emailOfUserBeingUnfollowed },
-      { $pull: { followers: emailOfUserUnfollowing } }
+      { $pull: { followers: usernameOfUserUnfollowing } }
     );
   } catch (error) {
     throw error;
