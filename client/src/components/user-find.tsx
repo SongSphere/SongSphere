@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import fetchUserName from "../services/fetch-userName";
+import fetchUserNames from "../services/fetch-userNames";
 import { TUser } from "../types/user";
 import { useNavigate } from "react-router-dom";
 import { TPost } from "../types/post";
@@ -34,7 +34,7 @@ const UserFind = (props: IUserFindProps) => {
                   if ((event.target.value as string) == "") {
                     setUsers([]);
                   } else if ((event.target.value as string) != "") {
-                    await fetchUserName(event.target.value as string).then(
+                    await fetchUserNames(event.target.value as string).then(
                       (result) => {
                         if (result) {
                           setUsers(result);
@@ -69,6 +69,7 @@ const UserFind = (props: IUserFindProps) => {
                   <button
                     key={user.userName}
                     onClick={() => {
+                      props.setUser(props.user);
                       props.setSelectedUser(user);
                       navigate("/otherUsersProfilePage");
                     }}

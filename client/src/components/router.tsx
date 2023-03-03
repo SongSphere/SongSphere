@@ -20,11 +20,11 @@ interface IRouterProps {
   user: TUser | null;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   selectedUser: TUser | null;
-  setSelectedUser:  React.Dispatch<React.SetStateAction<TUser | null>>; 
+  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   service: string;
   post: TPost | null;
   selectEditPost: TPost | null;
-  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>
+  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 /**
@@ -93,13 +93,15 @@ const Router = (props: IRouterProps) => {
     {
       path: "/otherUsersProfilePage",
       element: (
-        <OtherUserProfilePage 
-        appleMusicInstance={props.appleMusicInstance}
-        user={props.selectedUser} // Going to the user that the master user selected
-        setUser={props.setUser}
-        setIsLoggedIn={props.setIsLoggedIn}
-        service={props.service}
-        setSelectEditPost={props.setSelectEditPost}
+        <OtherUserProfilePage
+          appleMusicInstance={props.appleMusicInstance}
+          user={props.user} // Going to the user that the master user selected
+          setUser={props.setUser}
+          selectedUser={props.selectedUser}
+          setSelectedUser={props.setSelectedUser}
+          setIsLoggedIn={props.setIsLoggedIn}
+          service={props.service}
+          setSelectEditPost={props.setSelectEditPost}
         />
       ),
     },
@@ -128,7 +130,7 @@ const Router = (props: IRouterProps) => {
       path: "/edit",
       element: (
         <EditPage
-        setUser={props.setUser}
+          setUser={props.setUser}
           selectEditPost={props.selectEditPost}
         />
       ),
