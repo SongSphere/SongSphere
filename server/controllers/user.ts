@@ -156,6 +156,15 @@ export const updateProfilePhoto = (req: Request, res: Response) => {
 
 export const getProfilePhoto = (req: Request, res: Response) => {
   const imageName = req.params.imageName;
-  const readStream = fs.createReadStream(`images/${imageName}`);
-  readStream.pipe(res);
+  try {
+    if (fs.existsSync(`images/${imageName}`)) {
+      const readStream = fs.createReadStream(`images/${imageName}`);
+      readStream.pipe(res);
+    }
+  } catch (error) {
+    console.log("hi");
+    res.status(500);
+    res.json({ msg: "failed to get image" });
+    console.error(error);
+  }
 };

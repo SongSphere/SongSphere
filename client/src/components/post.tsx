@@ -1,4 +1,7 @@
 import React from "react";
+import { Link, Route, useNavigate } from "react-router-dom";
+import Switch from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import EditPage from "../pages/edit-page";
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
@@ -10,6 +13,7 @@ interface IPostProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const Post = (props: IPostProps) => {
@@ -18,7 +22,6 @@ const Post = (props: IPostProps) => {
   const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
   const closeModal = () => setPostFocusPage(false);
 
-
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -26,30 +29,34 @@ const Post = (props: IPostProps) => {
   const handlePostFocusPage = () => {
     setPostFocusPage(!postFocusPage);
   };
-
+  let navigate = useNavigate();
 
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
       <div className="dropdown">
-        <button onClick={handleOpen} className="flex mr-5">
+        <button onClick={handleOpen} className="absolute top-5 right-5 ">
           <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
         </button>
         {open ? (
-          <ul>
-            <li>
+          <ul className="absolute right-0 top-10">
+            <li className=" text-lblue hover:text-lgrey">
               <button
                 onClick={() => {
-                  <EditPage post={props.post} />;
+                  props.setSelectEditPost(props.post);
+                  navigate("/edit");
                 }}
               >
                 Edit
               </button>
             </li>
+
             <li>
               <button
-                onClick={() => {
-                  deletePost(props.post);
-                  window.location.reload();
+                className=" text-lblue hover:text-lgrey"
+                onClick={async () => {
+                  await deletePost(props.post).then(() => {
+                    window.location.reload();
+                  });
                 }}
               >
                 Delete
@@ -77,18 +84,18 @@ const Post = (props: IPostProps) => {
         </div>
       </Popup>
 
-
       <div
         className=""
         onClick={() => {
           handlePostFocusPage();
-    
-          setPostSuccessFail(<
-            PostFocusPage 
+
+          setPostSuccessFail(
+            <PostFocusPage
               post={props.post}
               setSong={props.setSong}
               setPost={props.setPost}
-            />);
+            />
+          );
         }}
       >
         <div className="pl-4 text-lg text-navy">
