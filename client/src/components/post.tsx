@@ -18,9 +18,13 @@ interface IPostProps {
 
 const Post = (props: IPostProps) => {
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
   const [postFocusPage, setPostFocusPage] = React.useState(false);
   const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
+  const [deleteSuccessText, setDeleteSuccessText] = React.useState<string>("");
+
   const closeModal = () => setPostFocusPage(false);
+  const closeDeleteSuccess = () => setOpen2(false);
 
   const handleOpen = () => {
     setOpen(!open);
@@ -54,8 +58,17 @@ const Post = (props: IPostProps) => {
               <button
                 className=" text-lblue hover:text-lgrey"
                 onClick={async () => {
-                  await deletePost(props.post).then(() => {
-                    window.location.reload();
+                  await deletePost(props.post).then((res) => {
+                    // temp solution
+                    if (res) {
+                      setDeleteSuccessText("Success");
+                    } else {
+                      setDeleteSuccessText("Fail");
+                    }
+                    setOpen2(true);
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 1500);
                   });
                 }}
               >
@@ -74,6 +87,15 @@ const Post = (props: IPostProps) => {
       >
         <img src={props.post.music.cover}></img>
       </div>
+
+      <Popup open={open2} closeOnDocumentClick onClose={closeDeleteSuccess}>
+        <div className="modal">
+          <a className="close" onClick={closeDeleteSuccess}>
+            &times;
+          </a>
+          {deleteSuccessText}
+        </div>
+      </Popup>
 
       <Popup open={postFocusPage} closeOnDocumentClick onClose={closeModal}>
         <div className="modal">
