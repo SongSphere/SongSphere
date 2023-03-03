@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import AppleMusicPlayerCard from "../components/apple-music-player-card";
 import Navbar from "../components/navbar";
 import { NoPosts } from "../components/profile/no-post";
+import OtherProfileFeed from "../components/profile/other-profile-feed";
 import OtherUserProfileCard from "../components/profile/other-user-profile-card";
-import ProfileFeed from "../components/profile/profile-feed";
 import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import fetchUserPosts from "../services/fetch-user-posts";
 import { TMusicContent } from "../types/music-content";
@@ -47,7 +47,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
         </div>
         <div className="col-span-2">
           {posts ? (
-            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
+            <OtherProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
           ) : (
             <NoPosts />
           )}
