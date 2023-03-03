@@ -15,6 +15,7 @@ const ProfileCard = (props: IProfileCardProps) => {
     <div className="flex justify-center h-screen">
       <div className="fixed flex h-full mt-8">
         <div className="bg-white w-80 h-5/6 drop-shadow-md">
+
           <div className="bg-gradient-to-tl from-purple-900 to-green-700 h-80 w-full relative">
             <img
               // Replace here
@@ -46,6 +47,7 @@ const ProfileCard = (props: IProfileCardProps) => {
               Settings
             </button>
           </div>
+          
         </div>
       </div>
     </div>

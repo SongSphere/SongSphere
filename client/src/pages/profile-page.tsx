@@ -60,13 +60,8 @@ const ProfilePage = (props: IProfileProps) => {
           <ProfileCard user={props.user} setUser={props.setUser} />
         </div>
         <div className="col-span-2">
-<<<<<<< HEAD
-          {posts ? (
+          {posts.length > 0 ? (
             <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} setSelectEditPost={props.setSelectEditPost} />
-=======
-        {posts.length > 0 ? (
-            <ProfileFeed posts={posts} setSong={setSong} setPost={setPost} />
->>>>>>> master
           ) : (
             <NoPosts />
           )}
