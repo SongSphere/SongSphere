@@ -329,12 +329,30 @@ export const updatePFP = async (email: string, filename: string) => {
   }
 };
 
+export const updatePFPUrl = async (email: string, url: string) => {
+  try {
+    await User.findOneAndUpdate({ email: email }, { profileImgUrl: url });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 export const updateBackground = async (email: string, filename: string) => {
   try {
     await User.findOneAndUpdate(
       { email: email },
       { backgroundImgUrl: "http://localhost:8080/user/images/" + filename }
     );
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const updateBURL = async (email: string, url: string) => {
+  try {
+    await User.findOneAndUpdate({ email: email }, { backgroundImgUrl: url });
   } catch (error) {
     console.log(error);
     throw error;

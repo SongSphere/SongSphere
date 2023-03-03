@@ -12,6 +12,7 @@ import { getCroppedImg } from "../utils/crop-image";
 
 export interface ReactImageCropperProps {
   onCropComplete: (formData: FormData) => void;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   user: TUser | null;
 }
 export const ProfileImgCropper = (props: ReactImageCropperProps) => {

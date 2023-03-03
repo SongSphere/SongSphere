@@ -18,6 +18,23 @@ export const updateProfile = async (formData: FormData) => {
   }
 };
 
+export const updateProfileURL = async (url: string) => {
+  try {
+    await fetch(`${process.env.REACT_APP_API}/user/updateProfileURL`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        url: url,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const updateBackground = async (formData: FormData) => {
   try {
     await axios.post(
@@ -33,4 +50,19 @@ export const updateBackground = async (formData: FormData) => {
   }
 };
 
-//export default updateProfile;
+export const updateBackgroundURL = async (url: string) => {
+  try {
+    await fetch(`${process.env.REACT_APP_API}/user/updateBackgroundURL`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        url: url,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};

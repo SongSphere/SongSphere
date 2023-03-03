@@ -10,6 +10,8 @@ import {
   updateBackgroundPhoto,
   unlinkSpotify,
   unlinkApple,
+  updateProfileURL,
+  updateBackgroundURL,
 } from "../controllers/user";
 import { getUserPosts } from "../controllers/posting";
 
@@ -35,12 +37,14 @@ router.post(
   auth,
   updateProfilePhoto
 );
+router.post("/user/updateProfileURL", auth, updateProfileURL);
 router.post(
   "/user/updateBackground",
   upload.single("image"),
   auth,
   updateBackgroundPhoto
 );
+router.post("/user/updateBackgroundURL", auth, updateBackgroundURL);
 
 router.get("/user/images/:imageName", getProfilePhoto);
 router.get("/user/background/:imageName", getProfilePhoto);
