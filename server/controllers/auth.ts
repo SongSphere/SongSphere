@@ -134,6 +134,7 @@ export const signInUp = async (
       email: userData.email,
       emailVerified: userData.email_verified,
       profileImgUrl: userData.picture,
+      backgroundImgUrl: userData.picture,
       token: token,
       spotifyToken: "",
       spotifyRefreshToken: "",

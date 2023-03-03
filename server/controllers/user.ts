@@ -8,6 +8,9 @@ import {
   updateNames,
   updatePFP,
   updateUserOnboarded,
+  updateBackground,
+  updatePFPUrl,
+  updateBURL,
 } from "../services/db";
 import fs from "fs";
 
@@ -152,6 +155,50 @@ export const updateProfilePhoto = (req: Request, res: Response) => {
   }
 
   res.send({ imageName });
+};
+
+export const updateProfileURL = (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const url = req.body.url;
+
+  try {
+    updatePFPUrl(email, url);
+    res.status(200);
+    res.json({ msg: "success" });
+  } catch (error) {
+    console.log(error);
+    res.json({ msg: "failed" });
+  }
+};
+
+export const updateBackgroundPhoto = (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const imageName = req.file.filename;
+
+  try {
+    updateBackground(email, req.file.filename);
+    res.status(200);
+    res.json({ msg: "success" });
+  } catch (error) {
+    console.log(error);
+    res.json({ msg: "failed" });
+  }
+
+  res.send({ imageName });
+};
+
+export const updateBackgroundURL = (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const url = req.body.url;
+
+  try {
+    updateBURL(email, url);
+    res.status(200);
+    res.json({ msg: "success" });
+  } catch (error) {
+    console.log(error);
+    res.json({ msg: "failed" });
+  }
 };
 
 export const getProfilePhoto = (req: Request, res: Response) => {
