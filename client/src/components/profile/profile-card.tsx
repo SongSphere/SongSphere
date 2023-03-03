@@ -15,11 +15,9 @@ const ProfileCard = (props: IProfileCardProps) => {
     <div className="flex justify-center h-screen">
       <div className="fixed flex h-full mt-8">
         <div className="bg-white w-80 h-5/6 drop-shadow-md">
-
           <div className="bg-gradient-to-tl from-purple-900 to-green-700 h-80 w-full relative">
             <img
-              // Replace here
-              src="https://farm4.staticflickr.com/3856/14579490651_194962a4a4_k.jpg?momo_cache_bg_uuid=168aba1d-4274-421a-85f3-756d7469b068"
+              src={props.user.backgroundImgUrl}
               className="w-full h-full object-cover absolute mix-blend-overlay"
             />
             <div className="p-8">
@@ -47,7 +45,6 @@ const ProfileCard = (props: IProfileCardProps) => {
               Settings
             </button>
           </div>
-          
         </div>
       </div>
     </div>
