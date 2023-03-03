@@ -12,8 +12,8 @@ export type TUser = {
   spotifyToken: string;
   spotifyRefreshToken: string;
   appleToken: string;
-  following: Array<String>;
-  followers: Array<String>;
+  following: string[];
+  followers: string[];
   onboarded: Boolean;
 };
 

@@ -14,6 +14,8 @@ interface IOtherUserProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  selectedUser: TUser | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   service: string;
   setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
@@ -28,8 +30,8 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
     const updatePosts = async (email: string) => {
       setPosts(await fetchUserPosts(email));
     };
-    if (props.user) {
-      updatePosts(props.user.email);
+    if (props.selectedUser) {
+      updatePosts(props.selectedUser.email);
 
       if (posts) {
         // Post does exist
@@ -38,9 +40,9 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
         setPosts([]);
       }
     }
-  }, [props.user]);
+  }, [props.selectedUser]);
 
-  if (!props.user) {
+  if (!props.selectedUser) {
     return <div>fetching user</div>;
   }
 
@@ -52,6 +54,8 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
           <OtherUserProfileCard
             user={props.user}
             setUser={props.setUser}
+            selectedUser={props.selectedUser}
+            setSelectedUser={props.setSelectedUser}
             setSelectEditPost={props.setSelectEditPost}
           />
         </div>

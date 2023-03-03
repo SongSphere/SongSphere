@@ -6,10 +6,22 @@ import { addFollow, removeFollow } from "../services/db";
 
 export const follow = async (req: Request, res: Response) => {
   const emailOfUserMakingFollow = req.session.user.email;
+  const usernameOfUserMakingFollow = req.body.usernameOfUserMakingFollow;
+  const usernameOfUserGettingFollowed = req.body.usernameOfUserGettingFollowed;
   const emailOfUserGettingFollowed = req.body.emailOfUserGettingFollowed;
 
+  console.log("1: " + usernameOfUserMakingFollow);
+  console.log("2: " + usernameOfUserGettingFollowed);
+  console.log("3: " + emailOfUserMakingFollow);
+  console.log("4: " + emailOfUserGettingFollowed);
+
   try {
-    await addFollow(emailOfUserGettingFollowed, emailOfUserMakingFollow);
+    await addFollow(
+      usernameOfUserGettingFollowed,
+      usernameOfUserMakingFollow,
+      emailOfUserGettingFollowed,
+      emailOfUserMakingFollow
+    );
 
     res.status(201);
     res.json({ msg: "followed successfully" });
@@ -21,10 +33,18 @@ export const follow = async (req: Request, res: Response) => {
 
 export const unfollow = async (req: Request, res: Response) => {
   const emailOfUserUnfollowing = req.session.user.email;
+  const usernameOfUserUnfollowing = req.body.usernameOfUserUnfollowing;
+  const usernameOfUserGettingUnfollowed =
+    req.body.usernameOfUserGettingUnfollowed;
   const emailOfUserGettingUnfollowed = req.body.emailOfUserGettingUnfollowed;
 
   try {
-    await removeFollow(emailOfUserGettingUnfollowed, emailOfUserUnfollowing);
+    await removeFollow(
+      usernameOfUserUnfollowing,
+      usernameOfUserGettingUnfollowed,
+      emailOfUserGettingUnfollowed,
+      emailOfUserUnfollowing
+    );
 
     res.status(201);
     res.json({ msg: "unfollowed successfully" });

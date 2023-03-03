@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { TUser } from "../../types/user";
-import { FollowButton } from "./follow-buttons";
+import { MyFollowerInformationCard } from "./follow-buttons";
 
 interface IProfileCardProps {
   user: TUser;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  selectedUser: TUser | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const ProfileCard = (props: IProfileCardProps) => {
@@ -45,6 +47,10 @@ const ProfileCard = (props: IProfileCardProps) => {
               edit
             </button>
           </div>
+          <MyFollowerInformationCard
+            user={props.user}
+            setUser={props.setUser}
+          />
         </div>
       </div>
     </div>

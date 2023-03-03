@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import {
   deleteUserInServices,
   fetchUserByEmail,
+  fetchUserbyUserName,
   fetchUsersbyUserName,
   removeAppleToken,
   removeSpotifyTokens,
@@ -29,7 +30,7 @@ export const sessionUpdate = async (
   }
 };
 
-export const findUserByUserName = async (
+export const findUsersByUserName = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -41,6 +42,21 @@ export const findUserByUserName = async (
     const users = await fetchUsersbyUserName(req.body.userName);
     res.status(200);
     res.json({ users: users });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "cannot find user" });
+  }
+};
+
+export const findUserByUserName = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await fetchUserbyUserName(req.body.userName);
+    res.status(200);
+    res.json({ user: user });
   } catch (error) {
     res.status(404);
     res.json({ msg: "cannot find user" });
