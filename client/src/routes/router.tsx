@@ -64,19 +64,6 @@ const Router = (props: IRouterProps) => {
       ),
     },
     {
-      path: "/profile",
-      element: (
-        <ProfilePage
-          user={props.user}
-          setUser={props.setUser}
-          setIsLoggedIn={props.setIsLoggedIn}
-          appleMusicInstance={props.appleMusicInstance}
-          service={props.service}
-          setSelectEditPost={props.setSelectEditPost}
-        />
-      ),
-    },
-    {
       path: "/searchUsers",
       element: (
         <SearchUsersPage
@@ -91,15 +78,12 @@ const Router = (props: IRouterProps) => {
       ),
     },
     {
-      path: "/otherUsersProfilePage",
+      path: "/user/:username",
       element: (
-        <OtherUserProfilePage
-          appleMusicInstance={props.appleMusicInstance}
-          user={props.user} // Going to the user that the master user selected
-          setUser={props.setUser}
-          selectedUser={props.selectedUser}
-          setSelectedUser={props.setSelectedUser}
+        <ProfilePage
+          user={props.user}
           setIsLoggedIn={props.setIsLoggedIn}
+          appleMusicInstance={props.appleMusicInstance}
           service={props.service}
           setSelectEditPost={props.setSelectEditPost}
         />

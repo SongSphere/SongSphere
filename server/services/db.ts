@@ -208,9 +208,9 @@ export const createPost = async (
   return post;
 };
 
-export const getUserPostsByEmail = async (email: string) => {
+export const fetchPostsByUsername = async (username: string) => {
   try {
-    const posts = await Post.find({ userEmail: email });
+    const posts = await Post.find({ username: username });
     return posts;
   } catch (error) {
     throw error;

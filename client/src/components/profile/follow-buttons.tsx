@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import fetchUser from "../../services/fetch-user";
-import fetchUserName from "../../services/fetch-userName";
-import fetchUserNames from "../../services/fetch-userNames";
+import fetchUser from "../../services/user/fetch-user";
+import fetchUserName from "../../services/user/fetch-user-username";
+import fetchUserNames from "../../services/user/fetch-userNames";
 import { follow, unfollow } from "../../services/follow";
 import { TUser } from "../../types/user";
 

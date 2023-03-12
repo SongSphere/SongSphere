@@ -48,13 +48,13 @@ export const findUsersByUserName = async (
   }
 };
 
-export const findUserByUserName = async (
+export const getUserByUsername = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const user = await fetchUserbyUserName(req.body.userName);
+    const user = await fetchUserbyUserName(req.params.username);
     res.status(200);
     res.json({ user: user });
   } catch (error) {

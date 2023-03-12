@@ -2,7 +2,7 @@ import { GoogleLogin } from "@react-oauth/google";
 
 // import services
 import handleSignInUp from "../services/handle-sign-in-up";
-import fetchUser from "../services/fetch-user";
+import fetchUser from "../services/user/fetch-user";
 import { useNavigate } from "react-router-dom";
 import { TUser } from "../types/user";
 

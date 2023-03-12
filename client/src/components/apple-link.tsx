@@ -1,4 +1,4 @@
-import fetchUser from "../services/fetch-user";
+import fetchUser from "../services/user/fetch-user";
 import { appleAuth } from "../services/apple-music-link";
 import { TUser } from "../types/user";
 

@@ -5,9 +5,6 @@ import { MyFollowerInformationCard } from "./follow-buttons";
 
 interface IProfileCardProps {
   user: TUser;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  selectedUser: TUser | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const ProfileCard = (props: IProfileCardProps) => {
@@ -17,10 +14,10 @@ const ProfileCard = (props: IProfileCardProps) => {
     <div className="flex justify-center h-screen">
       <div className="fixed flex h-full mt-8">
         <div className="bg-white w-80 h-5/6 drop-shadow-md">
-          <div className="bg-gradient-to-tl from-purple-900 to-green-700 h-80 w-full relative">
+          <div className="relative w-full bg-gradient-to-tl from-purple-900 to-green-700 h-80">
             <img
               src={props.user.backgroundImgUrl}
-              className="w-full h-full object-cover absolute mix-blend-overlay"
+              className="absolute object-cover w-full h-full mix-blend-overlay"
             />
             <div className="p-8">
               <div className="flex justify-center mt-8">
@@ -39,7 +36,7 @@ const ProfileCard = (props: IProfileCardProps) => {
 
           <div className="text-center">
             <button
-              className="rounded-full pt-6 text-slate-500"
+              className="pt-6 rounded-full text-slate-500"
               onClick={() => {
                 navigate("/settings");
               }}
@@ -47,10 +44,10 @@ const ProfileCard = (props: IProfileCardProps) => {
               edit
             </button>
           </div>
-          <MyFollowerInformationCard
+          {/* <MyFollowerInformationCard
             user={props.user}
             setUser={props.setUser}
-          />
+          /> */}
         </div>
       </div>
     </div>

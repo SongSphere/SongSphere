@@ -14,7 +14,7 @@ import {
 import { TUser } from "../types/user";
 
 import { getCroppedImg } from "../utils/crop-image";
-import fetchUser from "../services/fetch-user";
+import fetchUser from "../services/user/fetch-user";
 
 export interface ReactImageCropperProps {
   onCropComplete: (formData: FormData) => void;

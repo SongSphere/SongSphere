@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 
 // import services
-import fetchUserPosts from "../services/fetch-user-posts";
+import fetchUserByUsername from "../services/user/fetch-user-username";
+import fetchPostsByUsername from "../services/user/fetch-user-posts";
 
 // import types
 import { TMusicContent } from "../types/music-content";
@@ -16,52 +17,46 @@ import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import ProfileCard from "../components/profile/profile-card";
 import ProfileFeed from "../components/profile/profile-feed";
 import { NoPosts } from "../components/profile/no-post";
+import { useParams } from "react-router-dom";
 
 interface IProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   service: string;
   setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const ProfilePage = (props: IProfileProps) => {
+  const { username } = useParams();
   const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
+  const [user, setUser] = useState<TUser | null>(null);
 
   useEffect(() => {
-    const updatePosts = async (email: string) => {
-      setPosts(await fetchUserPosts(email));
-    };
-    if (props.user) {
-      updatePosts(props.user.email);
+    if (username) {
+      fetchUserByUsername(username).then((user) => {
+        console.log(user);
+        setUser(user);
+      });
 
-      if (posts) {
-        // Post exists
-      } else {
-        // Post doesn't exists
-        setPosts([]);
-      }
+      fetchPostsByUsername(username).then((posts) => {
+        setPosts(posts);
+      });
     }
-  }, [props.user]);
+  }, []);
 
-  if (!props.user) {
+  if (!user) {
     return <div>fetching user</div>;
   }
 
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-lblue">
-      <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
+      {/* <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} /> */}
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <ProfileCard
-            user={props.user}
-            setUser={props.setUser}
-            selectedUser={props.user}
-            setSelectedUser={props.setUser}
-          />
+          <ProfileCard user={user} />
         </div>
         <div className="col-span-2">
           {posts.length > 0 ? (

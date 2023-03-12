@@ -7,13 +7,13 @@ import {
   removePost,
   savePost,
   updatePost,
-  getUserPostsByEmail,
+  fetchPostsByUsername,
 } from "../services/db";
 
-export const getUserPosts = async (req: Request, res: Response) => {
+export const getPostsByUsername = async (req: Request, res: Response) => {
   try {
-    const posts = await getUserPostsByEmail(req.body.email);
-    console.log(posts);
+    const posts = await fetchPostsByUsername(req.params.username);
+
     res.status(201);
     res.json({ posts: posts });
   } catch (error) {

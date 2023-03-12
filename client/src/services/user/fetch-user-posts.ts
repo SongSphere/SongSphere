@@ -1,16 +1,13 @@
-import { TPost } from "../types/post";
+import { TPost } from "../../types/post";
 
-const fetchUserPosts = async (email: string) => {
+const fetchPostsByUsername = async (username: string) => {
   return new Promise<TPost[]>(async (resolve, reject) => {
-    await fetch(`${process.env.REACT_APP_API}/api/user/posts`, {
-      method: "POST",
+    await fetch(`${process.env.REACT_APP_API}/api/user/posts/${username}`, {
+      method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        email: email,
-      }),
     })
       .then(async (res) => {
         return res.json();
@@ -24,4 +21,4 @@ const fetchUserPosts = async (email: string) => {
   });
 };
 
-export default fetchUserPosts;
+export default fetchPostsByUsername;

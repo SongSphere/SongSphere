@@ -1,4 +1,4 @@
-import { TUser, TUserWrapper } from "../types/user";
+import { TUser, TUserWrapper } from "../../types/user";
 
 const fetchUser = async () => {
   return new Promise<TUser | null>(async (resolve, reject) => {

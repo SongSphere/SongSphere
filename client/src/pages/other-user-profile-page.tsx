@@ -5,7 +5,7 @@ import { NoPosts } from "../components/profile/no-post";
 import OtherProfileFeed from "../components/profile/other-profile-feed";
 import OtherUserProfileCard from "../components/profile/other-user-profile-card";
 import SpotifyPlayerCard from "../components/spotify-music-player-card";
-import fetchUserPosts from "../services/fetch-user-posts";
+import fetchUserPosts from "../services/user/fetch-user-posts";
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
 import { TUser } from "../types/user";

@@ -59,13 +59,14 @@ const Post = (props: IPostProps) => {
                 className=" text-lblue hover:text-lgrey"
                 onClick={async () => {
                   await deletePost(props.post).then((res) => {
+                    setOpen2(true);
                     // temp solution
                     if (res) {
                       setDeleteSuccessText("Success");
                     } else {
                       setDeleteSuccessText("Fail");
                     }
-                    setOpen2(true);
+
                     setTimeout(() => {
                       window.location.reload();
                     }, 1500);

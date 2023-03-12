@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import fetchUserNames from "../services/fetch-userNames";
+import fetchUserNames from "../services/user/fetch-userNames";
 import { TUser } from "../types/user";
 import { useNavigate } from "react-router-dom";
 import { TPost } from "../types/post";

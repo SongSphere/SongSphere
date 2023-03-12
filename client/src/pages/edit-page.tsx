@@ -4,7 +4,7 @@ import { TPost } from "../types/post";
 import { TUser } from "../types/user";
 import EditPost from "../services/edit-post";
 import { Link, useNavigate } from "react-router-dom";
-import fetchUser from "../services/fetch-user";
+import fetchUser from "../services/user/fetch-user";
 import Popup from "reactjs-popup";
 
 interface IEditPageProps {
