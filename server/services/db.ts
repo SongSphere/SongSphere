@@ -276,6 +276,16 @@ export const updateNames = async (
   }
 };
 
+export const fetchFeed = async (email: string) => {
+  try {
+    User.findOne({ email: email }, "following", (err, docs) => {});
+    const posts = await Post.find({ userEmail: email });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 export const deleteUserInServices = async (email: string) => {
   try {
     await User.deleteOne({ email: email });

@@ -12,6 +12,7 @@ import {
   updateBackground,
   updatePFPUrl,
   updateBURL,
+  fetchFeed,
 } from "../services/db";
 import fs from "fs";
 
@@ -60,6 +61,16 @@ export const findUserByUserName = async (
   } catch (error) {
     res.status(404);
     res.json({ msg: "cannot find user" });
+  }
+};
+
+export const getFeed = async (req: Request, res: Response) => {
+  try {
+    const posts = await fetchFeed(req.body.email);
+    return posts;
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "cannot fetch posts" });
   }
 };
 
