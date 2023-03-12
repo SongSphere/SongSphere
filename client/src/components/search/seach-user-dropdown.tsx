@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import fetchUserNames from "../services/fetch-userNames";
-import { TUser } from "../types/user";
+import fetchUserNames from "../../services/fetch-userNames";
+import { TUser } from "../../types/user";
 import { useNavigate } from "react-router-dom";
-import { TPost } from "../types/post";
-import OtherUserProfilePage from "../pages/other-user-profile-page";
 
 interface IUserFindProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -15,9 +13,8 @@ interface IUserFindProps {
   service: string;
 }
 
-const UserFind = (props: IUserFindProps) => {
+const SearchUserDropDown = (props: IUserFindProps) => {
   let [users, setUsers] = useState<TUser[]>([]);
-
   const navigate = useNavigate();
 
   return (
@@ -31,9 +28,12 @@ const UserFind = (props: IUserFindProps) => {
                 className="flex-1 block w-full px-3 py-2 focus:outline-none"
                 placeholder="Search for users"
                 onChange={async (event) => {
-                  if ((event.target.value as string) == "") {
+                  /*
+                    This functionality calls to backend for User Document
+                  */
+                  if ((event.target.value as string) === "") {
                     setUsers([]);
-                  } else if ((event.target.value as string) != "") {
+                  } else if ((event.target.value as string) !== "") {
                     await fetchUserNames(event.target.value as string).then(
                       (result) => {
                         if (result) {
@@ -103,4 +103,4 @@ const UserFind = (props: IUserFindProps) => {
   );
 };
 
-export default UserFind;
+export default SearchUserDropDown;

@@ -1,8 +1,9 @@
 import React from "react";
 import { SetStateAction } from "react";
 import Navbar from "../components/navbar";
-import UserFind from "../components/user-find";
+import SearchUserDropDown from "../components/search/seach-user-dropdown";
 import { TUser } from "../types/user";
+
 
 interface ISearchUsersProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -27,7 +28,7 @@ const SearchUsersPage = (props: ISearchUsersProps) => {
       />
       <div className="text-center translate-y-1/3">
         <h1 className="text-lg text-lgrey">Find Friends</h1>
-        <UserFind
+        <SearchUserDropDown
           user={props.user}
           setUser={props.setUser}
           setIsLoggedIn={props.setIsLoggedIn}
