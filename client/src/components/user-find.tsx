@@ -67,7 +67,7 @@ const UserFind = (props: IUserFindProps) => {
               return (
                 <div key={user.email}>
                   <button
-                    key={user.userName}
+                    key={user.username}
                     onClick={() => {
                       props.setUser(props.user);
                       props.setSelectedUser(user);
@@ -83,7 +83,7 @@ const UserFind = (props: IUserFindProps) => {
                         ></img>
                         <div className="text-sm">
                           <p className="pr-2 leading-none text-gray-900">
-                            {user.userName}
+                            {user.username}
                           </p>
                         </div>
                       </div>
