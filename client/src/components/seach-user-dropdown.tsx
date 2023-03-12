@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import fetchUserNames from "../../services/fetch-userNames";
-import { TUser } from "../../types/user";
+import fetchUserNames from "../services/fetch-userNames";
+import { TUser } from "../types/user";
 import { useNavigate } from "react-router-dom";
 
-interface IUserFindProps {
+interface ISearchUserDropDownProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
@@ -13,7 +13,7 @@ interface IUserFindProps {
   service: string;
 }
 
-const SearchUserDropDown = (props: IUserFindProps) => {
+const SearchUserDropDown = (props: ISearchUserDropDownProps) => {
   let [users, setUsers] = useState<TUser[]>([]);
   const navigate = useNavigate();
 

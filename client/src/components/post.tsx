@@ -6,7 +6,7 @@ import EditPage from "../pages/edit-page";
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
 import deletePost from "../services/delete-post";
-import PostFocusPage from "../pages/post-focus-page";
+import PostFocusPage from "../pages/profile/post-focus-page";
 import Popup from "reactjs-popup";
 
 interface IPostProps {

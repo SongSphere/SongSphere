@@ -5,7 +5,7 @@
   Contains modal, Calls Adjust Names Link to update toward DB
 */
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AdjustNamesLink from "../components/adjust-names-link";
 import DeleteGoogleAcountLink from "../components/delete-google-account-link";
 import { TUser } from "../types/user";

@@ -6,13 +6,13 @@ import AuthPage from "../pages/auth-page";
 import HomePage from "../pages/home-page";
 import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
-import ProfilePage from "../pages/profile-page";
+import ProfilePage from "../pages/profile/profile-page";
 import SearchUsersPage from "../pages/search-users-page";
 import SettingsPage from "../pages/settings-page";
 import { TUser } from "../types/user";
 import { TPost } from "../types/post";
 import EditPage from "../pages/edit-page";
-import OtherUserProfilePage from "../pages/other-user-profile-page";
+import OtherUserProfilePage from "../pages/profile/other-user-profile-page";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
