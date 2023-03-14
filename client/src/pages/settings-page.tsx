@@ -22,6 +22,7 @@ import {
   UpdateBackgroundURL,
   UpdateProfileURL,
 } from "../components/image-url-handler";
+import Toggle from "../components/toggle";
 
 interface ISettingPageProps {
   user: TUser | null;
@@ -182,6 +183,11 @@ const SettingsPage = (props: ISettingPageProps) => {
               onChange={(e) => setBackgroundImgUrl(e.target.value)}
             />
             <UpdateBackgroundURL url={backgroundImgUrl} /> */}
+
+            <div>
+              Is account public or private
+            </div>
+            <Toggle />
           </div>
         </div>
       </div>
