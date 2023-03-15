@@ -23,6 +23,8 @@ import {
   UpdateProfileURL,
 } from "../components/image-url-handler";
 import Toggle from "../components/toggle";
+import SetPrivateLink from "../components/private-visibility-link";
+import SetPublicLink from "../components/public-visibility-link";
 
 interface ISettingPageProps {
   user: TUser | null;
@@ -41,6 +43,8 @@ const SettingsPage = (props: ISettingPageProps) => {
   const [familyName, setFamilyName] = useState<string>("");
   const [profileImgUrl, setProfileImgUrl] = useState<string>("");
   const [backgroundImgUrl, setBackgroundImgUrl] = useState<string>("");
+
+  const [isPrivateStatus, setIsPrivateStatus] = useState<boolean>(false);
 
   const [appleAccountStatus, setAppleAccountStatus] = useState<boolean>(false);
   const [spotifyAccountStatus, setSpotifyAccountStatus] =
@@ -61,6 +65,11 @@ const SettingsPage = (props: ISettingPageProps) => {
         setSpotifyAccountStatus(true);
       } else {
         setSpotifyAccountStatus(false);
+      }
+      if (props.user.isPrivate == false) {
+        setIsPrivateStatus(false);
+      } else {
+        setIsPrivateStatus(true);
       }
     }
   }, [props.user]);
@@ -184,10 +193,16 @@ const SettingsPage = (props: ISettingPageProps) => {
             />
             <UpdateBackgroundURL url={backgroundImgUrl} /> */}
 
-            <div>
-              Is account public or private
-            </div>
-            <Toggle />
+            <div>Is account public or private</div>
+            <div>{`Account private: ${isPrivateStatus}`}</div>
+            <SetPrivateLink 
+            setUser={props.setUser}
+            user={props.user}
+            />
+            <SetPublicLink 
+            setUser={props.setUser}
+            user={props.user}
+            />
           </div>
         </div>
       </div>

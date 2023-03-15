@@ -13,6 +13,7 @@ import {
   updateProfileURL,
   updateBackgroundURL,
   findUsersByUserName,
+  changeAccountVisibility,
 } from "../controllers/user";
 import { getUserPosts } from "../controllers/posting";
 
@@ -24,6 +25,7 @@ const router = express.Router();
 router.get("/user", auth, sessionUpdate);
 router.post("/api/user/posts", auth, getUserPosts);
 router.post("/api/user/onboard", auth, changeOnboarded);
+router.post("/api/user/visibility", auth, changeAccountVisibility);
 router.post("/api/user/unlinkSpotify", auth, unlinkSpotify);
 router.post("/api/user/unlinkApple", auth, unlinkApple);
 router.post("/user/adjustNames", auth, changeNames);
