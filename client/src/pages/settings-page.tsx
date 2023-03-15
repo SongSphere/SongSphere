@@ -22,7 +22,6 @@ import {
   UpdateBackgroundURL,
   UpdateProfileURL,
 } from "../components/image-url-handler";
-import Toggle from "../components/toggle";
 import SetPrivateLink from "../components/private-visibility-link";
 import SetPublicLink from "../components/public-visibility-link";
 
