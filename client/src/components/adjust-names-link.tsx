@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import fetchUser from "../services/fetch-user";
+import fetchUser from "../services/general/fetch-user";
 import { useState } from "react";
-import AdjustName from "../services/adjust-name";
+import AdjustName from "../services/settings/adjust-name";
 import Popup from "reactjs-popup";
 import { TUser } from "../types/user";
 

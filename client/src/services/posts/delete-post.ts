@@ -1,4 +1,4 @@
-import { TPost } from "../types/post";
+import { TPost } from "../../types/post";
 import { textSpanContainsPosition } from "typescript";
 
 const deletePost = async (post: TPost) => {

@@ -1,6 +1,6 @@
 import React, { Dispatch } from "react";
 import { CredentialResponse } from "@react-oauth/google";
-import { TUser, TUserWrapper } from "../types/user";
+import { TUser, TUserWrapper } from "../../types/user";
 
 const handleSignInUp = async (credentialResponse: CredentialResponse) => {
   let loggedInSuccess = false;

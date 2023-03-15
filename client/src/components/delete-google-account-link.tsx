@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import Popup from "reactjs-popup";
 import { useNavigate } from "react-router-dom";
-import DeleteGoogleAccount from "../services/delete-google-account";
+import DeleteGoogleAccount from "../services/settings/delete-google-account";
 import { TUser } from "../types/user";
 
 /*

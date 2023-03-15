@@ -1,6 +1,6 @@
 import React, { Dispatch } from "react";
 import { textChangeRangeNewSpan } from "typescript";
-import { TMusicContent } from "../types/music-content";
+import { TMusicContent } from "../../types/music-content";
 
 const SPOTIFY_API = "https://api.spotify.com/v1";
 

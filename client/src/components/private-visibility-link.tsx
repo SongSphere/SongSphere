@@ -1,6 +1,6 @@
-import fetchUser from "../services/fetch-user";
-import setVisibilityPrivate from "../services/set-visibility-private";
-import setVisibilityPublic from "../services/set-visibility-public";
+import fetchUser from "../services/general/fetch-user";
+import setVisibilityPrivate from "../services/settings/set-visibility-private";
+import setVisibilityPublic from "../services/settings/set-visibility-public";
 
 
 import { TUser } from "../types/user";

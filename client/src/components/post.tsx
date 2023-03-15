@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 import EditPage from "../pages/edit-page";
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
-import deletePost from "../services/delete-post";
+import deletePost from "../services/posts/delete-post";
 import PostFocusPage from "../pages/profile/post-focus-page";
 import Popup from "reactjs-popup";
 

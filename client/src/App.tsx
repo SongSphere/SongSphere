@@ -1,7 +1,7 @@
 import Router from "./components/router";
 import { useEffect, useState } from "react";
-import checkLoggedIn from "./services/check-logged-in";
-import fetchUser from "./services/fetch-user";
+import checkLoggedIn from "./services/general/check-logged-in";
+import fetchUser from "./services/general/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import { TUser } from "./types/user";

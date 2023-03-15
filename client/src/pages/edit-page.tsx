@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { TPost } from "../types/post";
 import { TUser } from "../types/user";
-import EditPost from "../services/edit-post";
+import EditPost from "../services/posts/edit-post";
 import { Link, useNavigate } from "react-router-dom";
-import fetchUser from "../services/fetch-user";
+import fetchUser from "../services/general/fetch-user";
 import Popup from "reactjs-popup";
 
 interface IEditPageProps {

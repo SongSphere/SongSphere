@@ -16,8 +16,8 @@ import {
 import Navbar from "../components/navbar";
 import AppleLink from "../components/apple-link";
 import SpotifyLinkButton from "../components/spotify-link";
-import unlinkMusic from "../services/unlink-music";
-import fetchUser from "../services/fetch-user";
+import unlinkMusic from "../services/settings/unlink-music";
+import fetchUser from "../services/general/fetch-user";
 import {
   UpdateBackgroundURL,
   UpdateProfileURL,

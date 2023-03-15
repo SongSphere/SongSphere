@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TMusicContent } from "../types/music-content";
 import { TUser } from "../types/user";
-import selectService from "../services/select-service";
+import selectService from "../services/posts/select-service";
 
 interface ISpotifySong {
   name: string;

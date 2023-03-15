@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { requestSpotifyAuthorization } from "../services/spotify-link";
-import { spotifyAuth } from "../services/spotify-link";
+import { requestSpotifyAuthorization } from "../services/settings/spotify-link";
+import { spotifyAuth } from "../services/settings/spotify-link";
 import { TUser } from "../types/user";
 
-import fetchUser from "../services/fetch-user";
+import fetchUser from "../services/general/fetch-user";
 
 interface ISpotfiyLinkButtonProps {
   setUser: React.Dispatch<React.SetStateAction<TUser | null>>;

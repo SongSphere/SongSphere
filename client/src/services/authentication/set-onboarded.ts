@@ -1,4 +1,4 @@
-import { TPost } from "../types/post";
+import { TPost } from "../../types/post";
 
 const setOnboarded = async (email: string | undefined) => {
   await fetch(`${process.env.REACT_APP_API}/api/user/onboard`, {
