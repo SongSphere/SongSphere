@@ -31,7 +31,7 @@ router.post("/api/user/adjustNames", auth, changeNames);
 router.post("/api/user/deleteAccount", auth, deleteUserInControllers);
 router.post("/api/user/queryUsernames", auth, findUsersByUserName);
 router.post("/api/user/queryUsername", auth, findUserByUserName);
-router.get("/user/getFeed", auth, getFeed);
+router.get("/api/user/getFeed", auth, getFeed);
 
 import multer from "multer";
 const upload = multer({ dest: "images/" });

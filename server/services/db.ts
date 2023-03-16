@@ -278,8 +278,20 @@ export const updateNames = async (
 
 export const fetchFeed = async (email: string) => {
   try {
-    User.findOne({ email: email }, "following", (err, docs) => {});
-    const posts = await Post.find({ userEmail: email });
+    let posts: (mongoose.Document<unknown, any, IPost> &
+      IPost & {
+        _id: mongoose.Types.ObjectId;
+      })[] = [];
+
+    let user = await User.findOne({ email: email }, "following");
+    let following = user.following;
+
+    for (let i = 0; i < following.length; i++) {
+      let userPosts = await Post.find({ username: following[i] });
+      posts.push(...userPosts);
+    }
+
+    return posts;
   } catch (error) {
     console.log(error);
     throw error;

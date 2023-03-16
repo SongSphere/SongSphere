@@ -5,6 +5,7 @@ import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import Navbar from "../components/navbar";
 import { TUser } from "../types/user";
 import SpotfiyLinkButton from "../components/spotify-link";
+import FetchFeed from "../components/dummy-feed-fetch";
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -30,6 +31,7 @@ const HomePage = (props: IHomePageProps) => {
             this will be the feed. Implementing the feed is not part of sprint
             1.
           </div>
+          <FetchFeed />
         </div>
       </div>
     </div>

@@ -66,8 +66,9 @@ export const findUserByUserName = async (
 
 export const getFeed = async (req: Request, res: Response) => {
   try {
-    const posts = await fetchFeed(req.body.email);
-    return posts;
+    const posts = await fetchFeed(req.session.user.email);
+    res.status(200);
+    res.json({ posts: posts });
   } catch (error) {
     res.status(404);
     res.json({ msg: "cannot fetch posts" });
