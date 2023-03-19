@@ -179,7 +179,7 @@ const Search = (props: ISearchProps) => {
         onClick={async () => {
           setOpen2(true);
           await sendPost({
-            username: props.user?.userName!,
+            username: props.user?.username!,
             userEmail: props.user?.email!,
             caption: caption,
             music: selected!,

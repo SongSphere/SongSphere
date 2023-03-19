@@ -5,25 +5,23 @@
 */
 
 const DeleteGoogleAccount = async (email: string) => {
-    try {
-        await fetch(`${process.env.REACT_APP_API}/user/deleteAccount`, {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify({
-            email: email,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+  try {
+    await fetch(`${process.env.REACT_APP_API}/api/user/deleteAccount`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        email: email,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-        return true;
-        
-      } catch (err) {
-        console.log(err);
-        return false;
-      }
-
-}
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
 
 export default DeleteGoogleAccount;

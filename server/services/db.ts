@@ -14,7 +14,7 @@ export const createUser = async (
 ): Promise<mongoose.Document<unknown, any, IUser>> => {
   const user = new User({
     name: userData.name,
-    userName: "",
+    username: "",
     givenName: userData.given_name,
     middleName: "",
     familyName: userData.family_name,
@@ -166,7 +166,7 @@ export const saveUser = async (
 
 export const fetchUserbyUserName = async (userName: string) => {
   try {
-    const users = await User.findOne({ userName: userName });
+    const users = await User.findOne({ username: userName });
     return users;
   } catch (error) {
     console.log(error);
@@ -178,7 +178,7 @@ export const fetchUsersbyUserName = async (userName: string) => {
   var regexp = new RegExp("^" + userName);
 
   try {
-    const users = await User.find({ userName: regexp });
+    const users = await User.find({ username: regexp });
     return users;
   } catch (error) {
     console.log(error);
@@ -266,7 +266,7 @@ export const updateNames = async (
   familyName: string
 ) => {
   try {
-    await User.findOneAndUpdate({ email: email }, { userName: username });
+    await User.findOneAndUpdate({ email: email }, { username: username });
     await User.findOneAndUpdate({ email: email }, { givenName: givenName });
     await User.findOneAndUpdate({ email: email }, { middleName: middleName });
     await User.findOneAndUpdate({ email: email }, { familyName: familyName });

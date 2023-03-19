@@ -37,9 +37,9 @@ export const findUsersByUserName = async (
 ) => {
   try {
     console.log("Printed in user.ts in controllers backend");
-    console.log(req.body.userName.toString);
+    console.log(req.body.username.toString);
     //console.log(req.body.userName.toString);
-    const users = await fetchUsersbyUserName(req.body.userName);
+    const users = await fetchUsersbyUserName(req.body.username);
     res.status(200);
     res.json({ users: users });
   } catch (error) {
@@ -54,7 +54,7 @@ export const findUserByUserName = async (
   next: NextFunction
 ) => {
   try {
-    const user = await fetchUserbyUserName(req.body.userName);
+    const user = await fetchUserbyUserName(req.body.username);
     res.status(200);
     res.json({ user: user });
   } catch (error) {
@@ -217,7 +217,7 @@ export const updateBackgroundURL = (req: Request, res: Response) => {
   }
 };
 
-export const getProfilePhoto = (req: Request, res: Response) => {
+export const getPhoto = (req: Request, res: Response) => {
   const imageName = req.params.imageName;
   try {
     if (fs.existsSync(`images/${imageName}`)) {
