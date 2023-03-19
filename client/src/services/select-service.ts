@@ -20,13 +20,17 @@ const selectService = async (
       }
     });
   } else {
-    await spotifySearch(song.name!, "tracks", user?.spotifyToken!, 1).then(
-      (result) => {
-        if (result.length !== 0) {
-          bestFitSongId = result[0].id;
-        }
+    await spotifySearch(
+      song.name!,
+      "tracks",
+      user?.spotifyToken!,
+      user?.spotifyRefreshToken,
+      1
+    ).then((result) => {
+      if (result.length !== 0) {
+        bestFitSongId = result[0].id;
       }
-    );
+    });
   }
 
   return bestFitSongId;

@@ -10,6 +10,7 @@ import PostFailure from "./post-failure";
 import PostSucess from "./post-sucess";
 import Popup from "reactjs-popup";
 import { Navigate } from "react-router-dom";
+import fetchUser from "../services/fetch-user";
 
 const AppleSearch = async (
   term: string,
@@ -24,14 +25,16 @@ const SpotifySearch = async (
   term: string,
   category: string,
   token: string,
+  refresh_token: string,
   limit: number
 ) => {
-  return spotifySearch(term, category, token, limit);
+  return spotifySearch(term, category, token, refresh_token, limit);
 };
 
 interface ISearchProps {
   musicInstance: MusicKit.MusicKitInstance;
   user: TUser | null;
+  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   service: string;
 }
 
@@ -44,7 +47,30 @@ const Search = (props: ISearchProps) => {
     if (props.service === "apple") {
       return AppleSearch(term, category, limit, props.musicInstance);
     } else if (props.service === "spotify") {
-      return SpotifySearch(term, category, props.user?.spotifyToken!, limit);
+      try {
+        let res = await SpotifySearch(
+          term,
+          category,
+          props.user?.spotifyToken!,
+          props.user?.spotifyRefreshToken!,
+          limit
+        );
+
+        // update session
+        props.setUser(await fetchUser());
+
+        return res;
+      } catch (error) {
+        console.error(error);
+      }
+
+      // return SpotifySearch(
+      //   term,
+      //   category,
+      //   props.user?.spotifyToken!,
+      //   props.user?.spotifyRefreshToken!,
+      //   limit
+      // );
     } else {
       console.error("no service available");
     }

@@ -79,6 +79,50 @@ export const spotifyAuth = async (req: Request, res: Response) => {
   }
 };
 
+export const spotifyRefresh = async (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const refresh_token = req.body.refresh_token;
+
+  const data = qs.stringify({
+    grant_type: "refresh_token",
+    refresh_token: refresh_token,
+  });
+
+  let tokenRes;
+
+  try {
+    tokenRes = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      data,
+      {
+        headers: {
+          Authorization: `Basic ${auth_token}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    if (tokenRes.status != 200) {
+      throw new Error("fetch token failed with invalid data");
+    }
+
+    const spotifyToken = tokenRes.data.access_token;
+
+    try {
+      await updateSpotifyTokens(email, spotifyToken, refresh_token);
+      res.status(201);
+      res.json({ new_token: spotifyToken });
+    } catch (error) {
+      console.log(error);
+      res.json({ error: error });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    res.json({ msg: "token fetch failed" });
+  }
+};
+
 export const appleAuth = async (req: Request, res: Response) => {
   const email = req.session.user.email;
   const appleToken = req.body.appleToken;

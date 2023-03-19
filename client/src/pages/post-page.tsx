@@ -47,6 +47,7 @@ const PostPage = (props: IPostPageProps) => {
             <Search
               musicInstance={props.musicInstance}
               user={props.user}
+              setUser={props.setUser}
               service={props.service}
             />
           </div>

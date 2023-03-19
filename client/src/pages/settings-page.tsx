@@ -22,6 +22,7 @@ import {
   UpdateBackgroundURL,
   UpdateProfileURL,
 } from "../components/image-url-handler";
+import { spotifyRefresh } from "../services/spotify-link";
 
 interface ISettingPageProps {
   user: TUser | null;

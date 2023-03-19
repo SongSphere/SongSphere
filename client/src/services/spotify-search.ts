@@ -1,13 +1,13 @@
 import React, { Dispatch } from "react";
 import { textChangeRangeNewSpan } from "typescript";
 import { TMusicContent } from "../types/music-content";
-
-const SPOTIFY_API = "https://api.spotify.com/v1";
+import { spotifyApiCall } from "./spotify-api-call";
 
 export const spotifySearch = async (
   query: string,
   category: string,
   token: string,
+  refresh_token: string,
   limit: number
 ) => {
   if (query === "") return [];
@@ -22,22 +22,18 @@ export const spotifySearch = async (
 
   let content: TMusicContent[] = [];
 
-  await fetch(
-    `${SPOTIFY_API}/search?q=${encodeURIComponent(
-      query
-    )}&type=${type}&limit=${limit}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+  await spotifyApiCall(
+    `/search?q=${encodeURIComponent(query)}&type=${type}&limit=${limit}`,
+    token,
+    refresh_token
   )
     .then(async (res) => {
-      // passes json to the next handler function
-      return res.json();
+      return res?.json();
     })
     .then((data) => {
+      console.log("inside search part");
+      console.log(data);
+
       if (type === "track") {
         const tracks = data.tracks.items;
 

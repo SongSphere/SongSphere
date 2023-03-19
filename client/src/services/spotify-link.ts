@@ -33,11 +33,33 @@ export const spotifyAuth = async (code: string) => {
       "Content-Type": "application/json",
     },
   }).then(async (res) => {
-    if (res.status != 201) {
+    if (res.status !== 201) {
       console.error(res);
       return false;
     }
-    console.log(res.json());
     return true;
   });
+};
+
+export const spotifyRefresh = async (refresh_token: string) => {
+  let newToken;
+
+  await fetch(`${process.env.REACT_APP_API}/api/auth/spotifyrefresh`, {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify({
+      refresh_token: refresh_token,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then(async (res) => {
+      return res.json();
+    })
+    .then((data) => {
+      newToken = data.new_token;
+    });
+
+  return newToken;
 };
