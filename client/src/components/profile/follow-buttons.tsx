@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import fetchUser from "../../services/fetch-user";
-import fetchUserName from "../../services/fetch-userName";
-import fetchUserNames from "../../services/fetch-userNames";
 import { follow, unfollow } from "../../services/follow";
 import { TUser } from "../../types/user";
 
@@ -58,8 +56,8 @@ export const MyFollowerInformationCard = (props: IUser) => {
   }
 
   return (
-    <div>
-      <div>
+    <div className="p-2">
+      <div className="p-2 bg-gray-200 rounded-lg">
         <button
           className={`ml-3 px-2 text-sm py-2 rounded text-grey`}
           onClick={() => handleOpenFollowers()}
@@ -75,9 +73,21 @@ export const MyFollowerInformationCard = (props: IUser) => {
         </button>
 
         {openFollowers ? (
-          <div>
+          <form>
+            <div className="flex justify-between overflow-hidden bg-white rounded-md shadow shadow-black/20">
+              <input
+                type="text"
+                className="flex-1 block w-full px-3 py-2 focus:outline-none"
+                placeholder="search"
+                onChange={async (event) => {
+                  if ((event.target.value as string) == "") {
+                  } else if ((event.target.value as string) != "") {
+                  }
+                }}
+              />
+            </div>
             <ListFollowers user={props.user} setUser={props.setUser} />
-          </div>
+          </form>
         ) : null}
 
         {openFollowing ? (
@@ -229,12 +239,10 @@ export const ListFollowers = (props: IUser) => {
   }
 
   return (
-    <div className="mt-5 ml-5">
+    <div className="py-3">
       {users.map((user) => {
         return (
-          <div className="w-2/3 px-4 py-2 text-center rounded-lg bg-lgrey">
-            {user}
-          </div>
+          <div className="px-4 py-1 text-sm bg-gray-100 rounded-sm">{user}</div>
         );
       })}
     </div>
@@ -255,12 +263,10 @@ export const ListFollowing = (props: IUser) => {
   }
 
   return (
-    <div className="mt-5 ml-5">
+    <div className="py-3">
       {users.map((user) => {
         return (
-          <div className="w-2/3 px-4 py-2 text-center rounded-lg bg-lgrey">
-            {user}
-          </div>
+          <div className="px-4 py-1 text-sm bg-gray-100 rounded-sm">{user}</div>
         );
       })}
     </div>
