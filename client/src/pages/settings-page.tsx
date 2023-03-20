@@ -51,7 +51,7 @@ const SettingsPage = (props: ISettingPageProps) => {
 
   useEffect(() => {
     if (props.user) {
-      setUserName(props.user.userName);
+      setUserName(props.user.username);
       setGivenName(props.user.givenName);
       setMiddleName(props.user.middleName);
       setFamilyName(props.user.familyName);

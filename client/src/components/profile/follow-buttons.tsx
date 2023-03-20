@@ -126,8 +126,8 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
       setButtonText("Unfollow");
 
       await follow(
-        props.user?.userName!,
-        props.selectedUser?.userName!,
+        props.user?.username!,
+        props.selectedUser?.username!,
         props.selectedUser?.email!
       ).then(async () => {
         props.setUser(await fetchUser());
@@ -138,8 +138,8 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
       setButtonColor("bg-blue-500");
       setButtonText("Follow");
       unfollow(
-        props.user?.userName!,
-        props.selectedUser?.userName!,
+        props.user?.username!,
+        props.selectedUser?.username!,
         props.selectedUser?.email!
       ).then(async () => {
         props.setUser(await fetchUser());
@@ -151,7 +151,7 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
 
   useEffect(() => {
     if (props.selectedUser) {
-      if (props.user!.following.includes(props.selectedUser!.userName)) {
+      if (props.user!.following.includes(props.selectedUser!.username)) {
         setFollowing(true);
         setButtonColor("bg-lgrey");
         setButtonText("Unfollow");

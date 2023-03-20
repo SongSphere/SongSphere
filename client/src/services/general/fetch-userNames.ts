@@ -1,13 +1,13 @@
 import { TUser } from "../../types/user";
 
-const fetchUserNames = async (userName: string) => {
+const fetchUserNames = async (username: string) => {
   let user = null;
-  console.log(`Passed in the text box ${userName}`);
-  await fetch(`${process.env.REACT_APP_API}/user/queryUserNames`, {
+  console.log(`Passed in the text box ${username}`);
+  await fetch(`${process.env.REACT_APP_API}/api/user/queryUsernames`, {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({
-      userName: userName,
+      username: username,
     }),
     headers: {
       "Content-Type": "application/json",

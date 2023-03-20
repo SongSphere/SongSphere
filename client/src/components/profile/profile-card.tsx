@@ -35,7 +35,7 @@ const ProfileCard = (props: IProfileCardProps) => {
           </div>
 
           <div className="mt-6 text-2xl font-bold text-center text-black">{`${props.user.givenName} ${props.user.middleName} ${props.user.familyName}`}</div>
-          <div className="text-center text-black">{props.user.userName}</div>
+          <div className="text-center text-black">{props.user.username}</div>
 
           <div className="text-center">
             <button

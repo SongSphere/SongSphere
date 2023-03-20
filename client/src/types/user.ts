@@ -1,6 +1,6 @@
 export type TUser = {
   name: string;
-  userName: string;
+  username: string;
   givenName: string;
   middleName: string;
   familyName: string;

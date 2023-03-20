@@ -103,7 +103,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
               if (
                 (props.user.spotifyToken != undefined ||
                   props.user.appleToken != undefined) &&
-                props.user.userName !== ""
+                props.user.username !== ""
               ) {
                 setOnboarded(props.user?.email).then(() => {
                   navigate("/");
