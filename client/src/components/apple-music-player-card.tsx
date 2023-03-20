@@ -1,24 +1,32 @@
 import { useEffect, useState } from "react";
 import selectService from "../services/select-service";
+import Session from "../session";
 import { TMusicContent } from "../types/music-content";
 import { TUser } from "../types/user";
 
 interface IMusicPlayerCardProps {
   musicInstance: MusicKit.MusicKitInstance;
   selectedSong: TMusicContent | null;
-  user: TUser | null;
-  service: string;
+  // user: TUser | null;
+  // service: string;
 }
 
 const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [user, setUser] = useState<TUser | null>(null);
   const [song, setSong] = useState<MusicKit.Resource | null>(null);
+  const [service, setService] = useState<string>("");
 
   const musicInstance = props.musicInstance;
   musicInstance.addEventListener("playbackTimeDidChange", () => {
     setProgress(musicInstance.player.currentPlaybackProgress * 100);
   });
+
+  useEffect(() => {
+    setUser(Session.getUser());
+    setService(Session.getMusicService());
+  }, [Session.getUser()]);
 
   useEffect(() => {
     const fetchSong = async (songId: string) => {
@@ -57,19 +65,19 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
       );
     };
 
-    if (props.selectedSong) {
+    if (props.selectedSong && user) {
       selectServiceHandler(
         props.selectedSong,
         props.musicInstance,
-        props.user!,
-        props.service
+        user,
+        service
       );
     }
 
     if (props.selectedSong) {
       fetchSong(props.selectedSong.id);
     }
-  }, [props.selectedSong]);
+  }, [props.selectedSong, user]);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);

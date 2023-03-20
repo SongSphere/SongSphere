@@ -2,7 +2,7 @@ import { TUser } from "./types/user";
 
 const Session = (function () {
   let user: TUser | null = null;
-  let musicService: String = "";
+  let musicService: string = "";
   let isLoggedIn: Boolean = false;
 
   const getUser = () => {
@@ -17,7 +17,7 @@ const Session = (function () {
     return musicService;
   };
 
-  const setMusicService = (m: String) => {
+  const setMusicService = (m: string) => {
     musicService = m;
   };
 

@@ -72,17 +72,17 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
         </div>
         {props.service === "apple" ? (
           <AppleMusicPlayerCard
-            user={props.user}
-            service={props.service}
+            // user={props.user}
+            // service={props.service}
             musicInstance={props.appleMusicInstance}
             selectedSong={song}
           />
         ) : (
           <SpotifyPlayerCard
-            user={props.user}
+            // user={props.user}
             selectedSong={song}
             appleMusicInstance={props.appleMusicInstance}
-            service={props.service}
+            // service={props.service}
           />
         )}
       </div>

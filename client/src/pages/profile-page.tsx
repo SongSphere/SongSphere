@@ -18,34 +18,39 @@ import ProfileCard from "../components/profile/profile-card";
 import ProfileFeed from "../components/profile/profile-feed";
 import { NoPosts } from "../components/profile/no-post";
 import { useParams } from "react-router-dom";
+import Session from "../session";
 
 interface IProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  user: TUser | null;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  service: string;
+  // user: TUser | null;
+  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  // service: string;
   setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const ProfilePage = (props: IProfileProps) => {
-  const { username } = useParams();
   const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
+  const [service, setService] = useState<string>("");
 
   useEffect(() => {
-    if (username) {
-      fetchUserByUsername(username).then((user) => {
-        console.log(user);
-        setUser(user);
-      });
+    // fetchUserByUsername(username).then((user) => {
+    //   console.log(user);
+    //   setUser(user);
+    // });
+    setUser(Session.getUser());
+    setService(Session.getMusicService());
+  }, [Session.getUser()]);
 
-      fetchPostsByUsername(username).then((posts) => {
+  useEffect(() => {
+    if (user) {
+      fetchPostsByUsername(user.userName).then((posts) => {
         setPosts(posts);
       });
     }
-  }, []);
+  }, [user]);
 
   if (!user) {
     return <div>fetching user</div>;
@@ -53,7 +58,7 @@ const ProfilePage = (props: IProfileProps) => {
 
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-lblue">
-      {/* <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} /> */}
+      <Navbar />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
           <ProfileCard user={user} />
@@ -70,19 +75,19 @@ const ProfilePage = (props: IProfileProps) => {
             <NoPosts />
           )}
         </div>
-        {props.service === "apple" ? (
+        {service === "apple" ? (
           <AppleMusicPlayerCard
-            user={props.user}
-            service={props.service}
+            // user={props.user}
+            // service={props.service}
             musicInstance={props.appleMusicInstance}
             selectedSong={song}
           />
         ) : (
           <SpotifyPlayerCard
-            user={props.user}
+            // user={props.user}
             selectedSong={song}
             appleMusicInstance={props.appleMusicInstance}
-            service={props.service}
+            // service={props.service}
           />
         )}
       </div>

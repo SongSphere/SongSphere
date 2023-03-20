@@ -35,12 +35,10 @@ interface IRouterProps {
 
 const Router = (props: IRouterProps) => {
   let element = useRoutes([
-    // {
-    //   path: "/auth",
-    //   element: (
-    //     <AuthPage setIsLoggedIn={props.setIsLoggedIn} setUser={props.setUser} />
-    //   ),
-    // },
+    {
+      path: "/auth",
+      element: <AuthPage />,
+    },
     {
       path: "/",
       element: (
@@ -90,6 +88,16 @@ const Router = (props: IRouterProps) => {
     //     />
     //   ),
     // },
+    {
+      path: "/profile",
+      element: (
+        <ProfilePage
+          appleMusicInstance={props.appleMusicInstance}
+          // service={props.service}
+          setSelectEditPost={props.setSelectEditPost}
+        />
+      ),
+    },
     {
       path: "/onboard",
       element: (

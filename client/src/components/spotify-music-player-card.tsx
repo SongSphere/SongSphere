@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { TMusicContent } from "../types/music-content";
 import { TUser } from "../types/user";
 import selectService from "../services/select-service";
+import Session from "../session";
 
 interface ISpotifySong {
   name: string;
@@ -11,10 +12,10 @@ interface ISpotifySong {
 }
 
 interface ISpotifyPlayerCardProps {
-  user: TUser | null;
+  // user: TUser | null;
   selectedSong: TMusicContent | null;
   appleMusicInstance: MusicKit.MusicKitInstance;
-  service: string;
+  // service: string;
 }
 
 const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
@@ -23,6 +24,13 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
   const [deviceId, setDeviceId] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
+  const [user, setUser] = useState<TUser | null>(null);
+  const [service, setService] = useState<string>("");
+
+  useEffect(() => {
+    setUser(Session.getUser());
+    setService(Session.getMusicService());
+  }, [Session.getUser()]);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
@@ -82,33 +90,36 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
       );
     };
 
-    if (props.user && props.selectedSong) {
+    if (user && props.selectedSong) {
       selectServiceHandler(
         props.selectedSong,
         props.appleMusicInstance,
-        props.user,
-        props.service,
-        props.user.spotifyToken
+        user,
+        service,
+        user.spotifyToken
       );
     }
-  }, [props.user, props.selectedSong]);
+  }, [user, props.selectedSong]);
 
   useEffect(() => {
     const setSong = async (song_uri: string, deviceId: string) => {
       const url =
         "https://api.spotify.com/v1/me/player/play?" +
         new URLSearchParams({ device_id: deviceId });
-      await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${props.user?.spotifyToken}`,
-        },
-        body: JSON.stringify({
-          uris: [song_uri],
-          position_ms: 0,
-        }),
-      });
+
+      if (user) {
+        await fetch(url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.spotifyToken}`,
+          },
+          body: JSON.stringify({
+            uris: [song_uri],
+            position_ms: 0,
+          }),
+        });
+      }
     };
 
     if (deviceId && song && player) {
@@ -117,7 +128,7 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   }, [deviceId, song]);
 
   useEffect(() => {
-    if (props.user) {
+    if (user) {
       // dynamically import Spotify
       const script = document.createElement("script");
       script.src = "https://sdk.scdn.co/spotify-player.js";
@@ -129,7 +140,7 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
         const player = new window.Spotify.Player({
           name: "Web Playback SDK",
           getOAuthToken: (cb) => {
-            cb(props.user?.spotifyToken || "");
+            cb(user.spotifyToken || "");
           },
           volume: 0.5,
         });
@@ -187,7 +198,7 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
         return () => clearInterval(interval);
       };
     }
-  }, [props.user]);
+  }, [user]);
 
   return (
     <div className="relative flex justify-center h-screen">
