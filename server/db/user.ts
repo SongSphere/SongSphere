@@ -16,6 +16,7 @@ export interface IUser {
   appleToken: string;
   following: Array<String>;
   followers: Array<String>;
+  blockedUsers: Array<String>;
   onboarded: Boolean;
 }
 
@@ -78,6 +79,10 @@ const UserSchema = new Schema<IUser>(
       required: false,
     },
     followers: {
+      type: Array<String>(),
+      required: false,
+    },
+    blockedUsers: {
       type: Array<String>(),
       required: false,
     },

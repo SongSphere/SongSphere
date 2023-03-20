@@ -141,6 +141,7 @@ export const signInUp = async (
       appleToken: "",
       followers: Array<String>(),
       following: Array<String>(),
+      blockedUsers: Array<String>(),
       onboarded: false,
     };
 

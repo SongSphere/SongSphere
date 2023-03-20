@@ -14,6 +14,7 @@ export type TUser = {
   appleToken: string;
   following: string[];
   followers: string[];
+  blockedUsers: string[];
   onboarded: Boolean;
 };
 
