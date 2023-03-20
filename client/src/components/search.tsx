@@ -187,7 +187,7 @@ const Search = (props: ISearchProps) => {
           setOpen2(true);
           if (user) {
             await sendPost({
-              username: user.userName,
+              username: user.username,
               userEmail: user.email,
               caption: caption,
               music: selected!,

@@ -22,7 +22,7 @@ interface IOnBoardPageProps {
 const OnBoardPage = (props: IOnBoardPageProps) => {
   let navigate = useNavigate();
 
-  const [userName, setUserName] = useState<string>();
+  const [username, setUsername] = useState<string>();
   const [middleName, setMiddleName] = useState<string>();
   const [givenName, setGivenName] = useState<string>();
   const [familyName, setFamilyName] = useState<string>();
@@ -41,7 +41,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
       setGivenName(user.givenName);
       setFamilyName(user.familyName);
       setEmail(user.email);
-      setUserName(user.userName);
+      setUsername(user.username);
       setMiddleName(user.middleName);
 
       if (user.onboarded) {
@@ -93,8 +93,8 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
           className="e-input"
           type="text"
           placeholder="Enter User Name"
-          onChange={(e) => setUserName(e.target.value)}
-          value={userName}
+          onChange={(e) => setUsername(e.target.value)}
+          value={username}
         />
         <input
           className="e-input"
@@ -106,7 +106,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
         <AdjustNamesLink
           appleMusicInstance={props.appleMusicInstance}
           // setUser={props.setUser}
-          userName={userName ? userName : ""}
+          username={username ? username : ""}
           givenName={givenName ? givenName : ""}
           // givenName={props.user?.givenName ? props.user?.givenName : ""}
           middleName={middleName ? middleName : ""}
@@ -115,7 +115,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
         />
         <button
           onClick={() => {
-            if ((spotifyLinked || appleLinked) && userName !== "") {
+            if ((spotifyLinked || appleLinked) && username !== "") {
               if (user) {
                 setOnboarded(email).then(() => {
                   navigate("/");
@@ -131,29 +131,6 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
         >
           Next
         </button>
-
-        {/* <button
-          onClick={() => {
-            if (user) {
-              if (
-                (user.spotifyToken != undefined ||
-                  user.appleToken != undefined) &&
-                user.userName !== ""
-              ) {
-                setOnboarded(user.email).then(() => {
-                  navigate("/");
-                  window.location.reload();
-                });
-              } else {
-                window.alert(
-                  "need to link with at least one music platform and have a username"
-                );
-              }
-            }
-          }}
-        >
-          Next
-        </button> */}
       </div>
     </div>
   );

@@ -46,7 +46,7 @@ const ProfilePage = (props: IProfileProps) => {
 
   useEffect(() => {
     if (user) {
-      fetchPostsByUsername(user.userName).then((posts) => {
+      fetchPostsByUsername(user.username).then((posts) => {
         setPosts(posts);
       });
     }

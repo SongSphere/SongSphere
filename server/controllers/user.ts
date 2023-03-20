@@ -37,9 +37,8 @@ export const findUsersByUserName = async (
 ) => {
   try {
     console.log("Printed in user.ts in controllers backend");
-    console.log(req.body.userName.toString);
-    //console.log(req.body.userName.toString);
-    const users = await fetchUsersbyUserName(req.body.userName);
+    console.log(req.body.username.toString);
+    const users = await fetchUsersbyUserName(req.body.username);
     res.status(200);
     res.json({ users: users });
   } catch (error) {
@@ -54,7 +53,7 @@ export const getUserByUsername = async (
   next: NextFunction
 ) => {
   try {
-    const user = await fetchUserbyUserName(req.params.username);
+    const user = await fetchUserbyUserName(req.body.username);
     res.status(200);
     res.json({ user: user });
   } catch (error) {

@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 export interface IUser {
   name: string;
-  userName: string;
+  username: string;
   givenName: string;
   middleName: string;
   familyName: string;
@@ -25,7 +25,7 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
-    userName: {
+    username: {
       type: String,
       required: false,
     },

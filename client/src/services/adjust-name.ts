@@ -6,7 +6,7 @@ const AdjustName = async (
 ): Promise<boolean> => {
   return new Promise<boolean>(async (resolve, reject) => {
     try {
-      await fetch(`${process.env.REACT_APP_API}/user/adjustNames`, {
+      await fetch(`${process.env.REACT_APP_API}/api/user/adjustNames`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({

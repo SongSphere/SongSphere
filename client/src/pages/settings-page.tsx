@@ -35,7 +35,7 @@ const SettingsPage = (props: ISettingPageProps) => {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   const [user, setUser] = useState<TUser | null>(null);
-  const [userName, setUserName] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [givenName, setGivenName] = useState<string>("");
   const [middleName, setMiddleName] = useState<string>("");
   const [familyName, setFamilyName] = useState<string>("");
@@ -52,7 +52,7 @@ const SettingsPage = (props: ISettingPageProps) => {
 
   useEffect(() => {
     if (user) {
-      setUserName(user.userName);
+      setUsername(user.username);
       setGivenName(user.givenName);
       setMiddleName(user.middleName);
       setFamilyName(user.familyName);
@@ -90,8 +90,8 @@ const SettingsPage = (props: ISettingPageProps) => {
             className="e-input"
             type="text"
             placeholder="Enter User Name"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <input
             className="e-input"
@@ -118,7 +118,7 @@ const SettingsPage = (props: ISettingPageProps) => {
           <AdjustNamesLink
             appleMusicInstance={props.appleMusicInstance}
             // setUser={props.setUser}
-            userName={userName}
+            username={username}
             givenName={givenName}
             middleName={middleName}
             familyName={familyName}

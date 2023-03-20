@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import fetchUserNames from "../services/user/fetch-userNames";
+import fetchUserNames from "../services/user/fetch-usernames";
 import { TUser } from "../types/user";
 import { useNavigate } from "react-router-dom";
 import { TPost } from "../types/post";
@@ -67,7 +67,7 @@ const UserFind = (props: IUserFindProps) => {
               return (
                 <div key={user.email}>
                   <button
-                    key={user.userName}
+                    key={user.username}
                     onClick={() => {
                       props.setUser(props.user);
                       props.setSelectedUser(user);
@@ -83,7 +83,7 @@ const UserFind = (props: IUserFindProps) => {
                         ></img>
                         <div className="text-sm">
                           <p className="pr-2 leading-none text-gray-900">
-                            {user.userName}
+                            {user.username}
                           </p>
                         </div>
                       </div>

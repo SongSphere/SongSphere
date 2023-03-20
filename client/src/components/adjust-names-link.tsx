@@ -33,8 +33,7 @@ const Button = styled.button`
 
 interface IAdjustNamesLinkProps {
   appleMusicInstance: MusicKit.MusicKitInstance | null;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  userName: string;
+  username: string;
   givenName: string;
   middleName: string;
   familyName: string;
@@ -52,7 +51,7 @@ const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
           setOpen(true);
 
           await AdjustName(
-            props.userName,
+            props.username,
             props.givenName,
             props.middleName,
             props.familyName

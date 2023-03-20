@@ -28,9 +28,9 @@ router.get("/api/user/:username", auth, getUserByUsername);
 router.post("/api/user/onboard", auth, changeOnboarded);
 router.post("/api/user/unlinkSpotify", auth, unlinkSpotify);
 router.post("/api/user/unlinkApple", auth, unlinkApple);
-router.post("/user/adjustNames", auth, changeNames);
-router.post("/user/deleteAccount", auth, deleteUserInControllers);
-router.post("/user/queryUserNames", auth, findUsersByUserName);
+router.post("/api/user/adjustNames", auth, changeNames);
+router.post("/api/user/deleteAccount", auth, deleteUserInControllers);
+router.post("/api/user/queryUserNames", auth, findUsersByUserName);
 
 import multer from "multer";
 const upload = multer({ dest: "images/" });
