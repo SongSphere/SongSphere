@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import fetchUser from "../services/fetch-user";
+import fetchUser from "../services/general/fetch-user";
 import { useState } from "react";
-import { updateProfileURL, updateBackgroundURL } from "../services/send-image";
+import { updateProfileURL, updateBackgroundURL } from "../services/settings/send-image";
 import Popup from "reactjs-popup";
 import { TUser } from "../types/user";
 

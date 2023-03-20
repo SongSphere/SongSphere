@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import selectService from "../services/select-service";
+import selectService from "../services/posts/select-service";
 import { TMusicContent } from "../types/music-content";
 import { TUser } from "../types/user";
 

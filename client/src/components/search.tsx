@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
-import appleSearch from "../services/apple-search";
+import appleSearch from "../services/posts/apple-search";
 import { TMusicContent } from "../types/music-content";
-import { spotifySearch } from "../services/spotify-search";
-import sendPost from "../services/send-post";
+import { spotifySearch } from "../services/profile/spotify-search";
+import sendPost from "../services/posts/send-post";
 import { TUser } from "../types/user";
 import PostFailure from "./post-failure";
 import PostSucess from "./post-sucess";

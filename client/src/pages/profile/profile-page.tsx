@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 // import services
-import fetchUserPosts from "../../services/fetch-user-posts";
+import fetchUserPosts from "../../services/posts/fetch-user-posts";
 
 // import types
 import { TMusicContent } from "../../types/music-content";

@@ -10,11 +10,11 @@ import {
   updateBackground,
   updateProfileURL,
   updateBackgroundURL,
-} from "../services/send-image";
+} from "../services/settings/send-image";
 import { TUser } from "../types/user";
 
 import { getCroppedImg } from "../utils/crop-image";
-import fetchUser from "../services/fetch-user";
+import fetchUser from "../services/general/fetch-user";
 
 export interface ReactImageCropperProps {
   onCropComplete: (formData: FormData) => void;

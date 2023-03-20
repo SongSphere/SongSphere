@@ -26,6 +26,7 @@ export const createUser = async (
     followers: [],
     following: [],
     onboarded: false,
+    isPrivate: false,
   });
 
   return user;
@@ -127,6 +128,23 @@ export const updateUserOnboarded = async (
       { onboarded: onboarded },
       { new: true }
     );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateUserVisibility = async (
+  email: string,
+  isPrivate: boolean,
+) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { isPrivate: isPrivate },
+      { new: true }
+    );
+    
     return user;
   } catch (error) {
     throw error;

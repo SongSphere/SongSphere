@@ -142,6 +142,7 @@ export const signInUp = async (
       followers: Array<String>(),
       following: Array<String>(),
       onboarded: false,
+      isPrivate: false,
     };
 
     res.status(201);
