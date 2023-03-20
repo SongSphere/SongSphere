@@ -11,7 +11,6 @@ import {
   updateProfileURL,
   updateBackgroundURL,
 } from "../services/send-image";
-import { TUser } from "../types/user";
 
 import { getCroppedImg } from "../utils/crop-image";
 import fetchUser from "../services/user/fetch-user";
@@ -19,8 +18,6 @@ import Session from "../session";
 
 export interface ReactImageCropperProps {
   onCropComplete: (formData: FormData) => void;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  // user: TUser | null;
 }
 export const ProfileImgCropper = (props: ReactImageCropperProps) => {
   const [previewImage, setPreviewImage] = useState<string | undefined>();
@@ -31,15 +28,8 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
     Area | undefined
   >();
 
-  // const [image, setImage] = useState(props.user?.profileImgUrl);
   const [image, setImage] = useState("");
   const [ImgUrl, setImgUrl] = useState<string>("");
-
-  // useEffect(() => {
-  //   if (props.user) {
-  //     setImage(props.user.profileImgUrl);
-  //   }
-  // }, [props.user]);
 
   useEffect(() => {
     const user = Session.getUser();
@@ -151,9 +141,6 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
       />
       <button
         onClick={async () => {
-          // Open Modal that prints Success
-          //setOpen(true);
-
           await updateProfileURL(ImgUrl).then(async () => {
             await Session.setUser(await fetchUser());
           });
@@ -161,15 +148,12 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
       >
         Update Profile URL
       </button>
-      {/*)}*/}
     </>
   );
 };
 
 export interface BackgroundImgCropperProps {
   onCropComplete: (formData: FormData) => void;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  // user: TUser | null;
 }
 export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
   const [previewImage, setPreviewImage] = useState<string | undefined>();
@@ -295,9 +279,6 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
       />
       <button
         onClick={async () => {
-          // Open Modal that prints Success
-          //setOpen(true);
-
           await updateBackgroundURL(ImgUrl)
             .then(async () => {
               await Session.setUser(await fetchUser());

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import styled from "styled-components";
 import appleSearch from "../services/apple-search";
 import { TMusicContent } from "../types/music-content";
 import { spotifySearch } from "../services/spotify-search";
@@ -9,7 +8,6 @@ import { TUser } from "../types/user";
 import PostFailure from "./post-failure";
 import PostSucess from "./post-sucess";
 import Popup from "reactjs-popup";
-import { Navigate } from "react-router-dom";
 import Session from "../session";
 
 const AppleSearch = async (
@@ -32,8 +30,6 @@ const SpotifySearch = async (
 
 interface ISearchProps {
   musicInstance: MusicKit.MusicKitInstance;
-  // user: TUser | null;
-  // service: string;
 }
 
 const Search = (props: ISearchProps) => {

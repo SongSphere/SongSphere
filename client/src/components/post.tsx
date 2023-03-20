@@ -1,8 +1,5 @@
 import React from "react";
-import { Link, Route, useNavigate } from "react-router-dom";
-import Switch from "react-router-dom";
-import { Navigate } from "react-router-dom";
-import EditPage from "../pages/edit-page";
+import { useNavigate } from "react-router-dom";
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
 import deletePost from "../services/delete-post";

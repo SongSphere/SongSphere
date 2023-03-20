@@ -1,9 +1,6 @@
 import styled from "styled-components";
-import fetchUser from "../services/user/fetch-user";
 import { useState } from "react";
 import { updateProfileURL, updateBackgroundURL } from "../services/send-image";
-import Popup from "reactjs-popup";
-import { TUser } from "../types/user";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name
@@ -42,9 +39,7 @@ export const UpdateProfileURL = (props: IAdjustNamesLinkProps) => {
     <div>
       <Button
         onClick={async () => {
-          // Open Modal that prints Success
           setOpen(true);
-
           await updateProfileURL(props.url);
         }}
       >
@@ -62,9 +57,7 @@ export const UpdateBackgroundURL = (props: IAdjustNamesLinkProps) => {
     <div>
       <Button
         onClick={async () => {
-          // Open Modal that prints Success
           setOpen(true);
-
           await updateBackgroundURL(props.url);
         }}
       >

@@ -1,12 +1,8 @@
 import { Link } from "react-router-dom";
 import handleSignout from "../services/handle-sign-out";
-import { TUser } from "../types/user";
 import Session from "../session";
 
-interface INavbarProps {
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface INavbarProps {}
 
 const Navbar = (props: INavbarProps) => {
   return (
@@ -37,7 +33,6 @@ const Navbar = (props: INavbarProps) => {
               const logoutSuccesss = await handleSignout();
               if (logoutSuccesss) {
                 Session.setUser(null);
-                // props.setIsLoggedIn(false);
               }
             }}
           >

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { requestSpotifyAuthorization } from "../services/spotify-link";
 import { spotifyAuth } from "../services/spotify-link";
-import { TUser } from "../types/user";
 import Session from "../session";
 
 import fetchUser from "../services/user/fetch-user";

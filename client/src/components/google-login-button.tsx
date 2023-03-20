@@ -7,9 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { TUser } from "../types/user";
 import Session from "../session";
 
-interface ILoginButtonProps {
-  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface ILoginButtonProps {}
 
 const LoginButton = (props: ILoginButtonProps) => {
   let navigate = useNavigate();
@@ -25,18 +23,8 @@ const LoginButton = (props: ILoginButtonProps) => {
 
             if (loginSuccess) {
               Session.setIsLoggedIn(true);
-              // props.setIsLoggedIn(true);
               await fetchUser().then((user: TUser | null) => {
                 Session.setUser(user);
-                // if (user) {
-                //   if (
-                //     !existing ||
-                //     (user.appleToken == null && user.spotifyToken == null)
-                //   ) {
-                //     navigate("/onboard");
-                //   }
-                // }
-                // navigate("/");
                 window.location.reload();
               });
             } else {

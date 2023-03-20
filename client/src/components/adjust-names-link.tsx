@@ -44,17 +44,11 @@ const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   const [successFailText, setSuccessFailText] = useState("");
-  // const [user, setUser] = useState<TUser | null>(null);
-
-  // useEffect(() => {
-  //   setUser(Session.getUser());
-  // }, [Session.getUser()]);
 
   return (
     <div>
       <Button
         onClick={async () => {
-          // Open Modal that prints Success
           setOpen(true);
 
           await AdjustName(

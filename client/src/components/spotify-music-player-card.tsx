@@ -12,10 +12,8 @@ interface ISpotifySong {
 }
 
 interface ISpotifyPlayerCardProps {
-  // user: TUser | null;
   selectedSong: TMusicContent | null;
   appleMusicInstance: MusicKit.MusicKitInstance;
-  // service: string;
 }
 
 const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
