@@ -17,7 +17,7 @@ import Session from "../session";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   // user: TUser | null;
   // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   selectedUser: TUser | null;
@@ -41,17 +41,17 @@ const Router = (props: IRouterProps) => {
     //     <AuthPage setIsLoggedIn={props.setIsLoggedIn} setUser={props.setUser} />
     //   ),
     // },
-    // {
-    //   path: "/",
-    //   element: (
-    //     <HomePage
-    //       appleMusicInstance={props.appleMusicInstance}
-    //       // setUser={props.setUser}
-    //       setIsLoggedIn={props.setIsLoggedIn}
-    //       // user={props.user}
-    //     />
-    //   ),
-    // },
+    {
+      path: "/",
+      element: (
+        <HomePage
+          appleMusicInstance={props.appleMusicInstance}
+          // setUser={props.setUser}
+          // setIsLoggedIn={props.setIsLoggedIn}
+          // user={props.user}
+        />
+      ),
+    },
     // {
     //   path: "/posts",
     //   element: (

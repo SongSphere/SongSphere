@@ -48,7 +48,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
 
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-lblue">
-      <Navbar setUser={props.setUser} setIsLoggedIn={props.setIsLoggedIn} />
+      <Navbar />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
           <OtherUserProfileCard

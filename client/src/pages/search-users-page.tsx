@@ -17,14 +17,7 @@ interface ISearchUsersProps {
 const SearchUsersPage = (props: ISearchUsersProps) => {
   return (
     <div className="fixed w-screen h-screen bg-navy">
-      <Navbar
-        setUser={function (value: SetStateAction<TUser | null>): void {
-          throw new Error("Function not implemented.");
-        }}
-        setIsLoggedIn={function (value: SetStateAction<boolean>): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      <Navbar />
       <div className="text-center translate-y-1/3">
         <h1 className="text-lg text-lgrey">Find Friends</h1>
         <UserFind

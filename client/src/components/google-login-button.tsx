@@ -8,7 +8,7 @@ import { TUser } from "../types/user";
 import Session from "../session";
 
 interface ILoginButtonProps {
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const LoginButton = (props: ILoginButtonProps) => {
@@ -24,7 +24,8 @@ const LoginButton = (props: ILoginButtonProps) => {
             );
 
             if (loginSuccess) {
-              props.setIsLoggedIn(true);
+              Session.setIsLoggedIn(true);
+              // props.setIsLoggedIn(true);
               await fetchUser().then((user: TUser | null) => {
                 Session.setUser(user);
                 // if (user) {

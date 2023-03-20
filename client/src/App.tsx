@@ -10,7 +10,7 @@ import Session from "./session";
 import React from "react";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
   const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
@@ -25,11 +25,11 @@ const App = () => {
     const updateSession = async () => {
       try {
         await checkLoggedIn().then(async (isLoggedIn) => {
-          setIsLoggedIn(isLoggedIn);
+          // setIsLoggedIn(isLoggedIn);
+          Session.setIsLoggedIn(isLoggedIn);
           if (isLoggedIn) {
             await fetchUser().then((userData) => {
               if (userData) {
-                console.log(userData);
                 Session.setUser(userData);
                 setUser(Session.getUser());
 
@@ -45,10 +45,12 @@ const App = () => {
                 } else if (userData.appleToken != undefined) {
                   Session.setMusicService("apple");
                 }
+                setSessionUpdated(true);
               }
             });
+          } else {
+            setSessionUpdated(true);
           }
-          setSessionUpdated(true);
         });
       } catch (error) {
         console.error(error);
@@ -85,8 +87,7 @@ const App = () => {
   }
 
   if (sessionUpdated) {
-    if (user && isLoggedIn) {
-      console.log(user);
+    if (user && Session.getIsLoggedIn()) {
       if (!user.onboarded) {
         return <OnBoardPage appleMusicInstance={appleMusicInstance} />;
       } else {
@@ -97,7 +98,7 @@ const App = () => {
             // setUser={setUser}
             selectedUser={selectedUser}
             setSelectedUser={setSelectedUser}
-            setIsLoggedIn={setIsLoggedIn}
+            // setIsLoggedIn={setIsLoggedIn}
             appleMusicInstance={appleMusicInstance}
             // service={service}
             post={post}
@@ -107,24 +108,29 @@ const App = () => {
         );
       }
     } else {
-      return <AuthPage setIsLoggedIn={setIsLoggedIn} />;
+      return (
+        <AuthPage
+        // setIsLoggedIn={setIsLoggedIn}
+        />
+      );
     }
   }
 
   return (
     <>
-      <Router
+      <div>loading</div>
+      {/* <Router
         // user={user}
         // setUser={setUser}
         selectedUser={selectedUser}
         setSelectedUser={setSelectedUser}
-        setIsLoggedIn={setIsLoggedIn}
+        // setIsLoggedIn={setIsLoggedIn}
         appleMusicInstance={appleMusicInstance}
         // service={service}
         post={post}
         setSelectEditPost={setSelectEditPost}
         selectEditPost={selectEditPost}
-      />
+      /> */}
     </>
   );
 };
