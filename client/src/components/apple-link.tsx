@@ -23,6 +23,8 @@ const AppleLink = (props: IAppleLinkProps) => {
           try {
             // await props.setUser(await fetchUser());
             await Session.setUser(await fetchUser());
+            // TODO: can be better handled in the future
+            window.location.reload();
           } catch (error) {
             console.error(error);
           }

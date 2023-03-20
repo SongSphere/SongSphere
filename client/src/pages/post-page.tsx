@@ -7,10 +7,10 @@ import Navbar from "../components/navbar";
 
 interface IPostPageProps {
   musicInstance: MusicKit.MusicKitInstance;
-  user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  service: string;
+  // user: TUser | null;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  // service: string;
 }
 
 const PostPage = (props: IPostPageProps) => {
@@ -46,8 +46,8 @@ const PostPage = (props: IPostPageProps) => {
             </Link>
             <Search
               musicInstance={props.musicInstance}
-              user={props.user}
-              service={props.service}
+              // user={props.user}
+              // service={props.service}
             />
           </div>
         </div>

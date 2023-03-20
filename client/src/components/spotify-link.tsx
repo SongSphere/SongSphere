@@ -26,9 +26,9 @@ const SpotifyLinkButton = (props: ISpotfiyLinkButtonProps) => {
           setCalledSpotifyAuth(true);
           try {
             spotifyAuth(code).then(async () => {
-              console.log("linked with spotify");
               Session.setUser(await fetchUser());
-              console.log(Session.getUser());
+              // TODO: Can be better handled in the future
+              window.location.reload();
             });
           } catch (error) {
             console.error(error);

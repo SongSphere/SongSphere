@@ -10,6 +10,7 @@ import PostFailure from "./post-failure";
 import PostSucess from "./post-sucess";
 import Popup from "reactjs-popup";
 import { Navigate } from "react-router-dom";
+import Session from "../session";
 
 const AppleSearch = async (
   term: string,
@@ -31,25 +32,13 @@ const SpotifySearch = async (
 
 interface ISearchProps {
   musicInstance: MusicKit.MusicKitInstance;
-  user: TUser | null;
-  service: string;
+  // user: TUser | null;
+  // service: string;
 }
 
 const Search = (props: ISearchProps) => {
-  const selectService = async (
-    term: string,
-    category: string,
-    limit: number
-  ) => {
-    if (props.service === "apple") {
-      return AppleSearch(term, category, limit, props.musicInstance);
-    } else if (props.service === "spotify") {
-      return SpotifySearch(term, category, props.user?.spotifyToken!, limit);
-    } else {
-      console.error("no service available");
-    }
-  };
-
+  const [user, setUser] = useState<TUser | null>(null);
+  const [service, setService] = useState("");
   let [songs, setSongs] = useState<TMusicContent[]>([]);
   let [selected, setSelected] = useState<TMusicContent>();
   let [song, setSong] = useState<string>("");
@@ -60,6 +49,28 @@ const Search = (props: ISearchProps) => {
   const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
 
   const [caption, setCaption] = useState<string>("");
+
+  useEffect(() => {
+    setUser(Session.getUser());
+    setService(Session.getMusicService());
+  }, [Session.getUser()]);
+
+  const selectService = async (
+    term: string,
+    category: string,
+    limit: number
+  ) => {
+    if (user) {
+      if (service === "apple") {
+        return AppleSearch(term, category, limit, props.musicInstance);
+      } else if (service === "spotify") {
+        return SpotifySearch(term, category, user.spotifyToken, limit);
+      } else {
+        console.error("no service available");
+      }
+    }
+  };
+
   const closeModal = () => setOpen2(false);
 
   const handleOpen = () => {
@@ -178,23 +189,25 @@ const Search = (props: ISearchProps) => {
         className="my-5 border-black rounded-md text-lgrey bg-navy"
         onClick={async () => {
           setOpen2(true);
-          await sendPost({
-            username: props.user?.userName!,
-            userEmail: props.user?.email!,
-            caption: caption,
-            music: selected!,
-          })
-            .then((res) => {
-              console.log(res);
-              if (!res) {
-                setPostSuccessFail(<PostFailure />);
-              } else {
-                setPostSuccessFail(<PostSucess />);
-              }
+          if (user) {
+            await sendPost({
+              username: user.userName,
+              userEmail: user.email,
+              caption: caption,
+              music: selected!,
             })
-            .catch((error) => {
-              <PostFailure />;
-            });
+              .then((res) => {
+                console.log(res);
+                if (!res) {
+                  setPostSuccessFail(<PostFailure />);
+                } else {
+                  setPostSuccessFail(<PostSucess />);
+                }
+              })
+              .catch((error) => {
+                <PostFailure />;
+              });
+          }
         }}
       >
         Submit

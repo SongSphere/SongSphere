@@ -139,6 +139,7 @@ const SettingsPage = (props: ISettingPageProps) => {
             onClick={async () => {
               await unlinkMusic("apple").then(async () => {
                 Session.setUser(await fetchUser());
+                setUser(Session.getUser());
               });
             }}
           >
@@ -153,6 +154,7 @@ const SettingsPage = (props: ISettingPageProps) => {
             onClick={async () => {
               await unlinkMusic("spotify").then(async () => {
                 Session.setUser(await fetchUser());
+                setUser(Session.getUser());
               });
             }}
           >

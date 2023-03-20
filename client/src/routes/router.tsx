@@ -50,18 +50,18 @@ const Router = (props: IRouterProps) => {
         />
       ),
     },
-    // {
-    //   path: "/posts",
-    //   element: (
-    //     <PostPage
-    //       musicInstance={props.appleMusicInstance}
-    //       // user={props.user}
-    //       // setUser={props.setUser}
-    //       setIsLoggedIn={props.setIsLoggedIn}
-    //       // service={props.service}
-    //     />
-    //   ),
-    // },
+    {
+      path: "/posts",
+      element: (
+        <PostPage
+          musicInstance={props.appleMusicInstance}
+          // user={props.user}
+          // setUser={props.setUser}
+          // setIsLoggedIn={props.setIsLoggedIn}
+          // service={props.service}
+        />
+      ),
+    },
     // {
     //   path: "/searchUsers",
     //   element: (
