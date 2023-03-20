@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import fetchUser from "../services/user/fetch-user";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdjustName from "../services/adjust-name";
 import Popup from "reactjs-popup";
 import { TUser } from "../types/user";
+import Session from "../session";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name
@@ -32,17 +33,22 @@ const Button = styled.button`
 
 interface IAdjustNamesLinkProps {
   appleMusicInstance: MusicKit.MusicKitInstance | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  username: string;
-  givenName: string;
-  middleName: string;
-  familyName: string;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // username: string;
+  // givenName: string;
+  // middleName: string;
+  // familyName: string;
 }
 
 const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   const [successFailText, setSuccessFailText] = useState("");
+  const [user, setUser] = useState<TUser | null>(null);
+
+  useEffect(() => {
+    setUser(Session.getUser());
+  }, [Session.getUser()]);
 
   return (
     <div>
@@ -51,23 +57,25 @@ const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
           // Open Modal that prints Success
           setOpen(true);
 
-          await AdjustName(
-            props.username,
-            props.givenName,
-            props.middleName,
-            props.familyName
-          )
-            .then(async (res) => {
-              if (res) {
-                setSuccessFailText("Success");
-              } else {
-                setSuccessFailText("Fail");
-              }
-              await props.setUser(await fetchUser());
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          if (user) {
+            await AdjustName(
+              user.userName,
+              user.givenName,
+              user.middleName,
+              user.familyName
+            )
+              .then(async (res) => {
+                if (res) {
+                  setSuccessFailText("Success");
+                } else {
+                  setSuccessFailText("Fail");
+                }
+                await Session.setUser(await fetchUser());
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
         }}
       >
         Update Names

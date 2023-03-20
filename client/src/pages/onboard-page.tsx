@@ -11,11 +11,12 @@ import { useNavigate } from "react-router-dom";
 import { TUser } from "../types/user";
 import AdjustNamesLink from "../components/adjust-names-link";
 import setOnboarded from "../services/set-onboarded";
+import Session from "../session";
 
 interface IOnBoardPageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // user: TUser | null;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const OnBoardPage = (props: IOnBoardPageProps) => {
@@ -25,28 +26,30 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
   const [middleName, setMiddleName] = useState<string>();
   const [spotifyLinked, setSpotifyLinked] = useState(false);
   const [appleLinked, setAppleLinked] = useState(false);
+  const [user, setUser] = useState<TUser | null>(null);
 
   useEffect(() => {
-    if (props.user) {
-      if (props.user.onboarded) {
+    setUser(Session.getUser());
+    if (user) {
+      if (user.onboarded) {
         navigate("/");
       }
 
-      if (props.user.spotifyToken !== undefined) {
+      if (user.spotifyToken !== undefined) {
         setSpotifyLinked(true);
       } else {
         setSpotifyLinked(false);
       }
 
-      if (props.user.appleToken !== undefined) {
+      if (user.appleToken !== undefined) {
         setAppleLinked(true);
       } else {
         setAppleLinked(false);
       }
     }
-  }, [props.user]);
+  }, [user]);
 
-  if (!props.user) {
+  if (!user) {
     return <div>fetching user</div>;
   }
 
@@ -54,7 +57,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
     <div className="flex flex-wrap items-center mt-20">
       <div className="w-full text-center sm:w-1/2 sm:px-6">
         <h3 className="text-3xl font-semibold text-gray-900">
-          Welcome {props.user.givenName}
+          Welcome {user.givenName}
         </h3>
         <div className="mt-6 text-xl leading-9">
           Let's connect your Apple Music or Spotify account
@@ -66,13 +69,10 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
       </div>
 
       <div className="w-full text-center sm:w-1/2 sm:px-6">
-        <AppleLink
-          setUser={props.setUser}
-          appleMusicInstance={props.appleMusicInstance}
-        />
+        <AppleLink appleMusicInstance={props.appleMusicInstance} />
         <div>{`apple linked: ${appleLinked}`}</div>
 
-        <SpotifyLinkButton setUser={props.setUser} />
+        <SpotifyLinkButton />
 
         <div>{`spotify linked: ${spotifyLinked}`}</div>
 
@@ -90,22 +90,22 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
         />
         <AdjustNamesLink
           appleMusicInstance={props.appleMusicInstance}
-          setUser={props.setUser}
-          username={userName ? userName : ""}
-          givenName={props.user?.givenName ? props.user?.givenName : ""}
-          middleName={middleName ? middleName : ""}
-          familyName={props.user?.familyName ? props.user?.familyName : ""}
+          // setUser={props.setUser}
+          // username={userName ? userName : ""}
+          // givenName={props.user?.givenName ? props.user?.givenName : ""}
+          // middleName={middleName ? middleName : ""}
+          // familyName={props.user?.familyName ? props.user?.familyName : ""}
         />
 
         <button
           onClick={() => {
-            if (props.user) {
+            if (user) {
               if (
-                (props.user.spotifyToken != undefined ||
-                  props.user.appleToken != undefined) &&
-                props.user.userName !== ""
+                (user.spotifyToken != undefined ||
+                  user.appleToken != undefined) &&
+                user.userName !== ""
               ) {
-                setOnboarded(props.user?.email).then(() => {
+                setOnboarded(user.email).then(() => {
                   navigate("/");
                   window.location.reload();
                 });

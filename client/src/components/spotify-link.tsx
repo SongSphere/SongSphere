@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { requestSpotifyAuthorization } from "../services/spotify-link";
 import { spotifyAuth } from "../services/spotify-link";
 import { TUser } from "../types/user";
+import Session from "../session";
 
 import fetchUser from "../services/user/fetch-user";
 
-interface ISpotfiyLinkButtonProps {
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-}
+interface ISpotfiyLinkButtonProps {}
 
 const SpotifyLinkButton = (props: ISpotfiyLinkButtonProps) => {
   const [calledSpotifyAuth, setCalledSpotifyAuth] = useState(false);
@@ -28,7 +27,7 @@ const SpotifyLinkButton = (props: ISpotfiyLinkButtonProps) => {
           try {
             await spotifyAuth(code);
             // update session
-            props.setUser(await fetchUser());
+            Session.setUser(await fetchUser());
           } catch (error) {
             console.error(error);
           }

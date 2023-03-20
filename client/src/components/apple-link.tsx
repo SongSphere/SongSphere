@@ -1,10 +1,11 @@
 import fetchUser from "../services/user/fetch-user";
 import { appleAuth } from "../services/apple-music-link";
 import { TUser } from "../types/user";
+import Session from "../session";
 
 interface IAppleLinkProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const AppleLink = (props: IAppleLinkProps) => {
@@ -20,7 +21,8 @@ const AppleLink = (props: IAppleLinkProps) => {
           }
 
           try {
-            await props.setUser(await fetchUser());
+            // await props.setUser(await fetchUser());
+            await Session.setUser(await fetchUser());
           } catch (error) {
             console.error(error);
           }

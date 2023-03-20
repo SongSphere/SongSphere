@@ -112,11 +112,11 @@ const SettingsPage = (props: ISettingPageProps) => {
 
             <AdjustNamesLink
               appleMusicInstance={props.appleMusicInstance}
-              setUser={props.setUser}
-              username={userName}
-              givenName={givenName}
-              middleName={middleName}
-              familyName={familyName}
+              // setUser={props.setUser}
+              // username={userName}
+              // givenName={givenName}
+              // middleName={middleName}
+              // familyName={familyName}
             />
 
             <DeleteGoogleAcountLink
@@ -125,7 +125,7 @@ const SettingsPage = (props: ISettingPageProps) => {
               setIsLoggedIn={props.setIsLoggedIn}
             />
             <AppleLink
-              setUser={props.setUser}
+              // setUser={props.setUser}
               appleMusicInstance={props.appleMusicInstance}
             />
             <div>{`Apple API connected: ${appleAccountStatus}`}</div>
@@ -139,7 +139,9 @@ const SettingsPage = (props: ISettingPageProps) => {
             >
               Unlink Apple Music
             </button>
-            <SpotifyLinkButton setUser={props.setUser} />
+            <SpotifyLinkButton
+            // setUser={props.setUser}
+            />
             <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
             <button
               className="p-2 rounded-md bg-amber-300"

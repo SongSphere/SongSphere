@@ -1,4 +1,4 @@
-import Router from "./routes/router";
+// import Router from "./routes/router";
 import { useEffect, useState } from "react";
 import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/user/fetch-user";
@@ -6,6 +6,7 @@ import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import { TUser } from "./types/user";
 import { TPost } from "./types/post";
+import Session from "./session";
 import React from "react";
 
 const App = () => {
@@ -13,7 +14,7 @@ const App = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
-  const [service, setService] = useState("");
+  // const [service, setService] = useState("");
   const [post, editPost] = useState<TPost | null>(null);
   const [selectEditPost, setSelectEditPost] = useState<TPost | null>(null);
 
@@ -27,20 +28,22 @@ const App = () => {
           setIsLoggedIn(isLoggedIn);
           if (isLoggedIn) {
             await fetchUser().then((userData) => {
-              setUser(userData);
-
-              // set user's music service
               if (userData) {
+                console.log(userData);
+                Session.setUser(userData);
+                setUser(Session.getUser());
+
+                // set user's music service
                 if (
                   userData.spotifyToken != undefined &&
                   userData.appleToken != undefined
                 ) {
-                  setService("both");
+                  Session.setMusicService("both");
                 }
                 if (userData.spotifyToken != undefined) {
-                  setService("spotify");
+                  Session.setMusicService("spotify");
                 } else if (userData.appleToken != undefined) {
-                  setService("apple");
+                  Session.setMusicService("apple");
                 }
               }
             });
@@ -83,28 +86,24 @@ const App = () => {
 
   if (sessionUpdated) {
     if (user && isLoggedIn) {
+      console.log(user);
       if (!user.onboarded) {
-        return (
-          <OnBoardPage
-            user={user}
-            setUser={setUser}
-            appleMusicInstance={appleMusicInstance}
-          />
-        );
+        return <OnBoardPage appleMusicInstance={appleMusicInstance} />;
       } else {
         return (
-          <Router
-            user={user}
-            setUser={setUser}
-            selectedUser={selectedUser}
-            setSelectedUser={setSelectedUser}
-            setIsLoggedIn={setIsLoggedIn}
-            appleMusicInstance={appleMusicInstance}
-            service={service}
-            post={post}
-            setSelectEditPost={setSelectEditPost}
-            selectEditPost={selectEditPost}
-          />
+          <div>hi {user.userName}</div>
+          // <Router
+          //   // user={user}
+          //   // setUser={setUser}
+          //   selectedUser={selectedUser}
+          //   setSelectedUser={setSelectedUser}
+          //   setIsLoggedIn={setIsLoggedIn}
+          //   appleMusicInstance={appleMusicInstance}
+          //   // service={service}
+          //   post={post}
+          //   setSelectEditPost={setSelectEditPost}
+          //   selectEditPost={selectEditPost}
+          // />
         );
       }
     } else {
@@ -114,18 +113,19 @@ const App = () => {
 
   return (
     <>
-      <Router
-        user={user}
-        setUser={setUser}
+      <div>hi</div>
+      {/* <Router
+        // user={user}
+        // setUser={setUser}
         selectedUser={selectedUser}
         setSelectedUser={setSelectedUser}
         setIsLoggedIn={setIsLoggedIn}
         appleMusicInstance={appleMusicInstance}
-        service={service}
+        // service={service}
         post={post}
         setSelectEditPost={setSelectEditPost}
         selectEditPost={selectEditPost}
-      />
+      /> */}
     </>
   );
 };
