@@ -108,17 +108,17 @@ const Router = (props: IRouterProps) => {
         />
       ),
     },
-    // {
-    //   path: "/settings",
-    //   element: (
-    //     <SettingsPage
-    //       user={props.user}
-    //       setUser={props.setUser}
-    //       setIsLoggedIn={props.setIsLoggedIn}
-    //       appleMusicInstance={props.appleMusicInstance}
-    //     />
-    //   ),
-    // },
+    {
+      path: "/settings",
+      element: (
+        <SettingsPage
+          // user={props.user}
+          // setUser={props.setUser}
+          // setIsLoggedIn={props.setIsLoggedIn}
+          appleMusicInstance={props.appleMusicInstance}
+        />
+      ),
+    },
     // {
     //   path: "/edit",
     //   element: (

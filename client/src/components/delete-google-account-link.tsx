@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 import { useNavigate } from "react-router-dom";
 import DeleteGoogleAccount from "../services/delete-google-account";
 import { TUser } from "../types/user";
+import Session from "../session";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name
@@ -31,19 +32,24 @@ const Button = styled.button`
 `;
 
 interface IDeleteGoogleAcountLinkProps {
-  user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  // user: TUser | null;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const DeleteGoogleAcountLink = (props: IDeleteGoogleAcountLinkProps) => {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
-  const [email, setEmail] = useState<string>(
-    props.user?.email ? props.user?.email : ""
-  );
+  const [email, setEmail] = useState<string>("");
 
   let navigate = useNavigate();
+
+  useEffect(() => {
+    const user = Session.getUser();
+    if (user) {
+      setEmail(user.email);
+    }
+  }, [Session.getUser()]);
 
   return (
     <div>
@@ -56,8 +62,8 @@ const DeleteGoogleAcountLink = (props: IDeleteGoogleAcountLinkProps) => {
 
           // Update the user fields with the updated fields
           try {
-            props.setUser(null);
-            props.setIsLoggedIn(false);
+            Session.setUser(null);
+            Session.setIsLoggedIn(false);
             navigate("/auth");
           } catch (error) {
             console.error(error);

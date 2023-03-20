@@ -15,11 +15,12 @@ import { TUser } from "../types/user";
 
 import { getCroppedImg } from "../utils/crop-image";
 import fetchUser from "../services/user/fetch-user";
+import Session from "../session";
 
 export interface ReactImageCropperProps {
   onCropComplete: (formData: FormData) => void;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  user: TUser | null;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // user: TUser | null;
 }
 export const ProfileImgCropper = (props: ReactImageCropperProps) => {
   const [previewImage, setPreviewImage] = useState<string | undefined>();
@@ -32,14 +33,20 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
 
   // const [image, setImage] = useState(props.user?.profileImgUrl);
   const [image, setImage] = useState("");
-
   const [ImgUrl, setImgUrl] = useState<string>("");
 
+  // useEffect(() => {
+  //   if (props.user) {
+  //     setImage(props.user.profileImgUrl);
+  //   }
+  // }, [props.user]);
+
   useEffect(() => {
-    if (props.user) {
-      setImage(props.user.profileImgUrl);
+    const user = Session.getUser();
+    if (user) {
+      setImage(user.profileImgUrl);
     }
-  }, [props.user]);
+  }, [Session.getUser()]);
 
   const { classes } = useStyles();
 
@@ -148,7 +155,7 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
           //setOpen(true);
 
           await updateProfileURL(ImgUrl).then(async () => {
-            await props.setUser(await fetchUser());
+            await Session.setUser(await fetchUser());
           });
         }}
       >
@@ -161,8 +168,8 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
 
 export interface BackgroundImgCropperProps {
   onCropComplete: (formData: FormData) => void;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  user: TUser | null;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // user: TUser | null;
 }
 export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
   const [previewImage, setPreviewImage] = useState<string | undefined>();
@@ -173,7 +180,7 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
     Area | undefined
   >();
 
-  const [image, setImage] = useState(props.user?.backgroundImgUrl);
+  const [image, setImage] = useState("");
 
   const [ImgUrl, setImgUrl] = useState<string>("");
 
@@ -211,6 +218,13 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
       console.log("Error cropping image " + error);
     }
   };
+
+  useEffect(() => {
+    const user = Session.getUser();
+    if (user) {
+      setImage(user.backgroundImgUrl);
+    }
+  }, [Session.getUser()]);
 
   return (
     <>
@@ -286,7 +300,7 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
 
           await updateBackgroundURL(ImgUrl)
             .then(async () => {
-              await props.setUser(await fetchUser());
+              await Session.setUser(await fetchUser());
             })
             .catch((error) => {
               console.log(error);
