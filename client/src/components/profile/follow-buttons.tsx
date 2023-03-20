@@ -16,6 +16,9 @@ interface ISelectedUser {
 }
 
 export const MyFollowerInformationCard = (props: IUser) => {
+  let [followers, setFollowers] = useState<string[]>([]);
+  let [following, setFollowing] = useState<string[]>([]);
+
   let nFollowers = 0;
   let nFollowing = 0;
 
@@ -48,6 +51,9 @@ export const MyFollowerInformationCard = (props: IUser) => {
       nFollowing = props.user!.following.length;
       setFollowerButtonText(`${nFollowers} followers`);
       setFollowingButtonText(`${nFollowing} following`);
+
+      setFollowers(props.user!.followers);
+      setFollowing(props.user!.following);
     }
   }, [props.user]);
 
@@ -56,7 +62,7 @@ export const MyFollowerInformationCard = (props: IUser) => {
   }
 
   return (
-    <div className="p-2">
+    <div className="p-2 overflow-hidden">
       <div className="p-2 bg-gray-200 rounded-lg">
         <button
           className={`ml-3 px-2 text-sm py-2 rounded text-grey`}
@@ -74,26 +80,72 @@ export const MyFollowerInformationCard = (props: IUser) => {
 
         {openFollowers ? (
           <form>
-            <div className="flex justify-between overflow-hidden bg-white rounded-md shadow shadow-black/20">
-              <input
-                type="text"
-                className="flex-1 block w-full px-3 py-2 focus:outline-none"
-                placeholder="search"
-                onChange={async (event) => {
-                  if ((event.target.value as string) == "") {
-                  } else if ((event.target.value as string) != "") {
-                  }
-                }}
-              />
+            <div className="">
+              <div className="flex justify-between overflow-y-auto bg-white rounded-md shadow shadow-black/20">
+                <input
+                  type="text"
+                  className="flex-1 block w-full px-3 py-2 focus:outline-none"
+                  placeholder="search followers"
+                  onChange={async (event) => {
+                    console.log("test");
+                    // searching
+                    let filteredUsers: Array<string> = Array<string>();
+
+                    props.user?.followers.forEach((u) => {
+                      if (u.startsWith(event.target.value as string)) {
+                        filteredUsers.push(u);
+                      }
+                    });
+
+                    setFollowers(filteredUsers);
+                  }}
+                />
+              </div>
+              <div className="py-3">
+                {followers.map((u) => {
+                  return (
+                    <div className="px-4 py-1 text-sm bg-gray-100 rounded-md">
+                      {u}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-            <ListFollowers user={props.user} setUser={props.setUser} />
           </form>
         ) : null}
 
         {openFollowing ? (
-          <div>
-            <ListFollowing user={props.user} setUser={props.setUser} />
-          </div>
+          <form>
+            <div className="flex justify-between overflow-hidden bg-white rounded-md shadow shadow-black/20">
+              <input
+                type="text"
+                className="flex-1 block w-full px-3 py-2 focus:outline-none"
+                placeholder="search following"
+                onChange={async (event) => {
+                  console.log("test");
+                  // searching
+                  let filteredUsers: Array<string> = Array<string>();
+
+                  props.user?.following.forEach((u) => {
+                    if (u.startsWith(event.target.value as string)) {
+                      filteredUsers.push(u);
+                    }
+                  });
+
+                  setFollowing(filteredUsers);
+                }}
+              />
+            </div>
+            <div className="py-3">
+              {following.map((u) => {
+                return (
+                  <div className="px-4 py-1 text-sm bg-gray-100 rounded-md">
+                    {u}
+                  </div>
+                );
+              })}
+            </div>
+          </form>
         ) : null}
       </div>
     </div>
@@ -225,7 +277,7 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
   );
 };
 
-export const ListFollowers = (props: IUser) => {
+export const ListFollowers = (props: IUser, query: string) => {
   let [users, setUsers] = useState<string[]>([]);
 
   useEffect(() => {
