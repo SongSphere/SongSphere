@@ -1,4 +1,4 @@
-// import Router from "./routes/router";
+import Router from "./routes/router";
 import { useEffect, useState } from "react";
 import checkLoggedIn from "./services/check-logged-in";
 import fetchUser from "./services/user/fetch-user";
@@ -91,30 +91,29 @@ const App = () => {
         return <OnBoardPage appleMusicInstance={appleMusicInstance} />;
       } else {
         return (
-          <div>hi {user.userName}</div>
-          // <Router
-          //   // user={user}
-          //   // setUser={setUser}
-          //   selectedUser={selectedUser}
-          //   setSelectedUser={setSelectedUser}
-          //   setIsLoggedIn={setIsLoggedIn}
-          //   appleMusicInstance={appleMusicInstance}
-          //   // service={service}
-          //   post={post}
-          //   setSelectEditPost={setSelectEditPost}
-          //   selectEditPost={selectEditPost}
-          // />
+          // <div>hi {user.userName}</div>
+          <Router
+            // user={user}
+            // setUser={setUser}
+            selectedUser={selectedUser}
+            setSelectedUser={setSelectedUser}
+            setIsLoggedIn={setIsLoggedIn}
+            appleMusicInstance={appleMusicInstance}
+            // service={service}
+            post={post}
+            setSelectEditPost={setSelectEditPost}
+            selectEditPost={selectEditPost}
+          />
         );
       }
     } else {
-      return <AuthPage setIsLoggedIn={setIsLoggedIn} setUser={setUser} />;
+      return <AuthPage setIsLoggedIn={setIsLoggedIn} />;
     }
   }
 
   return (
     <>
-      <div>hi</div>
-      {/* <Router
+      <Router
         // user={user}
         // setUser={setUser}
         selectedUser={selectedUser}
@@ -125,7 +124,7 @@ const App = () => {
         post={post}
         setSelectEditPost={setSelectEditPost}
         selectEditPost={selectEditPost}
-      /> */}
+      />
     </>
   );
 };

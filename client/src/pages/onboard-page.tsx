@@ -24,13 +24,26 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
 
   const [userName, setUserName] = useState<string>();
   const [middleName, setMiddleName] = useState<string>();
+  const [givenName, setGivenName] = useState<string>();
+  const [familyName, setFamilyName] = useState<string>();
+  const [email, setEmail] = useState<string>();
   const [spotifyLinked, setSpotifyLinked] = useState(false);
   const [appleLinked, setAppleLinked] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
 
+  // hook to load user session from object
   useEffect(() => {
     setUser(Session.getUser());
+  }, []);
+
+  useEffect(() => {
     if (user) {
+      setGivenName(user.givenName);
+      setFamilyName(user.familyName);
+      setEmail(user.email);
+      setUserName(user.userName);
+      setMiddleName(user.middleName);
+
       if (user.onboarded) {
         navigate("/");
       }
@@ -57,7 +70,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
     <div className="flex flex-wrap items-center mt-20">
       <div className="w-full text-center sm:w-1/2 sm:px-6">
         <h3 className="text-3xl font-semibold text-gray-900">
-          Welcome {user.givenName}
+          Welcome {givenName}
         </h3>
         <div className="mt-6 text-xl leading-9">
           Let's connect your Apple Music or Spotify account
@@ -81,23 +94,45 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
           type="text"
           placeholder="Enter User Name"
           onChange={(e) => setUserName(e.target.value)}
+          value={userName}
         />
         <input
           className="e-input"
           type="text"
           placeholder="Enter Middle Name"
           onChange={(e) => setMiddleName(e.target.value)}
+          value={middleName}
         />
         <AdjustNamesLink
           appleMusicInstance={props.appleMusicInstance}
           // setUser={props.setUser}
-          // username={userName ? userName : ""}
+          userName={userName ? userName : ""}
+          givenName={givenName ? givenName : ""}
           // givenName={props.user?.givenName ? props.user?.givenName : ""}
-          // middleName={middleName ? middleName : ""}
+          middleName={middleName ? middleName : ""}
+          familyName={familyName ? familyName : ""}
           // familyName={props.user?.familyName ? props.user?.familyName : ""}
         />
-
         <button
+          onClick={() => {
+            if ((spotifyLinked || appleLinked) && userName !== "") {
+              if (user) {
+                setOnboarded(email).then(() => {
+                  navigate("/");
+                  window.location.reload();
+                });
+              }
+            } else {
+              window.alert(
+                "need to link with at least one music platform and have a username"
+              );
+            }
+          }}
+        >
+          Next
+        </button>
+
+        {/* <button
           onClick={() => {
             if (user) {
               if (
@@ -118,7 +153,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
           }}
         >
           Next
-        </button>
+        </button> */}
       </div>
     </div>
   );

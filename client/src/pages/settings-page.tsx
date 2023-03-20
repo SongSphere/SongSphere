@@ -113,10 +113,10 @@ const SettingsPage = (props: ISettingPageProps) => {
             <AdjustNamesLink
               appleMusicInstance={props.appleMusicInstance}
               // setUser={props.setUser}
-              // username={userName}
-              // givenName={givenName}
-              // middleName={middleName}
-              // familyName={familyName}
+              userName={userName}
+              givenName={givenName}
+              middleName={middleName}
+              familyName={familyName}
             />
 
             <DeleteGoogleAcountLink

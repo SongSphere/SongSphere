@@ -22,22 +22,22 @@ export const requestSpotifyAuthorization = async () => {
 };
 
 export const spotifyAuth = async (code: string) => {
-  // TODO: use promise for return
-  await fetch(`${process.env.REACT_APP_API}/api/auth/spotify`, {
-    method: "POST",
-    credentials: "include",
-    body: JSON.stringify({
-      code: code,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then(async (res) => {
-    if (res.status != 201) {
-      console.error(res);
-      return false;
-    }
-    console.log(res.json());
-    return true;
+  return new Promise<boolean>(async (resolve, reject) => {
+    await fetch(`${process.env.REACT_APP_API}/api/auth/spotify`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        code: code,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => {
+      if (res.status != 201) {
+        console.error(res);
+        reject(false);
+      }
+      resolve(true);
+    });
   });
 };

@@ -34,21 +34,21 @@ const Button = styled.button`
 interface IAdjustNamesLinkProps {
   appleMusicInstance: MusicKit.MusicKitInstance | null;
   // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  // username: string;
-  // givenName: string;
-  // middleName: string;
-  // familyName: string;
+  userName: string;
+  givenName: string;
+  middleName: string;
+  familyName: string;
 }
 
 const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   const [successFailText, setSuccessFailText] = useState("");
-  const [user, setUser] = useState<TUser | null>(null);
+  // const [user, setUser] = useState<TUser | null>(null);
 
-  useEffect(() => {
-    setUser(Session.getUser());
-  }, [Session.getUser()]);
+  // useEffect(() => {
+  //   setUser(Session.getUser());
+  // }, [Session.getUser()]);
 
   return (
     <div>
@@ -57,25 +57,23 @@ const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
           // Open Modal that prints Success
           setOpen(true);
 
-          if (user) {
-            await AdjustName(
-              user.userName,
-              user.givenName,
-              user.middleName,
-              user.familyName
-            )
-              .then(async (res) => {
-                if (res) {
-                  setSuccessFailText("Success");
-                } else {
-                  setSuccessFailText("Fail");
-                }
-                await Session.setUser(await fetchUser());
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          }
+          await AdjustName(
+            props.userName,
+            props.givenName,
+            props.middleName,
+            props.familyName
+          )
+            .then(async (res) => {
+              if (res) {
+                setSuccessFailText("Success");
+              } else {
+                setSuccessFailText("Fail");
+              }
+              await Session.setUser(await fetchUser());
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         }}
       >
         Update Names

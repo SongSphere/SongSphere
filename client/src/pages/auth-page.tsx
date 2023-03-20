@@ -3,7 +3,7 @@ import { TUser } from "../types/user";
 
 interface IAuthPageProps {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const AuthPage = (props: IAuthPageProps) => {
@@ -21,7 +21,7 @@ const AuthPage = (props: IAuthPageProps) => {
               <div>
                 <LoginButton
                   setIsLoggedIn={props.setIsLoggedIn}
-                  setUser={props.setUser}
+                  // setUser={props.setUser}
                 />
               </div>
             </div>

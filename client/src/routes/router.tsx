@@ -34,94 +34,94 @@ interface IRouterProps {
  */
 
 const Router = (props: IRouterProps) => {
-  // let element = useRoutes([
-  //   {
-  //     path: "/auth",
-  //     element: (
-  //       <AuthPage setIsLoggedIn={props.setIsLoggedIn} setUser={props.setUser} />
-  //     ),
-  //   },
-  //   {
-  //     path: "/",
-  //     element: (
-  //       <HomePage
-  //         appleMusicInstance={props.appleMusicInstance}
-  //         // setUser={props.setUser}
-  //         setIsLoggedIn={props.setIsLoggedIn}
-  //         // user={props.user}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     path: "/posts",
-  //     element: (
-  //       <PostPage
-  //         musicInstance={props.appleMusicInstance}
-  //         // user={props.user}
-  //         // setUser={props.setUser}
-  //         setIsLoggedIn={props.setIsLoggedIn}
-  //         // service={props.service}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     path: "/searchUsers",
-  //     element: (
-  //       <SearchUsersPage
-  //         // user={props.user}
-  //         // setUser={props.setUser}
-  //         selectedUser={props.selectedUser}
-  //         setSelectedUser={props.setSelectedUser}
-  //         setIsLoggedIn={props.setIsLoggedIn}
-  //         appleMusicInstance={props.appleMusicInstance}
-  //         // service={props.service}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     path: "/user/:username",
-  //     element: (
-  //       <ProfilePage
-  //         user={props.user}
-  //         setIsLoggedIn={props.setIsLoggedIn}
-  //         appleMusicInstance={props.appleMusicInstance}
-  //         service={props.service}
-  //         setSelectEditPost={props.setSelectEditPost}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     path: "/onboard",
-  //     element: (
-  //       <OnBoardPage
-  //         setUser={props.setUser}
-  //         user={props.user}
-  //         appleMusicInstance={props.appleMusicInstance}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     path: "/settings",
-  //     element: (
-  //       <SettingsPage
-  //         user={props.user}
-  //         setUser={props.setUser}
-  //         setIsLoggedIn={props.setIsLoggedIn}
-  //         appleMusicInstance={props.appleMusicInstance}
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     path: "/edit",
-  //     element: (
-  //       <EditPage
-  //         setUser={props.setUser}
-  //         selectEditPost={props.selectEditPost}
-  //       />
-  //     ),
-  //   },
-  // ]);
-  // return element;
+  let element = useRoutes([
+    // {
+    //   path: "/auth",
+    //   element: (
+    //     <AuthPage setIsLoggedIn={props.setIsLoggedIn} setUser={props.setUser} />
+    //   ),
+    // },
+    // {
+    //   path: "/",
+    //   element: (
+    //     <HomePage
+    //       appleMusicInstance={props.appleMusicInstance}
+    //       // setUser={props.setUser}
+    //       setIsLoggedIn={props.setIsLoggedIn}
+    //       // user={props.user}
+    //     />
+    //   ),
+    // },
+    // {
+    //   path: "/posts",
+    //   element: (
+    //     <PostPage
+    //       musicInstance={props.appleMusicInstance}
+    //       // user={props.user}
+    //       // setUser={props.setUser}
+    //       setIsLoggedIn={props.setIsLoggedIn}
+    //       // service={props.service}
+    //     />
+    //   ),
+    // },
+    // {
+    //   path: "/searchUsers",
+    //   element: (
+    //     <SearchUsersPage
+    //       // user={props.user}
+    //       // setUser={props.setUser}
+    //       selectedUser={props.selectedUser}
+    //       setSelectedUser={props.setSelectedUser}
+    //       setIsLoggedIn={props.setIsLoggedIn}
+    //       appleMusicInstance={props.appleMusicInstance}
+    //       // service={props.service}
+    //     />
+    //   ),
+    // },
+    // {
+    //   path: "/user/:username",
+    //   element: (
+    //     <ProfilePage
+    //       user={props.user}
+    //       setIsLoggedIn={props.setIsLoggedIn}
+    //       appleMusicInstance={props.appleMusicInstance}
+    //       service={props.service}
+    //       setSelectEditPost={props.setSelectEditPost}
+    //     />
+    //   ),
+    // },
+    {
+      path: "/onboard",
+      element: (
+        <OnBoardPage
+          // setUser={props.setUser}
+          // user={props.user}
+          appleMusicInstance={props.appleMusicInstance}
+        />
+      ),
+    },
+    // {
+    //   path: "/settings",
+    //   element: (
+    //     <SettingsPage
+    //       user={props.user}
+    //       setUser={props.setUser}
+    //       setIsLoggedIn={props.setIsLoggedIn}
+    //       appleMusicInstance={props.appleMusicInstance}
+    //     />
+    //   ),
+    // },
+    // {
+    //   path: "/edit",
+    //   element: (
+    //     <EditPage
+    //       setUser={props.setUser}
+    //       selectEditPost={props.selectEditPost}
+    //     />
+    //   ),
+    // },
+  ]);
+  return element;
 };
 
 export default Router;
