@@ -1,12 +1,8 @@
 // import packages
 import { TokenPayload } from "google-auth-library";
-import mongoose from "mongoose";
-
-// import models
-import { TPost } from "../types/post";
 import User, { IUser } from "../db/user";
-import Post, { IPost } from "../db/post";
-import fs from "fs";
+
+import mongoose from "mongoose";
 
 export const createUser = async (
   userData: TokenPayload,
@@ -62,16 +58,10 @@ export const updateSpotifyTokens = async (
 
 export const removeSpotifyTokens = async (email: string) => {
   try {
-    // call mongoose findOneAndUpdate function with data, this updates database
     const user = await User.findOne({ email: email });
     user.spotifyToken = undefined;
     user.spotifyRefreshToken = undefined;
     await user.save();
-    // const user = await User.findOneAndUpdate(
-    //   { email: email },
-    //   { spotifyToken: "" },
-    //   { spotifyRefreshToken: "" }
-    // );
   } catch (error) {
     throw error;
   }
@@ -94,11 +84,6 @@ export const removeAppleToken = async (email: string) => {
     const user = await User.findOne({ email: email });
     user.appleToken = undefined;
     await user.save();
-
-    // const user = await User.findOneAndUpdate(
-    //   { email: email },
-    //   { appleToken: "" }
-    // );
   } catch (error) {
     throw error;
   }
@@ -186,87 +171,6 @@ export const fetchUsersbyUserName = async (username: string) => {
   }
 };
 
-// returns document based on post schema
-export const createPost = async (
-  newPost: TPost
-): Promise<mongoose.Document<unknown, any, IPost>> => {
-  const post = new Post({
-    username: newPost.username,
-    userEmail: newPost.userEmail,
-    caption: newPost.caption,
-    music: {
-      name: newPost.music.name,
-      artist: newPost.music.artist,
-      albumName: newPost.music.albumName,
-      id: newPost.music.id,
-      service: newPost.music.service,
-      category: newPost.music.category,
-      cover: newPost.music.cover,
-    },
-  });
-
-  return post;
-};
-
-export const fetchPostsByUsername = async (username: string) => {
-  try {
-    const posts = await Post.find({ username: username });
-    return posts;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const fetchPostById = async (id: string) => {
-  try {
-    const post = await Post.findOne({ _id: id });
-    return post;
-  } catch (error) {
-    throw error;
-  }
-};
-
-// saves the given post document to the db
-export const savePost = async (
-  post: mongoose.Document<unknown, any, IPost>
-) => {
-  try {
-    const savedPost = await post.save();
-    return savedPost;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const updatePost = async (newPost: TPost) => {
-  try {
-    // call mongoose updateOne function with data, this updates database
-    await Post.findByIdAndUpdate(newPost._id, {
-      username: newPost.username,
-      userEmail: newPost.userEmail,
-      caption: newPost.caption,
-      music: {
-        name: newPost.music.name,
-        artist: newPost.music.artist,
-        albumName: newPost.music.albumName,
-        id: newPost.music.id,
-        service: newPost.music.service,
-        cover: newPost.music.cover,
-        category: newPost.music.category,
-      },
-    });
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const removePost = async (post: TPost) => {
-  try {
-    await Post.findByIdAndDelete(post._id);
-  } catch (error) {
-    throw error;
-  }
-};
 export const updateNames = async (
   email: string,
   username: string,

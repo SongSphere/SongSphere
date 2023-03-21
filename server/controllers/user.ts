@@ -12,7 +12,7 @@ import {
   updateBackground,
   updatePFPUrl,
   updateBURL,
-} from "../services/db";
+} from "../services/user";
 import fs from "fs";
 
 export const sessionUpdate = async (

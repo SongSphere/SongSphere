@@ -9,7 +9,7 @@ import {
   updatePost,
   fetchPostsByUsername,
   fetchPostById,
-} from "../services/db";
+} from "../services/post";
 
 export const getPostsByUsername = async (req: Request, res: Response) => {
   try {

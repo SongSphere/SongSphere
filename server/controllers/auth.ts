@@ -7,14 +7,14 @@ import axios from "axios";
 import { validateToken } from "../services/google-sign-in-up";
 import {
   createUser,
-  saveUser,
   checkUser,
+  saveUser,
   updateUserToken,
   updateSpotifyTokens,
   removeSpotifyTokens,
   updateAppleToken,
   removeAppleToken,
-} from "../services/db";
+} from "../services/user";
 
 const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;

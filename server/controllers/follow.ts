@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 
 // import services
-import { addFollow, removeFollow } from "../services/db";
+import { addFollow, removeFollow } from "../services/user";
 
 export const follow = async (req: Request, res: Response) => {
   const emailOfUserMakingFollow = req.session.user.email;
