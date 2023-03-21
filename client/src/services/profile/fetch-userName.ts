@@ -1,8 +1,8 @@
-import { TUser } from "../../types/user";
+import { TUser, TUserWrapper } from "../../types/user";
 
-const fetchUserNames = async (username: string) => {
+const fetchUserName = async (username: string) => {
   let user = null;
-  await fetch(`${process.env.REACT_APP_API}/api/user/queryUsernames`, {
+  await fetch(`${process.env.REACT_APP_API}/api/user/queryUsername`, {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({
@@ -25,4 +25,4 @@ const fetchUserNames = async (username: string) => {
   return user;
 };
 
-export default fetchUserNames;
+export default fetchUserName;

@@ -1,36 +1,31 @@
 import { useEffect, useState } from "react";
-import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
-import Navbar from "../components/navbar";
-import { NoPosts } from "../components/profile/no-post";
-import OtherProfileFeed from "../components/profile/other-profile-feed";
-import OtherUserProfileCard from "../components/profile/other-user-profile-card";
-import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
-import fetchUserPosts from "../services/user/fetch-user-posts";
-import { TMusicContent } from "../types/music-content";
-import { TPost } from "../types/post";
 import { useParams } from "react-router-dom";
-import { TUser } from "../types/user";
-import fetchUserByUsername from "../services/user/fetch-user-username";
-import fetchPostsByUsername from "../services/user/fetch-user-posts";
-import Session from "../session";
+import Navbar from "../../components/navbar";
+import AppleMusicPlayerCard from "../../components/player/apple-music-player-card";
+import SpotifyPlayerCard from "../../components/player/spotify-music-player-card";
+import { NoPosts } from "../../components/profile/no-post";
+import OtherProfileFeed from "../../components/profile/other-profile-feed";
+import OtherUserProfileCard from "../../components/profile/other-user-profile-card";
+import fetchPostsByUsername from "../../services/posts/fetch-user-posts";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
+import Session from "../../session";
+import { TMusicContent } from "../../types/music-content";
+import { TPost } from "../../types/post";
+import { TUser } from "../../types/user";
 
 interface IOtherUserProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  // user: TUser | null;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  // selectedUser: TUser | null;
-  // setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  // service: string;
-  // setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
   const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
+  const [isFollowing, setFollowing] = useState<boolean>(false);
+
   const [service, setService] = useState("");
   const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
+  const [user, setUser] = useState<TUser | null>(null);
   let { username } = useParams();
 
   useEffect(() => {
@@ -40,6 +35,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
       });
     }
     setService(Session.getMusicService());
+    setUser(Session.getUser());
   }, []);
 
   useEffect(() => {
@@ -48,26 +44,30 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
         setPosts(posts);
       });
     }
-  }, [selectedUser]);
 
-  // useEffect(() => {
-  //   const updatePosts = async (email: string) => {
-  //     setPosts(await fetchUserPosts(email));
-  //   };
-  //   if (props.selectedUser) {
-  //     updatePosts(props.selectedUser.email);
-
-  //     if (posts) {
-  //       // Post does exist
-  //     } else {
-  //       // Posts doesn't exist
-  //       setPosts([]);
-  //     }
-  //   }
-  // }, [props.selectedUser]);
+  
+    // Test if this works
+    if (selectedUser && user) {
+        for (let i = 0; i < selectedUser.followers.length; i++) {
+          console.log(`cur followers: ${selectedUser.followers[i]}`);
+          if (user.username == selectedUser.followers[i]) {
+            console.log(`${user.username} is following ${selectedUser.username}`);
+              setFollowing(true);
+              break;
+          }
+        }
+    }
+    
+  }, [selectedUser, user]);
 
   if (!selectedUser && service) {
     return <div>fetching user</div>;
+  }
+
+  if (isFollowing) {
+    console.log("Is following")
+  } else {
+    console.log("Not following")
   }
 
   return (
@@ -84,14 +84,18 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
           />
         </div>
         <div className="col-span-2">
-          {posts.length > 0 ? (
+          {/* Means it should be T && T */}
+          {!(isFollowing && posts.length > 0) ? (
+          
+            <NoPosts />
+          ) : (
             <OtherProfileFeed
               posts={posts}
               setSong={setSong}
               setPost={setPost}
+              selectedUser={selectedUser}
+              blur={!isFollowing}
             />
-          ) : (
-            <NoPosts />
           )}
         </div>
         {service === "apple" ? (

@@ -12,6 +12,7 @@ import {
   updateBackground,
   updatePFPUrl,
   updateBURL,
+  updateUserVisibility,
 } from "../services/user";
 import fs from "fs";
 
@@ -98,6 +99,25 @@ export const changeOnboarded = async (
     res.json({ msg: "update onboard fail" });
   }
 };
+
+export const changeAccountVisibility = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const email = req.session.user.email;
+    await updateUserVisibility(email, req.body.isPrivate).then(() => {
+      res.status(200);
+      res.json({ msg: "Success" });
+    });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "update visibility fail" });
+  }
+};
+
+
 
 /*
     Author: David Kim

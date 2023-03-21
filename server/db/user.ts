@@ -17,6 +17,7 @@ export interface IUser {
   following: Array<String>;
   followers: Array<String>;
   onboarded: Boolean;
+  isPrivate: Boolean;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -82,6 +83,10 @@ const UserSchema = new Schema<IUser>(
       required: false,
     },
     onboarded: {
+      type: Boolean,
+      required: true,
+    },
+    isPrivate: {
       type: Boolean,
       required: true,
     },

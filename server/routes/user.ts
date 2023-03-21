@@ -13,6 +13,7 @@ import {
   updateProfileURL,
   updateBackgroundURL,
   findUsersByUserName,
+  changeAccountVisibility,
 } from "../controllers/user";
 import { getPostsByUsername } from "../controllers/posting";
 
@@ -26,6 +27,7 @@ router.get("/api/user/posts/:username", auth, getPostsByUsername);
 router.get("/api/user/:username", auth, getUserByUsername);
 
 router.post("/api/user/onboard", auth, changeOnboarded);
+router.post("/api/user/visibility", auth, changeAccountVisibility);
 router.post("/api/user/unlinkSpotify", auth, unlinkSpotify);
 router.post("/api/user/unlinkApple", auth, unlinkApple);
 router.post("/api/user/adjustNames", auth, changeNames);
