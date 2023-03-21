@@ -44,7 +44,7 @@ const Post = (props: IPostProps) => {
               <button
                 onClick={() => {
                   props.setSelectEditPost(props.post);
-                  navigate("/edit");
+                  navigate(`/edit/${props.post._id}`);
                 }}
               >
                 Edit

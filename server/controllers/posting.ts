@@ -8,6 +8,7 @@ import {
   savePost,
   updatePost,
   fetchPostsByUsername,
+  fetchPostById,
 } from "../services/db";
 
 export const getPostsByUsername = async (req: Request, res: Response) => {
@@ -22,8 +23,22 @@ export const getPostsByUsername = async (req: Request, res: Response) => {
   }
 };
 
+export const getPostById = async (req: Request, res: Response) => {
+  try {
+    console.log(req.params.id);
+    const post = await fetchPostById(req.params.id);
+    console.log(post);
+    res.status(201);
+    res.json({ post: post });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
 export const storePost = async (req: Request, res: Response) => {
   try {
+    console.log(req.body.post);
     const post = await createPost(req.body.post);
     await savePost(post);
 

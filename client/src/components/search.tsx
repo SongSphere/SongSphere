@@ -9,6 +9,7 @@ import PostFailure from "./post-failure";
 import PostSucess from "./post-sucess";
 import Popup from "reactjs-popup";
 import Session from "../session";
+import { TPost } from "../types/post";
 
 const AppleSearch = async (
   term: string,
@@ -186,12 +187,15 @@ const Search = (props: ISearchProps) => {
         onClick={async () => {
           setOpen2(true);
           if (user) {
-            await sendPost({
+            const newPost: TPost = {
               username: user.username,
               userEmail: user.email,
               caption: caption,
               music: selected!,
-            })
+            };
+            console.log(user);
+            console.log(newPost);
+            await sendPost(newPost)
               .then((res) => {
                 console.log(res);
                 if (!res) {

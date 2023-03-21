@@ -105,7 +105,7 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
   const [following, setFollowing] = useState(false);
   const [buttonColor, setButtonColor] = useState("bg-blue-500");
   const [buttonText, setButtonText] = useState("Follow");
-  const [user, setUser] = useState<TUser | null>(null);
+  // const [user, setUser] = useState<TUser | null>(null);
 
   const handleOpenFollowers = () => {
     if (openFollowing) {
@@ -121,12 +121,13 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
     setOpenFollowing(!openFollowing);
   };
 
-  useEffect(() => {
-    setUser(Session.getUser());
-  }, [Session.getUser()]);
+  // useEffect(() => {
+  //   setUser(Session.getUser());
+  // }, [Session.getUser()]);
 
   const handleClick = async () => {
-    if (user && props.selectedUser) {
+    const user = Session.getUser();
+    if (props.selectedUser && user) {
       if (!following) {
         setButtonColor("bg-lgrey");
         setButtonText("Unfollow");
@@ -157,6 +158,7 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
   };
 
   useEffect(() => {
+    const user = Session.getUser();
     if (props.selectedUser && user) {
       if (user.following.includes(props.selectedUser.username)) {
         setFollowing(true);

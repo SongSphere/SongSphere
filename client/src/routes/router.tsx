@@ -82,15 +82,15 @@ const Router = (props: IRouterProps) => {
       path: "/settings",
       element: <SettingsPage appleMusicInstance={props.appleMusicInstance} />,
     },
-    // {
-    //   path: "/edit",
-    //   element: (
-    //     <EditPage
-    //       setUser={props.setUser}
-    //       selectEditPost={props.selectEditPost}
-    //     />
-    //   ),
-    // },
+    {
+      path: "/edit/:id",
+      element: (
+        <EditPage
+        // setUser={props.setUser}
+        // selectEditPost={props.selectEditPost}
+        />
+      ),
+    },
   ]);
   return element;
 };

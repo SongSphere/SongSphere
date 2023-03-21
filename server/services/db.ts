@@ -217,6 +217,15 @@ export const fetchPostsByUsername = async (username: string) => {
   }
 };
 
+export const fetchPostById = async (id: string) => {
+  try {
+    const post = await Post.findOne({ _id: id });
+    return post;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // saves the given post document to the db
 export const savePost = async (
   post: mongoose.Document<unknown, any, IPost>
