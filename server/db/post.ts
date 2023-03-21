@@ -7,6 +7,7 @@ export interface IPost {
   userEmail: string;
   caption: string;
   music: TMusicContent;
+  comments: Array<String>;
 }
 
 const PostSchema = new Schema<IPost>(
@@ -37,6 +38,10 @@ const PostSchema = new Schema<IPost>(
         category: String,
         cover: String,
       },
+      required: true,
+    },
+    comments: {
+      type: Array<String>(),
       required: true,
     },
   },
