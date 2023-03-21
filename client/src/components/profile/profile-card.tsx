@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { TUser } from "../../types/user";
-import { MyFollowerInformationCard } from "./follow-buttons";
+import MyFollowerCard from "./my-follower-card";
 
 interface IProfileCardProps {
   user: TUser;
@@ -44,10 +44,7 @@ const ProfileCard = (props: IProfileCardProps) => {
               edit
             </button>
           </div>
-          {/* <MyFollowerInformationCard
-            user={props.user}
-            setUser={props.setUser}
-          /> */}
+          <MyFollowerCard />
         </div>
       </div>
     </div>

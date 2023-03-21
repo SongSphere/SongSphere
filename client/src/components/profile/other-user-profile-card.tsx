@@ -1,18 +1,10 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
-import { OtherFollowerInformationCard } from "./follow-buttons";
-import { useEffect, useState } from "react";
-import fetchUserByUsername from "../../services/user/fetch-user-username";
-import fetchPostsByUsername from "../../services/user/fetch-user-posts";
+import OtherFollowerCard from "./other-follower-card";
+// import Other
 
 interface IProfileCardProps {
-  // user: TUser | null;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  // setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
   selectedUser: TUser | null;
-  // setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const OtherUserProfileCard = (props: IProfileCardProps) => {
@@ -60,12 +52,7 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
               edit
             </button>
           </div>
-          <OtherFollowerInformationCard
-            // user={props.user}
-            // setUser={props.setUser}
-            selectedUser={props.selectedUser}
-            // setSelectedUser={props.setSelectedUser}
-          />
+          <OtherFollowerCard selectedUser={props.selectedUser} />
         </div>
       </div>
     </div>
