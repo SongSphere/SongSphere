@@ -14,7 +14,7 @@ export const updateProfile = async (formData: FormData) => {
       }
     );
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -31,7 +31,7 @@ export const updateProfileURL = async (url: string) => {
       },
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -46,7 +46,7 @@ export const updateBackground = async (formData: FormData) => {
       }
     );
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -63,6 +63,6 @@ export const updateBackgroundURL = async (url: string) => {
       },
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };

@@ -57,7 +57,6 @@ const DeleteGoogleAcountLink = (props: IDeleteGoogleAcountLinkProps) => {
         onClick={async () => {
           // Open Modal that prints Success
           setOpen(true);
-
           DeleteGoogleAccount(email);
 
           // Update the user fields with the updated fields

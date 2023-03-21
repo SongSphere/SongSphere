@@ -84,7 +84,7 @@ export const updateAppleToken = async (email: string, token: string) => {
       { appleToken: token }
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -169,7 +169,7 @@ export const fetchUserbyUserName = async (username: string) => {
     const users = await User.findOne({ username: username });
     return users;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -181,7 +181,7 @@ export const fetchUsersbyUserName = async (username: string) => {
     const users = await User.find({ username: regexp });
     return users;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -280,7 +280,7 @@ export const updateNames = async (
     await User.findOneAndUpdate({ email: email }, { middleName: middleName });
     await User.findOneAndUpdate({ email: email }, { familyName: familyName });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -289,7 +289,7 @@ export const deleteUserInServices = async (email: string) => {
   try {
     await User.deleteOne({ email: email });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -345,7 +345,7 @@ export const updatePFP = async (email: string, filename: string) => {
       { profileImgUrl: "http://localhost:8080/user/images/" + filename }
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -354,7 +354,7 @@ export const updatePFPUrl = async (email: string, url: string) => {
   try {
     await User.findOneAndUpdate({ email: email }, { profileImgUrl: url });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -366,7 +366,7 @@ export const updateBackground = async (email: string, filename: string) => {
       { backgroundImgUrl: "http://localhost:8080/user/images/" + filename }
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -375,7 +375,7 @@ export const updateBURL = async (email: string, url: string) => {
   try {
     await User.findOneAndUpdate({ email: email }, { backgroundImgUrl: url });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };

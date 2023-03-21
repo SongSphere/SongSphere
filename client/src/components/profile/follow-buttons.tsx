@@ -165,8 +165,6 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
         setButtonColor("bg-lgrey");
         setButtonText("Unfollow");
       }
-      console.log(props.selectedUser);
-      console.log(props.selectedUser.followers);
       nFollowers = props.selectedUser.followers.length;
       nFollowing = props.selectedUser.following.length;
       setFollowerButtonText(`${nFollowers} followers`);

@@ -17,15 +17,13 @@ const sendPost = async (post: TPost) => {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        console.log(res.status);
         if (res.status == 201) {
           resolve(true);
-        } else resolve(false);
+        } else reject(false);
       });
     } catch (err) {
-      resolve(false);
-      console.log(err);
-      reject(err);
+      console.error(err);
+      reject(false);
     }
   });
 };

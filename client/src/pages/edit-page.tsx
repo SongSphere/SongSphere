@@ -31,7 +31,6 @@ const EditPage = (props: IEditPageProps) => {
   useEffect(() => {
     if (id) {
       fetchPostById(id).then((post) => {
-        console.log(post);
         setPost(post);
         setCaption(post.caption);
       });

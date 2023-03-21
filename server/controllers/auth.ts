@@ -59,7 +59,7 @@ export const spotifyAuth = async (req: Request, res: Response) => {
         res.status(201);
         res.json({ msg: "spotify tokens successfully updated" });
       } catch (error) {
-        console.log(error);
+        console.error(error);
         res.json({ error: error });
       }
     } else {
@@ -68,7 +68,7 @@ export const spotifyAuth = async (req: Request, res: Response) => {
         res.status(201);
         res.json({ msg: "spotify tokens successfully updated" });
       } catch (error) {
-        console.log(error);
+        console.error(error);
         res.json({ error: error });
       }
     }
@@ -90,7 +90,7 @@ export const appleAuth = async (req: Request, res: Response) => {
       res.status(201);
       res.json({ msg: "apple token successfully updated" });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.json({ error: error });
     }
   } else {
@@ -99,7 +99,7 @@ export const appleAuth = async (req: Request, res: Response) => {
       res.status(201);
       res.json({ msg: "apple token successfully updated" });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.json({ error: error });
     }
   }

@@ -17,7 +17,7 @@ export const follow = async (
       },
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -40,6 +40,6 @@ export const unfollow = async (
       },
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };

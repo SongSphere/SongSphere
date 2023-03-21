@@ -193,11 +193,8 @@ const Search = (props: ISearchProps) => {
               caption: caption,
               music: selected!,
             };
-            console.log(user);
-            console.log(newPost);
             await sendPost(newPost)
               .then((res) => {
-                console.log(res);
                 if (!res) {
                   setPostSuccessFail(<PostFailure />);
                 } else {

@@ -35,10 +35,6 @@ const ProfilePage = (props: IProfileProps) => {
   const [service, setService] = useState<string>("");
 
   useEffect(() => {
-    // fetchUserByUsername(username).then((user) => {
-    //   console.log(user);
-    //   setUser(user);
-    // });
     setUser(Session.getUser());
     setService(Session.getMusicService());
   }, [Session.getUser()]);

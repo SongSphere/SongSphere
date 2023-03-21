@@ -65,7 +65,7 @@ const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
               await Session.setUser(await fetchUser());
             })
             .catch((error) => {
-              console.log(error);
+              console.error(error);
             });
         }}
       >

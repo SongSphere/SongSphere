@@ -36,7 +36,6 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
   useEffect(() => {
     if (username) {
       fetchUserByUsername(username).then((user) => {
-        console.log(user);
         setSelectedUser(user);
       });
     }

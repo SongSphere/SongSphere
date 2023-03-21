@@ -69,7 +69,7 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
         setImage(URL.createObjectURL(b) as string);
       });
     } catch (error) {
-      console.log("Error cropping image " + error);
+      console.error("Error cropping image " + error);
     }
   };
 
@@ -199,7 +199,7 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
         setImage(URL.createObjectURL(b) as string);
       });
     } catch (error) {
-      console.log("Error cropping image " + error);
+      console.error("Error cropping image " + error);
     }
   };
 
@@ -284,7 +284,7 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
               await Session.setUser(await fetchUser());
             })
             .catch((error) => {
-              console.log(error);
+              console.error(error);
             });
         }}
       >

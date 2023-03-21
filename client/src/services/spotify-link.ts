@@ -17,7 +17,7 @@ export const requestSpotifyAuthorization = async () => {
 
     window.location.href = url;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
