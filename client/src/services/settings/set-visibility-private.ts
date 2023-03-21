@@ -4,22 +4,24 @@
 */ 
 
 const setVisibilityPrivate = async (email: string | undefined) => {
-  await fetch(`${process.env.REACT_APP_API}/api/user/visibility`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      isPrivate: true,
-    }),
-  })
-    .then(async (res) => {
-      return res.json();
+  return new Promise<Boolean>(async (resolve, reject) => {
+    await fetch(`${process.env.REACT_APP_API}/api/user/visibility`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        isPrivate: true,
+      }),
     })
-    .catch((error) => {
-      console.error(error);
-    });
+      .then(async (res) => {
+        resolve(true)
+      })
+      .catch((error) => {
+        reject(false)
+      });
+  })
 };
 
 export default setVisibilityPrivate;
