@@ -33,6 +33,7 @@ const Navbar = (props: INavbarProps) => {
               const logoutSuccesss = await handleSignout();
               if (logoutSuccesss) {
                 Session.setUser(null);
+                window.location.reload();
               }
             }}
           >
