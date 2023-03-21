@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { TUser } from "../../types/user";
+import BlockUserModal from "./block-user-modal";
 import { MyFollowerInformationCard } from "./follow-buttons";
 
 interface IProfileCardProps {
@@ -12,7 +13,15 @@ interface IProfileCardProps {
 }
 
 const ProfileCard = (props: IProfileCardProps) => {
+  const [showBlockModal, setShowBlockModal] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+
+  const handleBlockOpen = () => {
+    setShowBlockModal(true);
+  };
+  const handleBlockClose = () => {
+    setShowBlockModal(false);
+  };
 
   const handleOpen = () => {
     setOpen(!open);
@@ -48,7 +57,7 @@ const ProfileCard = (props: IProfileCardProps) => {
 
             {open ? (
               <div className="w-1/2 p-2 text-center bg-gray-200 rounded-sm">
-                <button className="text-sm" onClick={() => {}}>
+                <button onClick={handleBlockOpen} className="text-sm">
                   Block this user
                 </button>
               </div>
@@ -71,6 +80,10 @@ const ProfileCard = (props: IProfileCardProps) => {
           <MyFollowerInformationCard
             user={props.user}
             setUser={props.setUser}
+          />
+          <BlockUserModal
+            isVisible={showBlockModal}
+            onClose={handleBlockClose}
           />
         </div>
       </div>
