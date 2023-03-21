@@ -2,18 +2,13 @@
 import { Request, Response } from "express";
 
 // import services
-import { addFollow, removeFollow } from "../services/db";
+import { addFollow, removeFollow } from "../services/user";
 
 export const follow = async (req: Request, res: Response) => {
   const emailOfUserMakingFollow = req.session.user.email;
   const usernameOfUserMakingFollow = req.body.usernameOfUserMakingFollow;
   const usernameOfUserGettingFollowed = req.body.usernameOfUserGettingFollowed;
   const emailOfUserGettingFollowed = req.body.emailOfUserGettingFollowed;
-
-  console.log("1: " + usernameOfUserMakingFollow);
-  console.log("2: " + usernameOfUserGettingFollowed);
-  console.log("3: " + emailOfUserMakingFollow);
-  console.log("4: " + emailOfUserGettingFollowed);
 
   try {
     await addFollow(
@@ -26,7 +21,7 @@ export const follow = async (req: Request, res: Response) => {
     res.status(201);
     res.json({ msg: "followed successfully" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ error: error });
   }
 };
@@ -49,7 +44,7 @@ export const unfollow = async (req: Request, res: Response) => {
     res.status(201);
     res.json({ msg: "unfollowed successfully" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ error: error });
   }
 };

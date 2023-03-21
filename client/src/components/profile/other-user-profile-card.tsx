@@ -1,28 +1,25 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
-import { OtherFollowerInformationCard } from "./follow-buttons";
+import OtherFollowerCard from "./other-follower-card";
+// import Other
 
 interface IProfileCardProps {
-  user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
   selectedUser: TUser | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const OtherUserProfileCard = (props: IProfileCardProps) => {
   let navigate = useNavigate();
-
+  if (!props.selectedUser) {
+    return <div>fetching user</div>;
+  }
   return (
     <div className="flex justify-center h-screen">
       <div className="fixed flex h-full mt-8">
         <div className="bg-white w-80 h-5/6 drop-shadow-md">
           <div className="relative w-full bg-gradient-to-tl from-purple-900 to-green-700 h-80">
             <img
-              src={props.user!.backgroundImgUrl}
-              className="w-full h-full object-cover absolute mix-blend-overlay"
+              src={props.selectedUser.backgroundImgUrl}
+              className="absolute object-cover w-full h-full mix-blend-overlay"
             />
             <div className="p-8">
               <div className="flex justify-center mt-8">
@@ -55,12 +52,7 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
               edit
             </button>
           </div>
-          <OtherFollowerInformationCard
-            user={props.user}
-            setUser={props.setUser}
-            selectedUser={props.selectedUser}
-            setSelectedUser={props.setSelectedUser}
-          />
+          <OtherFollowerCard selectedUser={props.selectedUser} />
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ import {
   updatePFPUrl,
   updateBURL,
   fetchFeed,
-} from "../services/db";
+} from "../services/user";
 import fs from "fs";
 
 export const sessionUpdate = async (
@@ -37,9 +37,6 @@ export const findUsersByUserName = async (
   next: NextFunction
 ) => {
   try {
-    console.log("Printed in user.ts in controllers backend");
-    console.log(req.body.username.toString);
-    //console.log(req.body.userName.toString);
     const users = await fetchUsersbyUserName(req.body.username);
     res.status(200);
     res.json({ users: users });
@@ -49,13 +46,13 @@ export const findUsersByUserName = async (
   }
 };
 
-export const findUserByUserName = async (
+export const getUserByUsername = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const user = await fetchUserbyUserName(req.body.username);
+    const user = await fetchUserbyUserName(req.params.username);
     res.status(200);
     res.json({ user: user });
   } catch (error) {
@@ -178,7 +175,7 @@ export const updateProfilePhoto = (req: Request, res: Response) => {
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ msg: "failed" });
   }
 
@@ -194,7 +191,7 @@ export const updateProfileURL = (req: Request, res: Response) => {
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ msg: "failed" });
   }
 };
@@ -208,7 +205,7 @@ export const updateBackgroundPhoto = (req: Request, res: Response) => {
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ msg: "failed" });
   }
 
@@ -224,12 +221,12 @@ export const updateBackgroundURL = (req: Request, res: Response) => {
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ msg: "failed" });
   }
 };
 
-export const getPhoto = (req: Request, res: Response) => {
+export const getProfilePhoto = (req: Request, res: Response) => {
   const imageName = req.params.imageName;
   try {
     if (fs.existsSync(`images/${imageName}`)) {
@@ -237,7 +234,6 @@ export const getPhoto = (req: Request, res: Response) => {
       readStream.pipe(res);
     }
   } catch (error) {
-    console.log("hi");
     res.status(500);
     res.json({ msg: "failed to get image" });
     console.error(error);
