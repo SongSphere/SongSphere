@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 
 // import services
 import fetchUserPosts from "../../services/posts/fetch-user-posts";
-import fetchUserByUsername from "../services/user/fetch-user-username";
-import fetchPostsByUsername from "../services/user/fetch-user-posts";
 
 // import types
 import { TMusicContent } from "../../types/music-content";
@@ -12,13 +10,14 @@ import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
 
 // import components
-import Navbar from "../components/navbar";
-import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
-import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
-import ProfileCard from "../components/profile/profile-card";
-import ProfileFeed from "../components/profile/profile-feed";
-import { NoPosts } from "../components/profile/no-post";
-import Session from "../session";
+import Navbar from "../../components/navbar";
+import AppleMusicPlayerCard from "../../components/player/apple-music-player-card";
+import SpotifyPlayerCard from "../../components/player/spotify-music-player-card";
+import ProfileCard from "../../components/profile/profile-card";
+import ProfileFeed from "../../components/profile/profile-feed";
+import { NoPosts } from "../../components/profile/no-post";
+import Session from "../../session";
+import fetchPostsByUsername from "../../services/posts/fetch-user-posts";
 
 interface IProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
