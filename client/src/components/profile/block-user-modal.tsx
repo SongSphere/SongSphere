@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { block } from "../../services/block";
 
 interface IBlockProps {
   isVisible: boolean;
@@ -34,6 +35,7 @@ const BlockUserModal = (props: IBlockProps) => {
         <div className="py-2 text-center">
           <button
             onClick={() => {
+              //block();
               navigate("/");
             }}
             className="px-5 py-3 font-semibold text-white bg-red-700 rounded"

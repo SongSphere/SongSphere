@@ -15,6 +15,7 @@ export type TUser = {
   following: string[];
   followers: string[];
   blockedUsers: string[];
+  blockedBy: string[];
   onboarded: Boolean;
 };
 

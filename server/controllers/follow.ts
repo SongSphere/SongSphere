@@ -2,18 +2,18 @@
 import { Request, Response } from "express";
 
 // import services
-import { addFollow, removeFollow } from "../services/db";
+import {
+  addBlockedAccount,
+  addFollow,
+  removeFollow,
+  unBlockAccount,
+} from "../services/db";
 
 export const follow = async (req: Request, res: Response) => {
   const emailOfUserMakingFollow = req.session.user.email;
   const usernameOfUserMakingFollow = req.body.usernameOfUserMakingFollow;
   const usernameOfUserGettingFollowed = req.body.usernameOfUserGettingFollowed;
   const emailOfUserGettingFollowed = req.body.emailOfUserGettingFollowed;
-
-  console.log("1: " + usernameOfUserMakingFollow);
-  console.log("2: " + usernameOfUserGettingFollowed);
-  console.log("3: " + emailOfUserMakingFollow);
-  console.log("4: " + emailOfUserGettingFollowed);
 
   try {
     await addFollow(
@@ -48,6 +48,51 @@ export const unfollow = async (req: Request, res: Response) => {
 
     res.status(201);
     res.json({ msg: "unfollowed successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ error: error });
+  }
+};
+
+export const block = async (req: Request, res: Response) => {
+  const emailOfUserMakingBlock = req.session.user.email;
+  const usernameOfUserMakingBlock = req.body.usernameOfUserMakingBlock;
+  const usernameOfUserGettingBlocked = req.body.usernameOfUserGettingBlocked;
+  const emailOfUserGettingBlocked = req.body.emailOfUserGettingBlocked;
+
+  try {
+    await addBlockedAccount(
+      emailOfUserMakingBlock,
+      usernameOfUserMakingBlock,
+      usernameOfUserGettingBlocked,
+      emailOfUserGettingBlocked
+    );
+
+    res.status(201);
+    res.json({ msg: "blocked successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ error: error });
+  }
+};
+
+export const unblock = async (req: Request, res: Response) => {
+  const emailOfUserUnblocking = req.session.user.email;
+  const usernameOfUserUnblocking = req.body.usernameOfUserUnfollowing;
+  const usernameOfUserGettingUnblocked =
+    req.body.usernameOfUserGettingUnfollowed;
+  const emailOfUserGettingUnblocked = req.body.emailOfUserGettingUnfollowed;
+
+  try {
+    await unBlockAccount(
+      usernameOfUserUnblocking,
+      usernameOfUserGettingUnblocked,
+      emailOfUserGettingUnblocked,
+      emailOfUserUnblocking
+    );
+
+    res.status(201);
+    res.json({ msg: "unblocked successfully" });
   } catch (error) {
     console.log(error);
     res.json({ error: error });
