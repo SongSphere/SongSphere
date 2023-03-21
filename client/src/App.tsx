@@ -1,19 +1,18 @@
-import Router from "./components/router";
+import Router from "./routes/router";
 import { useEffect, useState } from "react";
-import checkLoggedIn from "./services/check-logged-in";
-import fetchUser from "./services/fetch-user";
+import checkLoggedIn from "./services/user/check-logged-in";
+import fetchUser from "./services/user/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import { TUser } from "./types/user";
 import { TPost } from "./types/post";
+import Session from "./session";
 import React from "react";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser | null>(null);
   const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
-  const [service, setService] = useState("");
   const [post, editPost] = useState<TPost | null>(null);
   const [selectEditPost, setSelectEditPost] = useState<TPost | null>(null);
 
@@ -24,28 +23,32 @@ const App = () => {
     const updateSession = async () => {
       try {
         await checkLoggedIn().then(async (isLoggedIn) => {
-          setIsLoggedIn(isLoggedIn);
+          // setIsLoggedIn(isLoggedIn);
+          Session.setIsLoggedIn(isLoggedIn);
           if (isLoggedIn) {
             await fetchUser().then((userData) => {
-              setUser(userData);
-
-              // set user's music service
               if (userData) {
+                Session.setUser(userData);
+                setUser(Session.getUser());
+
+                // set user's music service
                 if (
                   userData.spotifyToken != undefined &&
                   userData.appleToken != undefined
                 ) {
-                  setService("both");
+                  Session.setMusicService("both");
                 }
                 if (userData.spotifyToken != undefined) {
-                  setService("spotify");
+                  Session.setMusicService("spotify");
                 } else if (userData.appleToken != undefined) {
-                  setService("apple");
+                  Session.setMusicService("apple");
                 }
+                setSessionUpdated(true);
               }
             });
+          } else {
+            setSessionUpdated(true);
           }
-          setSessionUpdated(true);
         });
       } catch (error) {
         console.error(error);
@@ -82,25 +85,15 @@ const App = () => {
   }
 
   if (sessionUpdated) {
-    if (user && isLoggedIn) {
+    if (user && Session.getIsLoggedIn()) {
       if (!user.onboarded) {
-        return (
-          <OnBoardPage
-            user={user}
-            setUser={setUser}
-            appleMusicInstance={appleMusicInstance}
-          />
-        );
+        return <OnBoardPage appleMusicInstance={appleMusicInstance} />;
       } else {
         return (
           <Router
-            user={user}
-            setUser={setUser}
             selectedUser={selectedUser}
             setSelectedUser={setSelectedUser}
-            setIsLoggedIn={setIsLoggedIn}
             appleMusicInstance={appleMusicInstance}
-            service={service}
             post={post}
             setSelectEditPost={setSelectEditPost}
             selectEditPost={selectEditPost}
@@ -108,24 +101,13 @@ const App = () => {
         );
       }
     } else {
-      return <AuthPage setIsLoggedIn={setIsLoggedIn} setUser={setUser} />;
+      return <AuthPage />;
     }
   }
 
   return (
     <>
-      <Router
-        user={user}
-        setUser={setUser}
-        selectedUser={selectedUser}
-        setSelectedUser={setSelectedUser}
-        setIsLoggedIn={setIsLoggedIn}
-        appleMusicInstance={appleMusicInstance}
-        service={service}
-        post={post}
-        setSelectEditPost={setSelectEditPost}
-        selectEditPost={selectEditPost}
-      />
+      <div>loading</div>
     </>
   );
 };

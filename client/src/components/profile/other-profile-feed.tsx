@@ -1,6 +1,6 @@
 import { TPost } from "../../types/post";
 import { TMusicContent } from "../../types/music-content";
-import PostForOtherProfile from "../post-for-other-profile";
+import PostForOtherProfile from "../post/post-for-other-profile";
 import React from "react";
 
 interface IOtherProfileFeedProps {
