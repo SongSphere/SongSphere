@@ -8,41 +8,66 @@ import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import fetchUserPosts from "../services/user/fetch-user-posts";
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
+import { useParams } from "react-router-dom";
 import { TUser } from "../types/user";
+import fetchUserByUsername from "../services/user/fetch-user-username";
+import fetchPostsByUsername from "../services/user/fetch-user-posts";
+import Session from "../session";
 
 interface IOtherUserProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  selectedUser: TUser | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  service: string;
-  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  // user: TUser | null;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // selectedUser: TUser | null;
+  // setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  // service: string;
+  // setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
   const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
+  const [service, setService] = useState("");
+  const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
+  let { username } = useParams();
 
   useEffect(() => {
-    const updatePosts = async (email: string) => {
-      setPosts(await fetchUserPosts(email));
-    };
-    if (props.selectedUser) {
-      updatePosts(props.selectedUser.email);
-
-      if (posts) {
-        // Post does exist
-      } else {
-        // Posts doesn't exist
-        setPosts([]);
-      }
+    if (username) {
+      fetchUserByUsername(username).then((user) => {
+        console.log(user);
+        setSelectedUser(user);
+      });
     }
-  }, [props.selectedUser]);
+    setService(Session.getMusicService());
+  }, []);
 
-  if (!props.selectedUser) {
+  useEffect(() => {
+    if (selectedUser) {
+      fetchPostsByUsername(selectedUser.username).then((posts) => {
+        setPosts(posts);
+      });
+    }
+  }, [selectedUser]);
+
+  // useEffect(() => {
+  //   const updatePosts = async (email: string) => {
+  //     setPosts(await fetchUserPosts(email));
+  //   };
+  //   if (props.selectedUser) {
+  //     updatePosts(props.selectedUser.email);
+
+  //     if (posts) {
+  //       // Post does exist
+  //     } else {
+  //       // Posts doesn't exist
+  //       setPosts([]);
+  //     }
+  //   }
+  // }, [props.selectedUser]);
+
+  if (!selectedUser && service) {
     return <div>fetching user</div>;
   }
 
@@ -52,11 +77,11 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
           <OtherUserProfileCard
-            user={props.user}
-            setUser={props.setUser}
-            selectedUser={props.selectedUser}
-            setSelectedUser={props.setSelectedUser}
-            setSelectEditPost={props.setSelectEditPost}
+            // user={props.user}
+            // setUser={props.setUser}
+            selectedUser={selectedUser}
+            // setSelectedUser={props.setSelectedUser}
+            // setSelectEditPost={props.setSelectEditPost}
           />
         </div>
         <div className="col-span-2">
@@ -70,7 +95,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
             <NoPosts />
           )}
         </div>
-        {props.service === "apple" ? (
+        {service === "apple" ? (
           <AppleMusicPlayerCard
             // user={props.user}
             // service={props.service}

@@ -6,12 +6,12 @@ import { TUser } from "../types/user";
 
 interface ISearchUsersProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  selectedUser: TUser | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  service: string;
+  // user: TUser | null;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // selectedUser: TUser | null;
+  // setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  // service: string;
 }
 
 const SearchUsersPage = (props: ISearchUsersProps) => {
@@ -21,13 +21,13 @@ const SearchUsersPage = (props: ISearchUsersProps) => {
       <div className="text-center translate-y-1/3">
         <h1 className="text-lg text-lgrey">Find Friends</h1>
         <UserFind
-          user={props.user}
-          setUser={props.setUser}
-          setIsLoggedIn={props.setIsLoggedIn}
-          selectedUser={props.selectedUser}
-          setSelectedUser={props.setSelectedUser}
+          // user={props.user}
+          // setUser={props.setUser}
+          // setIsLoggedIn={props.setIsLoggedIn}
+          // selectedUser={props.selectedUser}
+          // setSelectedUser={props.setSelectedUser}
           appleMusicInstance={props.appleMusicInstance}
-          service={props.service}
+          // service={props.service}
         />
       </div>
     </div>

@@ -17,21 +17,12 @@ import Session from "../session";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  // user: TUser | null;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   selectedUser: TUser | null;
   setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  // service: string;
   post: TPost | null;
   selectEditPost: TPost | null;
   setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
-
-/**
- * This sets all the routes for each pages
- *
- */
 
 const Router = (props: IRouterProps) => {
   let element = useRoutes([
@@ -41,53 +32,38 @@ const Router = (props: IRouterProps) => {
     },
     {
       path: "/",
-      element: (
-        <HomePage
-          appleMusicInstance={props.appleMusicInstance}
-          // setUser={props.setUser}
-          // setIsLoggedIn={props.setIsLoggedIn}
-          // user={props.user}
-        />
-      ),
+      element: <HomePage appleMusicInstance={props.appleMusicInstance} />,
     },
     {
       path: "/posts",
+      element: <PostPage musicInstance={props.appleMusicInstance} />,
+    },
+    {
+      path: "/searchUsers",
       element: (
-        <PostPage
-          musicInstance={props.appleMusicInstance}
+        <SearchUsersPage
           // user={props.user}
           // setUser={props.setUser}
+          // selectedUser={props.selectedUser}
+          // setSelectedUser={props.setSelectedUser}
           // setIsLoggedIn={props.setIsLoggedIn}
+          appleMusicInstance={props.appleMusicInstance}
           // service={props.service}
         />
       ),
     },
-    // {
-    //   path: "/searchUsers",
-    //   element: (
-    //     <SearchUsersPage
-    //       // user={props.user}
-    //       // setUser={props.setUser}
-    //       selectedUser={props.selectedUser}
-    //       setSelectedUser={props.setSelectedUser}
-    //       setIsLoggedIn={props.setIsLoggedIn}
-    //       appleMusicInstance={props.appleMusicInstance}
-    //       // service={props.service}
-    //     />
-    //   ),
-    // },
-    // {
-    //   path: "/user/:username",
-    //   element: (
-    //     <ProfilePage
-    //       user={props.user}
-    //       setIsLoggedIn={props.setIsLoggedIn}
-    //       appleMusicInstance={props.appleMusicInstance}
-    //       service={props.service}
-    //       setSelectEditPost={props.setSelectEditPost}
-    //     />
-    //   ),
-    // },
+    {
+      path: "/user/:username",
+      element: (
+        <OtherUserProfilePage
+          // user={props.user}
+          // setIsLoggedIn={props.setIsLoggedIn}
+          appleMusicInstance={props.appleMusicInstance}
+          // service={props.service}
+          // setSelectEditPost={props.setSelectEditPost}
+        />
+      ),
+    },
     {
       path: "/profile",
       element: (
@@ -100,24 +76,11 @@ const Router = (props: IRouterProps) => {
     },
     {
       path: "/onboard",
-      element: (
-        <OnBoardPage
-          // setUser={props.setUser}
-          // user={props.user}
-          appleMusicInstance={props.appleMusicInstance}
-        />
-      ),
+      element: <OnBoardPage appleMusicInstance={props.appleMusicInstance} />,
     },
     {
       path: "/settings",
-      element: (
-        <SettingsPage
-          // user={props.user}
-          // setUser={props.setUser}
-          // setIsLoggedIn={props.setIsLoggedIn}
-          appleMusicInstance={props.appleMusicInstance}
-        />
-      ),
+      element: <SettingsPage appleMusicInstance={props.appleMusicInstance} />,
     },
     // {
     //   path: "/edit",

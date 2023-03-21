@@ -17,7 +17,6 @@ import SpotifyPlayerCard from "../components/spotify-music-player-card";
 import ProfileCard from "../components/profile/profile-card";
 import ProfileFeed from "../components/profile/profile-feed";
 import { NoPosts } from "../components/profile/no-post";
-import { useParams } from "react-router-dom";
 import Session from "../session";
 
 interface IProfileProps {

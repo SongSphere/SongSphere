@@ -53,7 +53,7 @@ export const getUserByUsername = async (
   next: NextFunction
 ) => {
   try {
-    const user = await fetchUserbyUserName(req.body.username);
+    const user = await fetchUserbyUserName(req.params.username);
     res.status(200);
     res.json({ user: user });
   } catch (error) {

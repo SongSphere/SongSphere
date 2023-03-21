@@ -7,16 +7,17 @@ import OtherUserProfilePage from "../pages/other-user-profile-page";
 
 interface IUserFindProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  selectedUser: TUser | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  service: string;
+  // user: TUser | null;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // selectedUser: TUser | null;
+  // setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  // service: string;
 }
 
 const UserFind = (props: IUserFindProps) => {
   let [users, setUsers] = useState<TUser[]>([]);
+  // let [user, setUser] = useState<TUser | null>(null);
 
   const navigate = useNavigate();
 
@@ -69,9 +70,9 @@ const UserFind = (props: IUserFindProps) => {
                   <button
                     key={user.username}
                     onClick={() => {
-                      props.setUser(props.user);
-                      props.setSelectedUser(user);
-                      navigate("/otherUsersProfilePage");
+                      // props.setUser(props.user);
+                      // props.setSelectedUser(user);
+                      navigate(`/user/${user.username}`);
                     }}
                   >
                     <div className="flex-1 block w-full px-3 py-2 mt-2 overflow-hidden bg-white rounded-md ">

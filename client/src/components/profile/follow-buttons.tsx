@@ -4,17 +4,17 @@ import fetchUserName from "../../services/user/fetch-user-username";
 import fetchUserNames from "../../services/user/fetch-usernames";
 import { follow, unfollow } from "../../services/follow";
 import { TUser } from "../../types/user";
+import Session from "../../session";
 
 interface IUser {
   user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 interface ISelectedUser {
-  user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // user: TUser | null;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   selectedUser: TUser | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 export const MyFollowerInformationCard = (props: IUser) => {
@@ -46,8 +46,8 @@ export const MyFollowerInformationCard = (props: IUser) => {
 
   useEffect(() => {
     if (props.user) {
-      nFollowers = props.user!.followers.length;
-      nFollowing = props.user!.following.length;
+      nFollowers = props.user.followers.length;
+      nFollowing = props.user.following.length;
       setFollowerButtonText(`${nFollowers} followers`);
       setFollowingButtonText(`${nFollowing} following`);
     }
@@ -76,13 +76,13 @@ export const MyFollowerInformationCard = (props: IUser) => {
 
         {openFollowers ? (
           <div>
-            <ListFollowers user={props.user} setUser={props.setUser} />
+            <ListFollowers user={props.user} />
           </div>
         ) : null}
 
         {openFollowing ? (
           <div>
-            <ListFollowing user={props.user} setUser={props.setUser} />
+            <ListFollowing user={props.user} />
           </div>
         ) : null}
       </div>
@@ -105,6 +105,7 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
   const [following, setFollowing] = useState(false);
   const [buttonColor, setButtonColor] = useState("bg-blue-500");
   const [buttonText, setButtonText] = useState("Follow");
+  const [user, setUser] = useState<TUser | null>(null);
 
   const handleOpenFollowers = () => {
     if (openFollowing) {
@@ -120,38 +121,44 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
     setOpenFollowing(!openFollowing);
   };
 
+  useEffect(() => {
+    setUser(Session.getUser());
+  }, [Session.getUser()]);
+
   const handleClick = async () => {
-    if (!following) {
-      setButtonColor("bg-lgrey");
-      setButtonText("Unfollow");
+    if (user && props.selectedUser) {
+      if (!following) {
+        setButtonColor("bg-lgrey");
+        setButtonText("Unfollow");
 
-      await follow(
-        props.user?.username!,
-        props.selectedUser?.username!,
-        props.selectedUser?.email!
-      ).then(async () => {
-        props.setUser(await fetchUser());
-      });
+        await follow(
+          user.username,
+          props.selectedUser.username,
+          props.selectedUser.email
+        ).then(async () => {
+          Session.setUser(await fetchUser());
+        });
 
-      setFollowing(true);
-    } else {
-      setButtonColor("bg-blue-500");
-      setButtonText("Follow");
-      unfollow(
-        props.user?.username!,
-        props.selectedUser?.username!,
-        props.selectedUser?.email!
-      ).then(async () => {
-        props.setUser(await fetchUser());
-      });
+        setFollowing(true);
+      } else {
+        setButtonColor("bg-blue-500");
+        setButtonText("Follow");
+        unfollow(
+          user.username,
+          props.selectedUser?.username!,
+          props.selectedUser?.email!
+        ).then(async () => {
+          Session.setUser(await fetchUser());
+        });
 
-      setFollowing(false);
+        setFollowing(false);
+      }
     }
   };
 
   useEffect(() => {
-    if (props.selectedUser) {
-      if (props.user!.following.includes(props.selectedUser!.username)) {
+    if (props.selectedUser && user) {
+      if (user.following.includes(props.selectedUser.username)) {
         setFollowing(true);
         setButtonColor("bg-lgrey");
         setButtonText("Unfollow");
@@ -197,7 +204,7 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
           <div>
             <ListFollowers
               user={props.selectedUser}
-              setUser={props.setSelectedUser}
+              // setUser={props.setSelectedUser}
             />
           </div>
         ) : null}
@@ -206,7 +213,7 @@ export const OtherFollowerInformationCard = (props: ISelectedUser) => {
           <div>
             <ListFollowing
               user={props.selectedUser}
-              setUser={props.setSelectedUser}
+              // setUser={props.setSelectedUser}
             />
           </div>
         ) : null}
