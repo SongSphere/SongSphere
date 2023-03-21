@@ -25,6 +25,9 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
   const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [post, setPost] = useState<TPost | null>(null);
+  const [isFollowing, setFollowing] = useState<boolean>(false);
+
+
 
   useEffect(() => {
     const updatePosts = async (email: string) => {
@@ -40,10 +43,35 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
         setPosts([]);
       }
     }
-  }, [props.selectedUser]);
+
+  
+    // Test if this works
+    if (props.selectedUser && props.user) {
+        for (let i = 0; i < props.selectedUser.followers.length; i++) {
+          console.log(`cur followers: ${props.selectedUser.followers[i]}`);
+          if (props.user.username == props.selectedUser.followers[i]) {
+            console.log(`${props.user.username} is following ${props.selectedUser.username}`);
+              setFollowing(true);
+              break;
+          }
+        }
+
+     
+    }
+
+    
+    
+    
+  }, [props.selectedUser, props.user]);
 
   if (!props.selectedUser) {
     return <div>fetching user</div>;
+  }
+
+  if (isFollowing) {
+    console.log("Is following")
+  } else {
+    console.log("Not following")
   }
 
   return (
@@ -60,14 +88,19 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
           />
         </div>
         <div className="col-span-2">
-          {posts.length > 0 ? (
+          {/* Means it should be T && T */}
+          {!(isFollowing && posts.length > 0) ? (
+          
+            <NoPosts />
+          ) : (
             <OtherProfileFeed
               posts={posts}
               setSong={setSong}
               setPost={setPost}
+              selectedUser={props.selectedUser}
+              setSelectedUser={props.setSelectedUser}
+              blur={!isFollowing}
             />
-          ) : (
-            <NoPosts />
           )}
         </div>
         {props.service === "apple" ? (
