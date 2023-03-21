@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import fetchUser from "../services/user/fetch-user";
-import { useEffect, useState } from "react";
-import AdjustName from "../services/adjust-name";
+import fetchUser from "../../services/user/fetch-user";
+import { useState } from "react";
+import AdjustName from "../../services/adjust-name";
 import Popup from "reactjs-popup";
-import { TUser } from "../types/user";
-import Session from "../session";
+import Session from "../../session";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name

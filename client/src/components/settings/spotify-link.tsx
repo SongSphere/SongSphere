@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { requestSpotifyAuthorization } from "../services/spotify-link";
-import { spotifyAuth } from "../services/spotify-link";
-import Session from "../session";
+import { requestSpotifyAuthorization } from "../../services/spotify-link";
+import { spotifyAuth } from "../../services/spotify-link";
+import Session from "../../session";
 
-import fetchUser from "../services/user/fetch-user";
+import fetchUser from "../../services/user/fetch-user";
 
 interface ISpotfiyLinkButtonProps {}
 

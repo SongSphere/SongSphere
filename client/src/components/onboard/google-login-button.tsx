@@ -1,11 +1,11 @@
 import { GoogleLogin } from "@react-oauth/google";
 
 // import services
-import handleSignInUp from "../services/handle-sign-in-up";
-import fetchUser from "../services/user/fetch-user";
+import handleSignInUp from "../../services/handle-sign-in-up";
+import fetchUser from "../../services/user/fetch-user";
 import { useNavigate } from "react-router-dom";
-import { TUser } from "../types/user";
-import Session from "../session";
+import { TUser } from "../../types/user";
+import Session from "../../session";
 
 interface ILoginButtonProps {}
 

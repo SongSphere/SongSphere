@@ -2,9 +2,8 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 import { useNavigate } from "react-router-dom";
-import DeleteGoogleAccount from "../services/delete-google-account";
-import { TUser } from "../types/user";
-import Session from "../session";
+import DeleteGoogleAccount from "../../services/delete-google-account";
+import Session from "../../session";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name

@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { TMusicContent } from "../types/music-content";
-import { TPost } from "../types/post";
-import deletePost from "../services/delete-post";
-import PostFocusPage from "../pages/post-focus-page";
+import { TMusicContent } from "../../types/music-content";
+import { TPost } from "../../types/post";
+import deletePost from "../../services/delete-post";
+import PostFocusPage from "../../pages/post-focus-page";
 import Popup from "reactjs-popup";
 
 interface IPostProps {

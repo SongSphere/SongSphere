@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import appleSearch from "../services/apple-search";
-import { TMusicContent } from "../types/music-content";
-import { spotifySearch } from "../services/spotify-search";
-import sendPost from "../services/send-post";
-import { TUser } from "../types/user";
-import PostFailure from "./post-failure";
-import PostSucess from "./post-sucess";
+import appleSearch from "../../services/apple-search";
+import { TMusicContent } from "../../types/music-content";
+import { spotifySearch } from "../../services/spotify-search";
+import sendPost from "../../services/send-post";
+import { TUser } from "../../types/user";
+import PostFailure from "../popup/post-failure";
+import PostSucess from "../popup/post-sucess";
 import Popup from "reactjs-popup";
-import Session from "../session";
-import { TPost } from "../types/post";
+import Session from "../../session";
+import { TPost } from "../../types/post";
 
 const AppleSearch = async (
   term: string,
@@ -29,11 +29,11 @@ const SpotifySearch = async (
   return spotifySearch(term, category, token, limit);
 };
 
-interface ISearchProps {
+interface ISearchSongProps {
   musicInstance: MusicKit.MusicKitInstance;
 }
 
-const Search = (props: ISearchProps) => {
+const SearchSong = (props: ISearchSongProps) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState("");
   let [songs, setSongs] = useState<TMusicContent[]>([]);
@@ -221,4 +221,4 @@ const Search = (props: ISearchProps) => {
   );
 };
 
-export default Search;
+export default SearchSong;

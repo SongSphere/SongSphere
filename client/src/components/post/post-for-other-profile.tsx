@@ -1,7 +1,7 @@
 import React from "react";
-import { TMusicContent } from "../types/music-content";
-import { TPost } from "../types/post";
-import PostFocusPage from "../pages/post-focus-page";
+import { TMusicContent } from "../../types/music-content";
+import { TPost } from "../../types/post";
+import PostFocusPage from "../../pages/post-focus-page";
 import Popup from "reactjs-popup";
 
 interface IPostForOtherProfileProps {

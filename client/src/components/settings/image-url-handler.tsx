@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { updateProfileURL, updateBackgroundURL } from "../services/send-image";
+import {
+  updateProfileURL,
+  updateBackgroundURL,
+} from "../../services/send-image";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name

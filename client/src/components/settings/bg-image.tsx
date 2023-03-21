@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const BImg = () => {
+const BgImage = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   return (
@@ -38,4 +38,4 @@ const BImg = () => {
   );
 };
 
-export default BImg;
+export default BgImage;

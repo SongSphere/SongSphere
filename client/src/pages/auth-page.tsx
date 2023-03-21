@@ -1,4 +1,4 @@
-import LoginButton from "../components/google-login-button";
+import LoginButton from "../components/onboard/google-login-button";
 import { TUser } from "../types/user";
 
 interface IAuthPageProps {

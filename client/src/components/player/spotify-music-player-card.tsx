@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { TMusicContent } from "../types/music-content";
-import { TUser } from "../types/user";
-import selectService from "../services/select-service";
-import Session from "../session";
+import { TMusicContent } from "../../types/music-content";
+import { TUser } from "../../types/user";
+import selectService from "../../services/select-service";
+import Session from "../../session";
 
 interface ISpotifySong {
   name: string;

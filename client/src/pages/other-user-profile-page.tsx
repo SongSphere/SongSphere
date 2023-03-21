@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import AppleMusicPlayerCard from "../components/apple-music-player-card";
+import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import Navbar from "../components/navbar";
 import { NoPosts } from "../components/profile/no-post";
 import OtherProfileFeed from "../components/profile/other-profile-feed";
 import OtherUserProfileCard from "../components/profile/other-user-profile-card";
-import SpotifyPlayerCard from "../components/spotify-music-player-card";
+import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import fetchUserPosts from "../services/user/fetch-user-posts";
 import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";

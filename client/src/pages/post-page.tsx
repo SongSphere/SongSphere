@@ -1,21 +1,16 @@
 import React from "react";
 import ReactDOM from "react";
-import Search from "../components/search";
+import Search from "../components/post/search-song";
 import { TUser } from "../types/user";
 import { Link } from "react-router-dom";
 import Navbar from "../components/navbar";
 
 interface IPostPageProps {
   musicInstance: MusicKit.MusicKitInstance;
-  // user: TUser | null;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  // service: string;
 }
 
 const PostPage = (props: IPostPageProps) => {
   return (
-    //page container
     <div>
       <Navbar />
       <div className="grid justify-center w-screen h-screen grid-cols-4 grid-rows-4 bg-navy">

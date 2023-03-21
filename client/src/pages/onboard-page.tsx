@@ -5,18 +5,16 @@
 */
 
 import { useEffect, useState } from "react";
-import AppleLink from "../components/apple-link";
-import SpotifyLinkButton from "../components/spotify-link";
+import AppleLink from "../components/settings/apple-link";
+import SpotifyLinkButton from "../components/settings/spotify-link";
 import { useNavigate } from "react-router-dom";
 import { TUser } from "../types/user";
-import AdjustNamesLink from "../components/adjust-names-link";
+import AdjustNamesLink from "../components/settings/adjust-names-link";
 import setOnboarded from "../services/set-onboarded";
 import Session from "../session";
 
 interface IOnBoardPageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  // user: TUser | null;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const OnBoardPage = (props: IOnBoardPageProps) => {

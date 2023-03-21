@@ -6,22 +6,18 @@
 */
 
 import { useContext, useEffect, useState } from "react";
-import AdjustNamesLink from "../components/adjust-names-link";
-import DeleteGoogleAcountLink from "../components/delete-google-account-link";
+import AdjustNamesLink from "../components/settings/adjust-names-link";
+import DeleteGoogleAcountLink from "../components/settings/delete-google-account-link";
 import { TUser } from "../types/user";
 import {
   BackgroundImgCropper,
   ProfileImgCropper,
-} from "../components/image-handler";
+} from "../components/settings/image-handler";
 import Navbar from "../components/navbar";
-import AppleLink from "../components/apple-link";
-import SpotifyLinkButton from "../components/spotify-link";
+import AppleLink from "../components/settings/apple-link";
+import SpotifyLinkButton from "../components/settings/spotify-link";
 import unlinkMusic from "../services/unlink-music";
 import fetchUser from "../services/user/fetch-user";
-import {
-  UpdateBackgroundURL,
-  UpdateProfileURL,
-} from "../components/image-url-handler";
 import Session from "../session";
 
 interface ISettingPageProps {

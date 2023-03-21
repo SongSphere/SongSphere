@@ -1,6 +1,3 @@
-import { TMusicContent } from "../types/music-content";
-import PostFailure from "../components/post-failure";
-import PostSucess from "../components/post-sucess";
 import axios from "axios";
 
 export const updateProfile = async (formData: FormData) => {

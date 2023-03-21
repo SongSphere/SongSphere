@@ -12,8 +12,8 @@ import { TUser } from "../types/user";
 
 // import components
 import Navbar from "../components/navbar";
-import AppleMusicPlayerCard from "../components/apple-music-player-card";
-import SpotifyPlayerCard from "../components/spotify-music-player-card";
+import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
+import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import ProfileCard from "../components/profile/profile-card";
 import ProfileFeed from "../components/profile/profile-feed";
 import { NoPosts } from "../components/profile/no-post";
