@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   updateProfileURL,
   updateBackgroundURL,
-} from "../../services/send-image";
+} from "../../services/user/send-image";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name

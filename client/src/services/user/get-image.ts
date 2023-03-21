@@ -1,4 +1,4 @@
-import { TPost } from "../types/post";
+import { TPost } from "../../types/post";
 
 const getPost = async (post: TPost) => {
   const result = await fetch(`${process.env.REACT_APP_API}/user/images`, {

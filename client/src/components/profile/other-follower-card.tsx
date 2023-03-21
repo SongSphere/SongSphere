@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { TUser } from "../../types/user";
 import Session from "../../session";
 import fetchUser from "../../services/user/fetch-user";
-import { follow, unfollow } from "../../services/follow";
+import { follow, unfollow } from "../../services/user/follow";
 import FollowingList from "./following-list";
 import FollowerList from "./follower-list";
 

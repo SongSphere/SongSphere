@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import EditPost from "../services/edit-post";
+import EditPost from "../services/post/edit-post";
 import { useNavigate } from "react-router-dom";
 import fetchUser from "../services/user/fetch-user";
 import Popup from "reactjs-popup";

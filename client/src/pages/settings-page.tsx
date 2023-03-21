@@ -16,7 +16,7 @@ import {
 import Navbar from "../components/navbar";
 import AppleLink from "../components/settings/apple-link";
 import SpotifyLinkButton from "../components/settings/spotify-link";
-import unlinkMusic from "../services/unlink-music";
+import unlinkMusic from "../services/user/unlink-music";
 import fetchUser from "../services/user/fetch-user";
 import Session from "../session";
 

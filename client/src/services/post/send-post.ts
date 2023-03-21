@@ -1,4 +1,4 @@
-import { TPost } from "../types/post";
+import { TPost } from "../../types/post";
 
 const sendPost = async (post: TPost) => {
   return new Promise(async (resolve, reject) => {

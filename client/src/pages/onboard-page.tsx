@@ -10,7 +10,7 @@ import SpotifyLinkButton from "../components/settings/spotify-link";
 import { useNavigate } from "react-router-dom";
 import { TUser } from "../types/user";
 import AdjustNamesLink from "../components/settings/adjust-names-link";
-import setOnboarded from "../services/set-onboarded";
+import setOnboarded from "../services/user/set-onboarded";
 import Session from "../session";
 
 interface IOnBoardPageProps {

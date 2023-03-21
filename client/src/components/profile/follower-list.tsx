@@ -1,11 +1,11 @@
 import { TUser } from "../../types/user";
 import { useEffect, useState } from "react";
 
-interface IFollowerList {
+interface IFollowerListProps {
   user: TUser | null;
 }
 
-const FollowerList = (props: IFollowerList) => {
+const FollowerList = (props: IFollowerListProps) => {
   let [users, setUsers] = useState<string[]>([]);
 
   useEffect(() => {

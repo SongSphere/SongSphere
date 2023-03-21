@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import appleSearch from "../../services/apple-search";
+import appleSearch from "../../services/apple/apple-search";
 import { TMusicContent } from "../../types/music-content";
-import { spotifySearch } from "../../services/spotify-search";
-import sendPost from "../../services/send-post";
+import { spotifySearch } from "../../services/spotify/spotify-search";
+import sendPost from "../../services/post/send-post";
 import { TUser } from "../../types/user";
 import PostFailure from "../popup/post-failure";
 import PostSucess from "../popup/post-sucess";

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import handleSignout from "../services/handle-sign-out";
+import handleSignout from "../services/user/handle-sign-out";
 import Session from "../session";
 
 interface INavbarProps {}

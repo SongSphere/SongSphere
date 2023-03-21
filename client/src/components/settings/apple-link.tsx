@@ -1,5 +1,5 @@
 import fetchUser from "../../services/user/fetch-user";
-import { appleAuth } from "../../services/apple-music-link";
+import { appleAuth } from "../../services/user/apple-music-link";
 import Session from "../../session";
 
 interface IAppleLinkProps {

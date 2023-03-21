@@ -1,5 +1,4 @@
-import { TPost } from "../types/post";
-import { textSpanContainsPosition } from "typescript";
+import { TPost } from "../../types/post";
 
 const deletePost = async (post: TPost) => {
   return new Promise(async (resolve, reject) => {

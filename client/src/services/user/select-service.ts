@@ -1,7 +1,7 @@
-import { TMusicContent } from "../types/music-content";
-import { TUser } from "../types/user";
-import appleSearch from "./apple-search";
-import { spotifySearch } from "./spotify-search";
+import { TMusicContent } from "../../types/music-content";
+import { TUser } from "../../types/user";
+import appleSearch from "../apple/apple-search";
+import { spotifySearch } from "../spotify/spotify-search";
 
 const selectService = async (
   song: TMusicContent,
