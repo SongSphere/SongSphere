@@ -21,6 +21,7 @@ const HomePage = (props: IHomePageProps) => {
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <Navbar />
+      <FetchFeed />
     </div>
   );
 };

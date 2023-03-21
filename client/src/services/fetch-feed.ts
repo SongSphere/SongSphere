@@ -17,7 +17,7 @@ const fetchFeed = async () => {
       posts.push(...(data.posts as TPost[]));
     })
     .catch((error) => {
-      throw error;
+      console.log(error);
     });
 
   console.log(posts);

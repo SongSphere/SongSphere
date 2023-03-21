@@ -1,6 +1,7 @@
 // import packages
 import { TokenPayload } from "google-auth-library";
 import User, { IUser } from "../db/user";
+import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
 
@@ -191,6 +192,7 @@ export const updateNames = async (
 
 export const fetchFeed = async (email: string) => {
   try {
+    console.log(email);
     let posts: (mongoose.Document<unknown, any, IPost> &
       IPost & {
         _id: mongoose.Types.ObjectId;
@@ -198,6 +200,8 @@ export const fetchFeed = async (email: string) => {
 
     let user = await User.findOne({ email: email }, "following");
     let following = user.following;
+    console.log("FOLLOWING");
+    console.log(following);
 
     for (let i = 0; i < following.length; i++) {
       let userPosts = await Post.find({ username: following[i] });

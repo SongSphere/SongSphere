@@ -192,6 +192,7 @@ const SearchSong = (props: ISearchSongProps) => {
               userEmail: user.email,
               caption: caption,
               music: selected!,
+              comments: [],
             };
             await sendPost(newPost)
               .then((res) => {
