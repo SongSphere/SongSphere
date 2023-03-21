@@ -1,15 +1,17 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
-import { TPost } from "../types/post";
-import { TUser } from "../types/user";
-import EditPost from "../services/posts/edit-post";
-import { Link, useNavigate } from "react-router-dom";
-import fetchUser from "../services/general/fetch-user";
+import EditPost from "../services/post/edit-post";
+import { useNavigate } from "react-router-dom";
+import fetchUser from "../services/user/fetch-user";
 import Popup from "reactjs-popup";
+import { useParams } from "react-router-dom";
+import fetchPostById from "../services/post/fetch-post-by-id";
+import { TPost } from "../types/post";
+import Session from "../session";
 
 interface IEditPageProps {
-  selectEditPost: TPost | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  // selectEditPost: TPost | null;
+  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const EditPage = (props: IEditPageProps) => {
@@ -19,42 +21,53 @@ const EditPage = (props: IEditPageProps) => {
   //     );
   // }
   const [open, setOpen] = useState(false);
+  const [post, setPost] = useState<TPost | null>(null);
   const closeModal = () => setOpen(false);
   const [successFailText, setSuccessFailText] = useState("");
   const [caption, setCaption] = useState<string>("");
   const navigate = useNavigate();
+  const { id } = useParams();
+
   useEffect(() => {
-    if (props.selectEditPost) {
-      setCaption(props.selectEditPost.caption);
+    if (id) {
+      fetchPostById(id).then((post) => {
+        setPost(post);
+        setCaption(post.caption);
+      });
     }
-  }, [props.selectEditPost]);
+    // if (props.selectEditPost) {
+    //   setCaption(props.selectEditPost.caption);
+    // }
+  }, []);
+
+  if (!post) {
+    return <div>fetching post</div>;
+  }
 
   return (
     <div className="grid justify-center w-screen h-screen grid-cols-4 grid-rows-4 bg-navy">
       <div className="grid grid-cols-3 col-start-2 col-end-4 row-start-1 row-end-4 mt-10 rounded-lg bg-lgrey">
         <div className="col-span-2 text-center rounded-lg">
-          {props.selectEditPost?.music.name}
-          {props.selectEditPost?.music.artist
-            ? " by " + props.selectEditPost?.music.artist
-            : ""}
+          {post.music.name}
+          {post.music.artist ? " by " + post.music.artist : ""}
           <input
             value={caption}
             onChange={(e) => {
               setCaption(e.target.value);
             }}
             className="w-1/2"
-            defaultValue={props.selectEditPost?.caption}
+            defaultValue={post.caption}
           />
           {/* <Link to="/profile"> */}
           <button
             className="p-2 text-sm rounded-full bg-lblue hover:bg-navy hover:text-lgrey"
             onClick={async () => {
               await EditPost({
-                _id: props.selectEditPost?._id,
-                username: props.selectEditPost?.username!,
-                userEmail: props.selectEditPost?.userEmail!,
+                _id: post._id,
+                username: post.username,
+                userEmail: post.userEmail,
                 caption: caption,
-                music: props.selectEditPost?.music!,
+                music: post.music,
               })
                 .then(async (res) => {
                   if (res) {
@@ -67,7 +80,7 @@ const EditPage = (props: IEditPageProps) => {
                     navigate("/profile");
                   }, 1500);
 
-                  props.setUser(await fetchUser());
+                  Session.setUser(await fetchUser());
                 })
                 .catch((error) => {
                   setSuccessFailText("Fail");

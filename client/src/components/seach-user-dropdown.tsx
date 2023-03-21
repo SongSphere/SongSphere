@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import fetchUserNames from "../services/general/fetch-userNames";
+import fetchUserNames from "../services/user/fetch-usernames";
 import { TUser } from "../types/user";
 import { useNavigate } from "react-router-dom";
 
 interface ISearchUserDropDownProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  selectedUser: TUser | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  service: string;
 }
 
 const SearchUserDropDown = (props: ISearchUserDropDownProps) => {
@@ -69,9 +63,9 @@ const SearchUserDropDown = (props: ISearchUserDropDownProps) => {
                   <button
                     key={user.username}
                     onClick={() => {
-                      props.setUser(props.user);
-                      props.setSelectedUser(user);
-                      navigate("/otherUsersProfilePage");
+                      // props.setUser(props.user);
+                      // props.setSelectedUser(user);
+                      navigate(`/user/${user.username}`);
                     }}
                   >
                     <div className="flex-1 block w-full px-3 py-2 mt-2 overflow-hidden bg-white rounded-md ">

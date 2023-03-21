@@ -4,8 +4,8 @@ import {
   changeNames,
   deleteUserInControllers,
   updateProfilePhoto,
-  getPhoto,
-  findUserByUserName,
+  getProfilePhoto,
+  getUserByUsername,
   changeOnboarded,
   updateBackgroundPhoto,
   unlinkSpotify,
@@ -15,7 +15,7 @@ import {
   findUsersByUserName,
   changeAccountVisibility,
 } from "../controllers/user";
-import { getUserPosts } from "../controllers/posting";
+import { getPostsByUsername } from "../controllers/posting";
 
 // import middleware
 import auth from "../middleware/auth";
@@ -23,16 +23,16 @@ import auth from "../middleware/auth";
 const router = express.Router();
 
 router.get("/user", auth, sessionUpdate);
-router.post("/api/user/posts", auth, getUserPosts);
+router.get("/api/user/posts/:username", auth, getPostsByUsername);
+router.get("/api/user/:username", auth, getUserByUsername);
+
 router.post("/api/user/onboard", auth, changeOnboarded);
 router.post("/api/user/visibility", auth, changeAccountVisibility);
 router.post("/api/user/unlinkSpotify", auth, unlinkSpotify);
 router.post("/api/user/unlinkApple", auth, unlinkApple);
 router.post("/api/user/adjustNames", auth, changeNames);
 router.post("/api/user/deleteAccount", auth, deleteUserInControllers);
-router.post("/api/user/queryUsernames", auth, findUsersByUserName);
-router.post("/api/user/queryUsername", auth, findUserByUserName);
-//router.post("/user/getFeed", auth, );
+router.post("/api/user/queryUserNames", auth, findUsersByUserName);
 
 import multer from "multer";
 const upload = multer({ dest: "images/" });
@@ -51,7 +51,7 @@ router.post(
 );
 router.post("/user/updateBackgroundURL", auth, updateBackgroundURL);
 
-router.get("/user/images/:imageName", getPhoto);
-router.get("/user/background/:imageName", getPhoto);
+router.get("/user/images/:imageName", getProfilePhoto);
+router.get("/user/background/:imageName", getProfilePhoto);
 
 export default router;

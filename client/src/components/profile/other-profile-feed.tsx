@@ -1,6 +1,6 @@
 import { TPost } from "../../types/post";
 import { TMusicContent } from "../../types/music-content";
-import PostForOtherProfile from "../post-for-other-profile";
+import PostForOtherProfile from "../post/post-for-other-profile";
 import React, { useEffect } from "react";
 import { TUser } from "../../types/user";
 
@@ -9,7 +9,6 @@ interface IOtherProfileFeedProps {
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
   selectedUser: TUser | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   blur: boolean;
 }
 
@@ -18,8 +17,6 @@ const OtherProfileFeed = (props: IOtherProfileFeedProps) => {
   useEffect(() => {
     console.log(`The page should be ${props.blur}`);
   })
- 
-
 
   return (
     <div className="justify-center mt-8">
