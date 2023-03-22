@@ -13,6 +13,7 @@ import {
   updatePFPUrl,
   updateBURL,
   updateUserVisibility,
+  likePost,
 } from "../services/user";
 import fs from "fs";
 
@@ -247,3 +248,14 @@ export const getProfilePhoto = (req: Request, res: Response) => {
     console.error(error);
   }
 };
+
+export const updateLikePost = async (req: Request, res: Response) => {
+  try{
+    await likePost(req.body.postId, req.body.email);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+}

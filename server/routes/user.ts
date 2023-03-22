@@ -14,6 +14,7 @@ import {
   updateBackgroundURL,
   findUsersByUserName,
   changeAccountVisibility,
+  updateLikePost,
 } from "../controllers/user";
 import { getPostsByUsername } from "../controllers/posting";
 
@@ -33,6 +34,7 @@ router.post("/api/user/unlinkApple", auth, unlinkApple);
 router.post("/api/user/adjustNames", auth, changeNames);
 router.post("/api/user/deleteAccount", auth, deleteUserInControllers);
 router.post("/api/user/queryUserNames", auth, findUsersByUserName);
+router.post("api/user/updateLikePost", auth, updateLikePost);
 
 import multer from "multer";
 const upload = multer({ dest: "images/" });
