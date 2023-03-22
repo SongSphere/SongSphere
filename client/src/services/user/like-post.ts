@@ -1,12 +1,12 @@
 import { TPost } from "../../types/post";
 
-const likePost = async (postId: string, email: string) => {
+const LikePost = async (post: TPost, email: string) => {
     try {
         await fetch(`${process.env.REACT_APP_API}/api/updateLikepost`, {
             method: "POST",
             credentials: "include",
             body: JSON.stringify({
-              postId: postId,
+              postId: post._id,
               email: email,
             }),
             headers: {
@@ -17,4 +17,4 @@ const likePost = async (postId: string, email: string) => {
         
     }
 };
-export default likePost;
+export default LikePost;

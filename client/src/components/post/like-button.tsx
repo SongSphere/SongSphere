@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { TPost } from "../../types/post";
 import FetchLikes from "../../services/user/fetch-likes";
-
+import LikePost from "../../services/user/like-post";
 
 interface LikeButtonProps {
     post: TPost;
@@ -32,17 +32,12 @@ background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200
 background-size:contain;
 `;
 const LikeButton = (props:LikeButtonProps) => {
-   
-   
-    
-   
-    
     const liked =  FetchLikes(props.email, props.post)
     let button;
     if(!liked) {
-      button = <LikedButton></LikedButton>;
+      button = <LikedButton onClick={() => LikePost(props.post, props.email) }></LikedButton>;
     } else {
-        button = <NotLikedButton></NotLikedButton>;
+        button = <NotLikedButton onClick={() => LikePost(props.post, props.email) }></NotLikedButton>;
     }
     return (
         <div>
