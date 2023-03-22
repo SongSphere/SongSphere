@@ -1,0 +1,1 @@
+import { TPost } from "../../types/post";

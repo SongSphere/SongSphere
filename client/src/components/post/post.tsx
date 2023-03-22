@@ -5,6 +5,7 @@ import { TPost } from "../../types/post";
 import deletePost from "../../services/post/delete-post";
 import PostFocusPage from "../../pages/profile/post-focus-page";
 import Popup from "reactjs-popup";
+import LikeButton from "./like-button";
 
 interface IPostProps {
   post: TPost;
@@ -34,10 +35,12 @@ const Post = (props: IPostProps) => {
 
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
+      
       <div className="dropdown">
         <button onClick={handleOpen} className="absolute top-5 right-5 ">
           <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
         </button>
+        
         {open ? (
           <ul className="absolute right-0 top-10">
             <li className=" text-lblue hover:text-lgrey">
@@ -75,6 +78,7 @@ const Post = (props: IPostProps) => {
             </li>
           </ul>
         ) : null}
+        
       </div>
 
       <div
@@ -122,7 +126,10 @@ const Post = (props: IPostProps) => {
           {props.post.music.name}{" "}
           {props.post.music.artist ? " by " + props.post.music.artist : ""}
         </div>
-        <div className="pl-4 text-navy">{props.post.caption}</div>
+        <div className="pl-4 text-navy">{props.post.caption} </div>
+      </div>
+      <div className="absolute bottom-5 right-5">
+        <LikeButton />
       </div>
     </div>
   );
