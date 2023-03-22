@@ -15,6 +15,7 @@ import {
   findUsersByUserName,
   changeAccountVisibility,
   updateLikePost,
+  fetchIsLiked,
 } from "../controllers/user";
 import { getPostsByUsername } from "../controllers/posting";
 
@@ -26,6 +27,7 @@ const router = express.Router();
 router.get("/user", auth, sessionUpdate);
 router.get("/api/user/posts/:username", auth, getPostsByUsername);
 router.get("/api/user/:username", auth, getUserByUsername);
+router.get("/api/user/fetchisLiked", auth, fetchIsLiked);
 
 router.post("/api/user/onboard", auth, changeOnboarded);
 router.post("/api/user/visibility", auth, changeAccountVisibility);

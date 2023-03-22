@@ -129,7 +129,10 @@ const Post = (props: IPostProps) => {
         <div className="pl-4 text-navy">{props.post.caption} </div>
       </div>
       <div className="absolute bottom-5 right-5">
-        <LikeButton />
+        <LikeButton 
+          post={props.post}
+          email={props.post.userEmail}
+        />
       </div>
     </div>
   );

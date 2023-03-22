@@ -14,6 +14,7 @@ import {
   updateBURL,
   updateUserVisibility,
   likePost,
+  isLiked,
 } from "../services/user";
 import fs from "fs";
 
@@ -252,6 +253,17 @@ export const getProfilePhoto = (req: Request, res: Response) => {
 export const updateLikePost = async (req: Request, res: Response) => {
   try{
     await likePost(req.body.postId, req.body.email);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+}
+
+export const fetchIsLiked = async (req: Request, res: Response) => {
+  try{
+    await isLiked(req.body.postId, req.body.email);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
