@@ -7,6 +7,7 @@ interface IProfileFeedProps {
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
   setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  setRepost:React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const ProfileFeed = (props: IProfileFeedProps) => {
@@ -21,6 +22,7 @@ const ProfileFeed = (props: IProfileFeedProps) => {
               setSong={props.setSong}
               setPost={props.setPost}
               setSelectEditPost={props.setSelectEditPost}
+              setRepost={props.setRepost}
             />
           );
         })}

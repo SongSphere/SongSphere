@@ -22,6 +22,8 @@ interface IRouterProps {
   post: TPost | null;
   selectEditPost: TPost | null;
   setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  selectRepost: TPost | null;
 }
 
 const Router = (props: IRouterProps) => {
@@ -71,6 +73,7 @@ const Router = (props: IRouterProps) => {
           appleMusicInstance={props.appleMusicInstance}
           // service={props.service}
           setSelectEditPost={props.setSelectEditPost}
+          setRepost={props.setRepost}
         />
       ),
     },

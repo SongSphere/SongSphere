@@ -1,30 +1,34 @@
 import { TPost } from "../types/post";
-import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import fetchPostById from "../services/post/fetch-post-by-id";
 import { useState } from "react";
-const [caption, setCaption] = useState<string>("");
+
 
 
 const RepostPage = () => {
     const [post, setPost] = useState<TPost | null>(null);
-    const [caption, setCaption] = useState<string>("");
-    const navigate = useNavigate();
     const { id } = useParams();
 
     useEffect(() => {
         if (id) {
           fetchPostById(id).then((post) => {
             setPost(post);
-            setCaption(post.caption);
           });
         }
       }, []); 
+      if (!post) {
+        return <div>fetching post</div>;
+      }
     return (
-        <div className="w-screen h-screen bg-navy">
-            <div>
-                {post?.caption}
+        <div className="grid justify-center w-screen h-screen grid-cols-4 grid-rows-4 bg-navy">
+            <div className="grid grid-cols-3 col-start-2 col-end-4 row-start-1 row-end-4 mt-10 rounded-lg bg-lgrey">
+                <div className="col-span-2 text-center rounded-lg">
+                    {post.music.name}
+                    {post.music.artist ? " by " + post.music.artist : ""}
+                    
+                           
+                </div>
             </div>
         </div>
     );

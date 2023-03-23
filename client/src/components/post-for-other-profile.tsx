@@ -4,7 +4,7 @@ import { TPost } from "../types/post";
 import Popup from "reactjs-popup";
 import PostFocusPage from "../pages/profile/post-focus-page";
 import LikeButton from "./post/like-button";
-import Repost from "./post/repost-button";
+
 
 interface IPostForOtherProfileProps {
     post: TPost;

@@ -7,7 +7,7 @@ export interface IPost {
   userEmail: string;
   caption: string;
   music: TMusicContent;
-  likes: string;
+  likes: number;
 }
 
 const PostSchema = new Schema<IPost>(
@@ -41,8 +41,8 @@ const PostSchema = new Schema<IPost>(
       required: true,
     },
     likes: {
-      type: String,
-      required: true,
+      type: Number,
+      required: false,
     },
   },
   {

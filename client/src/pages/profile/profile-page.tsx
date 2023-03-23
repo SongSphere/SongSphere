@@ -25,6 +25,8 @@ interface IProfileProps {
   // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   // service: string;
   setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  
+  setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const ProfilePage = (props: IProfileProps) => {
@@ -65,6 +67,7 @@ const ProfilePage = (props: IProfileProps) => {
               setSong={setSong}
               setPost={setPost}
               setSelectEditPost={props.setSelectEditPost}
+              setRepost={props.setRepost}
             />
           ) : (
             <NoPosts />

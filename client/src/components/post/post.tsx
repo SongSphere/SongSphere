@@ -6,13 +6,14 @@ import deletePost from "../../services/post/delete-post";
 import PostFocusPage from "../../pages/profile/post-focus-page";
 import Popup from "reactjs-popup";
 import LikeButton from "./like-button";
-import Repost from "./repost-button";
+
 
 interface IPostProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
   setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const Post = (props: IPostProps) => {
@@ -135,10 +136,13 @@ const Post = (props: IPostProps) => {
           post={props.post}
           
         />
-        <Repost 
-          post={props.post}
-          setPost={props.setPost}
-        />
+        <button className="absolute bottom-2 text-lblue hover:text-navy right-10" 
+            onClick={()=>{
+                props.setRepost(props.post);
+                navigate(`/repost/${props.post._id}`);
+                }}>
+                Repost
+            </button>
       </div>
     </div>
   );
