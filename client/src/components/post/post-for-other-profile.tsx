@@ -47,7 +47,7 @@ const PostForOtherProfile = (props: IPostForOtherProfileProps) => {
             <PostFocusPage
               post={props.post}
               setSong={props.setSong}
-              setPost={props.setPost}
+              // setPost={props.setPost}
             />
           );
         }}

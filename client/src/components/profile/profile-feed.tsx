@@ -5,8 +5,8 @@ import { TMusicContent } from "../../types/music-content";
 interface IProfileFeedProps {
   posts: TPost[];
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  // setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  // setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const ProfileFeed = (props: IProfileFeedProps) => {
@@ -19,8 +19,8 @@ const ProfileFeed = (props: IProfileFeedProps) => {
               post={post}
               key={post._id}
               setSong={props.setSong}
-              setPost={props.setPost}
-              setSelectEditPost={props.setSelectEditPost}
+              // setPost={props.setPost}
+              // setSelectEditPost={props.setSelectEditPost}
             />
           );
         })}

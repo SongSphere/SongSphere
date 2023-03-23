@@ -21,9 +21,6 @@ import Session from "../session";
 
 interface IProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  // user: TUser | null;
-  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  // service: string;
   setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
@@ -60,29 +57,20 @@ const ProfilePage = (props: IProfileProps) => {
         </div>
         <div className="col-span-2">
           {posts.length > 0 ? (
-            <ProfileFeed
-              posts={posts}
-              setSong={setSong}
-              setPost={setPost}
-              setSelectEditPost={props.setSelectEditPost}
-            />
+            <ProfileFeed posts={posts} setSong={setSong} />
           ) : (
             <NoPosts />
           )}
         </div>
         {service === "apple" ? (
           <AppleMusicPlayerCard
-            // user={props.user}
-            // service={props.service}
             musicInstance={props.appleMusicInstance}
             selectedSong={song}
           />
         ) : (
           <SpotifyPlayerCard
-            // user={props.user}
             selectedSong={song}
             appleMusicInstance={props.appleMusicInstance}
-            // service={props.service}
           />
         )}
       </div>

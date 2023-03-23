@@ -9,8 +9,8 @@ import Popup from "reactjs-popup";
 interface IPostProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  // setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  // setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const Post = (props: IPostProps) => {
@@ -43,7 +43,7 @@ const Post = (props: IPostProps) => {
             <li className=" text-lblue hover:text-lgrey">
               <button
                 onClick={() => {
-                  props.setSelectEditPost(props.post);
+                  // props.setSelectEditPost(props.post);
                   navigate(`/edit/${props.post._id}`);
                 }}
               >
@@ -113,7 +113,7 @@ const Post = (props: IPostProps) => {
             <PostFocusPage
               post={props.post}
               setSong={props.setSong}
-              setPost={props.setPost}
+              // setPost={props.setPost}
             />
           );
         }}
