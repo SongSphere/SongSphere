@@ -6,6 +6,7 @@ import deletePost from "../../services/post/delete-post";
 import PostFocusPage from "../../pages/profile/post-focus-page";
 import Popup from "reactjs-popup";
 import LikeButton from "./like-button";
+import Repost from "./repost-button";
 
 interface IPostProps {
   post: TPost;
@@ -133,6 +134,10 @@ const Post = (props: IPostProps) => {
         <LikeButton 
           post={props.post}
           email={props.post.userEmail}
+        />
+        <Repost 
+          post={props.post}
+          username={props.post.username}
         />
       </div>
     </div>
