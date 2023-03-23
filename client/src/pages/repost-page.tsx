@@ -6,7 +6,6 @@ import { useState } from "react";
 import fetchUserByUsername from "../services/user/fetch-user-username";
 import { TUser } from "../types/user";
 import sendPost from "../services/post/send-post";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Session from "../session";
 import fetchUser from "../services/user/fetch-user";
@@ -79,9 +78,9 @@ const RepostPage = () => {
                         onClick={async () => {
                         if (user) {
                             const newPost: TPost = {
-                            username: post.username + ";" + user.username,
+                            username:  user.username,
                             userEmail: user.email,
-                            caption: post.caption + ";" + caption,
+                            caption: post.caption + ";" + caption + ";"+ post.username,
                             music: post.music,
                             likes: 0,
                             repost: true,

@@ -19,6 +19,7 @@ export const createPost = async (
       category: newPost.music.category,
       cover: newPost.music.cover,
     },
+    repost: newPost.repost,
   });
 
   return post;

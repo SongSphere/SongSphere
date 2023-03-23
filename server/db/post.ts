@@ -47,7 +47,7 @@ const PostSchema = new Schema<IPost>(
     },
     repost: {
       type: Boolean,
-      required: false,
+      required: true,
     }
   },
   {
