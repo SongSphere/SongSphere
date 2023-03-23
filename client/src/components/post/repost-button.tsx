@@ -14,6 +14,7 @@ const Repost = (props:RepostProps) => {
         userEmail: props.post.userEmail,
         caption: props.post.caption ,
         music: props.post.music,
+        likes: '0',
       };
     return (
         <div>
