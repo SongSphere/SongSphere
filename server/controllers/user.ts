@@ -63,10 +63,14 @@ export const getUserByUsername = async (
 
 export const getFeed = async (req: Request, res: Response) => {
   try {
-    const posts = await fetchFeed(req.session.user.email);
+    const posts = await fetchFeed(
+      req.session.user.email,
+      parseInt(req.params.num, 10)
+    );
     res.status(200);
     res.json({ posts: posts });
   } catch (error) {
+    console.log("Bruh");
     res.status(404);
     res.json({ msg: "cannot fetch posts" });
   }

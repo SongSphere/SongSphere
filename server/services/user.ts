@@ -190,9 +190,9 @@ export const updateNames = async (
   }
 };
 
-export const fetchFeed = async (email: string) => {
+export const fetchFeed = async (email: string, num: number) => {
   try {
-    console.log(email);
+    //console.log(email);
     let posts: (mongoose.Document<unknown, any, IPost> &
       IPost & {
         _id: mongoose.Types.ObjectId;
@@ -200,13 +200,18 @@ export const fetchFeed = async (email: string) => {
 
     let user = await User.findOne({ email: email }, "following");
     let following = user.following;
-    console.log("FOLLOWING");
-    console.log(following);
+    //console.log(following);
 
     for (let i = 0; i < following.length; i++) {
       let userPosts = await Post.find({ username: following[i] });
+      //console.log(userPosts[0].get("createdAt"));
+
       posts.push(...userPosts);
     }
+
+    posts.sort(function (a, b) {
+      return b.get("createdAt") - a.get("createdAt");
+    });
 
     return posts;
   } catch (error) {

@@ -1,9 +1,10 @@
 import { TPost } from "../types/post";
 
-const fetchFeed = async () => {
+const fetchFeed = async (num: number) => {
   let posts: TPost[] = [];
 
-  await fetch(`${process.env.REACT_APP_API}/api/user/getFeed`, {
+  // await fetch(`${process.env.REACT_APP_API}/api/user/getFeed`, {
+  await fetch(`${process.env.REACT_APP_API}/user/feed/${num}`, {
     method: "GET",
     credentials: "include",
     headers: {

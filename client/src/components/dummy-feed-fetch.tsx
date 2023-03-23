@@ -10,7 +10,7 @@ const FetchFeed = () => {
         className="p-2 bg-red-400 rounded-md"
         onClick={async () => {
           try {
-            await fetchFeed();
+            await fetchFeed(0);
           } catch (error) {
             console.error(error);
           }
