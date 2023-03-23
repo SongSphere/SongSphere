@@ -79,6 +79,7 @@ const RepostPage = () => {
                             caption: caption,
                             music: post.music,
                             likes: 0,
+                            repost: true,
                             };
                             sendPost(newPost)
                         }

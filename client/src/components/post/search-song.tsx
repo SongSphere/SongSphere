@@ -193,6 +193,7 @@ const SearchSong = (props: ISearchSongProps) => {
               caption: caption,
               music: selected!,
               likes: 0,
+              repost:false,
             };
             await sendPost(newPost)
               .then((res) => {
