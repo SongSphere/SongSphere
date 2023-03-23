@@ -14,6 +14,7 @@ import EditPage from "../pages/edit-page";
 import Session from "../session";
 import ProfilePage from "../pages/profile/profile-page";
 import OtherUserProfilePage from "../pages/profile/other-user-profile-page";
+import RepostPage from "../pages/repost-page";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -92,6 +93,12 @@ const Router = (props: IRouterProps) => {
         // setUser={props.setUser}
         // selectEditPost={props.selectEditPost}
         />
+      ),
+    },
+    {
+      path: "/repost/:id",
+      element: (
+        <RepostPage />
       ),
     },
   ]);
