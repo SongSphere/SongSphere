@@ -250,11 +250,11 @@ export const getProfilePhoto = (req: Request, res: Response) => {
   }
 };
 
-export const updateLikePost = async (req: Request, res: Response) => {
+export const updateLikePost =  (req: Request, res: Response, next:NextFunction) => {
+  const email = req.session.user.email;
   try{
-    await likePost(req.body.postId, req.body.email);
-    res.status(201);
-    res.json({ msg: "success" });
+    likePost(req.body.postId, email);
+    
   } catch (error) {
     res.status(500);
     res.json({ error: error });
