@@ -16,6 +16,7 @@ const Feed = (props: IFeedProps) => {
   useEffect(() => {
     fetchFeed(pageNum).then((posts) => {
       setPosts(posts);
+      setPageNum(0);
     });
   }, []);
 
@@ -26,8 +27,22 @@ const Feed = (props: IFeedProps) => {
   return (
     <div>
       {posts.map((post) => {
-        return <Post post={post} key={post._id} setSong={props.setSong} />;
+        return (
+          <div>
+            <Post post={post} key={post._id} setSong={props.setSong} />
+          </div>
+        );
       })}
+      <button
+        onClick={() => {
+          fetchFeed(pageNum + 1).then((newPosts) => {
+            setPosts(posts.concat(newPosts));
+            setPageNum(pageNum + 1);
+          });
+        }}
+      >
+        fetch more
+      </button>
     </div>
   );
 };
