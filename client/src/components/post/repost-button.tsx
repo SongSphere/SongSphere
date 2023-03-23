@@ -4,7 +4,6 @@ import sendPost from "../../services/post/send-post";
 
 interface RepostProps {
     post: TPost;
-    username: string;
   }
 
 const Repost = (props:RepostProps) => {

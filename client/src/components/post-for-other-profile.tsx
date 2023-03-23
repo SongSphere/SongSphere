@@ -3,6 +3,8 @@ import { TMusicContent } from "../types/music-content";
 import { TPost } from "../types/post";
 import Popup from "reactjs-popup";
 import PostFocusPage from "../pages/profile/post-focus-page";
+import LikeButton from "./post/like-button";
+import Repost from "./post/repost-button";
 
 interface IPostForOtherProfileProps {
     post: TPost;
@@ -62,6 +64,16 @@ const PostForOtherProfile = (props: IPostForOtherProfileProps) => {
             </div>
             <div className="pl-4 text-navy">{props.post.caption}</div>
           </div>
+          <div className="absolute bottom-5 right-5">
+        
+          <LikeButton 
+            post={props.post}
+          />
+          <Repost 
+            post={props.post}
+            
+          />
+        </div>
         </div>
       );
 };

@@ -6,7 +6,6 @@ import LikePost from "../../services/user/like-post";
 
 interface LikeButtonProps {
     post: TPost;
-    email: string;
   }
   const LikedButton = styled.button `
   width: 2rem; 
@@ -32,12 +31,12 @@ background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200
 background-size:contain;
 `;
 const LikeButton = (props:LikeButtonProps) => {
-    const liked =  FetchLikes(props.email, props.post)
+    const liked =  FetchLikes(props.post)
     let button;
     if(!liked) {
-      button = <LikedButton onClick={() => LikePost(props.post, props.email) }></LikedButton>;
+      button = <LikedButton onClick={() => LikePost(props.post) }></LikedButton>;
     } else {
-        button = <NotLikedButton onClick={() => LikePost(props.post, props.email) }></NotLikedButton>;
+        button = <NotLikedButton onClick={() => LikePost(props.post) }></NotLikedButton>;
     }
     return (
         <div>

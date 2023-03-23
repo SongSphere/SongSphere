@@ -133,11 +133,11 @@ const Post = (props: IPostProps) => {
         
         <LikeButton 
           post={props.post}
-          email={props.post.userEmail}
+          
         />
         <Repost 
           post={props.post}
-          username={props.post.username}
+          
         />
       </div>
     </div>
