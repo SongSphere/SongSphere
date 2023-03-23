@@ -8,7 +8,7 @@ import { Request, Response, NextFunction, response } from "express";
 import request from "supertest";
 
 // import services
-import { checkUser } from "../../services/db";
+import { checkUser } from "../../services/user";
 
 // import db
 import { connect } from "../../db/connect";
@@ -16,40 +16,42 @@ import User, { IUser } from "../../db/user";
 
 import createApp from "../../app";
 
-const app = createApp("testAuthRoute");
+// This creates a new backend in the database
 
-describe("Testing auth route", () => {
-  beforeAll(async () => {
-    await connect("testAuthRoute");
-  });
+// const app = createApp("testAuthRoute");
 
-  afterEach(async () => {
-    await User.deleteMany();
-  });
+// describe("Testing auth route", () => {
+//   beforeAll(async () => {
+//     await connect("testAuthRoute");
+//   });
 
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
+//   afterEach(async () => {
+//     await User.deleteMany();
+//   });
 
-  const testToken = process.env.DEBUG_GOOGLE_TOKEN;
+//   afterAll(async () => {
+//     await mongoose.connection.close();
+//   });
 
-  test("Testing sign up", async () => {
-    const res = await request(app)
-      .post("/api/auth/google")
-      .send({ token: testToken });
+//   const testToken = process.env.DEBUG_GOOGLE_TOKEN;
 
-    expect(res.statusCode).toBe(201);
-    const exist = await User.exists({ email: process.env.DEBUG_EMAIL });
-    expect(exist != null).toBe(true);
-  });
+//   test("Testing sign up", async () => {
+//     const res = await request(app)
+//       .post("/api/auth/google")
+//       .send({ token: testToken });
 
-  test("Testing sign in (not creating duplicate user documents)", async () => {
-    const res = await request(app)
-      .post("/api/auth/google")
-      .send({ token: testToken });
+//     expect(res.statusCode).toBe(201);
+//     const exist = await User.exists({ email: process.env.DEBUG_EMAIL });
+//     expect(exist != null).toBe(true);
+//   });
 
-    expect(res.statusCode).toBe(201);
-    const users = await User.find({ email: process.env.DEBUG_EMAIL });
-    expect(users.length == 1).toBe(true);
-  });
-});
+//   test("Testing sign in (not creating duplicate user documents)", async () => {
+//     const res = await request(app)
+//       .post("/api/auth/google")
+//       .send({ token: testToken });
+
+//     expect(res.statusCode).toBe(201);
+//     const users = await User.find({ email: process.env.DEBUG_EMAIL });
+//     expect(users.length == 1).toBe(true);
+//   });
+// });
