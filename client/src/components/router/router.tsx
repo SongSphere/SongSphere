@@ -13,6 +13,7 @@ import { TUser } from "../../types/user";
 import { TPost } from "../../types/post";
 import EditPage from "../../pages/edit-page";
 import OtherUserProfilePage from "../../pages/profile/other-user-profile-page";
+import RepostPage from "../../pages/repost-page";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -85,6 +86,13 @@ const Router = (props: IRouterProps) => {
         <EditPage />
       ),
     },
+    {
+      path: "/repost/:id",
+      element: (
+        <RepostPage />
+      ),
+    },
+    
   ]);
   return element;
 };

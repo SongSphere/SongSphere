@@ -137,7 +137,7 @@ const Post = (props: IPostProps) => {
         />
         <Repost 
           post={props.post}
-          
+          setPost={props.setPost}
         />
       </div>
     </div>

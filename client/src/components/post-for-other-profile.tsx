@@ -60,20 +60,11 @@ const PostForOtherProfile = (props: IPostForOtherProfileProps) => {
           >
             <div className="pl-4 text-lg text-navy">
               {props.post.music.name}{" "}
-              {props.post.music.artist ? " by " + props.post.music.artist : ""}
+              {props.post.music.artist ? " by lol" + props.post.music.artist : ""}
             </div>
             <div className="pl-4 text-navy">{props.post.caption}</div>
           </div>
-          <div className="absolute bottom-5 right-5">
-        
-          <LikeButton 
-            post={props.post}
-          />
-          <Repost 
-            post={props.post}
-            
-          />
-        </div>
+         
         </div>
       );
 };
