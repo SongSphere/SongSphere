@@ -192,7 +192,6 @@ export const updateNames = async (
 
 export const fetchFeed = async (email: string, num: number) => {
   try {
-    //console.log(email);
     let posts: (mongoose.Document<unknown, any, IPost> &
       IPost & {
         _id: mongoose.Types.ObjectId;
@@ -200,12 +199,9 @@ export const fetchFeed = async (email: string, num: number) => {
 
     let user = await User.findOne({ email: email }, "following");
     let following = user.following;
-    //console.log(following);
 
     for (let i = 0; i < following.length; i++) {
       let userPosts = await Post.find({ username: following[i] });
-      //console.log(userPosts[0].get("createdAt"));
-
       posts.push(...userPosts);
     }
 
@@ -213,7 +209,13 @@ export const fetchFeed = async (email: string, num: number) => {
       return b.get("createdAt") - a.get("createdAt");
     });
 
-    return posts;
+    if (num * 20 > posts.length) {
+      return [];
+    }
+    if (num * 20 + 20 > posts.length) {
+      return posts.slice(num * 20, posts.length);
+    }
+    return posts.slice(num * 20, num * 20 + 20);
   } catch (error) {
     console.log(error);
     throw error;
