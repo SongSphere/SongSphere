@@ -7,6 +7,9 @@ import fetchUserByUsername from "../services/user/fetch-user-username";
 import { TUser } from "../types/user";
 import sendPost from "../services/post/send-post";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Session from "../session";
+import fetchUser from "../services/user/fetch-user";
 
 
 
@@ -15,7 +18,9 @@ const RepostPage = () => {
     const { id } = useParams();
     const [user, setUser] = useState<TUser | null>(null);
     const [caption, setCaption] = useState<string>("");
-    
+    const [successFailText, setSuccessFailText] = useState("");
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (id) {
           fetchPostById(id).then((post) => {
@@ -74,14 +79,30 @@ const RepostPage = () => {
                         onClick={async () => {
                         if (user) {
                             const newPost: TPost = {
-                            username: user.username,
+                            username: post.username + ";" + user.username,
                             userEmail: user.email,
-                            caption: caption,
+                            caption: post.caption + ";" + caption,
                             music: post.music,
                             likes: 0,
                             repost: true,
                             };
-                            sendPost(newPost)
+                           await (sendPost(newPost))
+                           .then(async (res) => {
+                            if (res) {
+                              setSuccessFailText("Success");
+                            } else {
+                              setSuccessFailText("Fail");
+                            }
+                            setTimeout(() => {
+                              navigate("/profile");
+                            }, 1500);
+          
+                            Session.setUser(await fetchUser());
+                          })
+                          .catch((error) => {
+                            setSuccessFailText("Fail");
+                            
+                          });
                         }
                         }}
                     >
