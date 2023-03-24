@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TMusicContent } from "../../types/music-content";
 import { TPost } from "../../types/post";
 import deletePost from "../../services/post/delete-post";
 import PostFocusPage from "../../pages/post-focus-page";
 import Popup from "reactjs-popup";
-import Session from "../../session";
 import { TUser } from "../../types/user";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
 
 interface IPostProps {
   post: TPost;
@@ -15,11 +15,12 @@ interface IPostProps {
 }
 
 const Post = (props: IPostProps) => {
-  const [open, setOpen] = React.useState(false);
-  const [open2, setOpen2] = React.useState(false);
-  const [postFocusPage, setPostFocusPage] = React.useState(false);
-  const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
-  const [deleteSuccessText, setDeleteSuccessText] = React.useState<string>("");
+  const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [postFocusPage, setPostFocusPage] = useState(false);
+  const [postSuccessFail, setPostSuccessFail] = useState<JSX.Element>();
+  const [deleteSuccessText, setDeleteSuccessText] = useState<string>("");
+  const [postOwner, setPostOwner] = useState<TUser | null>(null);
 
   const closeModal = () => setPostFocusPage(false);
   const closeDeleteSuccess = () => setOpen2(false);
@@ -32,6 +33,12 @@ const Post = (props: IPostProps) => {
     setPostFocusPage(!postFocusPage);
   };
   let navigate = useNavigate();
+
+  useEffect(() => {
+    fetchUserByUsername(props.post.username).then((postOwner) => {
+      setPostOwner(postOwner);
+    });
+  }, []);
 
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
@@ -112,19 +119,36 @@ const Post = (props: IPostProps) => {
       </Popup>
 
       <div
-        className=""
+        className="w-full"
         onClick={() => {
           handlePostFocusPage();
-
           setPostSuccessFail(
             <PostFocusPage post={props.post} setSong={props.setSong} />
           );
         }}
       >
-        <div className="p-2 ml-2">
-          <div></div>
-          <div className="text-lg ">{props.post.music.name}</div>
-          <div>{props.post.music.artist}</div>
+        <div className="w-full p-2 ml-2">
+          <div>
+            {postOwner ? (
+              <a href={`/user/${postOwner.username}`}>
+                <img
+                  className="inline w-8 h-8 rounded-full"
+                  src={postOwner.profileImgUrl}
+                ></img>
+                <span className="inline pl-2 font-bold">
+                  {postOwner.username}
+                </span>
+              </a>
+            ) : (
+              <img
+                className="w-8 h-8 rounded-full"
+                src="/img/blank_user.png"
+              ></img>
+            )}
+          </div>
+          <div className="text-2xl font-bold">{props.post.music.name}</div>
+          <div className="text-slate-500">{props.post.music.artist}</div>
+          <div className="w-full p-0.5 bg-slate-400"></div>
           <div className="">{props.post.caption}</div>
         </div>
       </div>
