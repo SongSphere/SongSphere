@@ -15,6 +15,7 @@ import {
   updateUserVisibility,
   likePost,
   isLiked,
+  fetchLiked,
 } from "../services/user";
 import fs from "fs";
 
@@ -265,6 +266,17 @@ export const fetchIsLiked = async (req: Request, res: Response) => {
   try{
     await isLiked(req.body.postId, req.body.email);
     res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+}
+
+export const fetchLikedPosts = async(req:Request, res:Response) => {
+  try {
+    await fetchLiked(req.body.username);
+    res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
     res.status(500);

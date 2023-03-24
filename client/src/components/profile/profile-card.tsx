@@ -43,6 +43,18 @@ const ProfileCard = (props: IProfileCardProps) => {
             >
               edit
             </button>
+            
+          </div>
+          <div className="text-center">
+            <button
+              className="rounded-full text-slate-500"
+              onClick={() => {
+                navigate("/likes");
+              }}
+            >
+              view likes
+            </button>
+            
           </div>
           <MyFollowerCard />
         </div>

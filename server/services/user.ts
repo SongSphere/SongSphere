@@ -324,3 +324,12 @@ export const isLiked = async(postId:string, email:string) => {
   }
 }
 
+export const fetchLiked = async(username:string) => {
+  try {
+    const users = await User.findOne({ username: username });
+    return users.likes;
+  } catch(error) {
+      throw error;
+  }
+}
+

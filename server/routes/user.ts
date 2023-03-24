@@ -16,6 +16,7 @@ import {
   changeAccountVisibility,
   updateLikePost,
   fetchIsLiked,
+  fetchLikedPosts,
 } from "../controllers/user";
 import { getPostsByUsername } from "../controllers/posting";
 
@@ -28,6 +29,7 @@ router.get("/user", auth, sessionUpdate);
 router.get("/api/user/posts/:username", auth, getPostsByUsername);
 router.get("/api/user/:username", auth, getUserByUsername);
 router.get("/api/user/fetchisLiked", auth, fetchIsLiked);
+router.get("/api/user/fetchLikedPosts", auth, fetchLikedPosts);
 
 router.post("/api/user/onboard", auth, changeOnboarded);
 router.post("/api/user/visibility", auth, changeAccountVisibility);
