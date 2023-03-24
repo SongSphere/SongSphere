@@ -8,6 +8,7 @@ interface IOtherProfileFeedProps {
   posts: TPost[];
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  setRepost:React.Dispatch<React.SetStateAction<TPost | null>>;
   selectedUser: TUser | null;
   blur: boolean;
 }
@@ -23,11 +24,13 @@ const OtherProfileFeed = (props: IOtherProfileFeedProps) => {
       <div className="w-full">
         {props.posts.map((post) => {
           return (
+            
             <PostForOtherProfile
               post={post}
               key={post._id}
               setSong={props.setSong}
               setPost={props.setPost}
+              setRepost={props.setRepost}
             />
           );
         })}:

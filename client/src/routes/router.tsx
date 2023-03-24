@@ -14,6 +14,7 @@ import EditPage from "../pages/edit-page";
 import ProfilePage from "../pages/profile/profile-page";
 import OtherUserProfilePage from "../pages/profile/other-user-profile-page";
 import NotificationPage from "../pages/notification-page";
+import RepostPage from "../pages/repost-page";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -22,6 +23,8 @@ interface IRouterProps {
   post: TPost | null;
   selectEditPost: TPost | null;
   setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  selectRepost: TPost | null;
 }
 
 const Router = (props: IRouterProps) => {
@@ -55,6 +58,8 @@ const Router = (props: IRouterProps) => {
       element: (
         <OtherUserProfilePage
           appleMusicInstance={props.appleMusicInstance}
+          setRepost={props.setRepost}
+          
         />
       ),
     },
@@ -64,6 +69,7 @@ const Router = (props: IRouterProps) => {
         <ProfilePage
           appleMusicInstance={props.appleMusicInstance}
           setSelectEditPost={props.setSelectEditPost}
+          setRepost={props.setRepost}
         />
       ),
     },
@@ -80,6 +86,12 @@ const Router = (props: IRouterProps) => {
       element: (
         <EditPage
         />
+      ),
+    },
+    {
+      path: "/repost/:id",
+      element: (
+        <RepostPage />
       ),
     },
   ]);

@@ -18,6 +18,7 @@ export interface IUser {
   followers: Array<String>;
   onboarded: Boolean;
   isPrivate: Boolean;
+  likes: Array<String>;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -90,6 +91,10 @@ const UserSchema = new Schema<IUser>(
       type: Boolean,
       required: true,
     },
+    likes: {
+      type: Array<String>(),
+      required: false,
+    }
   },
   {
     // this enables createdAt and updatedAt

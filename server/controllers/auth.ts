@@ -143,6 +143,7 @@ export const signInUp = async (
       following: Array<String>(),
       onboarded: false,
       isPrivate: false,
+      likes: Array<String>(),
     };
 
     res.status(201);

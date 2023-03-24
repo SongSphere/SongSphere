@@ -15,6 +15,7 @@ import { TUser } from "../../types/user";
 
 interface IOtherUserProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
+  setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
@@ -95,6 +96,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
               setPost={setPost}
               selectedUser={selectedUser}
               blur={!isFollowing}
+              setRepost={props.setRepost}
             />
           )}
         </div>

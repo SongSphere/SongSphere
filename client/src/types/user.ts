@@ -16,6 +16,7 @@ export type TUser = {
   followers: string[];
   onboarded: Boolean;
   isPrivate: Boolean;
+  likes: string[];
 };
 
 export type TUserWrapper = {

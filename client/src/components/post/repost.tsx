@@ -16,7 +16,7 @@ interface IPostProps {
   setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
-const Post = (props: IPostProps) => {
+const Repost = (props: IPostProps) => {
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [postFocusPage, setPostFocusPage] = React.useState(false);
@@ -34,11 +34,12 @@ const Post = (props: IPostProps) => {
     setPostFocusPage(!postFocusPage);
   };
   let navigate = useNavigate();
+  const parts = props.post.caption.split(";")
 
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
-      
       <div className="dropdown">
+      
         <button onClick={handleOpen} className="absolute top-5 right-5 ">
           <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
         </button>
@@ -124,11 +125,13 @@ const Post = (props: IPostProps) => {
           );
         }}
       >
-        <div className="pl-4 text-lg text-navy">
+        <div className="p-2 ml-5 text-lg text-center border-2 text-navy border-navy">
+        <h1 className="text-lblue">Reposted from {parts[2]}</h1>
           {props.post.music.name}{" "}
           {props.post.music.artist ? " by " + props.post.music.artist : ""}
+          <div className="pl-4 text-navy">{parts[0]} </div>
         </div>
-        <div className="pl-4 text-navy">{props.post.caption} </div>
+        <h2 className="mt-5 text-center">{parts[1]}</h2>
       </div>
       <div className="absolute bottom-5 right-5">
         
@@ -136,16 +139,9 @@ const Post = (props: IPostProps) => {
           post={props.post}
           
         />
-        <button className="absolute bottom-2 text-lblue hover:text-navy right-10" 
-            onClick={()=>{
-                props.setRepost(props.post);
-                navigate(`/repost/${props.post._id}`);
-                }}>
-                Repost
-            </button>
       </div>
     </div>
   );
 };
 
-export default Post;
+export default Repost;

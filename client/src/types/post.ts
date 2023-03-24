@@ -6,4 +6,6 @@ export type TPost = {
   userEmail: string;
   caption: string;
   music: TMusicContent;
+  likes: number;
+  repost: boolean;
 };
