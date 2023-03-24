@@ -76,7 +76,7 @@ const PostForOtherProfile = (props: IPostForOtherProfileProps) => {
           post={props.post}
           
         />
-        { poster?.isPrivate &&
+        { !!!poster?.isPrivate &&
         <button className="absolute bottom-2 text-lblue hover:text-navy right-10" 
             onClick={()=>{
                 props.setRepost(props.post);
