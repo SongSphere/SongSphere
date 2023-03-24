@@ -11,9 +11,9 @@ import SettingsPage from "../pages/settings-page";
 import { TUser } from "../types/user";
 import { TPost } from "../types/post";
 import EditPage from "../pages/edit-page";
-import Session from "../session";
 import ProfilePage from "../pages/profile/profile-page";
 import OtherUserProfilePage from "../pages/profile/other-user-profile-page";
+import NotificationPage from "../pages/notification-page";
 import RepostPage from "../pages/repost-page";
 
 interface IRouterProps {
@@ -38,6 +38,10 @@ const Router = (props: IRouterProps) => {
       element: <HomePage appleMusicInstance={props.appleMusicInstance} />,
     },
     {
+      path: "/notificationsPage",
+      element: <NotificationPage appleMusicInstance={props.appleMusicInstance} />,
+    },
+    {
       path: "/posts",
       element: <PostPage musicInstance={props.appleMusicInstance} />,
     },
@@ -45,13 +49,7 @@ const Router = (props: IRouterProps) => {
       path: "/searchUsers",
       element: (
         <SearchUsersPage
-          // user={props.user}
-          // setUser={props.setUser}
-          // selectedUser={props.selectedUser}
-          // setSelectedUser={props.setSelectedUser}
-          // setIsLoggedIn={props.setIsLoggedIn}
           appleMusicInstance={props.appleMusicInstance}
-          // service={props.service}
         />
       ),
     },
@@ -59,12 +57,9 @@ const Router = (props: IRouterProps) => {
       path: "/user/:username",
       element: (
         <OtherUserProfilePage
-          // user={props.user}
-          // setIsLoggedIn={props.setIsLoggedIn}
           appleMusicInstance={props.appleMusicInstance}
           setRepost={props.setRepost}
-          // service={props.service}
-          // setSelectEditPost={props.setSelectEditPost}
+          
         />
       ),
     },
@@ -73,7 +68,6 @@ const Router = (props: IRouterProps) => {
       element: (
         <ProfilePage
           appleMusicInstance={props.appleMusicInstance}
-          // service={props.service}
           setSelectEditPost={props.setSelectEditPost}
           setRepost={props.setRepost}
         />
@@ -91,8 +85,6 @@ const Router = (props: IRouterProps) => {
       path: "/edit/:id",
       element: (
         <EditPage
-        // setUser={props.setUser}
-        // selectEditPost={props.selectEditPost}
         />
       ),
     },
