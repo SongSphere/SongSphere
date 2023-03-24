@@ -75,48 +75,55 @@ const SettingsPage = (props: ISettingPageProps) => {
     return <div>fetching user data</div>;
   }
   return (
-    <div>
+    <div className="">
       <Navbar />
-      <div className="flex flex-wrap items-center mt-20">
-        <div className="w-full text-center sm:w-1/2 sm:px-6">
-          <h3 className="text-3xl font-semibold text-gray-900">
-            Settings for: {user.givenName}
+      <div className="grid h-screen grid-cols-3 bg-lblue text-navy ">
+        <div className="justify-center w-full p-10 mt-5 ml-5 bg-white rounded-md h-5/6 sm:w-3/4 sm:px-6 drop-shadow-md">
+          <h3 className="mb-5 text-3xl font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
+            Profile Settings
           </h3>
-          <div className="mt-6 text-xl leading-9">
-            Let's change your profile
+          <div>
+            <div>
+              Username:
+              <input
+                className="ml-2 border-b-2 e-input border-b-lgrey"
+                type="text"
+                placeholder="Enter User Name"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div>
+              First name:
+              <input
+                className="ml-2 border-b-2 e-input border-b-lgrey"
+                type="text"
+                placeholder="Enter Given Name"
+                value={givenName}
+                onChange={(e) => setGivenName(e.target.value)}
+              />
+            </div>
+            <div>
+            Middle Name:
+            <input
+              className="ml-2 border-b-2 e-input border-b-lgrey"
+              type="text"
+              placeholder="Enter Middle Name"
+              value={middleName}
+              onChange={(e) => setMiddleName(e.target.value)}
+            />
+            </div>
+            <div>
+            Last Name:
+            <input
+              className="ml-2 border-b-2 e-input border-b-lgrey"
+              type="text"
+              placeholder="Enter Last Name"
+              value={familyName}
+              onChange={(e) => setFamilyName(e.target.value)}
+            />
+            </div>
           </div>
-        </div>
-
-        <div className="w-full p-6 sm:w-1/2">
-          <input
-            className="e-input"
-            type="text"
-            placeholder="Enter User Name"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            className="e-input"
-            type="text"
-            placeholder="Enter Given Name"
-            value={givenName}
-            onChange={(e) => setGivenName(e.target.value)}
-          />
-          <input
-            className="e-input"
-            type="text"
-            placeholder="Enter Middle Name"
-            value={middleName}
-            onChange={(e) => setMiddleName(e.target.value)}
-          />
-          <input
-            className="e-input"
-            type="text"
-            placeholder="Enter Last Name"
-            value={familyName}
-            onChange={(e) => setFamilyName(e.target.value)}
-          />
-
           <AdjustNamesLink
             appleMusicInstance={props.appleMusicInstance}
             username={username}
@@ -124,48 +131,8 @@ const SettingsPage = (props: ISettingPageProps) => {
             middleName={middleName}
             familyName={familyName}
           />
-
           <DeleteGoogleAcountLink />
-          <AppleLink appleMusicInstance={props.appleMusicInstance} />
-          <div>{`Apple API connected: ${appleAccountStatus}`}</div>
-          <button
-            className="p-2 rounded-md bg-amber-300"
-            onClick={async () => {
-              await unlinkMusic("apple").then(async () => {
-                Session.setUser(await fetchUser());
-                setUser(Session.getUser());
-              });
-            }}
-          >
-            Unlink Apple Music
-          </button>
-          <SpotifyLinkButton />
-          <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
-          <button
-            className="p-2 rounded-md bg-amber-300"
-            onClick={async () => {
-              await unlinkMusic("spotify").then(async () => {
-                Session.setUser(await fetchUser());
-                setUser(Session.getUser());
-              });
-            }}
-          >
-            Unlink Spotify
-          </button>
-
-            <BackgroundImgCropper onCropComplete={console.log} />
-            {/* 
-            <input
-              className="e-input"
-              type="text"
-              placeholder="Enter Background Photo URL"
-              value={backgroundImgUrl}
-              onChange={(e) => setBackgroundImgUrl(e.target.value)}
-            />
-            <UpdateBackgroundURL url={backgroundImgUrl} /> */}
-
-            <div>Is account public or private</div>
-            <div>{`Account private: ${isPrivateStatus}`}</div>
+          <div>{`Account private: ${isPrivateStatus}`}</div>
 
             <div className="flex justify-center">
               <div>
@@ -206,11 +173,64 @@ const SettingsPage = (props: ISettingPageProps) => {
                 ></label>
               </div>
             </div>
-          </div>
-          <ProfileImgCropper onCropComplete={console.log} />
-          <BackgroundImgCropper onCropComplete={console.log} />
         </div>
-      </div>
+          
+          <div className="justify-center w-full p-10 mt-5 ml-5 bg-white rounded-md h-5/6 sm:w-3/4 sm:px-6 drop-shadow-md">
+          <h3 className="mb-5 text-3xl font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
+            Image Settings
+          </h3>
+            <BackgroundImgCropper onCropComplete={console.log} />
+              {/* 
+              <input
+                className="e-input"
+                type="text"
+                placeholder="Enter Background Photo URL"
+                value={backgroundImgUrl}
+                onChange={(e) => setBackgroundImgUrl(e.target.value)}
+              />
+              <UpdateBackgroundURL url={backgroundImgUrl} /> */}
+              <ProfileImgCropper onCropComplete={console.log} />
+              
+          </div>
+
+          <div className="justify-center w-full p-10 mt-5 ml-5 bg-white rounded-md h-5/6 sm:w-3/4 sm:px-6 drop-shadow-md">
+          <h3 className="mb-5 text-3xl font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
+            Music Settings
+          </h3>
+            <AppleLink appleMusicInstance={props.appleMusicInstance} />
+            <button
+              className="p-2 rounded-md bg-amber-300"
+              onClick={async () => {
+                await unlinkMusic("apple").then(async () => {
+                  Session.setUser(await fetchUser());
+                  setUser(Session.getUser());
+                });
+              }}
+            >
+              Unlink Apple Music
+            </button>
+            <div>{`Apple API connected: ${appleAccountStatus}`}</div>
+            <SpotifyLinkButton />
+            
+            <button
+              className="p-2 rounded-md bg-amber-300"
+              onClick={async () => {
+                await unlinkMusic("spotify").then(async () => {
+                  Session.setUser(await fetchUser());
+                  setUser(Session.getUser());
+                });
+              }}
+            >
+              Unlink Spotify
+            </button>
+            <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
+          </div>
+          
+          
+
+      </div> 
+    </div>
+    
   );
 };
 
