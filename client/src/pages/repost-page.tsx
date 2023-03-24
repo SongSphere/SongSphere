@@ -16,6 +16,7 @@ const RepostPage = () => {
     const [post, setPost] = useState<TPost | null>(null);
     const { id } = useParams();
     const [user, setUser] = useState<TUser | null>(null);
+    const [poster, setPoster] = useState<TUser | null>(null);
     const [caption, setCaption] = useState<string>("");
     const [successFailText, setSuccessFailText] = useState("");
     const navigate = useNavigate();
@@ -31,19 +32,26 @@ const RepostPage = () => {
         return <div>fetching post</div>;
       }
       fetchUserByUsername(post.username).then((user) => {
-        setUser(user);
+        setPoster(user);
       });
+      fetchUserByUsername(post.username).then((user) => {
+        setUser(Session.getUser());
+      });
+      
       if (!user) {
         return <div>fetching post</div>;
       }
-    
+      if (!poster) {
+        return <div>fetching post</div>;
+      }
+      
     return (
         <div className="grid h-screen grid-cols-2 max-w-screen bg-lblue">
             
             <div className="w-5/6 mx-5 my-8 bg-white drop-shadow-md">
                 <div className="flex w-full p-5 mb-5 bg-lgrey">
                     <div className="w-20 h-20 drop-shadow-md">
-                        <img className="w-full h-full rounded-full" src={user.profileImgUrl}></img>
+                        <img className="w-full h-full rounded-full" src={poster.profileImgUrl}></img>
                     </div>
                     <p className="text-xl">Post by {post.username}</p>
                 </div>
@@ -76,9 +84,11 @@ const RepostPage = () => {
                     <button
                         className="p-2 my-5 rounded-md text-lgrey bg-navy hover:bg-lblue"
                         onClick={async () => {
+                          
                         if (user) {
+                          console.log(user.username);
                             const newPost: TPost = {
-                            username:  user.username,
+                            username: user.username ,
                             userEmail: user.email,
                             caption: post.caption + ";" + caption + ";"+ post.username,
                             music: post.music,

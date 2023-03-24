@@ -62,6 +62,7 @@ const Router = (props: IRouterProps) => {
           // user={props.user}
           // setIsLoggedIn={props.setIsLoggedIn}
           appleMusicInstance={props.appleMusicInstance}
+          setRepost={props.setRepost}
           // service={props.service}
           // setSelectEditPost={props.setSelectEditPost}
         />

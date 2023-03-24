@@ -62,6 +62,7 @@ const Router = (props: IRouterProps) => {
       element: (
         <OtherUserProfilePage
           appleMusicInstance={props.appleMusicInstance}
+          setRepost={props.setRepost}
         />
       ),
     },
