@@ -2,6 +2,7 @@ import Navbar from "../components/navbar";
 import { TUser } from "../types/user";
 import Session from "../session";
 import { useEffect, useState } from "react";
+import { randomSongSpotify } from "../services/spotify/spotify-search";
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -16,6 +17,8 @@ const HomePage = (props: IHomePageProps) => {
   if (!user) {
     return <div>fetching user</div>;
   }
+
+  
 
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
