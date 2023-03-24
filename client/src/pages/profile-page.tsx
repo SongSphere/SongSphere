@@ -57,7 +57,7 @@ const ProfilePage = (props: IProfileProps) => {
         </div>
         <div className="col-span-2">
           {posts.length > 0 ? (
-            <ProfileFeed posts={posts} setSong={setSong} />
+            <ProfileFeed posts={posts} setSong={setSong} user={user} />
           ) : (
             <NoPosts />
           )}

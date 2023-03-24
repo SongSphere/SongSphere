@@ -34,7 +34,7 @@ const HomePage = (props: IHomePageProps) => {
           <div>this will be where the user activity be</div>
         </div>
         <div className="col-span-2">
-          <Feed setSong={setSong} />
+          <Feed setSong={setSong} user={user} />
         </div>
         {service === "apple" ? (
           <AppleMusicPlayerCard

@@ -5,12 +5,13 @@ import { TPost } from "../../types/post";
 import deletePost from "../../services/post/delete-post";
 import PostFocusPage from "../../pages/post-focus-page";
 import Popup from "reactjs-popup";
+import Session from "../../session";
+import { TUser } from "../../types/user";
 
 interface IPostProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  // setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  // setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  user: TUser;
 }
 
 const Post = (props: IPostProps) => {
@@ -34,48 +35,54 @@ const Post = (props: IPostProps) => {
 
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
-      <div className="dropdown">
-        <button onClick={handleOpen} className="absolute top-5 right-5 ">
-          <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
-        </button>
-        {open ? (
-          <ul className="absolute right-0 top-10">
-            <li className=" text-lblue hover:text-lgrey">
-              <button
-                onClick={() => {
-                  // props.setSelectEditPost(props.post);
-                  navigate(`/edit/${props.post._id}`);
-                }}
-              >
-                Edit
-              </button>
-            </li>
+      {/* Only display edit function if this post belongs to the user */}
+      {props.post.username == props.user.username ? (
+        <div className="dropdown">
+          <button onClick={handleOpen} className="absolute top-5 right-5 ">
+            <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
+          </button>
+          {open ? (
+            <ul className="absolute right-0 top-10">
+              <li className=" text-lblue hover:text-lgrey">
+                <button
+                  onClick={() => {
+                    navigate(`/edit/${props.post._id}`);
+                  }}
+                >
+                  Edit
+                </button>
+              </li>
 
-            <li>
-              <button
-                className=" text-lblue hover:text-lgrey"
-                onClick={async () => {
-                  await deletePost(props.post).then((res) => {
-                    setOpen2(true);
-                    // temp solution
-                    if (res) {
-                      setDeleteSuccessText("Success");
-                    } else {
-                      setDeleteSuccessText("Fail");
-                    }
+              <li>
+                <button
+                  className=" text-lblue hover:text-lgrey"
+                  onClick={async () => {
+                    await deletePost(props.post).then((res) => {
+                      setOpen2(true);
+                      // temp solution
+                      if (res) {
+                        setDeleteSuccessText("Success");
+                      } else {
+                        setDeleteSuccessText("Fail");
+                      }
 
-                    setTimeout(() => {
-                      window.location.reload();
-                    }, 1500);
-                  });
-                }}
-              >
-                Delete
-              </button>
-            </li>
-          </ul>
-        ) : null}
-      </div>
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 1500);
+                    });
+                  }}
+                >
+                  Delete
+                </button>
+              </li>
+            </ul>
+          ) : (
+            <div></div>
+          )}
+        </div>
+      ) : (
+        <div></div>
+      )}
 
       <div
         className="w-32 h-32 cursor-pointer"
@@ -110,19 +117,16 @@ const Post = (props: IPostProps) => {
           handlePostFocusPage();
 
           setPostSuccessFail(
-            <PostFocusPage
-              post={props.post}
-              setSong={props.setSong}
-              // setPost={props.setPost}
-            />
+            <PostFocusPage post={props.post} setSong={props.setSong} />
           );
         }}
       >
-        <div className="pl-4 text-lg text-navy">
-          {props.post.music.name}{" "}
-          {props.post.music.artist ? " by " + props.post.music.artist : ""}
+        <div className="p-2 ml-2">
+          <div></div>
+          <div className="text-lg ">{props.post.music.name}</div>
+          <div>{props.post.music.artist}</div>
+          <div className="">{props.post.caption}</div>
         </div>
-        <div className="pl-4 text-navy">{props.post.caption}</div>
       </div>
     </div>
   );

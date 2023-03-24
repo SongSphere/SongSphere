@@ -3,10 +3,11 @@ import { TPost } from "../../types/post";
 import fetchFeed from "../../services/fetch-feed";
 import Post from "../post/post";
 import { TMusicContent } from "../../types/music-content";
+import { TUser } from "../../types/user";
 
 interface IFeedProps {
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  //   setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  user: TUser;
 }
 
 const Feed = (props: IFeedProps) => {
@@ -24,12 +25,21 @@ const Feed = (props: IFeedProps) => {
     return <div>fetching posts</div>;
   }
 
+  if (posts.length === 0) {
+    return <div>there is no posts made by your follwers</div>;
+  }
+
   return (
     <div>
       {posts.map((post) => {
         return (
           <div>
-            <Post post={post} key={post._id} setSong={props.setSong} />
+            <Post
+              post={post}
+              key={post._id}
+              setSong={props.setSong}
+              user={props.user}
+            />
           </div>
         );
       })}
