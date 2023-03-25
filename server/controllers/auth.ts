@@ -23,6 +23,13 @@ const auth_token = Buffer.from(
   "utf-8"
 ).toString("base64");
 
+export const RandomSongSpotify = async (req: Request, res: Response) => {
+
+  
+}
+
+
+
 export const spotifyAuth = async (req: Request, res: Response) => {
   const email = req.session.user.email;
   const remove = req.body.remove;
@@ -143,6 +150,7 @@ export const signInUp = async (
       following: Array<String>(),
       onboarded: false,
       isPrivate: false,
+      showRandomSong: false,
       likes: Array<String>(),
     };
 

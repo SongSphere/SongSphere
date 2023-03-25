@@ -94,12 +94,34 @@ function makeid(length: number) {
   return result;
 }
 
+function getRandomSearch() {
+  // A list of all characters that can be chosen.
+  const characters = 'abcdefghijklmnopqrstuvwxyz';
+  
+  // Gets a random character from the characters string.
+  const randomCharacter = characters.charAt(Math.floor(Math.random() * characters.length));
+  let randomSearch: string = '';
+
+  // Places the wildcard character at the beginning, or both beginning and end, randomly.
+  switch (Math.round(Math.random())) {
+    case 0:
+      randomSearch = randomCharacter + '%';
+      break;
+    case 1:
+      randomSearch = '%' + randomCharacter + '%';
+      break;
+  }
+
+  return randomSearch;
+}
+
+
+
 export const randomSongSpotify = async (
   token: string,
 ) => {
 
-  let random_seed = makeid(2);
-  let random_offset = Math.floor(Math.random() * 2000); // returns a random integer from 0 to 9
+  let random_offset = Math.floor(Math.random() * 100); // returns a random integer from 0 to 9
 
   let content: TMusicContent[] = [];
   console.log("Random being called");
@@ -109,7 +131,7 @@ export const randomSongSpotify = async (
     //   query
     // )}&type=${type}&limit=${random_seed}`,
 
-   `${SPOTIFY_API}/search?type=track&offset=${encodeURIComponent(random_offset)}&limit=1&q=${encodeURIComponent(random_seed)}`,
+   `${SPOTIFY_API}/search?type=track&offset=${encodeURIComponent(random_offset)}&limit=1&q=${encodeURIComponent(getRandomSearch())}`,
     {
       method: "GET",
       headers: {

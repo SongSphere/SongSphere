@@ -15,6 +15,7 @@ import {
   updateUserVisibility,
   likePost,
   isLiked,
+  updateShowRandomSong,
 } from "../services/user";
 import fs from "fs";
 
@@ -118,6 +119,23 @@ export const changeAccountVisibility = async (
     res.json({ msg: "update visibility fail" });
   }
 };
+
+export const changeShowRandomSong = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const email = req.session.user.email;
+    await updateShowRandomSong(email, req.body.showRandomSong).then(() => {
+      res.status(200);
+      res.json({ msg: "Success" });
+    });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "update ShowRandomSong fail" });
+  }
+}
 
 
 

@@ -16,6 +16,7 @@ import {
   changeAccountVisibility,
   updateLikePost,
   fetchIsLiked,
+  changeShowRandomSong,
 } from "../controllers/user";
 import { getPostsByUsername } from "../controllers/posting";
 
@@ -31,6 +32,7 @@ router.get("/api/user/fetchisLiked", auth, fetchIsLiked);
 
 router.post("/api/user/onboard", auth, changeOnboarded);
 router.post("/api/user/visibility", auth, changeAccountVisibility);
+router.post("/api/user/showRandomSong", auth, changeShowRandomSong);
 router.post("/api/user/unlinkSpotify", auth, unlinkSpotify);
 router.post("/api/user/unlinkApple", auth, unlinkApple);
 router.post("/api/user/adjustNames", auth, changeNames);
