@@ -19,16 +19,16 @@ const ProfileFeed = (props: IProfileFeedProps) => {
 
           if (repost) {
             return (
+              <Repost post={post} key={post._id} setSong={props.setSong} />
+            );
+          } else {
+            return (
               <Post
                 post={post}
                 key={post._id}
                 setSong={props.setSong}
                 user={props.user}
               />
-            );
-          } else {
-            return (
-              <Repost post={post} key={post._id} setSong={props.setSong} />
             );
           }
         })}
