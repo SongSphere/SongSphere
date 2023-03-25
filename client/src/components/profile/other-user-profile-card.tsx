@@ -41,17 +41,6 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
           <div className="text-center text-black">
             {props.selectedUser!.username}
           </div>
-
-          <div className="text-center">
-            <button
-              className="pt-6 rounded-full text-slate-500"
-              onClick={() => {
-                navigate("/settings");
-              }}
-            >
-              edit
-            </button>
-          </div>
           <OtherFollowerCard selectedUser={props.selectedUser} />
         </div>
       </div>
