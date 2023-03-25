@@ -13,6 +13,7 @@ import ProfilePage from "../pages/profile/profile-page";
 import OtherUserProfilePage from "../pages/profile/other-user-profile-page";
 import NotificationPage from "../pages/notification-page";
 import RepostPage from "../pages/repost-page";
+import FollowRequestPage from "../pages/follow-request-page";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -69,6 +70,10 @@ const Router = (props: IRouterProps) => {
     {
       path: "/repost/:id",
       element: <RepostPage />,
+    },
+    {
+      path: "/followRequest",
+      element: <FollowRequestPage />,
     },
   ]);
   return element;

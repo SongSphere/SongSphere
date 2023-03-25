@@ -16,6 +16,7 @@ import {
   updateUserVisibility,
   likePost,
   isLiked,
+  fetchFollowRequests,
 } from "../services/user";
 import fs from "fs";
 
@@ -283,6 +284,17 @@ export const fetchIsLiked = async (req: Request, res: Response) => {
     await isLiked(req.body.postId, req.body.email);
     res.status(201);
     res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getFollowRequests = async (req: Request, res: Response) => {
+  try {
+    const followRequests = await fetchFollowRequests(req.params.username);
+    res.status(201);
+    res.json({ followRequests: followRequests });
   } catch (error) {
     res.status(500);
     res.json({ error: error });

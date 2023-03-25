@@ -4,7 +4,7 @@ import User, { IUser } from "../db/user";
 import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
-
+import FollowRequest from "../db/follow-request";
 
 export const createUser = async (
   userData: TokenPayload,
@@ -124,7 +124,7 @@ export const updateUserOnboarded = async (
 
 export const updateUserVisibility = async (
   email: string,
-  isPrivate: boolean,
+  isPrivate: boolean
 ) => {
   try {
     const user = await User.findOneAndUpdate(
@@ -132,7 +132,7 @@ export const updateUserVisibility = async (
       { isPrivate: isPrivate },
       { new: true }
     );
-    
+
     return user;
   } catch (error) {
     throw error;
@@ -258,16 +258,27 @@ export const addFollow = async (
   emailOfUserFollowing: string
 ) => {
   try {
-    // add user being followed to following[] of the user doing the following
-    await User.updateOne(
-      { email: emailOfUserFollowing },
-      { $push: { following: usernameOfUserGettingFollowed } }
-    );
-    // add user doing the following to followers[] of the user being followed
-    await User.updateOne(
-      { email: emailOfUserBeingFollowed },
-      { $push: { followers: usernameOfUserMakingFollow } }
-    );
+    const user = await User.findOne({
+      username: usernameOfUserGettingFollowed,
+    });
+    if (user.isPrivate) {
+      const followRequest = new FollowRequest({
+        username: usernameOfUserGettingFollowed,
+        followerUsername: usernameOfUserMakingFollow,
+      });
+      await followRequest.save();
+    } else {
+      // add user being followed to following[] of the user doing the following
+      await User.updateOne(
+        { email: emailOfUserFollowing },
+        { $push: { following: usernameOfUserGettingFollowed } }
+      );
+      // add user doing the following to followers[] of the user being followed
+      await User.updateOne(
+        { email: emailOfUserBeingFollowed },
+        { $push: { followers: usernameOfUserMakingFollow } }
+      );
+    }
   } catch (error) {
     throw error;
   }
@@ -307,6 +318,15 @@ export const updatePFP = async (email: string, filename: string) => {
   }
 };
 
+export const fetchFollowRequests = async (username: string) => {
+  try {
+    const followRequests = await FollowRequest.find({ username: username });
+    return followRequests;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const updatePFPUrl = async (email: string, url: string) => {
   try {
     await User.findOneAndUpdate({ email: email }, { profileImgUrl: url });
@@ -339,21 +359,17 @@ export const updateBURL = async (email: string, url: string) => {
 
 export const likePost = async (postId: string, email: string) => {
   try {
-    await User.findOneAndUpdate(
-      { email: email },
-      { $push: { likes:  postId} }
-    );
-  } catch(error) {
+    await User.findOneAndUpdate({ email: email }, { $push: { likes: postId } });
+  } catch (error) {
     throw error;
   }
-}
+};
 
-export const isLiked = async(postId:string, email:string) => {
+export const isLiked = async (postId: string, email: string) => {
   try {
-    const isLiked = await User.exists({likes:postId});
+    const isLiked = await User.exists({ likes: postId });
     return isLiked;
-  } catch(error) {
+  } catch (error) {
     throw error;
   }
-}
-
+};

@@ -43,7 +43,6 @@ const OtherFollowerCard = (props: IOtherFollowerCard) => {
           props.selectedUser.username,
           props.selectedUser.email
         ).then(async () => {
-          console.log("finish following");
           Session.setUser(await fetchUser());
           props.setSelectedUser(
             await fetchUserByUsername(props.selectedUser.username)
@@ -54,8 +53,8 @@ const OtherFollowerCard = (props: IOtherFollowerCard) => {
       } else {
         unfollow(
           user.username,
-          props.selectedUser?.username!,
-          props.selectedUser?.email!
+          props.selectedUser.username,
+          props.selectedUser.email
         ).then(async () => {
           Session.setUser(await fetchUser());
           props.setSelectedUser(
