@@ -72,6 +72,12 @@ const SettingsPage = (props: ISettingPageProps) => {
       } else {
         setIsPrivateStatus(true);
       }
+      if (user.showRandomSong == false) {
+        setIsRandomStatus(false);
+      } else {
+        setIsRandomStatus(true);
+      }
+
     }
   }, [user]);
 
@@ -145,6 +151,7 @@ const SettingsPage = (props: ISettingPageProps) => {
                 type="checkbox"
                 role="switch"
                 id="flexSwitchCheckDefault"
+                checked={isPrivateStatus}
                 onChange={async () => {
                   if (isPrivateStatus) {
                     // True (that means it is Private account) // False (that means it is Public account)
@@ -176,11 +183,11 @@ const SettingsPage = (props: ISettingPageProps) => {
               />
               <label
                 className="inline-block pl-[0.15rem] hover:cursor-pointer"
-                // for="flexSwitchCheckDefault"
               ></label>
             </div>
-            
           </div>
+
+         
 
           <div>{`Random Song Feature: ${isRandomStatus}`}</div>
 
@@ -191,6 +198,7 @@ const SettingsPage = (props: ISettingPageProps) => {
                 type="checkbox"
                 role="switch"
                 id="flexSwitchCheckDefault"
+                checked={isRandomStatus}
                 onChange={async () => {
                   console.log(`The Random status is ${isRandomStatus}`);
                   if (isRandomStatus) {
@@ -201,7 +209,6 @@ const SettingsPage = (props: ISettingPageProps) => {
                       .then(async () => {
                         Session.setUser(await fetchUser());
                         setIsRandomStatus(false);
-                       
                       })
                       .catch((error) => {
                         console.error(error);
@@ -225,10 +232,8 @@ const SettingsPage = (props: ISettingPageProps) => {
               />
               <label
                 className="inline-block pl-[0.15rem] hover:cursor-pointer"
-                // for="flexSwitchCheckDefault"
               ></label>
             </div>
-            
           </div>
         </div>
 
@@ -281,11 +286,14 @@ const SettingsPage = (props: ISettingPageProps) => {
           </button>
           <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
 
-          <button className="bg-grey"
-              onClick={async ()  => {
-                await randomSongSpotify(user.spotifyToken);
-              }}
-            >Random</button>
+          <button
+            className="bg-grey"
+            onClick={async () => {
+              await randomSongSpotify(user.spotifyToken);
+            }}
+          >
+            Random
+          </button>
         </div>
       </div>
     </div>
