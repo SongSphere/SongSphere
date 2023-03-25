@@ -63,8 +63,6 @@ const SearchUserDropDown = (props: ISearchUserDropDownProps) => {
                   <button
                     key={user.username}
                     onClick={() => {
-                      // props.setUser(props.user);
-                      // props.setSelectedUser(user);
                       navigate(`/user/${user.username}`);
                     }}
                   >

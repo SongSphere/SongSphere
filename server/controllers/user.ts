@@ -12,6 +12,7 @@ import {
   updateBackground,
   updatePFPUrl,
   updateBURL,
+  fetchFeed,
   updateUserVisibility,
   likePost,
   isLiked,
@@ -60,6 +61,21 @@ export const getUserByUsername = async (
   } catch (error) {
     res.status(404);
     res.json({ msg: "cannot find user" });
+  }
+};
+
+export const getFeed = async (req: Request, res: Response) => {
+  try {
+    const posts = await fetchFeed(
+      req.session.user.email,
+      parseInt(req.params.num, 10)
+    );
+    res.status(200);
+    res.json({ posts: posts });
+  } catch (error) {
+    console.log("Bruh");
+    res.status(404);
+    res.json({ msg: "cannot fetch posts" });
   }
 };
 
@@ -118,8 +134,6 @@ export const changeAccountVisibility = async (
     res.json({ msg: "update visibility fail" });
   }
 };
-
-
 
 /*
     Author: David Kim
@@ -250,19 +264,22 @@ export const getProfilePhoto = (req: Request, res: Response) => {
   }
 };
 
-export const updateLikePost =  (req: Request, res: Response, next:NextFunction) => {
+export const updateLikePost = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const email = req.session.user.email;
-  try{
+  try {
     likePost(req.body.postId, email);
-    
   } catch (error) {
     res.status(500);
     res.json({ error: error });
   }
-}
+};
 
 export const fetchIsLiked = async (req: Request, res: Response) => {
-  try{
+  try {
     await isLiked(req.body.postId, req.body.email);
     res.status(201);
     res.json({ msg: "success" });
@@ -270,4 +287,4 @@ export const fetchIsLiked = async (req: Request, res: Response) => {
     res.status(500);
     res.json({ error: error });
   }
-}
+};

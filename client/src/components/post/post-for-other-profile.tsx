@@ -9,12 +9,9 @@ import fetchUserByUsername from "../../services/user/fetch-user-username";
 import { useState } from "react";
 import { TUser } from "../../types/user";
 
-
 interface IPostForOtherProfileProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const PostForOtherProfile = (props: IPostForOtherProfileProps) => {
@@ -59,7 +56,7 @@ const PostForOtherProfile = (props: IPostForOtherProfileProps) => {
             <PostFocusPage
               post={props.post}
               setSong={props.setSong}
-              setPost={props.setPost}
+              // setPost={props.setPost}
             />
           );
         }}
@@ -71,20 +68,17 @@ const PostForOtherProfile = (props: IPostForOtherProfileProps) => {
         <div className="pl-4 text-navy">{props.post.caption}</div>
       </div>
       <div className="absolute bottom-5 right-5">
-        
-        <LikeButton 
-          post={props.post}
-          
-        />
-        { !!!poster?.isPrivate &&
-        <button className="absolute bottom-2 text-lblue hover:text-navy right-10" 
-            onClick={()=>{
-                props.setRepost(props.post);
-                navigate(`/repost/${props.post._id}`);
-                }}>
-                Repost
-            </button>
-        }
+        <LikeButton post={props.post} />
+        {!!!poster?.isPrivate && (
+          <button
+            className="absolute bottom-2 text-lblue hover:text-navy right-10"
+            onClick={() => {
+              navigate(`/repost/${props.post._id}`);
+            }}
+          >
+            Repost
+          </button>
+        )}
       </div>
     </div>
   );

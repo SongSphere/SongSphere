@@ -7,13 +7,9 @@ import PostFocusPage from "../../pages/profile/post-focus-page";
 import Popup from "reactjs-popup";
 import LikeButton from "./like-button";
 
-
 interface IPostProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const Repost = (props: IPostProps) => {
@@ -34,22 +30,20 @@ const Repost = (props: IPostProps) => {
     setPostFocusPage(!postFocusPage);
   };
   let navigate = useNavigate();
-  const parts = props.post.caption.split(";")
+  const parts = props.post.caption.split(";");
 
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
       <div className="dropdown">
-      
         <button onClick={handleOpen} className="absolute top-5 right-5 ">
           <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
         </button>
-        
+
         {open ? (
           <ul className="absolute right-0 top-10">
             <li className=" text-lblue hover:text-lgrey">
               <button
                 onClick={() => {
-                  props.setSelectEditPost(props.post);
                   navigate(`/edit/${props.post._id}`);
                 }}
               >
@@ -81,7 +75,6 @@ const Repost = (props: IPostProps) => {
             </li>
           </ul>
         ) : null}
-        
       </div>
 
       <div
@@ -117,16 +110,12 @@ const Repost = (props: IPostProps) => {
           handlePostFocusPage();
 
           setPostSuccessFail(
-            <PostFocusPage
-              post={props.post}
-              setSong={props.setSong}
-              setPost={props.setPost}
-            />
+            <PostFocusPage post={props.post} setSong={props.setSong} />
           );
         }}
       >
         <div className="p-2 ml-5 text-lg text-center border-2 text-navy border-navy">
-        <h1 className="text-lblue">Reposted from {parts[2]}</h1>
+          <h1 className="text-lblue">Reposted from {parts[2]}</h1>
           {props.post.music.name}{" "}
           {props.post.music.artist ? " by " + props.post.music.artist : ""}
           <div className="pl-4 text-navy">{parts[0]} </div>
@@ -134,11 +123,7 @@ const Repost = (props: IPostProps) => {
         <h2 className="mt-5 text-center">{parts[1]}</h2>
       </div>
       <div className="absolute bottom-5 right-5">
-        
-        <LikeButton 
-          post={props.post}
-          
-        />
+        <LikeButton post={props.post} />
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { TUser } from "../../types/user";
 import OtherFollowerCard from "./other-follower-card";
-// import Other
 
 interface IProfileCardProps {
   selectedUser: TUser | null;

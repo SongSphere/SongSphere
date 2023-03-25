@@ -15,7 +15,7 @@ import { TUser } from "../../types/user";
 
 interface IOtherUserProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  // setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
@@ -46,19 +46,17 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
       });
     }
 
-  
     // Test if this works
     if (selectedUser && user) {
-        for (let i = 0; i < selectedUser.followers.length; i++) {
-          console.log(`cur followers: ${selectedUser.followers[i]}`);
-          if (user.username == selectedUser.followers[i]) {
-            console.log(`${user.username} is following ${selectedUser.username}`);
-              setFollowing(true);
-              break;
-          }
+      for (let i = 0; i < selectedUser.followers.length; i++) {
+        console.log(`cur followers: ${selectedUser.followers[i]}`);
+        if (user.username == selectedUser.followers[i]) {
+          console.log(`${user.username} is following ${selectedUser.username}`);
+          setFollowing(true);
+          break;
         }
+      }
     }
-    
   }, [selectedUser, user]);
 
   if (!selectedUser && service) {
@@ -66,9 +64,9 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
   }
 
   if (isFollowing) {
-    console.log("Is following")
+    console.log("Is following");
   } else {
-    console.log("Not following")
+    console.log("Not following");
   }
 
   return (
@@ -87,7 +85,6 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
         <div className="col-span-2">
           {/* Means it should be T && T */}
           {!(isFollowing && posts.length > 0) ? (
-          
             <NoPosts />
           ) : (
             <OtherProfileFeed
@@ -96,7 +93,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
               setPost={setPost}
               selectedUser={selectedUser}
               blur={!isFollowing}
-              setRepost={props.setRepost}
+              // setRepost={props.setRepost}
             />
           )}
         </div>
