@@ -3,8 +3,9 @@ import { TUser } from "../../types/user";
 import OtherFollowerCard from "./other-follower-card";
 
 interface IProfileCardProps {
-  selectedUser: TUser | null;
-  user: TUser | null;
+  selectedUser: TUser;
+  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
+  user: TUser;
 }
 
 const OtherUserProfileCard = (props: IProfileCardProps) => {
@@ -12,6 +13,7 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
   if (!props.selectedUser) {
     return <div>fetching user</div>;
   }
+
   return (
     <div className="flex justify-center h-screen">
       <div className="fixed flex h-full mt-8">
@@ -33,15 +35,14 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
             </div>
           </div>
 
-          <div className="mt-6 text-2xl font-bold text-center text-black">{`${
-            props.selectedUser!.givenName
-          } ${props.selectedUser!.middleName} ${
-            props.selectedUser!.familyName
-          }`}</div>
+          <div className="mt-6 text-2xl font-bold text-center text-black">{`${props.selectedUser.givenName} ${props.selectedUser.middleName} ${props.selectedUser.familyName}`}</div>
           <div className="text-center text-black">
-            {props.selectedUser!.username}
+            {props.selectedUser.username}
           </div>
-          <OtherFollowerCard selectedUser={props.selectedUser} />
+          <OtherFollowerCard
+            selectedUser={props.selectedUser}
+            setSelectedUser={props.setSelectedUser}
+          />
         </div>
       </div>
     </div>

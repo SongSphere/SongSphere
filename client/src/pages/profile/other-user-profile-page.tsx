@@ -68,7 +68,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
     console.log("Not following");
   }
 
-  if (!user) {
+  if (!user || !selectedUser) {
     return <div>fetching</div>;
   }
 
@@ -77,7 +77,11 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
       <Navbar />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <OtherUserProfileCard selectedUser={selectedUser} user={user} />
+          <OtherUserProfileCard
+            selectedUser={selectedUser}
+            user={user}
+            setSelectedUser={setSelectedUser}
+          />
         </div>
         <div className="col-span-2">
           {/* Means it should be T && T */}
