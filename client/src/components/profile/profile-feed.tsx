@@ -3,7 +3,6 @@ import Post from "../post/post";
 import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 import Repost from "../post/repost";
-import { useState } from "react";
 
 interface IProfileFeedProps {
   posts: TPost[];
@@ -17,10 +16,9 @@ const ProfileFeed = (props: IProfileFeedProps) => {
       <div className="w-full">
         {props.posts.map((post) => {
           const repost = post.repost;
-          let type;
 
-          if (!!!repost) {
-            type = (
+          if (repost) {
+            return (
               <Post
                 post={post}
                 key={post._id}
@@ -29,12 +27,10 @@ const ProfileFeed = (props: IProfileFeedProps) => {
               />
             );
           } else {
-            type = (
+            return (
               <Repost post={post} key={post._id} setSong={props.setSong} />
             );
           }
-
-          return type;
         })}
       </div>
     </div>

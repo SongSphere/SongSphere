@@ -4,6 +4,7 @@ import fetchFeed from "../../services/fetch-feed";
 import Post from "../post/post";
 import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
+import Repost from "../post/repost";
 
 interface IFeedProps {
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
@@ -32,16 +33,20 @@ const Feed = (props: IFeedProps) => {
   return (
     <div>
       {posts.map((post) => {
-        return (
-          <div>
+        const repost = post.repost;
+
+        if (repost) {
+          return (
             <Post
               post={post}
               key={post._id}
               setSong={props.setSong}
               user={props.user}
             />
-          </div>
-        );
+          );
+        } else {
+          return <Repost post={post} key={post._id} setSong={props.setSong} />;
+        }
       })}
       <button
         onClick={() => {

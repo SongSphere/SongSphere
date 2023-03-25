@@ -15,7 +15,6 @@ import { TUser } from "../../types/user";
 
 interface IOtherUserProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  // setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
@@ -78,14 +77,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
       <Navbar />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <OtherUserProfileCard
-            // user={props.user}
-            // setUser={props.setUser}
-            selectedUser={selectedUser}
-            user={user}
-            // setSelectedUser={props.setSelectedUser}
-            // setSelectEditPost={props.setSelectEditPost}
-          />
+          <OtherUserProfileCard selectedUser={selectedUser} user={user} />
         </div>
         <div className="col-span-2">
           {/* Means it should be T && T */}
@@ -99,23 +91,18 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
               selectedUser={selectedUser}
               blur={!isFollowing}
               user={user}
-              // setRepost={props.setRepost}
             />
           )}
         </div>
         {service === "apple" ? (
           <AppleMusicPlayerCard
-            // user={props.user}
-            // service={props.service}
             musicInstance={props.appleMusicInstance}
             selectedSong={song}
           />
         ) : (
           <SpotifyPlayerCard
-            // user={props.user}
             selectedSong={song}
             appleMusicInstance={props.appleMusicInstance}
-            // service={props.service}
           />
         )}
       </div>

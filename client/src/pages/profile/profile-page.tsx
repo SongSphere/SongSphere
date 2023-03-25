@@ -21,8 +21,6 @@ import fetchPostsByUsername from "../../services/posts/fetch-user-posts";
 
 interface IProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  // setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  // setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const ProfilePage = (props: IProfileProps) => {
