@@ -142,6 +142,8 @@ export const signInUp = async (
       followers: Array<String>(),
       following: Array<String>(),
       onboarded: false,
+      isPrivate: false,
+      likes: Array<String>(),
     };
 
     res.status(201);

@@ -14,7 +14,8 @@ const App = () => {
   const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
   const [post, editPost] = useState<TPost | null>(null);
-  const [selectEditPost, setSelectEditPost] = useState<TPost | null>(null);
+  // const [selectEditPost, setSelectEditPost] = useState<TPost | null>(null);
+  // const [selectRepost, setRepost] = useState<TPost | null>(null);
 
   const [appleMusicInstance, setAppleMusicInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
@@ -91,12 +92,14 @@ const App = () => {
       } else {
         return (
           <Router
-            selectedUser={selectedUser}
-            setSelectedUser={setSelectedUser}
+            // selectedUser={selectedUser}
+            // setSelectedUser={setSelectedUser}
             appleMusicInstance={appleMusicInstance}
-            post={post}
-            setSelectEditPost={setSelectEditPost}
-            selectEditPost={selectEditPost}
+            // post={post}
+            // setSelectEditPost={setSelectEditPost}
+            // selectEditPost={selectEditPost}
+            // setRepost={setRepost}
+            // selectRepost={selectRepost}
           />
         );
       }

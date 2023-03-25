@@ -3,15 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { TMusicContent } from "../../types/music-content";
 import { TPost } from "../../types/post";
 import deletePost from "../../services/post/delete-post";
-import PostFocusPage from "../../pages/post-focus-page";
+import PostFocusPage from "../../pages/profile/post-focus-page";
 import Popup from "reactjs-popup";
 import { TUser } from "../../types/user";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
+import LikeButton from "./like-button";
 
 interface IPostProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   user: TUser;
+  // setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  // setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
+  // setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const Post = (props: IPostProps) => {
@@ -151,6 +155,19 @@ const Post = (props: IPostProps) => {
           <hr className="h-0.5 bg-gray-200 border-0 dark:bg-gray-700"></hr>
           <div className="">{props.post.caption}</div>
         </div>
+        <div className="pl-4 text-navy">{props.post.caption} </div>
+      </div>
+      <div className="absolute bottom-5 right-5">
+        <LikeButton post={props.post} />
+        <button
+          className="absolute bottom-2 text-lblue hover:text-navy right-10"
+          onClick={() => {
+            // props.setRepost(props.post);
+            navigate(`/repost/${props.post._id}`);
+          }}
+        >
+          Repost
+        </button>
       </div>
     </div>
   );

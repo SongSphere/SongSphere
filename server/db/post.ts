@@ -8,6 +8,8 @@ export interface IPost {
   caption: string;
   music: TMusicContent;
   comments: Array<String>;
+  likes: number;
+  repost: boolean;
 }
 
 const PostSchema = new Schema<IPost>(
@@ -42,6 +44,14 @@ const PostSchema = new Schema<IPost>(
     },
     comments: {
       type: Array<String>(),
+      required: true,
+    },
+    likes: {
+      type: Number,
+      required: false,
+    },
+    repost: {
+      type: Boolean,
       required: true,
     },
   },

@@ -69,6 +69,8 @@ const EditPage = (props: IEditPageProps) => {
                 caption: caption,
                 music: post.music,
                 comments: post.comments,
+                likes: post.likes,
+                repost: post.repost,
               })
                 .then(async (res) => {
                   if (res) {

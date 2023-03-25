@@ -5,6 +5,8 @@ import Session from "../session";
 interface INavbarProps {}
 
 const Navbar = (props: INavbarProps) => {
+  
+
   return (
     <div className="relative z-10 h-16">
       <div className="fixed w-screen bg-white drop-shadow-md">
@@ -22,6 +24,10 @@ const Navbar = (props: INavbarProps) => {
           <Link className="p-5" to="/posts">
             Post
           </Link>
+          <Link className="p-5" to="/notificationsPage">
+            Notification
+          </Link>
+       
           <Link className="p-5" to="/settings">
             Setting
           </Link>

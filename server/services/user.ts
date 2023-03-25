@@ -5,6 +5,7 @@ import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
 
+
 export const createUser = async (
   userData: TokenPayload,
   token: string
@@ -23,6 +24,8 @@ export const createUser = async (
     followers: [],
     following: [],
     onboarded: false,
+    isPrivate: false,
+    likes: [],
   });
 
   return user;
@@ -113,6 +116,23 @@ export const updateUserOnboarded = async (
       { onboarded: onboarded },
       { new: true }
     );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateUserVisibility = async (
+  email: string,
+  isPrivate: boolean,
+) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { isPrivate: isPrivate },
+      { new: true }
+    );
+    
     return user;
   } catch (error) {
     throw error;
@@ -316,3 +336,24 @@ export const updateBURL = async (email: string, url: string) => {
     throw error;
   }
 };
+
+export const likePost = async (postId: string, email: string) => {
+  try {
+    await User.findOneAndUpdate(
+      { email: email },
+      { $push: { likes:  postId} }
+    );
+  } catch(error) {
+    throw error;
+  }
+}
+
+export const isLiked = async(postId:string, email:string) => {
+  try {
+    const isLiked = await User.exists({likes:postId});
+    return isLiked;
+  } catch(error) {
+    throw error;
+  }
+}
+

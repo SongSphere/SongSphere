@@ -46,6 +46,7 @@ const SearchSong = (props: ISearchSongProps) => {
   const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
 
   const [caption, setCaption] = useState<string>("");
+  const isRepost = false;
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -193,6 +194,8 @@ const SearchSong = (props: ISearchSongProps) => {
               caption: caption,
               music: selected!,
               comments: [],
+              likes: 0,
+              repost: isRepost,
             };
             await sendPost(newPost)
               .then((res) => {

@@ -1,4 +1,4 @@
-import { TUser, TUserWrapper } from "../../types/user";
+import { TUser } from "../../types/user";
 
 const fetchUserNames = async (username: string) => {
   let user = null;
