@@ -5,26 +5,20 @@ import fetchUser from "../../services/user/fetch-user";
 import { follow, unfollow } from "../../services/user/follow";
 import FollowingList from "./following-list";
 import FollowerList from "./follower-list";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
 
 interface IOtherFollowerCard {
-  selectedUser: TUser | null;
+  selectedUser: TUser;
+  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const OtherFollowerCard = (props: IOtherFollowerCard) => {
-  let nFollowers = 0;
-  let nFollowing = 0;
+  const [followers, setFollowers] = useState<string[]>([]);
+  const [following, setFollowing] = useState<string[]>([]);
 
   const [openFollowers, setOpenFollowers] = useState(false);
   const [openFollowing, setOpenFollowing] = useState(false);
-  const [followerButtonText, setFollowerButtonText] = useState(
-    `${nFollowers} followers`
-  );
-  const [followingButtonText, setFollowingButtonText] = useState(
-    `${nFollowing} following`
-  );
-  const [following, setFollowing] = useState(false);
-  const [buttonColor, setButtonColor] = useState("bg-blue-500");
-  const [buttonText, setButtonText] = useState("Follow");
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const handleOpenFollowers = () => {
     if (openFollowing) {
@@ -43,31 +37,32 @@ const OtherFollowerCard = (props: IOtherFollowerCard) => {
   const handleClick = async () => {
     const user = Session.getUser();
     if (props.selectedUser && user) {
-      if (!following) {
-        setButtonColor("bg-lgrey");
-        setButtonText("Unfollow");
-
-        await follow(
+      if (!isFollowing) {
+        follow(
           user.username,
           props.selectedUser.username,
           props.selectedUser.email
         ).then(async () => {
+          console.log("finish following");
           Session.setUser(await fetchUser());
+          props.setSelectedUser(
+            await fetchUserByUsername(props.selectedUser.username)
+          );
+          console.log(Session.getUser());
+          setIsFollowing(true);
         });
-
-        setFollowing(true);
       } else {
-        setButtonColor("bg-blue-500");
-        setButtonText("Follow");
         unfollow(
           user.username,
           props.selectedUser?.username!,
           props.selectedUser?.email!
         ).then(async () => {
           Session.setUser(await fetchUser());
+          props.setSelectedUser(
+            await fetchUserByUsername(props.selectedUser.username)
+          );
+          setIsFollowing(false);
         });
-
-        setFollowing(false);
       }
     }
   };
@@ -76,14 +71,12 @@ const OtherFollowerCard = (props: IOtherFollowerCard) => {
     const user = Session.getUser();
     if (props.selectedUser && user) {
       if (user.following.includes(props.selectedUser.username)) {
-        setFollowing(true);
-        setButtonColor("bg-lgrey");
-        setButtonText("Unfollow");
+        setIsFollowing(true);
       }
-      nFollowers = props.selectedUser.followers.length;
-      nFollowing = props.selectedUser.following.length;
-      setFollowerButtonText(`${nFollowers} followers`);
-      setFollowingButtonText(`${nFollowing} following`);
+      console.log(props.selectedUser.followers);
+      console.log(props.selectedUser.following);
+      setFollowers(props.selectedUser.followers);
+      setFollowing(props.selectedUser.following);
     }
   }, [props.selectedUser]);
 
@@ -94,25 +87,34 @@ const OtherFollowerCard = (props: IOtherFollowerCard) => {
   return (
     <div>
       <div>
-        <button
-          className={`ml-3 px-3 w-1/4 text-sm py-2 rounded text-white ${buttonColor}`}
-          onClick={() => handleClick()}
-        >
-          {buttonText}
-        </button>
+        {isFollowing ? (
+          <button
+            className={`ml-3 px-3 w-1/4 text-sm py-2 rounded text-white bg-slate-300`}
+            onClick={() => handleClick()}
+          >
+            unfollow
+          </button>
+        ) : (
+          <button
+            className={`ml-3 px-3 w-1/4 text-sm py-2 rounded text-white bg-blue-500 `}
+            onClick={() => handleClick()}
+          >
+            follow
+          </button>
+        )}
 
         <button
           className={`ml-3 px-2 text-sm py-2 rounded text-grey`}
           onClick={() => handleOpenFollowers()}
         >
-          {followerButtonText}
+          {followers.length} follower
         </button>
 
         <button
           className={`ml-3 px-2 text-sm py-2 rounded text-grey`}
           onClick={() => handleOpenFollowing()}
         >
-          {followingButtonText}
+          {following.length} following
         </button>
 
         {openFollowers ? (
