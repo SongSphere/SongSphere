@@ -10,8 +10,6 @@ import LikeButton from "./like-button";
 interface IPostProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  // setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  // setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const Repost = (props: IPostProps) => {
@@ -46,7 +44,6 @@ const Repost = (props: IPostProps) => {
             <li className=" text-lblue hover:text-lgrey">
               <button
                 onClick={() => {
-                  // props.setSelectEditPost(props.post);
                   navigate(`/edit/${props.post._id}`);
                 }}
               >
@@ -113,11 +110,7 @@ const Repost = (props: IPostProps) => {
           handlePostFocusPage();
 
           setPostSuccessFail(
-            <PostFocusPage
-              post={props.post}
-              setSong={props.setSong}
-              // setPost={props.setPost}
-            />
+            <PostFocusPage post={props.post} setSong={props.setSong} />
           );
         }}
       >

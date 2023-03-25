@@ -25,7 +25,6 @@ const OtherFollowerCard = (props: IOtherFollowerCard) => {
   const [following, setFollowing] = useState(false);
   const [buttonColor, setButtonColor] = useState("bg-blue-500");
   const [buttonText, setButtonText] = useState("Follow");
-  // const [user, setUser] = useState<TUser | null>(null);
 
   const handleOpenFollowers = () => {
     if (openFollowing) {

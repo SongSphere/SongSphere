@@ -9,9 +9,6 @@ interface IProfileFeedProps {
   posts: TPost[];
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   user: TUser;
-  // setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  // setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  // setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const ProfileFeed = (props: IProfileFeedProps) => {
@@ -29,21 +26,11 @@ const ProfileFeed = (props: IProfileFeedProps) => {
                 key={post._id}
                 setSong={props.setSong}
                 user={props.user}
-                // setPost={props.setPost}
-                // setSelectEditPost={props.setSelectEditPost}
-                // setRepost={props.setRepost}
               />
             );
           } else {
             type = (
-              <Repost
-                post={post}
-                key={post._id}
-                setSong={props.setSong}
-                // setPost={props.setPost}
-                // setSelectEditPost={props.setSelectEditPost}
-                // setRepost={props.setRepost}
-              />
+              <Repost post={post} key={post._id} setSong={props.setSong} />
             );
           }
 

@@ -1,6 +1,5 @@
 import Navbar from "../components/navbar";
 import { TUser } from "../types/user";
-import FetchFeed from "../components/dummy-feed-fetch";
 import Session from "../session";
 import { useEffect, useState } from "react";
 import Feed from "../components/feed/feed";

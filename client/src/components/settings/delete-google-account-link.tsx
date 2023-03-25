@@ -30,11 +30,7 @@ const Button = styled.button`
   }
 `;
 
-interface IDeleteGoogleAcountLinkProps {
-  // user: TUser | null;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface IDeleteGoogleAcountLinkProps {}
 
 const DeleteGoogleAcountLink = (props: IDeleteGoogleAcountLinkProps) => {
   const [open, setOpen] = useState(false);

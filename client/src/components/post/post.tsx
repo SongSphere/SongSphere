@@ -13,9 +13,6 @@ interface IPostProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   user: TUser;
-  // setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  // setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  // setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const Post = (props: IPostProps) => {
@@ -162,7 +159,6 @@ const Post = (props: IPostProps) => {
         <button
           className="absolute bottom-2 text-lblue hover:text-navy right-10"
           onClick={() => {
-            // props.setRepost(props.post);
             navigate(`/repost/${props.post._id}`);
           }}
         >

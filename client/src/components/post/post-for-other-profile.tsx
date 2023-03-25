@@ -12,8 +12,6 @@ import { TUser } from "../../types/user";
 interface IPostForOtherProfileProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  // setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  // setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const PostForOtherProfile = (props: IPostForOtherProfileProps) => {
@@ -75,7 +73,6 @@ const PostForOtherProfile = (props: IPostForOtherProfileProps) => {
           <button
             className="absolute bottom-2 text-lblue hover:text-navy right-10"
             onClick={() => {
-              // props.setRepost(props.post);
               navigate(`/repost/${props.post._id}`);
             }}
           >
