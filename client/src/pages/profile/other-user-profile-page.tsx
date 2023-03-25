@@ -15,7 +15,6 @@ import { TUser } from "../../types/user";
 
 interface IOtherUserProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  // setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
@@ -69,18 +68,16 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
     console.log("Not following");
   }
 
+  if (!user) {
+    return <div>fetching</div>;
+  }
+
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-lblue">
       <Navbar />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <OtherUserProfileCard
-            // user={props.user}
-            // setUser={props.setUser}
-            selectedUser={selectedUser}
-            // setSelectedUser={props.setSelectedUser}
-            // setSelectEditPost={props.setSelectEditPost}
-          />
+          <OtherUserProfileCard selectedUser={selectedUser} user={user} />
         </div>
         <div className="col-span-2">
           {/* Means it should be T && T */}
@@ -93,23 +90,19 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
               setPost={setPost}
               selectedUser={selectedUser}
               blur={!isFollowing}
-              // setRepost={props.setRepost}
+              user={user}
             />
           )}
         </div>
         {service === "apple" ? (
           <AppleMusicPlayerCard
-            // user={props.user}
-            // service={props.service}
             musicInstance={props.appleMusicInstance}
             selectedSong={song}
           />
         ) : (
           <SpotifyPlayerCard
-            // user={props.user}
             selectedSong={song}
             appleMusicInstance={props.appleMusicInstance}
-            // service={props.service}
           />
         )}
       </div>

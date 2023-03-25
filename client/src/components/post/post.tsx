@@ -152,7 +152,6 @@ const Post = (props: IPostProps) => {
           <hr className="h-0.5 bg-gray-200 border-0 dark:bg-gray-700"></hr>
           <div className="">{props.post.caption}</div>
         </div>
-        <div className="pl-4 text-navy">{props.post.caption} </div>
       </div>
       <div className="absolute bottom-5 right-5">
         <LikeButton post={props.post} />
