@@ -36,6 +36,8 @@ const Feed = (props: IFeedProps) => {
         const repost = post.repost;
 
         if (repost) {
+          return <Repost post={post} key={post._id} setSong={props.setSong} />;
+        } else {
           return (
             <Post
               post={post}
@@ -44,8 +46,6 @@ const Feed = (props: IFeedProps) => {
               user={props.user}
             />
           );
-        } else {
-          return <Repost post={post} key={post._id} setSong={props.setSong} />;
         }
       })}
       <button

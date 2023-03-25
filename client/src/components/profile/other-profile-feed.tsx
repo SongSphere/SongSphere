@@ -4,6 +4,7 @@ import { TMusicContent } from "../../types/music-content";
 import Post from "../post/post";
 import React, { useEffect } from "react";
 import { TUser } from "../../types/user";
+import Repost from "../post/repost";
 
 interface IOtherProfileFeedProps {
   posts: TPost[];
@@ -23,14 +24,22 @@ const OtherProfileFeed = (props: IOtherProfileFeedProps) => {
     <div className="justify-center mt-8">
       <div className="w-full">
         {props.posts.map((post) => {
-          return (
-            <Post
-              post={post}
-              key={post._id}
-              setSong={props.setSong}
-              user={props.user}
-            />
-          );
+          const repost = post.repost;
+
+          if (repost) {
+            return (
+              <Repost post={post} key={post._id} setSong={props.setSong} />
+            );
+          } else {
+            return (
+              <Post
+                post={post}
+                key={post._id}
+                setSong={props.setSong}
+                user={props.user}
+              />
+            );
+          }
         })}
         :
       </div>
