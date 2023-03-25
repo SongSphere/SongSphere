@@ -148,7 +148,7 @@ const Post = (props: IPostProps) => {
           </div>
           <div className="text-2xl font-bold">{props.post.music.name}</div>
           <div className="text-slate-500">{props.post.music.artist}</div>
-          <div className="w-full p-0.5 bg-slate-400"></div>
+          <hr className="h-0.5 bg-gray-200 border-0 dark:bg-gray-700"></hr>
           <div className="">{props.post.caption}</div>
         </div>
       </div>
