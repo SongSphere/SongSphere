@@ -4,6 +4,7 @@ import OtherFollowerCard from "./other-follower-card";
 
 interface IProfileCardProps {
   selectedUser: TUser | null;
+  user: TUser | null;
 }
 
 const OtherUserProfileCard = (props: IProfileCardProps) => {

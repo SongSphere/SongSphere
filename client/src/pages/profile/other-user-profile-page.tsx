@@ -69,6 +69,10 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
     console.log("Not following");
   }
 
+  if (!user) {
+    return <div>fetching</div>;
+  }
+
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-lblue">
       <Navbar />
@@ -78,6 +82,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
             // user={props.user}
             // setUser={props.setUser}
             selectedUser={selectedUser}
+            user={user}
             // setSelectedUser={props.setSelectedUser}
             // setSelectEditPost={props.setSelectEditPost}
           />
@@ -93,6 +98,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
               setPost={setPost}
               selectedUser={selectedUser}
               blur={!isFollowing}
+              user={user}
               // setRepost={props.setRepost}
             />
           )}
