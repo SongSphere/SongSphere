@@ -35,7 +35,7 @@ const BlockUserModal = (props: IBlockProps) => {
         <div className="py-2 text-center">
           <button
             onClick={() => {
-              //block();
+              // block()
               navigate("/");
             }}
             className="px-5 py-3 font-semibold text-white bg-red-700 rounded"

@@ -142,6 +142,7 @@ export const signInUp = async (
       followers: Array<String>(),
       following: Array<String>(),
       blockedUsers: Array<String>(),
+      blockedBy: Array<String>(),
       onboarded: false,
     };
 
