@@ -12,7 +12,11 @@ import {
   updateBackground,
   updatePFPUrl,
   updateBURL,
-} from "../services/db";
+  fetchFeed,
+  updateUserVisibility,
+  likePost,
+  isLiked,
+} from "../services/user";
 import fs from "fs";
 
 export const sessionUpdate = async (
@@ -36,9 +40,6 @@ export const findUsersByUserName = async (
   next: NextFunction
 ) => {
   try {
-    console.log("Printed in user.ts in controllers backend");
-    console.log(req.body.username.toString);
-    //console.log(req.body.userName.toString);
     const users = await fetchUsersbyUserName(req.body.username);
     res.status(200);
     res.json({ users: users });
@@ -48,18 +49,33 @@ export const findUsersByUserName = async (
   }
 };
 
-export const findUserByUserName = async (
+export const getUserByUsername = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const user = await fetchUserbyUserName(req.body.username);
+    const user = await fetchUserbyUserName(req.params.username);
     res.status(200);
     res.json({ user: user });
   } catch (error) {
     res.status(404);
     res.json({ msg: "cannot find user" });
+  }
+};
+
+export const getFeed = async (req: Request, res: Response) => {
+  try {
+    const posts = await fetchFeed(
+      req.session.user.email,
+      parseInt(req.params.num, 10)
+    );
+    res.status(200);
+    res.json({ posts: posts });
+  } catch (error) {
+    console.log("Bruh");
+    res.status(404);
+    res.json({ msg: "cannot fetch posts" });
   }
 };
 
@@ -99,6 +115,23 @@ export const changeOnboarded = async (
   } catch (error) {
     res.status(404);
     res.json({ msg: "update onboard fail" });
+  }
+};
+
+export const changeAccountVisibility = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const email = req.session.user.email;
+    await updateUserVisibility(email, req.body.isPrivate).then(() => {
+      res.status(200);
+      res.json({ msg: "Success" });
+    });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "update visibility fail" });
   }
 };
 
@@ -166,7 +199,7 @@ export const updateProfilePhoto = (req: Request, res: Response) => {
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ msg: "failed" });
   }
 
@@ -182,7 +215,7 @@ export const updateProfileURL = (req: Request, res: Response) => {
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ msg: "failed" });
   }
 };
@@ -196,7 +229,7 @@ export const updateBackgroundPhoto = (req: Request, res: Response) => {
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ msg: "failed" });
   }
 
@@ -212,12 +245,12 @@ export const updateBackgroundURL = (req: Request, res: Response) => {
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ msg: "failed" });
   }
 };
 
-export const getPhoto = (req: Request, res: Response) => {
+export const getProfilePhoto = (req: Request, res: Response) => {
   const imageName = req.params.imageName;
   try {
     if (fs.existsSync(`images/${imageName}`)) {
@@ -225,9 +258,33 @@ export const getPhoto = (req: Request, res: Response) => {
       readStream.pipe(res);
     }
   } catch (error) {
-    console.log("hi");
     res.status(500);
     res.json({ msg: "failed to get image" });
     console.error(error);
+  }
+};
+
+export const updateLikePost = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email = req.session.user.email;
+  try {
+    likePost(req.body.postId, email);
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const fetchIsLiked = async (req: Request, res: Response) => {
+  try {
+    await isLiked(req.body.postId, req.body.email);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
   }
 };

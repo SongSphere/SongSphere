@@ -17,6 +17,8 @@ export type TUser = {
   blockedUsers: string[];
   blockedBy: string[];
   onboarded: Boolean;
+  isPrivate: Boolean;
+  likes: string[];
 };
 
 export type TUserWrapper = {

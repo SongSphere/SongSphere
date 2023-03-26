@@ -7,7 +7,7 @@ import {
   addFollow,
   removeFollow,
   unBlockAccount,
-} from "../services/db";
+} from "../services/user";
 
 export const follow = async (req: Request, res: Response) => {
   const emailOfUserMakingFollow = req.session.user.email;
@@ -26,7 +26,7 @@ export const follow = async (req: Request, res: Response) => {
     res.status(201);
     res.json({ msg: "followed successfully" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ error: error });
   }
 };
@@ -49,7 +49,7 @@ export const unfollow = async (req: Request, res: Response) => {
     res.status(201);
     res.json({ msg: "unfollowed successfully" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ error: error });
   }
 };
@@ -94,7 +94,7 @@ export const unblock = async (req: Request, res: Response) => {
     res.status(201);
     res.json({ msg: "unblocked successfully" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.json({ error: error });
   }
 };

@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { block } from "../../services/block";
+import { block } from "../../services/user/block";
+import { TUser } from "../../types/user";
+import Session from "../../session";
+import fetchUser from "../../services/user/fetch-user";
 
 interface IBlockProps {
+  selectedUser: TUser;
+  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
   isVisible: boolean;
   onClose: Function;
 }
@@ -16,6 +21,28 @@ const BlockUserModal = (props: IBlockProps) => {
       props.onClose();
     }
   };
+
+  const handleClick = async () => {
+    const user = Session.getUser();
+
+    if (props.selectedUser && user) {
+      block(
+        user.username,
+        props.selectedUser.username,
+        props.selectedUser.email
+      ).then(async () => {
+        Session.setUser(await fetchUser());
+      });
+    }
+  };
+
+  useEffect(() => {
+    const user = Session.getUser();
+  }, [props.selectedUser]);
+
+  if (!props.selectedUser) {
+    return <div>fetching user data</div>;
+  }
 
   if (!props.isVisible) {
     return null;
@@ -35,7 +62,7 @@ const BlockUserModal = (props: IBlockProps) => {
         <div className="py-2 text-center">
           <button
             onClick={() => {
-              // block()
+              handleClick();
               navigate("/");
             }}
             className="px-5 py-3 font-semibold text-white bg-red-700 rounded"

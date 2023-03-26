@@ -19,6 +19,8 @@ export interface IUser {
   blockedUsers: Array<String>;
   blockedBy: Array<String>;
   onboarded: Boolean;
+  isPrivate: Boolean;
+  likes: Array<String>;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -95,6 +97,14 @@ const UserSchema = new Schema<IUser>(
       type: Boolean,
       required: true,
     },
+    isPrivate: {
+      type: Boolean,
+      required: true,
+    },
+    likes: {
+      type: Array<String>(),
+      required: false,
+    }
   },
   {
     // this enables createdAt and updatedAt

@@ -7,6 +7,9 @@ export interface IPost {
   userEmail: string;
   caption: string;
   music: TMusicContent;
+  comments: Array<String>;
+  likes: number;
+  repost: boolean;
 }
 
 const PostSchema = new Schema<IPost>(
@@ -37,6 +40,18 @@ const PostSchema = new Schema<IPost>(
         category: String,
         cover: String,
       },
+      required: true,
+    },
+    comments: {
+      type: Array<String>(),
+      required: true,
+    },
+    likes: {
+      type: Number,
+      required: false,
+    },
+    repost: {
+      type: Boolean,
       required: true,
     },
   },
