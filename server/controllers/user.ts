@@ -13,6 +13,9 @@ import {
   updatePFPUrl,
   updateBURL,
   fetchFeed,
+  updateUserVisibility,
+  likePost,
+  isLiked,
 } from "../services/user";
 import fs from "fs";
 
@@ -112,6 +115,23 @@ export const changeOnboarded = async (
   } catch (error) {
     res.status(404);
     res.json({ msg: "update onboard fail" });
+  }
+};
+
+export const changeAccountVisibility = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const email = req.session.user.email;
+    await updateUserVisibility(email, req.body.isPrivate).then(() => {
+      res.status(200);
+      res.json({ msg: "Success" });
+    });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "update visibility fail" });
   }
 };
 
@@ -241,5 +261,30 @@ export const getProfilePhoto = (req: Request, res: Response) => {
     res.status(500);
     res.json({ msg: "failed to get image" });
     console.error(error);
+  }
+};
+
+export const updateLikePost = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const email = req.session.user.email;
+  try {
+    likePost(req.body.postId, email);
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const fetchIsLiked = async (req: Request, res: Response) => {
+  try {
+    await isLiked(req.body.postId, req.body.email);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
   }
 };

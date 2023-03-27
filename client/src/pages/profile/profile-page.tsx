@@ -2,29 +2,25 @@
 import { useEffect, useState } from "react";
 
 // import services
-import fetchUserByUsername from "../services/user/fetch-user-username";
-import fetchPostsByUsername from "../services/user/fetch-user-posts";
+import fetchUserPosts from "../../services/posts/fetch-user-posts";
 
 // import types
-import { TMusicContent } from "../types/music-content";
-import { TPost } from "../types/post";
-import { TUser } from "../types/user";
+import { TMusicContent } from "../../types/music-content";
+import { TPost } from "../../types/post";
+import { TUser } from "../../types/user";
 
 // import components
-import Navbar from "../components/navbar";
-import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
-import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
-import ProfileCard from "../components/profile/profile-card";
-import ProfileFeed from "../components/profile/profile-feed";
-import { NoPosts } from "../components/profile/no-post";
-import Session from "../session";
+import Navbar from "../../components/navbar";
+import AppleMusicPlayerCard from "../../components/player/apple-music-player-card";
+import SpotifyPlayerCard from "../../components/player/spotify-music-player-card";
+import ProfileCard from "../../components/profile/profile-card";
+import ProfileFeed from "../../components/profile/profile-feed";
+import { NoPosts } from "../../components/profile/no-post";
+import Session from "../../session";
+import fetchPostsByUsername from "../../services/posts/fetch-user-posts";
 
 interface IProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  // user: TUser | null;
-  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  // service: string;
-  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const ProfilePage = (props: IProfileProps) => {
@@ -60,29 +56,20 @@ const ProfilePage = (props: IProfileProps) => {
         </div>
         <div className="col-span-2">
           {posts.length > 0 ? (
-            <ProfileFeed
-              posts={posts}
-              setSong={setSong}
-              setPost={setPost}
-              setSelectEditPost={props.setSelectEditPost}
-            />
+            <ProfileFeed posts={posts} setSong={setSong} user={user} />
           ) : (
             <NoPosts />
           )}
         </div>
         {service === "apple" ? (
           <AppleMusicPlayerCard
-            // user={props.user}
-            // service={props.service}
             musicInstance={props.appleMusicInstance}
             selectedSong={song}
           />
         ) : (
           <SpotifyPlayerCard
-            // user={props.user}
             selectedSong={song}
             appleMusicInstance={props.appleMusicInstance}
-            // service={props.service}
           />
         )}
       </div>

@@ -9,17 +9,9 @@ import fetchPostById from "../services/post/fetch-post-by-id";
 import { TPost } from "../types/post";
 import Session from "../session";
 
-interface IEditPageProps {
-  // selectEditPost: TPost | null;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-}
+interface IEditPageProps {}
 
 const EditPage = (props: IEditPageProps) => {
-  // if(props.post == null) {
-  //     return (
-  //         <div><h1>Error Post not Found</h1></div>
-  //     );
-  // }
   const [open, setOpen] = useState(false);
   const [post, setPost] = useState<TPost | null>(null);
   const closeModal = () => setOpen(false);
@@ -35,9 +27,6 @@ const EditPage = (props: IEditPageProps) => {
         setCaption(post.caption);
       });
     }
-    // if (props.selectEditPost) {
-    //   setCaption(props.selectEditPost.caption);
-    // }
   }, []);
 
   if (!post) {
@@ -58,7 +47,6 @@ const EditPage = (props: IEditPageProps) => {
             className="w-1/2"
             defaultValue={post.caption}
           />
-          {/* <Link to="/profile"> */}
           <button
             className="p-2 text-sm rounded-full bg-lblue hover:bg-navy hover:text-lgrey"
             onClick={async () => {
@@ -69,6 +57,8 @@ const EditPage = (props: IEditPageProps) => {
                 caption: caption,
                 music: post.music,
                 comments: post.comments,
+                likes: post.likes,
+                repost: post.repost,
               })
                 .then(async (res) => {
                   if (res) {
@@ -99,7 +89,6 @@ const EditPage = (props: IEditPageProps) => {
               {successFailText}
             </div>
           </Popup>
-          {/* </Link> */}
         </div>
       </div>
     </div>

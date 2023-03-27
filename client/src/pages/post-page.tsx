@@ -1,7 +1,4 @@
-import React from "react";
-import ReactDOM from "react";
 import Search from "../components/post/search-song";
-import { TUser } from "../types/user";
 import { Link } from "react-router-dom";
 import Navbar from "../components/navbar";
 
@@ -31,19 +28,15 @@ const PostPage = (props: IPostPageProps) => {
                   aria-hidden="true"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
               </button>
             </Link>
-            <Search
-              musicInstance={props.musicInstance}
-              // user={props.user}
-              // service={props.service}
-            />
+            <Search musicInstance={props.musicInstance} />
           </div>
         </div>
       </div>

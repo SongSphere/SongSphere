@@ -1,10 +1,7 @@
 import LoginButton from "../components/onboard/google-login-button";
 import { TUser } from "../types/user";
 
-interface IAuthPageProps {
-  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-  // setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-}
+interface IAuthPageProps {}
 
 const AuthPage = (props: IAuthPageProps) => {
   return (
@@ -19,10 +16,7 @@ const AuthPage = (props: IAuthPageProps) => {
             <div>Continue with Google</div>
             <div>
               <div>
-                <LoginButton
-                // setIsLoggedIn={props.setIsLoggedIn}
-                // setUser={props.setUser}
-                />
+                <LoginButton />
               </div>
             </div>
           </div>

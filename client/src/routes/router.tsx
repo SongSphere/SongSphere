@@ -6,22 +6,16 @@ import AuthPage from "../pages/auth-page";
 import HomePage from "../pages/home-page";
 import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
-import ProfilePage from "../pages/profile-page";
 import SearchUsersPage from "../pages/search-users-page";
 import SettingsPage from "../pages/settings-page";
-import { TUser } from "../types/user";
-import { TPost } from "../types/post";
 import EditPage from "../pages/edit-page";
-import OtherUserProfilePage from "../pages/other-user-profile-page";
-import Session from "../session";
+import ProfilePage from "../pages/profile/profile-page";
+import OtherUserProfilePage from "../pages/profile/other-user-profile-page";
+import NotificationPage from "../pages/notification-page";
+import RepostPage from "../pages/repost-page";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  selectedUser: TUser | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  post: TPost | null;
-  selectEditPost: TPost | null;
-  setSelectEditPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const Router = (props: IRouterProps) => {
@@ -35,44 +29,30 @@ const Router = (props: IRouterProps) => {
       element: <HomePage appleMusicInstance={props.appleMusicInstance} />,
     },
     {
+      path: "/notificationsPage",
+      element: (
+        <NotificationPage appleMusicInstance={props.appleMusicInstance} />
+      ),
+    },
+    {
       path: "/posts",
       element: <PostPage musicInstance={props.appleMusicInstance} />,
     },
     {
       path: "/searchUsers",
       element: (
-        <SearchUsersPage
-          // user={props.user}
-          // setUser={props.setUser}
-          // selectedUser={props.selectedUser}
-          // setSelectedUser={props.setSelectedUser}
-          // setIsLoggedIn={props.setIsLoggedIn}
-          appleMusicInstance={props.appleMusicInstance}
-          // service={props.service}
-        />
+        <SearchUsersPage appleMusicInstance={props.appleMusicInstance} />
       ),
     },
     {
       path: "/user/:username",
       element: (
-        <OtherUserProfilePage
-          // user={props.user}
-          // setIsLoggedIn={props.setIsLoggedIn}
-          appleMusicInstance={props.appleMusicInstance}
-          // service={props.service}
-          // setSelectEditPost={props.setSelectEditPost}
-        />
+        <OtherUserProfilePage appleMusicInstance={props.appleMusicInstance} />
       ),
     },
     {
       path: "/profile",
-      element: (
-        <ProfilePage
-          appleMusicInstance={props.appleMusicInstance}
-          // service={props.service}
-          setSelectEditPost={props.setSelectEditPost}
-        />
-      ),
+      element: <ProfilePage appleMusicInstance={props.appleMusicInstance} />,
     },
     {
       path: "/onboard",
@@ -84,12 +64,11 @@ const Router = (props: IRouterProps) => {
     },
     {
       path: "/edit/:id",
-      element: (
-        <EditPage
-        // setUser={props.setUser}
-        // selectEditPost={props.selectEditPost}
-        />
-      ),
+      element: <EditPage />,
+    },
+    {
+      path: "/repost/:id",
+      element: <RepostPage />,
     },
   ]);
   return element;

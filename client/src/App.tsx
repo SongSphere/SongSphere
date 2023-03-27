@@ -11,10 +11,7 @@ import React from "react";
 
 const App = () => {
   const [user, setUser] = useState<TUser | null>(null);
-  const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
-  const [post, editPost] = useState<TPost | null>(null);
-  const [selectEditPost, setSelectEditPost] = useState<TPost | null>(null);
 
   const [appleMusicInstance, setAppleMusicInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
@@ -23,7 +20,6 @@ const App = () => {
     const updateSession = async () => {
       try {
         await checkLoggedIn().then(async (isLoggedIn) => {
-          // setIsLoggedIn(isLoggedIn);
           Session.setIsLoggedIn(isLoggedIn);
           if (isLoggedIn) {
             await fetchUser().then((userData) => {
@@ -89,16 +85,7 @@ const App = () => {
       if (!user.onboarded) {
         return <OnBoardPage appleMusicInstance={appleMusicInstance} />;
       } else {
-        return (
-          <Router
-            selectedUser={selectedUser}
-            setSelectedUser={setSelectedUser}
-            appleMusicInstance={appleMusicInstance}
-            post={post}
-            setSelectEditPost={setSelectEditPost}
-            selectEditPost={selectEditPost}
-          />
-        );
+        return <Router appleMusicInstance={appleMusicInstance} />;
       }
     } else {
       return <AuthPage />;
