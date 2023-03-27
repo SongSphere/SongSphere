@@ -352,6 +352,7 @@ export const isLiked = async(postId:string, email:string) => {
   try {
     const isLiked = await User.exists({likes:postId});
     return isLiked;
+    
   } catch(error) {
     throw error;
   }
