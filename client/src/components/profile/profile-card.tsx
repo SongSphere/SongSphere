@@ -1,6 +1,8 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { TUser } from "../../types/user";
+import BlockUserModal from "./block-user-modal";
 import MyFollowerCard from "./my-follower-card";
 
 interface IProfileCardProps {

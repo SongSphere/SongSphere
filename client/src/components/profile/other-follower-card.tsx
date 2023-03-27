@@ -73,8 +73,6 @@ const OtherFollowerCard = (props: IOtherFollowerCard) => {
       if (user.following.includes(props.selectedUser.username)) {
         setIsFollowing(true);
       }
-      console.log(props.selectedUser.followers);
-      console.log(props.selectedUser.following);
       setFollowers(props.selectedUser.followers);
       setFollowing(props.selectedUser.following);
     }
