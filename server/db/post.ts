@@ -7,6 +7,7 @@ export interface IPost {
   userEmail: string;
   caption: string;
   music: TMusicContent;
+  comments: Array<String>;
   likes: number;
   repost: boolean;
 }
@@ -41,6 +42,10 @@ const PostSchema = new Schema<IPost>(
       },
       required: true,
     },
+    comments: {
+      type: Array<String>(),
+      required: true,
+    },
     likes: {
       type: Number,
       required: false,
@@ -48,7 +53,7 @@ const PostSchema = new Schema<IPost>(
     repost: {
       type: Boolean,
       required: true,
-    }
+    },
   },
   {
     // this enables createdAt and updatedAt

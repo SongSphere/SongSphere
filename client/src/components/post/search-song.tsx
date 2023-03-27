@@ -193,6 +193,7 @@ const SearchSong = (props: ISearchSongProps) => {
               userEmail: user.email,
               caption: caption,
               music: selected!,
+              comments: [],
               likes: 0,
               repost: isRepost,
             };

@@ -5,7 +5,6 @@ import { TPost } from "../../types/post";
 interface IPostFocusPageProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const PostFocusPage = (props: IPostFocusPageProps) => {

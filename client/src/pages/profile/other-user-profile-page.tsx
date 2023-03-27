@@ -15,7 +15,6 @@ import { TUser } from "../../types/user";
 
 interface IOtherUserProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  setRepost: React.Dispatch<React.SetStateAction<TPost | null>>;
 }
 
 const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
@@ -46,19 +45,17 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
       });
     }
 
-  
     // Test if this works
     if (selectedUser && user) {
-        for (let i = 0; i < selectedUser.followers.length; i++) {
-          console.log(`cur followers: ${selectedUser.followers[i]}`);
-          if (user.username == selectedUser.followers[i]) {
-            console.log(`${user.username} is following ${selectedUser.username}`);
-              setFollowing(true);
-              break;
-          }
+      for (let i = 0; i < selectedUser.followers.length; i++) {
+        console.log(`cur followers: ${selectedUser.followers[i]}`);
+        if (user.username == selectedUser.followers[i]) {
+          console.log(`${user.username} is following ${selectedUser.username}`);
+          setFollowing(true);
+          break;
         }
+      }
     }
-    
   }, [selectedUser, user]);
 
   if (!selectedUser && service) {
@@ -66,9 +63,13 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
   }
 
   if (isFollowing) {
-    console.log("Is following")
+    console.log("Is following");
   } else {
-    console.log("Not following")
+    console.log("Not following");
+  }
+
+  if (!user || !selectedUser) {
+    return <div>fetching</div>;
   }
 
   return (
@@ -77,17 +78,14 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
           <OtherUserProfileCard
-            // user={props.user}
-            // setUser={props.setUser}
             selectedUser={selectedUser}
-            // setSelectedUser={props.setSelectedUser}
-            // setSelectEditPost={props.setSelectEditPost}
+            user={user}
+            setSelectedUser={setSelectedUser}
           />
         </div>
         <div className="col-span-2">
           {/* Means it should be T && T */}
           {!(isFollowing && posts.length > 0) ? (
-          
             <NoPosts />
           ) : (
             <OtherProfileFeed
@@ -96,23 +94,19 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
               setPost={setPost}
               selectedUser={selectedUser}
               blur={!isFollowing}
-              setRepost={props.setRepost}
+              user={user}
             />
           )}
         </div>
         {service === "apple" ? (
           <AppleMusicPlayerCard
-            // user={props.user}
-            // service={props.service}
             musicInstance={props.appleMusicInstance}
             selectedSong={song}
           />
         ) : (
           <SpotifyPlayerCard
-            // user={props.user}
             selectedSong={song}
             appleMusicInstance={props.appleMusicInstance}
-            // service={props.service}
           />
         )}
       </div>
