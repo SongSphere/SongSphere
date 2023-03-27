@@ -320,15 +320,6 @@ export const unBlockAccount = async (
   emailOfUserGettingUnblocked: string,
   emailOfUserUnblocking: string
 ) => {
-  console.log(
-    "user unblocking: " + usernameOfUserUnblocking + " " + emailOfUserUnblocking
-  );
-  console.log(
-    "user getting unblocked: " +
-      usernameOfUserGettingUnblocked +
-      " " +
-      emailOfUserGettingUnblocked
-  );
   try {
     await User.updateOne(
       { email: emailOfUserUnblocking },

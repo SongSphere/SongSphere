@@ -68,6 +68,20 @@ export const block = async (req: Request, res: Response) => {
       emailOfUserGettingBlocked
     );
 
+    await removeFollow(
+      usernameOfUserMakingBlock,
+      usernameOfUserGettingBlocked,
+      emailOfUserGettingBlocked,
+      emailOfUserMakingBlock
+    );
+
+    await removeFollow(
+      usernameOfUserGettingBlocked,
+      usernameOfUserMakingBlock,
+      emailOfUserMakingBlock,
+      emailOfUserGettingBlocked
+    );
+
     res.status(201);
     res.json({ msg: "blocked successfully" });
   } catch (error) {
