@@ -20,6 +20,7 @@ import {
   fetchisLiked,
 } from "../services/user";
 import fs from "fs";
+import { Session } from "inspector";
 
 export const sessionUpdate = async (
   req: Request,
@@ -300,9 +301,9 @@ export const fetchIsLiked = async (req: Request, res: Response) => {
 
 export const fetchLikedPosts = async(req:Request, res:Response) => {
   try {
-    await fetchisLiked(req.body.username);
+    const likes = await fetchisLiked(req.session.user.username);
     res.status(200);
-    res.json({ msg: "success" });
+    res.json({ likes: likes });
   } catch (error) {
     res.status(500);
     res.json({ error: error });
