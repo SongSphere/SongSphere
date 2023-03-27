@@ -7,14 +7,14 @@ import axios from "axios";
 import { validateToken } from "../services/google-sign-in-up";
 import {
   createUser,
-  saveUser,
   checkUser,
+  saveUser,
   updateUserToken,
   updateSpotifyTokens,
   removeSpotifyTokens,
   updateAppleToken,
   removeAppleToken,
-} from "../services/db";
+} from "../services/user";
 
 const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -59,7 +59,7 @@ export const spotifyAuth = async (req: Request, res: Response) => {
         res.status(201);
         res.json({ msg: "spotify tokens successfully updated" });
       } catch (error) {
-        console.log(error);
+        console.error(error);
         res.json({ error: error });
       }
     } else {
@@ -68,7 +68,7 @@ export const spotifyAuth = async (req: Request, res: Response) => {
         res.status(201);
         res.json({ msg: "spotify tokens successfully updated" });
       } catch (error) {
-        console.log(error);
+        console.error(error);
         res.json({ error: error });
       }
     }
@@ -90,7 +90,7 @@ export const appleAuth = async (req: Request, res: Response) => {
       res.status(201);
       res.json({ msg: "apple token successfully updated" });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.json({ error: error });
     }
   } else {
@@ -99,7 +99,7 @@ export const appleAuth = async (req: Request, res: Response) => {
       res.status(201);
       res.json({ msg: "apple token successfully updated" });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.json({ error: error });
     }
   }
@@ -127,7 +127,7 @@ export const signInUp = async (
 
     req.session.user = {
       name: userData.name,
-      userName: "",
+      username: "",
       givenName: userData.given_name,
       middleName: "",
       familyName: userData.family_name,
@@ -141,7 +141,11 @@ export const signInUp = async (
       appleToken: "",
       followers: Array<String>(),
       following: Array<String>(),
+      blockedUsers: Array<String>(),
+      blockedBy: Array<String>(),
       onboarded: false,
+      isPrivate: false,
+      likes: Array<String>(),
     };
 
     res.status(201);

@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
-import handleSignout from "../services/handle-sign-out";
-import { TUser } from "../types/user";
+import handleSignout from "../services/user/handle-sign-out";
+import Session from "../session";
 
-interface INavbarProps {
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
-  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface INavbarProps {}
 
 const Navbar = (props: INavbarProps) => {
+  
+
   return (
     <div className="relative z-10 h-16">
       <div className="fixed w-screen bg-white drop-shadow-md">
@@ -25,6 +24,10 @@ const Navbar = (props: INavbarProps) => {
           <Link className="p-5" to="/posts">
             Post
           </Link>
+          <Link className="p-5" to="/notificationsPage">
+            Notification
+          </Link>
+       
           <Link className="p-5" to="/settings">
             Setting
           </Link>
@@ -35,8 +38,8 @@ const Navbar = (props: INavbarProps) => {
               // Redirect to the authentication page
               const logoutSuccesss = await handleSignout();
               if (logoutSuccesss) {
-                props.setUser(null);
-                props.setIsLoggedIn(false);
+                Session.setUser(null);
+                window.location.reload();
               }
             }}
           >

@@ -7,15 +7,27 @@ import {
   removePost,
   savePost,
   updatePost,
-  getUserPostsByEmail,
-} from "../services/db";
+  fetchPostsByUsername,
+  fetchPostById,
+} from "../services/post";
 
-export const getUserPosts = async (req: Request, res: Response) => {
+export const getPostsByUsername = async (req: Request, res: Response) => {
   try {
-    const posts = await getUserPostsByEmail(req.body.email);
-    console.log(posts);
+    const posts = await fetchPostsByUsername(req.params.username);
+
     res.status(201);
     res.json({ posts: posts });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getPostById = async (req: Request, res: Response) => {
+  try {
+    const post = await fetchPostById(req.params.id);
+    res.status(201);
+    res.json({ post: post });
   } catch (error) {
     res.status(500);
     res.json({ error: error });
