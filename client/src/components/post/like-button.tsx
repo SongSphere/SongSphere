@@ -44,19 +44,15 @@ const LikeButton = (props:LikeButtonProps) => {
       }, []);
     let button;
     if(liked) {
-      button = <LikedButton onClick={() => UnlikePost(props.post).then(() =>{
-        window.location.reload();
-    }) }></LikedButton>;
+      return (
+        <LikedButton onClick={async() => UnlikePost(props.post)} />
+      );
     } else {
-        button = <NotLikedButton onClick={() => LikePost(props.post).then(() =>{
-            window.location.reload();
-        })}></NotLikedButton>;
+        return (
+        <NotLikedButton onClick={() => LikePost(props.post)} />
+        );
     }
-    return (
-        <div>
-            {button}
-        </div>
-    )
+    
     
     
 };

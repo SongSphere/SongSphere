@@ -340,10 +340,15 @@ export const updateBURL = async (email: string, url: string) => {
 
 export const likePost = async (postId: string, email: string) => {
   try {
-    await User.findOneAndUpdate(
+    await User.updateOne(
       { email: email },
       { $push: { likes:  postId} }
+    )
+    await Post.findOneAndUpdate(
+      {_id: postId},
+      {$inc: {likes:1}}
     );
+    console.log('here');
   } catch(error) {
     throw error;
   }
@@ -354,7 +359,12 @@ export const unlikePost = async (postId: string, email: string) => {
     await User.updateOne(
       { email: email },
       { $pull: { likes:  postId} }
+    )
+    await Post.findOneAndUpdate(
+      {_id: postId},
+      {$inc:{likes: -1}}
     );
+    
   } catch(error) {
     throw error;
   }
