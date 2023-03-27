@@ -78,10 +78,10 @@ export const block = async (req: Request, res: Response) => {
 
 export const unblock = async (req: Request, res: Response) => {
   const emailOfUserUnblocking = req.session.user.email;
-  const usernameOfUserUnblocking = req.body.usernameOfUserUnfollowing;
+  const usernameOfUserUnblocking = req.body.usernameOfUserUnblocking;
   const usernameOfUserGettingUnblocked =
-    req.body.usernameOfUserGettingUnfollowed;
-  const emailOfUserGettingUnblocked = req.body.emailOfUserGettingUnfollowed;
+    req.body.usernameOfUserGettingUnblocked;
+  const emailOfUserGettingUnblocked = req.body.emailOfUserGettingUnblocked;
 
   try {
     await unBlockAccount(

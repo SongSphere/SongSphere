@@ -17,7 +17,6 @@ const BlockUserModal = (props: IBlockProps) => {
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
-      console.log("TESTTSTST");
       props.onClose();
     }
   };

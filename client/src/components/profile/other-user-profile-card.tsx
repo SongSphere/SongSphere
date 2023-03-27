@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { TUser } from "../../types/user";
 import BlockUserModal from "./block-user-modal";
 import OtherFollowerCard from "./other-follower-card";
@@ -25,7 +24,6 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
     setShowBlockModal(false);
   };
 
-  let navigate = useNavigate();
   if (!props.selectedUser) {
     return <div>fetching user</div>;
   }
