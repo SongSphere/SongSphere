@@ -4,6 +4,7 @@ import User, { IUser } from "../db/user";
 import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
+import { Session } from "inspector";
 
 
 export const createUser = async (
@@ -348,9 +349,21 @@ export const likePost = async (postId: string, email: string) => {
   }
 }
 
+export const unlikePost = async (postId: string, email: string) => {
+  try {
+    await User.updateOne(
+      { email: email },
+      { $pull: { likes:  postId} }
+    );
+  } catch(error) {
+    throw error;
+  }
+}
+
 export const isLiked = async(postId:string, email:string) => {
   try {
-    const isLiked = await User.exists({likes:postId});
+    const user = await User.findOne({email: email});
+    const isLiked = user.likes.includes(postId);
     return isLiked;
     
   } catch(error) {
@@ -358,7 +371,7 @@ export const isLiked = async(postId:string, email:string) => {
   }
 }
 
-export const fetchLiked = async(username:string) => {
+export const fetchisLiked = async(username:string) => {
   try {
     const users = await User.findOne({ username: username });
     return users.likes;

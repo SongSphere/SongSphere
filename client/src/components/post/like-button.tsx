@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { TPost } from "../../types/post";
-import FetchLikes from "../../services/user/fetch-likes";
 import LikePost from "../../services/user/like-post";
+import UnlikePost from "../../services/user/unlike-post";
+import fetchLikes from "../../services/user/fetch-likes";
 
 interface LikeButtonProps {
     post: TPost;
@@ -31,12 +32,25 @@ background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/200
 background-size:contain;
 `;
 const LikeButton = (props:LikeButtonProps) => {
-    const liked =  FetchLikes(props.post)
+    const[liked, setLiked] = useState<boolean | null>(null);
+
+
+    useEffect(() => {
+        if(props.post._id) {
+            fetchLikes(props.post._id).then((liked) =>{
+                setLiked(liked);
+            })
+        }
+      }, []);
     let button;
-    if(!liked) {
-      button = <LikedButton onClick={() => LikePost(props.post) }></LikedButton>;
+    if(liked) {
+      button = <LikedButton onClick={() => UnlikePost(props.post).then(() =>{
+        window.location.reload();
+    }) }></LikedButton>;
     } else {
-        button = <NotLikedButton onClick={() => LikePost(props.post) }></NotLikedButton>;
+        button = <NotLikedButton onClick={() => LikePost(props.post).then(() =>{
+            window.location.reload();
+        })}></NotLikedButton>;
     }
     return (
         <div>

@@ -2,7 +2,7 @@ import { TPost } from "../../types/post";
 
 const UnlikePost = async (post: TPost) => {
     try {
-        await fetch(`${process.env.REACT_APP_API}/api/user/updateLikePost`, {
+        await fetch(`${process.env.REACT_APP_API}/api/user/updateUnlikePost`, {
             method: "POST",
             credentials: "include",
             body: JSON.stringify({
