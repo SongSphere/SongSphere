@@ -1,7 +1,7 @@
 import fetchUser from "../services/user/fetch-user";
 //import { appleAuth } from "../services/apple/apple-music-link";
 import { TUser } from "../types/user";
-import fetchFeed from "../services/fetch-feed";
+import fetchFeed from "../services/user/fetch-feed";
 
 const FetchFeed = () => {
   return (

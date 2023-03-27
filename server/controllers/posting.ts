@@ -9,6 +9,8 @@ import {
   updatePost,
   fetchPostsByUsername,
   fetchPostById,
+  comment,
+  saveComment,
 } from "../services/post";
 
 export const getPostsByUsername = async (req: Request, res: Response) => {
@@ -69,5 +71,22 @@ export const deletePost = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500);
     res.json({ error: error });
+  }
+};
+
+export const sendComment = async (req: Request, res: Response) => {
+  try {
+    const c = await comment(
+      req.body.comment,
+      req.body.postId,
+      req.body.replyingTo
+    );
+    console.log(c);
+    await saveComment(c);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    console.log(error);
   }
 };
