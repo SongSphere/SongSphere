@@ -370,7 +370,7 @@ export const setDefaultPlatform = async (
   defaultPlatform: string
 ) => {
   try {
-    const user = await User.findOne(
+    await User.findOneAndUpdate(
       { email: email },
       { defaultPlatform: defaultPlatform }
     );

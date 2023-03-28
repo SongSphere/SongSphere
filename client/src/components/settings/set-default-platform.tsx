@@ -9,44 +9,51 @@ import {
 } from "../../services/user/default-platform";
 
 const DefaultPlatform = () => {
-  //let platform = Session.getMusicService();
   let [user, setUser] = useState<TUser | null>(null);
-  let [currService, setCurrService] = useState<string>("");
+  let [currService, setCurrService] = useState<string>();
   let [service, setService] = useState<string[]>([]);
-  //let options = [];
+
   useEffect(() => {
     setUser(Session.getUser());
-    console.log(user);
     checkService();
-    getPlatform();
     if (user) {
-      console.log("ayo");
-      console.log(Session.getMusicService());
-      //setCurrService(Session.getMusicService());
+      setCurrService(user.defaultPlatform);
+
+      // If a user unlinks their default platform
+      if (user.spotifyToken == undefined || user.spotifyToken.length == 0) {
+        if (currService == "spotify") {
+          setCurrService("apple");
+          setDefaultPlatform("apple");
+          Session.setMusicService("apple");
+          user.defaultPlatform = "apple";
+        }
+      }
+      if (user.appleToken == undefined || user.appleToken.length == 0) {
+        if (currService == "apple") {
+          setCurrService("spotify");
+          setDefaultPlatform("spotify");
+          Session.setMusicService("spotify");
+          user.defaultPlatform = "spotify";
+        }
+      }
     }
-    console.log(service);
-  }, [user]);
+    console.log(user);
+  }, [user, Session.getUser()]);
 
-  const getPlatform = async () => {
-    setCurrService(await getDefaultPlatform());
-  };
-
+  // this sucks but works
   const checkService = () => {
     if (user) {
-      let a = false;
       let s = false;
       if (user.spotifyToken != undefined && user.spotifyToken.length != 0) {
+        setService(["spotify"]);
         s = true;
       }
       if (user.appleToken != undefined && user.appleToken.length != 0) {
-        a = true;
-      }
-      if (a && !s) {
-        setService(["apple"]);
-      } else if (a && s) {
-        setService(["spotify", "apple"]);
-      } else {
-        setService(["spotify"]);
+        if (s) {
+          setService(["spotify", "apple"]);
+        } else {
+          setService(["apple"]);
+        }
       }
     }
   };
@@ -66,8 +73,11 @@ const DefaultPlatform = () => {
             key={s}
             onClick={() => {
               Session.setMusicService(s);
-              //user.defaultPlatform = s;
+              setDefaultPlatform(s);
               setCurrService(s);
+              if (user) {
+                user.defaultPlatform = s;
+              }
             }}
           >
             {s}
