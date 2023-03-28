@@ -1,4 +1,4 @@
-import { TPost } from "../types/post";
+import { TPost } from "../../types/post";
 
 const fetchFeed = async (num: number) => {
   return new Promise<TPost[]>(async (resolve, reject) => {
