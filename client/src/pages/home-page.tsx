@@ -22,6 +22,7 @@ const HomePage = (props: IHomePageProps) => {
   const [service, setService] = useState<string>("");
   const [randomSongToggle, setRandomSongToggle] = useState<boolean>(false);
   const [song, setSong] = useState<TMusicContent | null>(null);
+  const [randomSong, setRandomSong] = useState<TMusicContent | null>(null);
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -31,15 +32,15 @@ const HomePage = (props: IHomePageProps) => {
       randomSongSpotifyFromBackend(user.spotifyToken).then(async (url) => {
         console.log("In homepage randomSongBackend");
         //console.log(url);
-        setSong(await randomSongSpotify(user.spotifyToken, url));
+        setRandomSong(await randomSongSpotify(user.spotifyToken, url));
         // console.log("checkpoint", song);
       });
     }
   }, [user]);
 
   useEffect(() => {
-    console.log("checkpoint", song);
-  }, [song]);
+    console.log("checkpoint", randomSong);
+  }, [randomSong]);
 
   if (!user) {
     return <div>fetching user</div>;
@@ -55,7 +56,7 @@ const HomePage = (props: IHomePageProps) => {
         </div>
         <div className="col-span-2">
           {user.showRandomSong ? (
-            <RandomSongPost song={song} user={user} />
+            <RandomSongPost song={randomSong} user={user} />
           ) : (
             <div></div>
           )}
