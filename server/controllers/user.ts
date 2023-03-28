@@ -301,7 +301,7 @@ export const fetchIsLiked = async (req: Request, res: Response) => {
 
 export const fetchLikedPosts = async(req:Request, res:Response) => {
   try {
-    const likes = await fetchisLiked(req.session.user.username);
+    const likes = await fetchisLiked(req.params.username);
     res.status(200);
     res.json({ likes: likes });
   } catch (error) {

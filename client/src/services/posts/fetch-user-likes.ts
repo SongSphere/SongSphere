@@ -2,7 +2,7 @@ import { TUser } from "../../types/user";
 
 const fetchLikesByUsername = async (username: string) => {
     return new Promise<String[]>(async (resolve, reject) => {
-      await fetch(`${process.env.REACT_APP_API}/api/user/fetchLikedPosts`, {
+      await fetch(`${process.env.REACT_APP_API}/api/user/fetchLikedPosts/${username}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -10,10 +10,11 @@ const fetchLikesByUsername = async (username: string) => {
         },
       })
         .then(async (res) => {
+          
           return res.json();
         })
         .then(async (data) => {
-          resolve(data.posts);
+          resolve(data.likes);
         })
         .catch((error) => {
           reject(error);

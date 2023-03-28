@@ -35,7 +35,7 @@ router.get("/api/user/:username", auth, getUserByUsername);
 // });
 router.get("/user/feed/:num", getFeed);
 router.get("/api/user/fetchIsLiked/:id", auth, fetchIsLiked);
-router.get("/api/user/fetchLikedPosts", auth, fetchLikedPosts);
+router.get("/api/user/fetchLikedPosts/:username", auth, fetchLikedPosts);
 
 router.post("/api/user/onboard", auth, changeOnboarded);
 router.post("/api/user/visibility", auth, changeAccountVisibility);
