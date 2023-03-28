@@ -15,7 +15,7 @@ import {
   findUsersByUserName,
   getFeed,
   changeAccountVisibility,
-  updateLikePost, 
+  updateLikePost,
   updateUnlikePost,
   fetchIsLiked,
   changeShowRandomSong,
@@ -29,6 +29,7 @@ import auth from "../middleware/auth";
 const router = express.Router();
 
 router.get("/user", auth, sessionUpdate);
+router.get("/user/feed/:num", getFeed);
 router.get("/api/user/posts/:username", auth, getPostsByUsername);
 router.get("/api/user/:username", auth, getUserByUsername);
 router.get("/user/feed/:num", getFeed);
@@ -45,7 +46,7 @@ router.post("/api/user/deleteAccount", auth, deleteUserInControllers);
 router.post("/api/user/queryUsernames", auth, findUsersByUserName);
 router.post("/api/user/queryUsername", auth, findUsersByUserName);
 router.post("/api/user/updateLikePost", auth, updateLikePost);
-router.post("/api/user/updateUnlikePost", auth, updateUnlikePost)
+router.post("/api/user/updateUnlikePost", auth, updateUnlikePost);
 
 import multer from "multer";
 const upload = multer({ dest: "images/" });

@@ -14,12 +14,10 @@ import {
   updateBURL,
   fetchFeed,
   updateUserVisibility,
-  likePost,
-  unlikePost,
-  isLiked,
   updateShowRandomSong,
-  fetchisLiked,
 } from "../services/user";
+
+import { likePost, unlikePost, isLiked, fetchisLiked } from "../services/post";
 import fs from "fs";
 
 export const sessionUpdate = async (
@@ -153,9 +151,7 @@ export const changeShowRandomSong = async (
     res.status(404);
     res.json({ msg: "update ShowRandomSong fail" });
   }
-}
-
-
+};
 
 /*
     Author: David Kim
@@ -309,16 +305,16 @@ export const updateUnlikePost = (req: Request, res: Response) => {
 export const fetchIsLiked = async (req: Request, res: Response) => {
   try {
     const email = req.session.user.email;
-    const likes  = await isLiked(req.params.id, email);
+    const likes = await isLiked(req.params.id, email);
     res.status(201);
-    res.json({ likes: likes});
+    res.json({ likes: likes });
   } catch (error) {
     res.status(500);
     res.json({ error: error });
   }
-}
+};
 
-export const fetchLikedPosts = async(req:Request, res:Response) => {
+export const fetchLikedPosts = async (req: Request, res: Response) => {
   try {
     const likes = await fetchisLiked(req.params.username);
     res.status(200);
@@ -327,4 +323,4 @@ export const fetchLikedPosts = async(req:Request, res:Response) => {
     res.status(500);
     res.json({ error: error });
   }
-}
+};

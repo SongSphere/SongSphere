@@ -30,7 +30,6 @@ const ProfilePage = (props: IProfileProps) => {
   const [showFollowerModal, setShowFollowerModal] = useState(false);
   const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
-  const [post, setPost] = useState<TPost | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
 

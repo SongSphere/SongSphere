@@ -4,8 +4,8 @@ import User, { IUser } from "../db/user";
 import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
+import FollowRequest from "../db/follow-request";
 import { Session } from "inspector";
-
 
 export const createUser = async (
   userData: TokenPayload,
@@ -143,20 +143,20 @@ export const updateUserVisibility = async (
 
 export const updateShowRandomSong = async (
   email: string,
-  showRandomSong: boolean,
+  showRandomSong: boolean
 ) => {
   try {
     const user = await User.findOneAndUpdate(
       { email: email },
       { showRandomSong: showRandomSong },
-      { new: true },
+      { new: true }
     );
-    
+
     return user;
   } catch (error) {
     throw error;
   }
-}
+};
 
 export const fetchUserById = async (
   id: string
@@ -270,90 +270,6 @@ export const deleteUserInServices = async (email: string) => {
   }
 };
 
-export const addFollow = async (
-  usernameOfUserGettingFollowed: string,
-  usernameOfUserMakingFollow: string,
-  emailOfUserBeingFollowed: string,
-  emailOfUserFollowing: string
-) => {
-  try {
-    // add user being followed to following[] of the user doing the following
-    await User.updateOne(
-      { email: emailOfUserFollowing },
-      { $push: { following: usernameOfUserGettingFollowed } }
-    );
-    // add user doing the following to followers[] of the user being followed
-    await User.updateOne(
-      { email: emailOfUserBeingFollowed },
-      { $push: { followers: usernameOfUserMakingFollow } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const removeFollow = async (
-  usernameOfUserUnfollowing: string,
-  usernameOfUserGettingUnfollowed: string,
-  emailOfUserBeingUnfollowed: string,
-  emailOfUserUnfollowing: string
-) => {
-  try {
-    // remove user being unfollowed from following[] of the user doing the unfollowing
-    await User.updateOne(
-      { email: emailOfUserUnfollowing },
-      { $pull: { following: usernameOfUserGettingUnfollowed } }
-    );
-    // remove user doing the unfollowing from followers[] of the user being unfollowed
-    await User.updateOne(
-      { email: emailOfUserBeingUnfollowed },
-      { $pull: { followers: usernameOfUserUnfollowing } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const addBlockedAccount = async (
-  emailOfUserMakingBlock: string,
-  usernameOfUserMakingBlock: string,
-  usernameOfUserGettingBlocked: string,
-  emailOfUserGettingBlocked: string
-) => {
-  try {
-    await User.updateOne(
-      { email: emailOfUserMakingBlock },
-      { $push: { blockedUsers: usernameOfUserGettingBlocked } }
-    );
-    await User.updateOne(
-      { email: emailOfUserGettingBlocked },
-      { $push: { blockedBy: usernameOfUserMakingBlock } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const unBlockAccount = async (
-  usernameOfUserUnblocking: string,
-  usernameOfUserGettingUnblocked: string,
-  emailOfUserGettingUnblocked: string,
-  emailOfUserUnblocking: string
-) => {
-  try {
-    await User.updateOne(
-      { email: emailOfUserUnblocking },
-      { $pull: { blockedUsers: usernameOfUserGettingUnblocked } }
-    );
-    await User.updateOne(
-      { email: emailOfUserGettingUnblocked },
-      { $pull: { blockedBy: usernameOfUserUnblocking } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const updatePFP = async (email: string, filename: string) => {
   try {
     await User.findOneAndUpdate(
@@ -395,66 +311,3 @@ export const updateBURL = async (email: string, url: string) => {
     throw error;
   }
 };
-
-export const likePost = async (postId: string, email: string) => {
-  try {
-    await User.updateOne(
-      { email: email },
-      { $push: { likes:  postId} }
-    )
-    await Post.findOneAndUpdate(
-      {_id: postId},
-      {$inc: {likes:1}}
-    );
-    console.log('here');
-  } catch(error) {
-    throw error;
-  }
-}
-
-export const unlikePost = async (postId: string, email: string) => {
-  try {
-    await User.updateOne(
-      { email: email },
-      { $pull: { likes:  postId} }
-    )
-    await Post.findOneAndUpdate(
-      {_id: postId},
-      {$inc:{likes: -1}}
-    );
-    
-  } catch(error) {
-    throw error;
-  }
-};
-
-export const isLiked = async (postId: string, email: string) => {
-  try {
-    const user = await User.findOne({email: email});
-    const isLiked = user.likes.includes(postId);
-    return isLiked;
-    
-  } catch(error) {
-    throw error;
-  }
-}
-
-export const fetchisLiked = async(username:string) => {
-  try {
-    let posts: (mongoose.Document<unknown, any, IPost> &
-      IPost & {
-        _id: mongoose.Types.ObjectId;
-      })[] = [];
-    const users = await User.findOne({ username: username });
-    const likes = users.likes;
-    for (let i = 0; i < likes.length; i++) {
-      let userPosts = await Post.find({ _id: likes[i] });
-      posts.push(...userPosts);
-    }
-    
-    return posts;
-  } catch(error) {
-      throw error;
-  }
-}
-
