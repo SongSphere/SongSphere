@@ -309,23 +309,6 @@ export const updateBURL = async (email: string, url: string) => {
   }
 };
 
-export const likePost = async (postId: string, email: string) => {
-  try {
-    await User.findOneAndUpdate({ email: email }, { $push: { likes: postId } });
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const isLiked = async (postId: string, email: string) => {
-  try {
-    const isLiked = await User.exists({ likes: postId });
-    return isLiked;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getDefaultPlatform = async (email: string) => {
   try {
     const user = await User.findOne({ email: email }, "defaultPlatform");
