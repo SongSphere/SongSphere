@@ -21,12 +21,35 @@ import fetchUser from "../services/user/fetch-user";
 import Session from "../session";
 import setVisibilityPublic from "../services/settings/set-visibility-public";
 import setVisibilityPrivate from "../services/settings/set-visibility-private";
+import BlockedList from "../components/settings/blocked-list";
+import styled from "styled-components";
 
 interface ISettingPageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
 }
 
+const Button = styled.button`
+  background-color: red
+  color: red;
+  padding: 5px 15px;
+  border-radius: 5px;
+  outline: 0;
+  text-transform: uppercase;
+  margin: 10px 0px;
+  cursor: pointer;
+  box-shadow: 0px 2px 2px lightgray;
+  transition: ease background-color 250ms;
+  &:hover {
+    background-color: red
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.7;
+  }
+`;
+
 const SettingsPage = (props: ISettingPageProps) => {
+  const [showBlockModal, setShowBlockModal] = useState(false);
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   const [user, setUser] = useState<TUser | null>(null);
@@ -42,6 +65,13 @@ const SettingsPage = (props: ISettingPageProps) => {
   const [appleAccountStatus, setAppleAccountStatus] = useState<boolean>(false);
   const [spotifyAccountStatus, setSpotifyAccountStatus] =
     useState<boolean>(false);
+
+  const handleBlockOpen = () => {
+    setShowBlockModal(true);
+  };
+  const handleBlockClose = () => {
+    setShowBlockModal(false);
+  };
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -176,6 +206,7 @@ const SettingsPage = (props: ISettingPageProps) => {
               ></label>
             </div>
           </div>
+          <Button onClick={handleBlockOpen}>View blocked accounts</Button>
         </div>
 
         <div className="justify-center w-full p-10 mt-5 ml-5 bg-white rounded-md h-5/6 sm:w-3/4 sm:px-6 drop-shadow-md">
@@ -227,6 +258,11 @@ const SettingsPage = (props: ISettingPageProps) => {
           </button>
           <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
         </div>
+        <BlockedList
+          blockedList={user.blockedUsers}
+          isVisible={showBlockModal}
+          onClose={handleBlockClose}
+        />
       </div>
     </div>
   );
