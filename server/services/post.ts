@@ -20,6 +20,7 @@ export const createPost = async (
       cover: newPost.music.cover,
     },
     repost: newPost.repost,
+    likes: newPost.likes,
   });
 
   return post;

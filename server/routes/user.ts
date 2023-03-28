@@ -15,9 +15,11 @@ import {
   findUsersByUserName,
   getFeed,
   changeAccountVisibility,
-  updateLikePost,
+  updateLikePost, 
+  updateUnlikePost,
   fetchIsLiked,
   changeShowRandomSong,
+  fetchLikedPosts,
 } from "../controllers/user";
 import { getPostsByUsername } from "../controllers/posting";
 
@@ -29,11 +31,10 @@ const router = express.Router();
 router.get("/user", auth, sessionUpdate);
 router.get("/api/user/posts/:username", auth, getPostsByUsername);
 router.get("/api/user/:username", auth, getUserByUsername);
-// router.get("/api/user/getFeed/:num", () => {
-//   console.log("hello");
-// });
+
 router.get("/user/feed/:num", getFeed);
-router.get("/api/user/fetchisLiked", auth, fetchIsLiked);
+router.get("/api/user/fetchIsLiked/:id", auth, fetchIsLiked);
+router.get("/api/user/fetchLikedPosts/:username", auth, fetchLikedPosts);
 
 router.post("/api/user/onboard", auth, changeOnboarded);
 router.post("/api/user/visibility", auth, changeAccountVisibility);
@@ -44,7 +45,8 @@ router.post("/api/user/adjustNames", auth, changeNames);
 router.post("/api/user/deleteAccount", auth, deleteUserInControllers);
 router.post("/api/user/queryUsernames", auth, findUsersByUserName);
 router.post("/api/user/queryUsername", auth, findUsersByUserName);
-router.post("api/user/updateLikePost", auth, updateLikePost);
+router.post("/api/user/updateLikePost", auth, updateLikePost);
+router.post("/api/user/updateUnlikePost", auth, updateUnlikePost)
 
 import multer from "multer";
 const upload = multer({ dest: "images/" });

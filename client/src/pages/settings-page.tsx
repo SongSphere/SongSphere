@@ -29,12 +29,35 @@ import { TPost } from "../types/post";
 import sendPost from "../services/post/send-post";
 import PostFailure from "../components/popup/post-failure";
 import PostSucess from "../components/popup/post-sucess";
+import BlockedList from "../components/settings/blocked-list";
+import styled from "styled-components";
 
 interface ISettingPageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
 }
 
+const Button = styled.button`
+  background-color: red
+  color: red;
+  padding: 5px 15px;
+  border-radius: 5px;
+  outline: 0;
+  text-transform: uppercase;
+  margin: 10px 0px;
+  cursor: pointer;
+  box-shadow: 0px 2px 2px lightgray;
+  transition: ease background-color 250ms;
+  &:hover {
+    background-color: red
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.7;
+  }
+`;
+
 const SettingsPage = (props: ISettingPageProps) => {
+  const [showBlockModal, setShowBlockModal] = useState(false);
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   const [user, setUser] = useState<TUser | null>(null);
@@ -54,6 +77,12 @@ const SettingsPage = (props: ISettingPageProps) => {
 
   
   let [song, setSong] = useState<TMusicContent[]>([]);
+  const handleBlockOpen = () => {
+    setShowBlockModal(true);
+  };
+  const handleBlockClose = () => {
+    setShowBlockModal(false);
+  };
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -247,6 +276,7 @@ const SettingsPage = (props: ISettingPageProps) => {
               ></label>
             </div>
           </div>
+          <Button onClick={handleBlockOpen}>View blocked accounts</Button>
         </div>
 
         <div className="justify-center w-full p-10 mt-5 ml-5 bg-white rounded-md h-5/6 sm:w-3/4 sm:px-6 drop-shadow-md">
@@ -342,6 +372,11 @@ const SettingsPage = (props: ISettingPageProps) => {
             Random
           </button>
         </div>
+        <BlockedList
+          blockedList={user.blockedUsers}
+          isVisible={showBlockModal}
+          onClose={handleBlockClose}
+        />
       </div>
     </div>
   );

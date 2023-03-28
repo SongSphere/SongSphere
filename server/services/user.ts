@@ -4,6 +4,7 @@ import User, { IUser } from "../db/user";
 import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
+import { Session } from "inspector";
 
 
 export const createUser = async (
@@ -125,7 +126,7 @@ export const updateUserOnboarded = async (
 
 export const updateUserVisibility = async (
   email: string,
-  isPrivate: boolean,
+  isPrivate: boolean
 ) => {
   try {
     const user = await User.findOneAndUpdate(
@@ -133,7 +134,7 @@ export const updateUserVisibility = async (
       { isPrivate: isPrivate },
       { new: true }
     );
-    
+
     return user;
   } catch (error) {
     throw error;
@@ -313,6 +314,46 @@ export const removeFollow = async (
   }
 };
 
+export const addBlockedAccount = async (
+  emailOfUserMakingBlock: string,
+  usernameOfUserMakingBlock: string,
+  usernameOfUserGettingBlocked: string,
+  emailOfUserGettingBlocked: string
+) => {
+  try {
+    await User.updateOne(
+      { email: emailOfUserMakingBlock },
+      { $push: { blockedUsers: usernameOfUserGettingBlocked } }
+    );
+    await User.updateOne(
+      { email: emailOfUserGettingBlocked },
+      { $push: { blockedBy: usernameOfUserMakingBlock } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const unBlockAccount = async (
+  usernameOfUserUnblocking: string,
+  usernameOfUserGettingUnblocked: string,
+  emailOfUserGettingUnblocked: string,
+  emailOfUserUnblocking: string
+) => {
+  try {
+    await User.updateOne(
+      { email: emailOfUserUnblocking },
+      { $pull: { blockedUsers: usernameOfUserGettingUnblocked } }
+    );
+    await User.updateOne(
+      { email: emailOfUserGettingUnblocked },
+      { $pull: { blockedBy: usernameOfUserUnblocking } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updatePFP = async (email: string, filename: string) => {
   try {
     await User.findOneAndUpdate(
@@ -357,21 +398,63 @@ export const updateBURL = async (email: string, url: string) => {
 
 export const likePost = async (postId: string, email: string) => {
   try {
-    await User.findOneAndUpdate(
+    await User.updateOne(
       { email: email },
       { $push: { likes:  postId} }
+    )
+    await Post.findOneAndUpdate(
+      {_id: postId},
+      {$inc: {likes:1}}
     );
+    console.log('here');
   } catch(error) {
     throw error;
   }
 }
 
-export const isLiked = async(postId:string, email:string) => {
+export const unlikePost = async (postId: string, email: string) => {
   try {
-    const isLiked = await User.exists({likes:postId});
-    return isLiked;
+    await User.updateOne(
+      { email: email },
+      { $pull: { likes:  postId} }
+    )
+    await Post.findOneAndUpdate(
+      {_id: postId},
+      {$inc:{likes: -1}}
+    );
+    
   } catch(error) {
     throw error;
+  }
+};
+
+export const isLiked = async (postId: string, email: string) => {
+  try {
+    const user = await User.findOne({email: email});
+    const isLiked = user.likes.includes(postId);
+    return isLiked;
+    
+  } catch(error) {
+    throw error;
+  }
+}
+
+export const fetchisLiked = async(username:string) => {
+  try {
+    let posts: (mongoose.Document<unknown, any, IPost> &
+      IPost & {
+        _id: mongoose.Types.ObjectId;
+      })[] = [];
+    const users = await User.findOne({ username: username });
+    const likes = users.likes;
+    for (let i = 0; i < likes.length; i++) {
+      let userPosts = await Post.find({ _id: likes[i] });
+      posts.push(...userPosts);
+    }
+    
+    return posts;
+  } catch(error) {
+      throw error;
   }
 }
 
