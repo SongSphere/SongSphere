@@ -1,6 +1,6 @@
 export type TUser = {
   name: string;
-  userName: string;
+  username: string;
   givenName: string;
   middleName: string;
   familyName: string;
@@ -14,7 +14,11 @@ export type TUser = {
   appleToken: string;
   following: string[];
   followers: string[];
+  blockedUsers: string[];
+  blockedBy: string[];
   onboarded: Boolean;
+  isPrivate: Boolean;
+  likes: string[];
 };
 
 export type TUserWrapper = {

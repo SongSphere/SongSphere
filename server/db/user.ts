@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 export interface IUser {
   name: string;
-  userName: string;
+  username: string;
   givenName: string;
   middleName: string;
   familyName: string;
@@ -16,7 +16,11 @@ export interface IUser {
   appleToken: string;
   following: Array<String>;
   followers: Array<String>;
+  blockedUsers: Array<String>;
+  blockedBy: Array<String>;
   onboarded: Boolean;
+  isPrivate: Boolean;
+  likes: Array<String>;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -25,7 +29,7 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
-    userName: {
+    username: {
       type: String,
       required: false,
     },
@@ -81,10 +85,26 @@ const UserSchema = new Schema<IUser>(
       type: Array<String>(),
       required: false,
     },
+    blockedUsers: {
+      type: Array<String>(),
+      required: false,
+    },
+    blockedBy: {
+      type: Array<String>(),
+      required: false,
+    },
     onboarded: {
       type: Boolean,
       required: true,
     },
+    isPrivate: {
+      type: Boolean,
+      required: true,
+    },
+    likes: {
+      type: Array<String>(),
+      required: false,
+    }
   },
   {
     // this enables createdAt and updatedAt

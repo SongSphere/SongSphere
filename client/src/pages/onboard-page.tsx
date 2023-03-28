@@ -5,48 +5,62 @@
 */
 
 import { useEffect, useState } from "react";
-import AppleLink from "../components/apple-link";
-import SpotifyLinkButton from "../components/spotify-link";
+import AppleLink from "../components/settings/apple-link";
+import SpotifyLinkButton from "../components/settings/spotify-link";
 import { useNavigate } from "react-router-dom";
 import { TUser } from "../types/user";
-import AdjustNamesLink from "../components/adjust-names-link";
-import setOnboarded from "../services/set-onboarded";
+import AdjustNamesLink from "../components/settings/adjust-names-link";
+import setOnboarded from "../services/user/set-onboarded";
+import Session from "../session";
 
 interface IOnBoardPageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
-  user: TUser | null;
-  setUser: React.Dispatch<React.SetStateAction<TUser | null>>;
 }
 
 const OnBoardPage = (props: IOnBoardPageProps) => {
   let navigate = useNavigate();
 
-  const [userName, setUserName] = useState<string>();
+  const [username, setUsername] = useState<string>();
   const [middleName, setMiddleName] = useState<string>();
+  const [givenName, setGivenName] = useState<string>();
+  const [familyName, setFamilyName] = useState<string>();
+  const [email, setEmail] = useState<string>();
   const [spotifyLinked, setSpotifyLinked] = useState(false);
   const [appleLinked, setAppleLinked] = useState(false);
+  const [user, setUser] = useState<TUser | null>(null);
+
+  // hook to load user session from object
+  useEffect(() => {
+    setUser(Session.getUser());
+  }, []);
 
   useEffect(() => {
-    if (props.user) {
-      if (props.user.onboarded) {
+    if (user) {
+      setGivenName(user.givenName);
+      setFamilyName(user.familyName);
+      setEmail(user.email);
+      setUsername(user.username);
+      setMiddleName(user.middleName);
+
+      if (user.onboarded) {
         navigate("/");
       }
 
-      if (props.user.spotifyToken !== undefined) {
+      if (user.spotifyToken !== undefined) {
         setSpotifyLinked(true);
       } else {
         setSpotifyLinked(false);
       }
 
-      if (props.user.appleToken !== undefined) {
+      if (user.appleToken !== undefined) {
         setAppleLinked(true);
       } else {
         setAppleLinked(false);
       }
     }
-  }, [props.user]);
+  }, [user]);
 
-  if (!props.user) {
+  if (!user) {
     return <div>fetching user</div>;
   }
 
@@ -54,7 +68,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
     <div className="flex flex-wrap items-center mt-20">
       <div className="w-full text-center sm:w-1/2 sm:px-6">
         <h3 className="text-3xl font-semibold text-gray-900">
-          Welcome {props.user.givenName}
+          Welcome {givenName}
         </h3>
         <div className="mt-6 text-xl leading-9">
           Let's connect your Apple Music or Spotify account
@@ -66,13 +80,10 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
       </div>
 
       <div className="w-full text-center sm:w-1/2 sm:px-6">
-        <AppleLink
-          setUser={props.setUser}
-          appleMusicInstance={props.appleMusicInstance}
-        />
+        <AppleLink appleMusicInstance={props.appleMusicInstance} />
         <div>{`apple linked: ${appleLinked}`}</div>
 
-        <SpotifyLinkButton setUser={props.setUser} />
+        <SpotifyLinkButton />
 
         <div>{`spotify linked: ${spotifyLinked}`}</div>
 
@@ -80,40 +91,36 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
           className="e-input"
           type="text"
           placeholder="Enter User Name"
-          onChange={(e) => setUserName(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
+          value={username}
         />
         <input
           className="e-input"
           type="text"
           placeholder="Enter Middle Name"
           onChange={(e) => setMiddleName(e.target.value)}
+          value={middleName}
         />
         <AdjustNamesLink
           appleMusicInstance={props.appleMusicInstance}
-          setUser={props.setUser}
-          username={userName ? userName : ""}
-          givenName={props.user?.givenName ? props.user?.givenName : ""}
+          username={username ? username : ""}
+          givenName={givenName ? givenName : ""}
           middleName={middleName ? middleName : ""}
-          familyName={props.user?.familyName ? props.user?.familyName : ""}
+          familyName={familyName ? familyName : ""}
         />
-
         <button
           onClick={() => {
-            if (props.user) {
-              if (
-                (props.user.spotifyToken != undefined ||
-                  props.user.appleToken != undefined) &&
-                props.user.userName !== ""
-              ) {
-                setOnboarded(props.user?.email).then(() => {
+            if ((spotifyLinked || appleLinked) && username !== "") {
+              if (user) {
+                setOnboarded(email).then(() => {
                   navigate("/");
                   window.location.reload();
                 });
-              } else {
-                window.alert(
-                  "need to link with at least one music platform and have a username"
-                );
               }
+            } else {
+              window.alert(
+                "need to link with at least one music platform and have a username"
+              );
             }
           }}
         >
