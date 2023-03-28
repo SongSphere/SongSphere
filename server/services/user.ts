@@ -251,61 +251,6 @@ export const deleteUserInServices = async (email: string) => {
   }
 };
 
-export const addFollow = async (
-  usernameOfUserGettingFollowed: string,
-  usernameOfUserMakingFollow: string,
-  emailOfUserBeingFollowed: string,
-  emailOfUserFollowing: string
-) => {
-  try {
-    const user = await User.findOne({
-      username: usernameOfUserGettingFollowed,
-    });
-    if (user.isPrivate) {
-      const followRequest = new FollowRequest({
-        username: usernameOfUserGettingFollowed,
-        followerUsername: usernameOfUserMakingFollow,
-      });
-      await followRequest.save();
-    } else {
-      // add user being followed to following[] of the user doing the following
-      await User.updateOne(
-        { email: emailOfUserFollowing },
-        { $push: { following: usernameOfUserGettingFollowed } }
-      );
-      // add user doing the following to followers[] of the user being followed
-      await User.updateOne(
-        { email: emailOfUserBeingFollowed },
-        { $push: { followers: usernameOfUserMakingFollow } }
-      );
-    }
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const removeFollow = async (
-  usernameOfUserUnfollowing: string,
-  usernameOfUserGettingUnfollowed: string,
-  emailOfUserBeingUnfollowed: string,
-  emailOfUserUnfollowing: string
-) => {
-  try {
-    // remove user being unfollowed from following[] of the user doing the unfollowing
-    await User.updateOne(
-      { email: emailOfUserUnfollowing },
-      { $pull: { following: usernameOfUserGettingUnfollowed } }
-    );
-    // remove user doing the unfollowing from followers[] of the user being unfollowed
-    await User.updateOne(
-      { email: emailOfUserBeingUnfollowed },
-      { $pull: { followers: usernameOfUserUnfollowing } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const updatePFP = async (email: string, filename: string) => {
   try {
     await User.findOneAndUpdate(
@@ -315,15 +260,6 @@ export const updatePFP = async (email: string, filename: string) => {
   } catch (error) {
     console.error(error);
     throw error;
-  }
-};
-
-export const fetchFollowRequests = async (username: string) => {
-  try {
-    const followRequests = await FollowRequest.find({ username: username });
-    return followRequests;
-  } catch (error) {
-    console.error(error);
   }
 };
 

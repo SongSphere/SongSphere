@@ -1,7 +1,7 @@
 export const follow = async (
   usernameOfUserMakingFollow: string,
-  usernameOfUserGettingFollowed: string,
-  emailOfUserGettingFollowed: string
+  usernameOfUserGettingFollowed: string
+  // emailOfUserGettingFollowed: string
 ) => {
   return new Promise((resolve, reject) => {
     fetch(`${process.env.REACT_APP_API}/api/addfollower`, {
@@ -10,7 +10,7 @@ export const follow = async (
       body: JSON.stringify({
         usernameOfUserMakingFollow: usernameOfUserMakingFollow,
         usernameOfUserGettingFollowed: usernameOfUserGettingFollowed,
-        emailOfUserGettingFollowed: emailOfUserGettingFollowed,
+        // emailOfUserGettingFollowed: emailOfUserGettingFollowed,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -27,8 +27,8 @@ export const follow = async (
 
 export const unfollow = async (
   usernameOfUserUnfollowing: string,
-  usernameOfUserGettingUnfollowed: string,
-  emailOfUserGettingUnfollowed: string
+  usernameOfUserGettingUnfollowed: string
+  // emailOfUserGettingUnfollowed: string
 ) => {
   return new Promise((resolve, reject) => {
     fetch(`${process.env.REACT_APP_API}/api/removefollower`, {
@@ -37,7 +37,7 @@ export const unfollow = async (
       body: JSON.stringify({
         usernameOfUserUnfollowing: usernameOfUserUnfollowing,
         usernameOfUserGettingUnfollowed: usernameOfUserGettingUnfollowed,
-        emailOfUserGettingUnfollowed: emailOfUserGettingUnfollowed,
+        // emailOfUserGettingUnfollowed: emailOfUserGettingUnfollowed,
       }),
       headers: {
         "Content-Type": "application/json",

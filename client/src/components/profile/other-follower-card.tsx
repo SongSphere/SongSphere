@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { TUser } from "../../types/user";
 import Session from "../../session";
 import fetchUser from "../../services/user/fetch-user";
-import { follow, unfollow } from "../../services/user/follow";
+import { follow, unfollow } from "../../services/follow/follow";
 import FollowingList from "./following-list";
 import FollowerList from "./follower-list";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
@@ -40,21 +40,20 @@ const OtherFollowerCard = (props: IOtherFollowerCard) => {
       if (!isFollowing) {
         follow(
           user.username,
-          props.selectedUser.username,
-          props.selectedUser.email
+          props.selectedUser.username
+          // props.selectedUser.email
         ).then(async () => {
           Session.setUser(await fetchUser());
           props.setSelectedUser(
             await fetchUserByUsername(props.selectedUser.username)
           );
-          console.log(Session.getUser());
           setIsFollowing(true);
         });
       } else {
         unfollow(
           user.username,
-          props.selectedUser.username,
-          props.selectedUser.email
+          props.selectedUser.username
+          // props.selectedUser.email
         ).then(async () => {
           Session.setUser(await fetchUser());
           props.setSelectedUser(

@@ -17,7 +17,6 @@ import {
   changeAccountVisibility,
   updateLikePost,
   fetchIsLiked,
-  getFollowRequests,
 } from "../controllers/user";
 import { getPostsByUsername } from "../controllers/posting";
 
@@ -30,7 +29,6 @@ router.get("/user", auth, sessionUpdate);
 router.get("/user/feed/:num", getFeed);
 router.get("/api/user/posts/:username", auth, getPostsByUsername);
 router.get("/api/user/:username", auth, getUserByUsername);
-router.get("/api/user/followRequest/:username", auth, getFollowRequests);
 router.get("/api/user/fetchisLiked", auth, fetchIsLiked);
 
 router.post("/api/user/onboard", auth, changeOnboarded);
