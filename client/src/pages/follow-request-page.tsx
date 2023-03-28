@@ -42,10 +42,6 @@ const FollowRequestPage = () => {
 
   useEffect(() => {
     if (user) {
-      // fetchFollowRequest(user.username).then((followRequests) => {
-      //   setFollowRequests(followRequests);
-      //   fetchRequesterData(followRequests);
-      // });
       updateFollowReqests(user);
     }
   }, [user]);
