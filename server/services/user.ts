@@ -5,7 +5,6 @@ import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
 
-
 export const createUser = async (
   userData: TokenPayload,
   token: string
@@ -26,6 +25,7 @@ export const createUser = async (
     onboarded: false,
     isPrivate: false,
     likes: [],
+    defaultPlatform: "",
   });
 
   return user;
@@ -124,7 +124,7 @@ export const updateUserOnboarded = async (
 
 export const updateUserVisibility = async (
   email: string,
-  isPrivate: boolean,
+  isPrivate: boolean
 ) => {
   try {
     const user = await User.findOneAndUpdate(
@@ -132,7 +132,7 @@ export const updateUserVisibility = async (
       { isPrivate: isPrivate },
       { new: true }
     );
-    
+
     return user;
   } catch (error) {
     throw error;
@@ -339,21 +339,42 @@ export const updateBURL = async (email: string, url: string) => {
 
 export const likePost = async (postId: string, email: string) => {
   try {
-    await User.findOneAndUpdate(
-      { email: email },
-      { $push: { likes:  postId} }
-    );
-  } catch(error) {
+    await User.findOneAndUpdate({ email: email }, { $push: { likes: postId } });
+  } catch (error) {
     throw error;
   }
-}
+};
 
-export const isLiked = async(postId:string, email:string) => {
+export const isLiked = async (postId: string, email: string) => {
   try {
-    const isLiked = await User.exists({likes:postId});
+    const isLiked = await User.exists({ likes: postId });
     return isLiked;
-  } catch(error) {
+  } catch (error) {
     throw error;
   }
-}
+};
 
+export const getDefaultPlatform = async (email: string) => {
+  try {
+    const user = await User.findOne({ email: email }, "defaultPlatform");
+    const platform = user.defaultPlatform;
+
+    return platform;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setDefaultPlatform = async (
+  email: string,
+  defaultPlatform: string
+) => {
+  try {
+    const user = await User.findOne(
+      { email: email },
+      { defaultPlatform: defaultPlatform }
+    );
+  } catch (error) {
+    throw error;
+  }
+};

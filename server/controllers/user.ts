@@ -16,6 +16,8 @@ import {
   updateUserVisibility,
   likePost,
   isLiked,
+  getDefaultPlatform,
+  setDefaultPlatform,
 } from "../services/user";
 import fs from "fs";
 
@@ -283,6 +285,26 @@ export const fetchIsLiked = async (req: Request, res: Response) => {
     await isLiked(req.body.postId, req.body.email);
     res.status(201);
     res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getPlatform = async (req: Request, res: Response) => {
+  try {
+    let platform = await getDefaultPlatform(req.session.user.email);
+    res.status(201);
+    res.json({ platform: platform });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const setPlatform = async (req: Request, res: Response) => {
+  try {
+    await setDefaultPlatform(req.session.user.email, req.body.platform);
   } catch (error) {
     res.status(500);
     res.json({ error: error });

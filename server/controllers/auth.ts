@@ -144,6 +144,7 @@ export const signInUp = async (
       onboarded: false,
       isPrivate: false,
       likes: Array<String>(),
+      defaultPlatform: "",
     };
 
     res.status(201);

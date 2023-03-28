@@ -17,6 +17,7 @@ export type TUser = {
   onboarded: Boolean;
   isPrivate: Boolean;
   likes: string[];
+  defaultPlatform: string;
 };
 
 export type TUserWrapper = {

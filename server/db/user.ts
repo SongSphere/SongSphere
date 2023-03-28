@@ -19,6 +19,7 @@ export interface IUser {
   onboarded: Boolean;
   isPrivate: Boolean;
   likes: Array<String>;
+  defaultPlatform: string;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -94,7 +95,11 @@ const UserSchema = new Schema<IUser>(
     likes: {
       type: Array<String>(),
       required: false,
-    }
+    },
+    defaultPlatform: {
+      type: String,
+      required: false,
+    },
   },
   {
     // this enables createdAt and updatedAt

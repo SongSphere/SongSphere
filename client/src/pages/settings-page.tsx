@@ -17,6 +17,7 @@ import Navbar from "../components/navbar";
 import AppleLink from "../components/settings/apple-link";
 import SpotifyLinkButton from "../components/settings/spotify-link";
 import unlinkMusic from "../services/user/unlink-music";
+import DefaultPlatform from "../components/settings/set-default-platform";
 import fetchUser from "../services/user/fetch-user";
 import Session from "../session";
 import setVisibilityPublic from "../services/settings/set-visibility-public";
@@ -42,6 +43,7 @@ const SettingsPage = (props: ISettingPageProps) => {
   const [appleAccountStatus, setAppleAccountStatus] = useState<boolean>(false);
   const [spotifyAccountStatus, setSpotifyAccountStatus] =
     useState<boolean>(false);
+  const [defaultPlatform, setDefaultPlatform] = useState<string>("");
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -68,6 +70,9 @@ const SettingsPage = (props: ISettingPageProps) => {
       } else {
         setIsPrivateStatus(true);
       }
+      setBackgroundImgUrl(user.backgroundImgUrl);
+      setProfileImgUrl(user.profileImgUrl);
+      setDefaultPlatform(user.defaultPlatform);
     }
   }, [user]);
 
@@ -226,6 +231,7 @@ const SettingsPage = (props: ISettingPageProps) => {
             Unlink Spotify
           </button>
           <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
+          <DefaultPlatform />
         </div>
       </div>
     </div>

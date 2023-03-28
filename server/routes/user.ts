@@ -17,6 +17,8 @@ import {
   changeAccountVisibility,
   updateLikePost,
   fetchIsLiked,
+  getPlatform,
+  setPlatform,
 } from "../controllers/user";
 import { getPostsByUsername } from "../controllers/posting";
 
@@ -63,5 +65,7 @@ router.post("/user/updateBackgroundURL", auth, updateBackgroundURL);
 
 router.get("/user/images/:imageName", getProfilePhoto);
 router.get("/user/background/:imageName", getProfilePhoto);
+router.get("/user/getDefaultPlatform", getPlatform);
+router.post("/user/setDefaultPlatform", setPlatform);
 
 export default router;
