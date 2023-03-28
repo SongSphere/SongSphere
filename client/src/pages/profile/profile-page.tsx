@@ -18,17 +18,34 @@ import ProfileFeed from "../../components/profile/profile-feed";
 import { NoPosts } from "../../components/profile/no-post";
 import Session from "../../session";
 import fetchPostsByUsername from "../../services/posts/fetch-user-posts";
+import FollowingList from "../../components/profile/following-list";
+import FollowerList from "../../components/profile/follower-list";
 
 interface IProfileProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
 }
 
 const ProfilePage = (props: IProfileProps) => {
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+  const [showFollowerModal, setShowFollowerModal] = useState(false);
   const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
-  const [post, setPost] = useState<TPost | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
+
+  const handleFollowingOpen = () => {
+    setShowFollowingModal(true);
+  };
+  const handleFollowingClose = () => {
+    setShowFollowingModal(false);
+  };
+
+  const handleFollowerOpen = () => {
+    setShowFollowerModal(true);
+  };
+  const handleFollowerClose = () => {
+    setShowFollowerModal(false);
+  };
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -52,7 +69,10 @@ const ProfilePage = (props: IProfileProps) => {
       <Navbar />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <ProfileCard user={user} />
+          <ProfileCard
+            openFollowingModal={handleFollowingOpen}
+            openFollowersModal={handleFollowerOpen}
+          />
         </div>
         <div className="col-span-2">
           {posts.length > 0 ? (
@@ -72,6 +92,16 @@ const ProfilePage = (props: IProfileProps) => {
             appleMusicInstance={props.appleMusicInstance}
           />
         )}
+        <FollowingList
+          following={user.following}
+          isVisible={showFollowingModal}
+          onClose={handleFollowingClose}
+        />
+        <FollowerList
+          followers={user.followers}
+          isVisible={showFollowerModal}
+          onClose={handleFollowerClose}
+        />
       </div>
     </div>
   );

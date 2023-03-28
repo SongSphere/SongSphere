@@ -25,7 +25,6 @@ export const createUser = async (
     onboarded: false,
     isPrivate: false,
     likes: [],
-    defaultPlatform: "",
   });
 
   return user;
@@ -130,6 +129,23 @@ export const updateUserVisibility = async (
     const user = await User.findOneAndUpdate(
       { email: email },
       { isPrivate: isPrivate },
+      { new: true }
+    );
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateShowRandomSong = async (
+  email: string,
+  showRandomSong: boolean
+) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { showRandomSong: showRandomSong },
       { new: true }
     );
 
@@ -247,50 +263,6 @@ export const deleteUserInServices = async (email: string) => {
     await User.deleteOne({ email: email });
   } catch (error) {
     console.error(error);
-    throw error;
-  }
-};
-
-export const addFollow = async (
-  usernameOfUserGettingFollowed: string,
-  usernameOfUserMakingFollow: string,
-  emailOfUserBeingFollowed: string,
-  emailOfUserFollowing: string
-) => {
-  try {
-    // add user being followed to following[] of the user doing the following
-    await User.updateOne(
-      { email: emailOfUserFollowing },
-      { $push: { following: usernameOfUserGettingFollowed } }
-    );
-    // add user doing the following to followers[] of the user being followed
-    await User.updateOne(
-      { email: emailOfUserBeingFollowed },
-      { $push: { followers: usernameOfUserMakingFollow } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const removeFollow = async (
-  usernameOfUserUnfollowing: string,
-  usernameOfUserGettingUnfollowed: string,
-  emailOfUserBeingUnfollowed: string,
-  emailOfUserUnfollowing: string
-) => {
-  try {
-    // remove user being unfollowed from following[] of the user doing the unfollowing
-    await User.updateOne(
-      { email: emailOfUserUnfollowing },
-      { $pull: { following: usernameOfUserGettingUnfollowed } }
-    );
-    // remove user doing the unfollowing from followers[] of the user being unfollowed
-    await User.updateOne(
-      { email: emailOfUserBeingUnfollowed },
-      { $pull: { followers: usernameOfUserUnfollowing } }
-    );
-  } catch (error) {
     throw error;
   }
 };

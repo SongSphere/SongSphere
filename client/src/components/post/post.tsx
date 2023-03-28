@@ -40,7 +40,7 @@ const Post = (props: IPostProps) => {
       setPostOwner(postOwner);
     });
   }, []);
-
+  
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
       {/* Only display edit function if this post belongs to the user */}
@@ -148,12 +148,15 @@ const Post = (props: IPostProps) => {
             )}
           </div>
           <div className="text-2xl font-bold">{props.post.music.name}</div>
+          <div className="float-right pr-2 text-navy">{props.post.likes}</div>
           <div className="text-slate-500">{props.post.music.artist}</div>
           <hr className="h-0.5 bg-gray-200 border-0 dark:bg-gray-700"></hr>
           <div className="">{props.post.caption}</div>
         </div>
       </div>
+      
       <div className="absolute bottom-5 right-5">
+        
         <LikeButton post={props.post} />
         <button
           className="absolute bottom-2 text-lblue hover:text-navy right-10"

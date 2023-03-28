@@ -48,7 +48,7 @@ const PostSchema = new Schema<IPost>(
     },
     likes: {
       type: Number,
-      required: false,
+      required: true,
     },
     repost: {
       type: Boolean,

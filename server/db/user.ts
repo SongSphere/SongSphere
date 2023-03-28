@@ -16,10 +16,13 @@ export interface IUser {
   appleToken: string;
   following: Array<String>;
   followers: Array<String>;
+  blockedUsers: Array<String>;
+  blockedBy: Array<String>;
   onboarded: Boolean;
   isPrivate: Boolean;
   likes: Array<String>;
   defaultPlatform: string;
+  showRandomSong: Boolean;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -84,6 +87,14 @@ const UserSchema = new Schema<IUser>(
       type: Array<String>(),
       required: false,
     },
+    blockedUsers: {
+      type: Array<String>(),
+      required: false,
+    },
+    blockedBy: {
+      type: Array<String>(),
+      required: false,
+    },
     onboarded: {
       type: Boolean,
       required: true,
@@ -91,6 +102,10 @@ const UserSchema = new Schema<IUser>(
     isPrivate: {
       type: Boolean,
       required: true,
+    },
+    showRandomSong: {
+      type: Boolean,
+      required: false,
     },
     likes: {
       type: Array<String>(),

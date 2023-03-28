@@ -1,9 +1,8 @@
 import { TPost } from "../../types/post";
 
-const LikePost = async (post: TPost) => {
-  
+const UnlikePost = async (post: TPost) => {
     try {
-        await fetch(`${process.env.REACT_APP_API}/api/user/updateLikePost`, {
+        await fetch(`${process.env.REACT_APP_API}/api/user/updateUnlikePost`, {
             method: "POST",
             credentials: "include",
             body: JSON.stringify({
@@ -13,10 +12,8 @@ const LikePost = async (post: TPost) => {
               "Content-Type": "application/json",
             },
           });
-        
     } catch (error) {
        
     }
-    
 };
-export default LikePost;
+export default UnlikePost;

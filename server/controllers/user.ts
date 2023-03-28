@@ -14,11 +14,12 @@ import {
   updateBURL,
   fetchFeed,
   updateUserVisibility,
-  likePost,
-  isLiked,
   getDefaultPlatform,
   setDefaultPlatform,
+  updateShowRandomSong,
 } from "../services/user";
+
+import { likePost, unlikePost, isLiked, fetchisLiked } from "../services/post";
 import fs from "fs";
 
 export const sessionUpdate = async (
@@ -134,6 +135,23 @@ export const changeAccountVisibility = async (
   } catch (error) {
     res.status(404);
     res.json({ msg: "update visibility fail" });
+  }
+};
+
+export const changeShowRandomSong = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const email = req.session.user.email;
+    await updateShowRandomSong(email, req.body.showRandomSong).then(() => {
+      res.status(200);
+      res.json({ msg: "Success" });
+    });
+  } catch (error) {
+    res.status(404);
+    res.json({ msg: "update ShowRandomSong fail" });
   }
 };
 
@@ -266,11 +284,7 @@ export const getProfilePhoto = (req: Request, res: Response) => {
   }
 };
 
-export const updateLikePost = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateLikePost = (req: Request, res: Response) => {
   const email = req.session.user.email;
   try {
     likePost(req.body.postId, email);
@@ -280,11 +294,33 @@ export const updateLikePost = (
   }
 };
 
+export const updateUnlikePost = (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  try {
+    unlikePost(req.body.postId, email);
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
 export const fetchIsLiked = async (req: Request, res: Response) => {
   try {
-    await isLiked(req.body.postId, req.body.email);
+    const email = req.session.user.email;
+    const likes = await isLiked(req.params.id, email);
     res.status(201);
-    res.json({ msg: "success" });
+    res.json({ likes: likes });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const fetchLikedPosts = async (req: Request, res: Response) => {
+  try {
+    const likes = await fetchisLiked(req.params.username);
+    res.status(200);
+    res.json({ likes: likes });
   } catch (error) {
     res.status(500);
     res.json({ error: error });
