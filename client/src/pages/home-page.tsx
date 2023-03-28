@@ -30,17 +30,12 @@ const HomePage = (props: IHomePageProps) => {
 
     if (user) {
       randomSongSpotifyFromBackend(user.spotifyToken).then(async (url) => {
-        console.log("In homepage randomSongBackend");
-        //console.log(url);
         setRandomSong(await randomSongSpotify(user.spotifyToken, url));
-        // console.log("checkpoint", song);
+
       });
     }
   }, [user]);
 
-  useEffect(() => {
-    console.log("checkpoint", randomSong);
-  }, [randomSong]);
 
   if (!user) {
     return <div>fetching user</div>;

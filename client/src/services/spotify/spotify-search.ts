@@ -1,5 +1,3 @@
-import React, { Dispatch } from "react";
-import { textChangeRangeNewSpan } from "typescript";
 import { TMusicContent } from "../../types/music-content";
 
 const SPOTIFY_API = "https://api.spotify.com/v1";
@@ -83,39 +81,6 @@ export const spotifySearch = async (
   return content;
 };
 
-function makeid(length: number) {
-  var result = "";
-  var characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
-
-function getRandomSearch() {
-  // A list of all characters that can be chosen.
-  const characters = "abcdefghijklmnopqrstuvwxyz";
-
-  // Gets a random character from the characters string.
-  const randomCharacter = characters.charAt(
-    Math.floor(Math.random() * characters.length)
-  );
-  let randomSearch: string = "";
-
-  // Places the wildcard character at the beginning, or both beginning and end, randomly.
-  switch (Math.round(Math.random())) {
-    case 0:
-      randomSearch = randomCharacter + "%";
-      break;
-    case 1:
-      randomSearch = "%" + randomCharacter + "%";
-      break;
-  }
-
-  return randomSearch;
-}
 
 export const randomSongSpotify = async (token: string, url: string) => {
   return new Promise<TMusicContent>(async (resolve, reject) => {
@@ -165,12 +130,6 @@ export const randomSongSpotify = async (token: string, url: string) => {
 
 export const randomSongSpotifyFromBackend = async (token: string) => {
   return new Promise<string>(async (resolve, reject) => {
-  let random_offset = Math.floor(Math.random() * 100); // returns a random integer from 0 to 9
-
-  let content:string = "";
-
-
-  console.log("Random From backend being being called");
 
   await fetch(`${process.env.REACT_APP_API}/api/randomsong/seed`, {
     method: "get",
@@ -184,7 +143,6 @@ export const randomSongSpotifyFromBackend = async (token: string) => {
       return res.json();
     })
     .then((data) => {
-      console.log("Called in randomSongSpotifyFromBackend");
       console.log(data);
       resolve(data.seed)
    

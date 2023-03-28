@@ -71,7 +71,7 @@ const RandomSongPost = (props: IPostProps) => {
       <div
         className="w-32 h-32 cursor-pointer"
         onClick={() => {
-        //   props.setSong(props.post.music);
+
         }}
       >
         <img src={props.song.cover}></img>

@@ -21,7 +21,6 @@ import {
   fetchisLiked,
 } from "../services/user";
 import fs from "fs";
-import { Session } from "inspector";
 
 export const sessionUpdate = async (
   req: Request,
