@@ -52,11 +52,12 @@ export const spotifyAuth = async (req: Request, res: Response) => {
         },
       }
     );
-
+      
     if (tokenRes.status != 200) {
       throw new Error("fetch token failed with invalid data");
     }
 
+      
     const spotifyToken = tokenRes.data.access_token;
     const spotifyRefreshToken = tokenRes.data.refresh_token;
 

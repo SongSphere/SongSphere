@@ -1,7 +1,4 @@
-import React from "react";
-import ReactDOM from "react";
 import Search from "../components/post/search-song";
-import { TUser } from "../types/user";
 import { Link } from "react-router-dom";
 import Navbar from "../components/navbar";
 
@@ -39,11 +36,7 @@ const PostPage = (props: IPostPageProps) => {
                 </svg>
               </button>
             </Link>
-            <Search
-              musicInstance={props.musicInstance}
-              // user={props.user}
-              // service={props.service}
-            />
+            <Search musicInstance={props.musicInstance} />
           </div>
         </div>
       </div>

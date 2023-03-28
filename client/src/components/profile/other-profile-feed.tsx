@@ -1,41 +1,47 @@
 import { TPost } from "../../types/post";
 import { TMusicContent } from "../../types/music-content";
-import PostForOtherProfile from "../post/post-for-other-profile";
+// import PostForOtherProfile from "../post/post-for-other-profile";
+import Post from "../post/post";
 import React, { useEffect } from "react";
 import { TUser } from "../../types/user";
+import Repost from "../post/repost";
 
 interface IOtherProfileFeedProps {
   posts: TPost[];
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  setRepost:React.Dispatch<React.SetStateAction<TPost | null>>;
   selectedUser: TUser | null;
   blur: boolean;
+  user: TUser;
 }
 
 const OtherProfileFeed = (props: IOtherProfileFeedProps) => {
-
   useEffect(() => {
     console.log(`The page should be ${props.blur}`);
-  })
+  });
 
   return (
     <div className="justify-center mt-8">
       <div className="w-full">
         {props.posts.map((post) => {
-          return (
-            
-            <PostForOtherProfile
-              post={post}
-              key={post._id}
-              setSong={props.setSong}
-              setPost={props.setPost}
-              setRepost={props.setRepost}
-            />
-          );
-        })}:
-         
-        
+          const repost = post.repost;
+
+          if (repost) {
+            return (
+              <Repost post={post} key={post._id} setSong={props.setSong} />
+            );
+          } else {
+            return (
+              <Post
+                post={post}
+                key={post._id}
+                setSong={props.setSong}
+                user={props.user}
+              />
+            );
+          }
+        })}
+        :
       </div>
     </div>
   );

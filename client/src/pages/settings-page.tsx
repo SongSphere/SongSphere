@@ -21,9 +21,14 @@ import fetchUser from "../services/user/fetch-user";
 import Session from "../session";
 import setVisibilityPublic from "../services/settings/set-visibility-public";
 import setVisibilityPrivate from "../services/settings/set-visibility-private";
-import { randomSongSpotify } from "../services/spotify/spotify-search";
+import { randomSongSpotify, randomSongSpotifyFromBackend } from "../services/spotify/spotify-search";
 import setFalseRandomSong from "../services/settings/set-false-random-song";
 import setTrueRandomSong from "../services/settings/set-true-random-song";
+import { TMusicContent } from "../types/music-content";
+import { TPost } from "../types/post";
+import sendPost from "../services/post/send-post";
+import PostFailure from "../components/popup/post-failure";
+import PostSucess from "../components/popup/post-sucess";
 
 interface ISettingPageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -46,6 +51,9 @@ const SettingsPage = (props: ISettingPageProps) => {
   const [appleAccountStatus, setAppleAccountStatus] = useState<boolean>(false);
   const [spotifyAccountStatus, setSpotifyAccountStatus] =
     useState<boolean>(false);
+
+  
+  let [song, setSong] = useState<TMusicContent[]>([]);
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -84,6 +92,10 @@ const SettingsPage = (props: ISettingPageProps) => {
   if (!user) {
     return <div>fetching user data</div>;
   }
+  function setPostSuccessFail(arg0: JSX.Element) {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div className="">
       <Navbar />
@@ -289,7 +301,42 @@ const SettingsPage = (props: ISettingPageProps) => {
           <button
             className="bg-grey"
             onClick={async () => {
-              await randomSongSpotify(user.spotifyToken);
+              // await randomSongSpotify(user.spotifyToken).then(async (song) => {
+              //   console.log("In settings")
+              //   setSong(song);
+              //   if (user) {
+              //     const newPost: TPost = {
+              //       username: user.username,
+              //       userEmail: user.email,
+              //       caption: "Random Song of the Day",
+              //       music: song[0]!,
+              //       comments: [],
+              //       likes: 0,
+              //       repost: false,
+              //     };
+              //     await sendPost(newPost)
+              //       .then((res) => {
+              //         if (!res) {
+              //           setPostSuccessFail(<PostFailure />);
+              //         } else {
+              //           setPostSuccessFail(<PostSucess />);
+              //         }
+              //       })
+              //       .catch((error) => {
+              //         <PostFailure />;
+              //       });
+              //   }
+              // }).catch((error) => {
+              //   console.log("Song not there")
+              //   console.log(error);
+              // });
+
+
+              await randomSongSpotifyFromBackend(user.spotifyToken).then(async (song) => {
+                console.log("In settings randomSongBackend");
+                console.log(song);
+              });
+            
             }}
           >
             Random

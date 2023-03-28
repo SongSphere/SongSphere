@@ -1,5 +1,7 @@
 // import packages
 import { Request, Response, NextFunction } from "express";
+import { initScheduledJobs } from "../services/scheduler";
+import Seed from "../seed";
 
 // import services
 import {
@@ -10,6 +12,22 @@ import {
   fetchPostsByUsername,
   fetchPostById,
 } from "../services/post";
+
+export const getSeedForRandomSong = async (req: Request, res: Response) => {
+
+  try {
+    // const seed = "https://api.spotify.com/v1/search?type=track&offset=61&limit=1&q=%25s%25";
+    const seed = Seed.getSeed();
+    console.log(seed);
+    res.status(201);
+    res.json({ seed: seed });
+    return seed;
+  } catch(error) {
+    console.log("error")
+    res.status(500);
+    res.json({ error: error });
+  }
+}
 
 export const getPostsByUsername = async (req: Request, res: Response) => {
   try {

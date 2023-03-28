@@ -19,6 +19,7 @@ import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
 import postRouter from "./routes/posting";
 import followRouter from "./routes/follow";
+import { initScheduledJobs } from "./services/scheduler";
 
 // import middleware
 import logger from "./middleware/logger";
@@ -51,6 +52,7 @@ const createApp = (dbname: string) => {
   );
   app.use(cookieParser());
 
+
   const username = process.env.DB_USER_NAME;
   const password = process.env.DB_PASSWORD;
   const cluster = process.env.DB_CLUSTER;
@@ -73,6 +75,7 @@ const createApp = (dbname: string) => {
       }),
     })
   );
+  initScheduledJobs();
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
   app.use(logger);

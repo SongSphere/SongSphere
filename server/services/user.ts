@@ -1,6 +1,7 @@
 // import packages
 import { TokenPayload } from "google-auth-library";
 import User, { IUser } from "../db/user";
+import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
 
@@ -223,6 +224,38 @@ export const updateNames = async (
     await User.findOneAndUpdate({ email: email }, { familyName: familyName });
   } catch (error) {
     console.error(error);
+    throw error;
+  }
+};
+
+export const fetchFeed = async (email: string, num: number) => {
+  try {
+    let posts: (mongoose.Document<unknown, any, IPost> &
+      IPost & {
+        _id: mongoose.Types.ObjectId;
+      })[] = [];
+
+    let user = await User.findOne({ email: email }, "following");
+    let following = user.following;
+
+    for (let i = 0; i < following.length; i++) {
+      let userPosts = await Post.find({ username: following[i] });
+      posts.push(...userPosts);
+    }
+
+    posts.sort(function (a, b) {
+      return b.get("createdAt") - a.get("createdAt");
+    });
+
+    if (num * 3 > posts.length) {
+      return [];
+    }
+    if (num * 3 + 3 > posts.length) {
+      return posts.slice(num * 3, posts.length);
+    }
+    return posts.slice(num * 3, num * 3 + 3);
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 };

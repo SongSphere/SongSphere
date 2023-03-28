@@ -22,7 +22,7 @@ const NotificationPage = (props: INotificationPageProps) => {
       <Navbar />
 
       <div
-        className="w-full absolute z-10 right-0 h-full overflow-x-hidden transform translate-x-0 transition ease-in-out duration-700"
+        className="absolute right-0 z-10 w-full h-full overflow-x-hidden transition duration-700 ease-in-out transform translate-x-0"
         id="notification"
       >
         <div className=" bg-navy h-screen overflow-y-auto p-8 right-0">
@@ -56,8 +56,8 @@ const NotificationPage = (props: INotificationPageProps) => {
               </svg>
             </div>
           </div>
-          <div className="w-full p-3 mt-8 bg-white rounded flex">
-            <div className="w-8 h-8 border rounded-full border-gray-200 flex items-center justify-center">
+          <div className="flex w-full p-3 mt-8 bg-white rounded">
+            <div className="flex items-center justify-center w-8 h-8 border border-gray-200 rounded-full">
               <svg
                 width={16}
                 height={16}
@@ -76,13 +76,13 @@ const NotificationPage = (props: INotificationPageProps) => {
                 <span className="text-indigo-700">James Doe</span> favourited an{" "}
                 <span className="text-indigo-700">item</span>
               </p>
-              <p className="text-xs leading-3 pt-1 text-gray-500">
+              <p className="pt-1 text-xs leading-3 text-gray-500">
                 2 hours ago
               </p>
             </div>
           </div>
-          <div className="w-full p-3 mt-4 bg-white rounded shadow flex flex-shrink-0">
-            <div className="w-8 h-8 border rounded-full border-gray-200 flex flex-shrink-0 items-center justify-center">
+          <div className="flex flex-shrink-0 w-full p-3 mt-4 bg-white rounded shadow">
+            <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 border border-gray-200 rounded-full">
               <svg
                 width={16}
                 height={16}
@@ -96,7 +96,7 @@ const NotificationPage = (props: INotificationPageProps) => {
                 />
               </svg>
             </div>
-            <div className="pl-3 w-full">
+            <div className="w-full pl-3">
               <div className="flex items-center justify-between w-full">
                 <p className="text-sm leading-none">
                   <span className="text-indigo-700">Sash</span> added you to the
@@ -127,13 +127,13 @@ const NotificationPage = (props: INotificationPageProps) => {
                   </svg>
                 </div>
               </div>
-              <p className="text-xs leading-3 pt-1 text-gray-500">
+              <p className="pt-1 text-xs leading-3 text-gray-500">
                 2 hours ago
               </p>
             </div>
           </div>
-          <div className="w-full p-3 mt-4 bg-white rounded flex">
-            <div className="w-8 h-8 border rounded-full border-gray-200 flex items-center justify-center">
+          <div className="flex w-full p-3 mt-4 bg-white rounded">
+            <div className="flex items-center justify-center w-8 h-8 border border-gray-200 rounded-full">
               <svg
                 width={16}
                 height={16}
@@ -153,13 +153,13 @@ const NotificationPage = (props: INotificationPageProps) => {
                 thread:{" "}
                 <span className="text-indigo-700">Update gone wrong</span>
               </p>
-              <p className="text-xs leading-3 pt-1 text-gray-500">
+              <p className="pt-1 text-xs leading-3 text-gray-500">
                 2 hours ago
               </p>
             </div>
           </div>
-          <div className="w-full p-3 mt-4 bg-red-100 rounded flex items-center">
-            <div className="w-8 h-8 border rounded-full border-red-200 flex items-center flex-shrink-0 justify-center">
+          <div className="flex items-center w-full p-3 mt-4 bg-red-100 rounded">
+            <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 border border-red-200 rounded-full">
               <svg
                 width={16}
                 height={16}
@@ -173,17 +173,17 @@ const NotificationPage = (props: INotificationPageProps) => {
                 />
               </svg>
             </div>
-            <div className="pl-3 w-full flex items-center justify-between">
+            <div className="flex items-center justify-between w-full pl-3">
               <p className="text-sm leading-none text-red-700">
                 Low on storage: 2.5/32gb remaining
               </p>
-              <p className="text-xs leading-3 cursor-pointer underline text-right text-red-700">
+              <p className="text-xs leading-3 text-right text-red-700 underline cursor-pointer">
                 Manage
               </p>
             </div>
           </div>
-          <div className="w-full p-3 mt-4 bg-white rounded flex">
-            <div className="w-8 h-8 border rounded-full border-gray-200 flex items-center justify-center">
+          <div className="flex w-full p-3 mt-4 bg-white rounded">
+            <div className="flex items-center justify-center w-8 h-8 border border-gray-200 rounded-full">
               <svg
                 width={16}
                 height={16}
@@ -202,16 +202,16 @@ const NotificationPage = (props: INotificationPageProps) => {
                 Shipmet delayed for order
                 <span className="text-indigo-700"> #25551</span>
               </p>
-              <p className="text-xs leading-3 pt-1 text-gray-500">
+              <p className="pt-1 text-xs leading-3 text-gray-500">
                 2 hours ago
               </p>
             </div>
           </div>
-          <h2 className="text-sm leading-normal pt-8 border-b pb-2 border-gray-300 text-white">
+          <h2 className="pt-8 pb-2 text-sm leading-normal text-white border-b border-gray-300">
             YESTERDAY
           </h2>
-          <div className="w-full p-3 mt-6 bg-white rounded flex">
-            <div className="w-8 h-8 border rounded-full border-gray-200 flex items-center justify-center">
+          <div className="flex w-full p-3 mt-6 bg-white rounded">
+            <div className="flex items-center justify-center w-8 h-8 border border-gray-200 rounded-full">
               <svg
                 width={16}
                 height={16}
@@ -231,13 +231,13 @@ const NotificationPage = (props: INotificationPageProps) => {
                 thread:{" "}
                 <span className="text-indigo-700">Update gone wrong</span>
               </p>
-              <p className="text-xs leading-3 pt-1 text-gray-500">
+              <p className="pt-1 text-xs leading-3 text-gray-500">
                 2 hours ago
               </p>
             </div>
           </div>
-          <div className="w-full p-3 mt-4 bg-white rounded flex">
-            <div className="w-8 h-8 border rounded-full border-gray-200 flex items-center justify-center">
+          <div className="flex w-full p-3 mt-4 bg-white rounded">
+            <div className="flex items-center justify-center w-8 h-8 border border-gray-200 rounded-full">
               <svg
                 width={16}
                 height={16}
@@ -256,13 +256,13 @@ const NotificationPage = (props: INotificationPageProps) => {
                 Shipmet delayed for order
                 <span className="text-indigo-700"> #25551</span>
               </p>
-              <p className="text-xs leading-3 pt-1 text-gray-500">
+              <p className="pt-1 text-xs leading-3 text-gray-500">
                 2 hours ago
               </p>
             </div>
           </div>
-          <div className="w-full p-3 mt-4 bg-white rounded flex">
-            <div className="w-8 h-8 border rounded-full border-gray-200 flex items-center justify-center">
+          <div className="flex w-full p-3 mt-4 bg-white rounded">
+            <div className="flex items-center justify-center w-8 h-8 border border-gray-200 rounded-full">
               <svg
                 width={16}
                 height={16}
@@ -281,13 +281,13 @@ const NotificationPage = (props: INotificationPageProps) => {
                 <span className="text-indigo-700">James Doe</span> favourited an{" "}
                 <span className="text-indigo-700">item</span>
               </p>
-              <p className="text-xs leading-3 pt-1 text-gray-500">
+              <p className="pt-1 text-xs leading-3 text-gray-500">
                 2 hours ago
               </p>
             </div>
           </div>
-          <div className="w-full p-3 mt-8 bg-green-100 rounded flex items-center">
-            <div className="w-8 h-8 border rounded-full border-green-200 flex flex-shrink-0 items-center justify-center">
+          <div className="flex items-center w-full p-3 mt-8 bg-green-100 rounded">
+            <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 border border-green-200 rounded-full">
               <svg
                 width={16}
                 height={16}
@@ -301,12 +301,12 @@ const NotificationPage = (props: INotificationPageProps) => {
                 />
               </svg>
             </div>
-            <div className="pl-3 w-full">
+            <div className="w-full pl-3">
               <div className="flex items-center justify-between">
                 <p className="text-sm leading-none text-green-700">
                   Design sprint completed
                 </p>
-                <p className="text-xs leading-3 underline cursor-pointer text-green-700">
+                <p className="text-xs leading-3 text-green-700 underline cursor-pointer">
                   View
                 </p>
               </div>
@@ -314,7 +314,7 @@ const NotificationPage = (props: INotificationPageProps) => {
           </div>
           <div className="flex items-center justify-between">
             <hr className="w-full" />
-            <p className="text-sm flex flex-shrink-0 leading-normal px-3 py-16 text-white">
+            <p className="flex flex-shrink-0 px-3 py-16 text-sm leading-normal text-white">
               Thats it for now :)
             </p>
             <hr className="w-full" />

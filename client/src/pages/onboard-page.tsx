@@ -103,13 +103,10 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
         />
         <AdjustNamesLink
           appleMusicInstance={props.appleMusicInstance}
-          // setUser={props.setUser}
           username={username ? username : ""}
           givenName={givenName ? givenName : ""}
-          // givenName={props.user?.givenName ? props.user?.givenName : ""}
           middleName={middleName ? middleName : ""}
           familyName={familyName ? familyName : ""}
-          // familyName={props.user?.familyName ? props.user?.familyName : ""}
         />
         <button
           onClick={() => {

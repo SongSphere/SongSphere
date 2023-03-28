@@ -3,8 +3,8 @@ export const follow = async (
   usernameOfUserGettingFollowed: string,
   emailOfUserGettingFollowed: string
 ) => {
-  try {
-    await fetch(`${process.env.REACT_APP_API}/api/addfollower`, {
+  return new Promise((resolve, reject) => {
+    fetch(`${process.env.REACT_APP_API}/api/addfollower`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
@@ -15,10 +15,14 @@ export const follow = async (
       headers: {
         "Content-Type": "application/json",
       },
-    });
-  } catch (err) {
-    console.error(err);
-  }
+    })
+      .then((res) => {
+        resolve(true);
+      })
+      .catch((error) => {
+        reject(false);
+      });
+  });
 };
 
 export const unfollow = async (
@@ -26,8 +30,8 @@ export const unfollow = async (
   usernameOfUserGettingUnfollowed: string,
   emailOfUserGettingUnfollowed: string
 ) => {
-  try {
-    await fetch(`${process.env.REACT_APP_API}/api/removefollower`, {
+  return new Promise((resolve, reject) => {
+    fetch(`${process.env.REACT_APP_API}/api/removefollower`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
@@ -38,8 +42,12 @@ export const unfollow = async (
       headers: {
         "Content-Type": "application/json",
       },
-    });
-  } catch (err) {
-    console.error(err);
-  }
+    })
+      .then((res) => {
+        resolve(true);
+      })
+      .catch((error) => {
+        reject(false);
+      });
+  });
 };
