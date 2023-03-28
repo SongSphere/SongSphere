@@ -1,19 +1,26 @@
+import { rejects } from "assert";
+import { resolve } from "path";
 import { TPost } from "../../types/post";
 
-const FetchLikes = async (
-    postId: TPost,
-): Promise<boolean> => {
-    return new Promise<boolean>(async (resolve, reject) => {
-        await fetch(`${process.env.REACT_APP_API}/api/user/fetchisLiked${postId._id}`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .catch((error) => {
-              reject(error);
-            });
+const fetchLikes = async (id: string) => {
+  return new Promise<boolean>(async (resolve, reject) => {
+    await fetch(`${process.env.REACT_APP_API}/api/user/fetchIsLiked/${id}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (res) => {
+      return res.json();
+    })
+    .then((data) => {
+      const likes = data.likes as boolean;
+      resolve(likes);
+    })
+    .catch((error) => {
+      reject(error);
     });
+  });
+  
 };
-export default FetchLikes
+export default fetchLikes

@@ -15,9 +15,12 @@ import {
   fetchFeed,
   updateUserVisibility,
   likePost,
+  unlikePost,
   isLiked,
+  fetchisLiked,
 } from "../services/user";
 import fs from "fs";
+import { Session } from "inspector";
 
 export const sessionUpdate = async (
   req: Request,
@@ -264,11 +267,7 @@ export const getProfilePhoto = (req: Request, res: Response) => {
   }
 };
 
-export const updateLikePost = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateLikePost = (req: Request, res: Response) => {
   const email = req.session.user.email;
   try {
     likePost(req.body.postId, email);
@@ -278,13 +277,35 @@ export const updateLikePost = (
   }
 };
 
-export const fetchIsLiked = async (req: Request, res: Response) => {
+export const updateUnlikePost = (req: Request, res: Response) => {
+  const email = req.session.user.email;
   try {
-    await isLiked(req.body.postId, req.body.email);
-    res.status(201);
-    res.json({ msg: "success" });
+    unlikePost(req.body.postId, email);
   } catch (error) {
     res.status(500);
     res.json({ error: error });
   }
 };
+
+export const fetchIsLiked = async (req: Request, res: Response) => {
+  try {
+    const email = req.session.user.email;
+    const likes  = await isLiked(req.params.id, email);
+    res.status(201);
+    res.json({ likes: likes});
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+}
+
+export const fetchLikedPosts = async(req:Request, res:Response) => {
+  try {
+    const likes = await fetchisLiked(req.params.username);
+    res.status(200);
+    res.json({ likes: likes });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+}

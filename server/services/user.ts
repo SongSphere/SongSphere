@@ -4,6 +4,8 @@ import User, { IUser } from "../db/user";
 import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
+import { Session } from "inspector";
+
 
 export const createUser = async (
   userData: TokenPayload,
@@ -378,17 +380,63 @@ export const updateBURL = async (email: string, url: string) => {
 
 export const likePost = async (postId: string, email: string) => {
   try {
-    await User.findOneAndUpdate({ email: email }, { $push: { likes: postId } });
-  } catch (error) {
+    await User.updateOne(
+      { email: email },
+      { $push: { likes:  postId} }
+    )
+    await Post.findOneAndUpdate(
+      {_id: postId},
+      {$inc: {likes:1}}
+    );
+    console.log('here');
+  } catch(error) {
+    throw error;
+  }
+}
+
+export const unlikePost = async (postId: string, email: string) => {
+  try {
+    await User.updateOne(
+      { email: email },
+      { $pull: { likes:  postId} }
+    )
+    await Post.findOneAndUpdate(
+      {_id: postId},
+      {$inc:{likes: -1}}
+    );
+    
+  } catch(error) {
     throw error;
   }
 };
 
 export const isLiked = async (postId: string, email: string) => {
   try {
-    const isLiked = await User.exists({ likes: postId });
+    const user = await User.findOne({email: email});
+    const isLiked = user.likes.includes(postId);
     return isLiked;
-  } catch (error) {
+    
+  } catch(error) {
     throw error;
   }
-};
+}
+
+export const fetchisLiked = async(username:string) => {
+  try {
+    let posts: (mongoose.Document<unknown, any, IPost> &
+      IPost & {
+        _id: mongoose.Types.ObjectId;
+      })[] = [];
+    const users = await User.findOne({ username: username });
+    const likes = users.likes;
+    for (let i = 0; i < likes.length; i++) {
+      let userPosts = await Post.find({ _id: likes[i] });
+      posts.push(...userPosts);
+    }
+    
+    return posts;
+  } catch(error) {
+      throw error;
+  }
+}
+
