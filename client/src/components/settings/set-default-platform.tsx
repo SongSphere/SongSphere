@@ -37,7 +37,6 @@ const DefaultPlatform = () => {
         }
       }
     }
-    console.log(user);
   }, [user, Session.getUser()]);
 
   // this sucks but works
