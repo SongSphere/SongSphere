@@ -5,6 +5,7 @@ import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
 import FollowRequest from "../db/follow-request";
+import { Session } from "inspector";
 
 export const createUser = async (
   userData: TokenPayload,
@@ -26,6 +27,7 @@ export const createUser = async (
     onboarded: false,
     isPrivate: false,
     likes: [],
+    showRandomSong: false,
   });
 
   return user;
@@ -130,6 +132,23 @@ export const updateUserVisibility = async (
     const user = await User.findOneAndUpdate(
       { email: email },
       { isPrivate: isPrivate },
+      { new: true }
+    );
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateShowRandomSong = async (
+  email: string,
+  showRandomSong: boolean
+) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { showRandomSong: showRandomSong },
       { new: true }
     );
 
@@ -289,23 +308,6 @@ export const updateBURL = async (email: string, url: string) => {
     await User.findOneAndUpdate({ email: email }, { backgroundImgUrl: url });
   } catch (error) {
     console.error(error);
-    throw error;
-  }
-};
-
-export const likePost = async (postId: string, email: string) => {
-  try {
-    await User.findOneAndUpdate({ email: email }, { $push: { likes: postId } });
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const isLiked = async (postId: string, email: string) => {
-  try {
-    const isLiked = await User.exists({ likes: postId });
-    return isLiked;
-  } catch (error) {
     throw error;
   }
 };

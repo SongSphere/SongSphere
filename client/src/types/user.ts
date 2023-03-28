@@ -14,9 +14,12 @@ export type TUser = {
   appleToken: string;
   following: string[];
   followers: string[];
+  blockedUsers: string[];
+  blockedBy: string[];
   onboarded: Boolean;
   isPrivate: Boolean;
   likes: string[];
+  showRandomSong: Boolean;
 };
 
 export type TUserWrapper = {

@@ -7,6 +7,8 @@ import {
   fetchFollowRequests,
   modifyFollowRequest,
   removeFollow,
+  addBlockedAccount,
+  unBlockAccount,
 } from "../services/follow";
 
 export const follow = async (req: Request, res: Response) => {
@@ -64,6 +66,32 @@ export const getFollowRequests = async (req: Request, res: Response) => {
   }
 };
 
+export const block = async (req: Request, res: Response) => {
+  const emailOfUserMakingBlock = req.session.user.email;
+  const usernameOfUserMakingBlock = req.body.usernameOfUserMakingBlock;
+  const usernameOfUserGettingBlocked = req.body.usernameOfUserGettingBlocked;
+  const emailOfUserGettingBlocked = req.body.emailOfUserGettingBlocked;
+
+  try {
+    await addBlockedAccount(
+      emailOfUserMakingBlock,
+      usernameOfUserMakingBlock,
+      usernameOfUserGettingBlocked,
+      emailOfUserGettingBlocked
+    );
+
+    await removeFollow(usernameOfUserMakingBlock, usernameOfUserGettingBlocked);
+
+    await removeFollow(usernameOfUserGettingBlocked, usernameOfUserMakingBlock);
+
+    res.status(201);
+    res.json({ msg: "blocked successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ error: error });
+  }
+};
+
 export const processFollowRequest = async (req: Request, res: Response) => {
   console.log("processing follow request");
   try {
@@ -77,6 +105,29 @@ export const processFollowRequest = async (req: Request, res: Response) => {
     res.json({ mgs: "success" });
   } catch (error) {
     res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const unblock = async (req: Request, res: Response) => {
+  const emailOfUserUnblocking = req.session.user.email;
+  const usernameOfUserUnblocking = req.body.usernameOfUserUnblocking;
+  const usernameOfUserGettingUnblocked =
+    req.body.usernameOfUserGettingUnblocked;
+  const emailOfUserGettingUnblocked = req.body.emailOfUserGettingUnblocked;
+
+  try {
+    await unBlockAccount(
+      usernameOfUserUnblocking,
+      usernameOfUserGettingUnblocked,
+      emailOfUserGettingUnblocked,
+      emailOfUserUnblocking
+    );
+
+    res.status(201);
+    res.json({ msg: "unblocked successfully" });
+  } catch (error) {
+    console.error(error);
     res.json({ error: error });
   }
 };

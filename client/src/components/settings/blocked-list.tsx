@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { unblock } from "../../services/user/block";
+import fetchUser from "../../services/user/fetch-user";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
+import Session from "../../session";
 
-interface IFollowerListProps {
-  followers: string[];
+interface IListBlockedUsers {
+  blockedList: string[];
   isVisible: boolean;
   onClose: Function;
 }
 
-const FollowerList = (props: IFollowerListProps) => {
-  const [followers, setFollowers] = useState(props.followers);
+const BlockedList = (props: IListBlockedUsers) => {
+  const [blockedUsers, setBlockedUsers] = useState<string[]>([]);
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
@@ -15,9 +19,24 @@ const FollowerList = (props: IFollowerListProps) => {
     }
   };
 
+  const handleClick = async (selectedUsername: string) => {
+    const user = Session.getUser();
+    let selectedUser = await fetchUserByUsername(selectedUsername);
+
+    if (user) {
+      unblock(user.username, selectedUser.username, selectedUser.email).then(
+        async () => {
+          Session.setUser(await fetchUser());
+        }
+      );
+    }
+
+    props.onClose();
+  };
+
   useEffect(() => {
-    setFollowers(props.followers);
-  }, [props.followers]);
+    setBlockedUsers(props.blockedList);
+  }, []);
 
   if (!props.isVisible) {
     return null;
@@ -31,14 +50,10 @@ const FollowerList = (props: IFollowerListProps) => {
     >
       <div className="w-1/4 p-5 bg-white rounded max-h-[60vh] min-h-[60vh]">
         <h1 className="py-3 font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
-          Followers
+          Blocked Users
         </h1>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
+        <form>
           <div className="py-2">
             <div className="flex justify-between bg-white rounded-md shadow shadow-black/20">
               <input
@@ -49,25 +64,35 @@ const FollowerList = (props: IFollowerListProps) => {
                   // searching
                   let filteredUsers: Array<string> = Array<string>();
 
-                  props.followers.forEach((u) => {
+                  props.blockedList.forEach((u) => {
                     if (u.startsWith(event.target.value as string)) {
                       filteredUsers.push(u);
                     }
                   });
 
-                  setFollowers(filteredUsers);
+                  setBlockedUsers(filteredUsers);
                 }}
               />
             </div>
 
             <div className="justify-center py-2 text-center">
               <div className="overflow-y-auto max-h-[45vh]">
-                {followers.map((user) => {
+                {blockedUsers.map((user) => {
                   return (
-                    <div className="flex" key={user}>
+                    <div className="flex">
                       <div className="flex-1 inline-block text-left">
                         {user}
                       </div>
+
+                      <button
+                        className="justify-end inline-block px-4 py-2 ml-auto text-center rounded-lg bg-lgrey"
+                        key={user}
+                        onClick={() => {
+                          handleClick(user);
+                        }}
+                      >
+                        unblock
+                      </button>
                     </div>
                   );
                 })}
@@ -80,4 +105,4 @@ const FollowerList = (props: IFollowerListProps) => {
   );
 };
 
-export default FollowerList;
+export default BlockedList;

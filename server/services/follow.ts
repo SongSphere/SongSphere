@@ -118,3 +118,43 @@ export const removeFollowRequest = async (id: string) => {
     console.error(error);
   }
 };
+
+export const addBlockedAccount = async (
+  emailOfUserMakingBlock: string,
+  usernameOfUserMakingBlock: string,
+  usernameOfUserGettingBlocked: string,
+  emailOfUserGettingBlocked: string
+) => {
+  try {
+    await User.updateOne(
+      { email: emailOfUserMakingBlock },
+      { $push: { blockedUsers: usernameOfUserGettingBlocked } }
+    );
+    await User.updateOne(
+      { email: emailOfUserGettingBlocked },
+      { $push: { blockedBy: usernameOfUserMakingBlock } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const unBlockAccount = async (
+  usernameOfUserUnblocking: string,
+  usernameOfUserGettingUnblocked: string,
+  emailOfUserGettingUnblocked: string,
+  emailOfUserUnblocking: string
+) => {
+  try {
+    await User.updateOne(
+      { email: emailOfUserUnblocking },
+      { $pull: { blockedUsers: usernameOfUserGettingUnblocked } }
+    );
+    await User.updateOne(
+      { email: emailOfUserGettingUnblocked },
+      { $pull: { blockedBy: usernameOfUserUnblocking } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};

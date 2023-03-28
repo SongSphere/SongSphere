@@ -6,6 +6,10 @@ import deletePost from "../../services/post/delete-post";
 import PostFocusPage from "../../pages/profile/post-focus-page";
 import Popup from "reactjs-popup";
 import LikeButton from "./like-button";
+import { useState } from "react";
+import { TUser } from "../../types/user";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
+import { useEffect } from "react";
 
 interface IPostProps {
   post: TPost;
@@ -18,9 +22,12 @@ const Repost = (props: IPostProps) => {
   const [postFocusPage, setPostFocusPage] = React.useState(false);
   const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
   const [deleteSuccessText, setDeleteSuccessText] = React.useState<string>("");
+  const [postRepost, setPostRepost] = useState<TUser | null>(null);
+  const [postOwner, setPostOwner] = useState<TUser | null>(null);
 
   const closeModal = () => setPostFocusPage(false);
   const closeDeleteSuccess = () => setOpen2(false);
+  const parts = props.post.caption.split(";");
 
   const handleOpen = () => {
     setOpen(!open);
@@ -29,8 +36,18 @@ const Repost = (props: IPostProps) => {
   const handlePostFocusPage = () => {
     setPostFocusPage(!postFocusPage);
   };
+  useEffect(() => {
+    fetchUserByUsername(props.post.username).then((postOwner) => {
+      setPostRepost(postOwner);
+    });
+  }, []);
+  useEffect(() => {
+    fetchUserByUsername(parts[2]).then((postOwner) => {
+      setPostOwner(postOwner);
+    });
+  }, []);
   let navigate = useNavigate();
-  const parts = props.post.caption.split(";");
+  
 
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
@@ -77,13 +94,18 @@ const Repost = (props: IPostProps) => {
         ) : null}
       </div>
 
-      <div
-        className="w-32 h-32 cursor-pointer"
-        onClick={() => {
-          props.setSong(props.post.music);
-        }}
-      >
-        <img src={props.post.music.cover}></img>
+      
+      <div className="grid items-center justify-center grid-flow-rol">
+      <img className="absolute top-9 left-16" width={25} src="https://www.clipartmax.com/png/full/241-2417826_transparent-circular-arrow-icon.png" />
+        <div
+          className="w-32 h-32 cursor-pointer"
+          onClick={() => {
+            props.setSong(props.post.music);
+          }}
+        >
+          <img src={props.post.music.cover}></img>
+        </div>
+      
       </div>
 
       <Popup open={open2} closeOnDocumentClick onClose={closeDeleteSuccess}>
@@ -105,7 +127,7 @@ const Repost = (props: IPostProps) => {
       </Popup>
 
       <div
-        className=""
+        className="w-full"
         onClick={() => {
           handlePostFocusPage();
 
@@ -114,16 +136,57 @@ const Repost = (props: IPostProps) => {
           );
         }}
       >
-        <div className="p-2 ml-5 text-lg text-center border-2 text-navy border-navy">
-          <h1 className="text-lblue">Reposted from {parts[2]}</h1>
-          {props.post.music.name}{" "}
-          {props.post.music.artist ? " by " + props.post.music.artist : ""}
-          <div className="pl-4 text-navy">{parts[0]} </div>
+        <div className="w-full p-2 ml-2">
+          <div className="ml-5">
+            {postRepost ? (
+              <a href={`/user/${postRepost.username}`}>
+                <img
+                  className="inline w-8 h-8 rounded-full"
+                  src={postRepost.profileImgUrl}
+                ></img>
+                <span className="inline pl-2 font-bold">
+                  {postRepost.username}
+                </span>
+              </a>
+            ) : (
+              <img
+                className="w-8 h-8 rounded-full"
+                src="/img/blank_user.png"
+              ></img>
+            )}
+          </div>
+          <div className="p-5 mt-5 border-4 border-solid border-lgrey">
+            <div>
+              {postOwner ? (
+                <a href={`/user/${postOwner.username}`}>
+                  <img
+                    className="inline w-8 h-8 rounded-full"
+                    src={postOwner.profileImgUrl}
+                  ></img>
+                  <span className="inline pl-2 font-bold">
+                    Resposted from {postOwner.username}
+                  </span>
+                </a>
+              ) : (
+                <img
+                  className="w-8 h-8 rounded-full"
+                  src="/img/blank_user.png"
+                ></img>
+              )}
+            </div>
+            <div className="text-2xl font-bold">{props.post.music.name}</div>
+            <div className="text-slate-500">{props.post.music.artist}</div>
+            <div className="">{parts[0]}</div>
+          </div>
+          <div className="mb-3 ml-5 text-slate-500">{parts[1]}</div>
+          
         </div>
-        <h2 className="mt-5 text-center">{parts[1]}</h2>
       </div>
+
       <div className="absolute bottom-5 right-5">
+      <div className="float-left mt-1.5 mr-2 text-navy">{props.post.likes}</div>
         <LikeButton post={props.post} />
+       
       </div>
     </div>
   );

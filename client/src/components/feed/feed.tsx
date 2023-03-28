@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { TPost } from "../../types/post";
-import fetchFeed from "../../services/fetch-feed";
 import Post from "../post/post";
 import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 import Repost from "../post/repost";
+import fetchFeed from "../../services/user/fetch-feed";
 
 interface IFeedProps {
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
@@ -32,6 +32,7 @@ const Feed = (props: IFeedProps) => {
 
   return (
     <div>
+      
       {posts.map((post) => {
         const repost = post.repost;
 
