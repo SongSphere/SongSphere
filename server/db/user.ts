@@ -21,6 +21,7 @@ export interface IUser {
   onboarded: Boolean;
   isPrivate: Boolean;
   likes: Array<String>;
+  showRandomSong: Boolean;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -100,6 +101,10 @@ const UserSchema = new Schema<IUser>(
     isPrivate: {
       type: Boolean,
       required: true,
+    },
+    showRandomSong: {
+      type: Boolean,
+      required: false,
     },
     likes: {
       type: Array<String>(),

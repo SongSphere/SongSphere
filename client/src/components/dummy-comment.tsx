@@ -1,7 +1,8 @@
+import sendComment from "../services/post/send-comment";
 import fetchUser from "../services/user/fetch-user";
 //import { appleAuth } from "../services/apple/apple-music-link";
 import { TComment } from "../types/comment";
-import sendComment from "../services/post/send-comment";
+
 
 const Comment = () => {
   return (

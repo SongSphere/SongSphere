@@ -27,6 +27,7 @@ export const createUser = async (
     onboarded: false,
     isPrivate: false,
     likes: [],
+    showRandomSong: false,
   });
 
   return user;
@@ -139,6 +140,23 @@ export const updateUserVisibility = async (
     throw error;
   }
 };
+
+export const updateShowRandomSong = async (
+  email: string,
+  showRandomSong: boolean,
+) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { showRandomSong: showRandomSong },
+      { new: true },
+    );
+    
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const fetchUserById = async (
   id: string

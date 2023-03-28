@@ -1,5 +1,6 @@
 // import packages
 import { Request, Response, NextFunction } from "express";
+import Seed from "../seed";
 
 // import services
 import {
@@ -12,6 +13,21 @@ import {
   comment,
   saveComment,
 } from "../services/post";
+
+export const getSeedForRandomSong = async (req: Request, res: Response) => {
+
+  try {
+    const seed = Seed.getSeed();
+    console.log(seed);
+    res.status(201);
+    res.json({ seed: seed });
+    return seed;
+  } catch(error) {
+    console.log("error")
+    res.status(500);
+    res.json({ error: error });
+  }
+}
 
 export const getPostsByUsername = async (req: Request, res: Response) => {
   try {
