@@ -6,7 +6,10 @@ import Feed from "../components/feed/feed";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import { TMusicContent } from "../types/music-content";
-import { randomSongSpotify, randomSongSpotifyFromBackend } from "../services/spotify/spotify-search";
+import {
+  randomSongSpotify,
+  randomSongSpotifyFromBackend,
+} from "../services/spotify/spotify-search";
 import RandomSongPost from "../components/feed/random-song-content";
 import { TPost } from "../types/post";
 
@@ -17,6 +20,7 @@ interface IHomePageProps {
 const HomePage = (props: IHomePageProps) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
+  const [randomSongToggle, setRandomSongToggle] = useState<boolean>(false);
   const [song, setSong] = useState<TMusicContent | null>(null);
 
   useEffect(() => {
@@ -28,34 +32,20 @@ const HomePage = (props: IHomePageProps) => {
         console.log("In homepage randomSongBackend");
         //console.log(url);
         setSong(await randomSongSpotify(user.spotifyToken, url));
-        // console.log("checkpoint", song);        
+        // console.log("checkpoint", song);
       });
     }
   }, [user]);
 
   useEffect(() => {
     console.log("checkpoint", song);
-  }, [song])
-
+  }, [song]);
 
   if (!user) {
     return <div>fetching user</div>;
   }
 
-  const b:string[] = ["", ""];
-  const a:TPost = {
-    _id: "df",
-    username: "",
-    userEmail: "",
-    caption: "",
-    music: song!,
-    likes: 1,
-    repost: false,
-    comments: b,
-  };
-
   return (
-    
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <Navbar />
 
@@ -64,7 +54,12 @@ const HomePage = (props: IHomePageProps) => {
           <div>this will be where the user activity be</div>
         </div>
         <div className="col-span-2">
-          <RandomSongPost  song={song} user={user} />
+          {user.showRandomSong ? (
+            <RandomSongPost song={song} user={user} />
+          ) : (
+            <div></div>
+          )}
+
           <Feed setSong={setSong} user={user} />
         </div>
         {service === "apple" ? (

@@ -30,13 +30,6 @@ export const initScheduledJobs = async () => {
     let url = "https://api.spotify.com/v1/search?type=track&offset=61&limit=1&q=%25s%25";
     let random_offset = Math.floor(Math.random() * 100);
     console.log("I'm executed on a schedule!");
-    // console.log(getRandomSearch());
-    // console.log(random_offset);
-    // Add your custom logic here
-
-    // console.log(`${SPOTIFY_API}/search?type=track&offset=${encodeURIComponent(
-    //     random_offset
-    //   )}&limit=1&q=${encodeURIComponent(getRandomSearch())}`);
 
     url = `${SPOTIFY_API}/search?type=track&offset=${encodeURIComponent(
       random_offset

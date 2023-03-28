@@ -36,9 +36,7 @@ const RandomSongPost = (props: IPostProps) => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    // fetchUserByUsername(props.post.username).then((postOwner) => {
-    //   setPostOwner(postOwner);
-    // });
+    
   }, []);
   
   if(!props.song) {
@@ -91,7 +89,7 @@ const RandomSongPost = (props: IPostProps) => {
           <div className="text-2xl font-bold">{"Random Song of the Day"}</div>
           <div className="text-slate-500">{props.song.artist}</div>
           <hr className="h-0.5 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-          <div className="">{props.song.albumName}</div>
+          <div className="">{props.song.name}</div>
         </div>
       </div>
       
