@@ -11,7 +11,7 @@ interface IListBlockedUsers {
 }
 
 const BlockedList = (props: IListBlockedUsers) => {
-  let [blockedUsers, setBlockedUsers] = useState<string[]>([]);
+  const [blockedUsers, setBlockedUsers] = useState<string[]>([]);
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
@@ -48,14 +48,14 @@ const BlockedList = (props: IListBlockedUsers) => {
       onClick={handleOnClose}
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
     >
-      <div className="w-1/4 p-5 bg-white rounded h-1/2">
+      <div className="w-1/4 p-5 bg-white rounded max-h-[60vh] min-h-[60vh]">
         <h1 className="py-3 font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
           Blocked Users
         </h1>
 
         <form>
           <div className="py-2">
-            <div className="flex justify-between overflow-y-auto bg-white rounded-md shadow shadow-black/20">
+            <div className="flex justify-between bg-white rounded-md shadow shadow-black/20">
               <input
                 type="text"
                 className="flex-1 block w-full px-3 py-2 focus:outline-none"
@@ -75,8 +75,8 @@ const BlockedList = (props: IListBlockedUsers) => {
               />
             </div>
 
-            <div className="justify-center py-2 overflow-y-auto text-center min-h-screen/3">
-              <div className="">
+            <div className="justify-center py-2 text-center">
+              <div className="overflow-y-auto max-h-[45vh]">
                 {blockedUsers.map((user) => {
                   return (
                     <div className="flex">
