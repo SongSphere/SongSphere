@@ -7,6 +7,7 @@ import fetchLikesByUsername from "../services/posts/fetch-user-likes";
 import fetchPostById from "../services/post/fetch-post-by-id";
 import LikeFeed from "../components/profile/likes-feed";
 import { TMusicContent } from "../types/music-content";
+import Navbar from "../components/navbar";
 
 const LikesPage = () => {
     const [posts, setPosts] = useState<TPost[]>([]);
@@ -30,9 +31,10 @@ const LikesPage = () => {
       
     return (
         <div className="w-full h-full min-h-screen text-center min-w-screen bg-lblue">
-          <h1 className="text-4xl text-center text-white">Liked Posts</h1>
-            <div className="grid grid-cols-4 gap-7 md:grid-flow-col">
-              <div className="col-span-2 col-start-2">
+          <Navbar />
+            <div className="flex justify-center">
+              <div className="w-4/5">
+                <h1 className="text-4xl text-center text-white">Liked Posts</h1>
                   <LikeFeed user={user} posts={posts} setSong={setSong}/>
               </div>
             </div>
