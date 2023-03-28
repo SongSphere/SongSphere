@@ -383,8 +383,18 @@ export const isLiked = async(postId:string, email:string) => {
 
 export const fetchisLiked = async(username:string) => {
   try {
+    let posts: (mongoose.Document<unknown, any, IPost> &
+      IPost & {
+        _id: mongoose.Types.ObjectId;
+      })[] = [];
     const users = await User.findOne({ username: username });
-    return users.likes;
+    const likes = users.likes;
+    for (let i = 0; i < likes.length; i++) {
+      let userPosts = await Post.find({ _id: likes[i] });
+      posts.push(...userPosts);
+    }
+    
+    return posts;
   } catch(error) {
       throw error;
   }
