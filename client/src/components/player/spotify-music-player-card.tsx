@@ -3,6 +3,7 @@ import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 import selectService from "../../services/user/select-service";
 import Session from "../../session";
+import { spotifyApiCall } from "../../services/spotify/spotify-api-call";
 
 interface ISpotifySong {
   name: string;
@@ -44,7 +45,17 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
     }
   };
 
-  const fetchSong = async (songId: string, token: string) => {
+  const fetchSong = async (
+    songId: string,
+    token: string,
+    refresh_token: string
+  ) => {
+    await spotifyApiCall(
+      `https://api.spotify.com/v1/tracks/${songId}`,
+      token,
+      refresh_token
+    );
+
     await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
       method: "GET",
       headers: {
@@ -77,12 +88,13 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
       appleMusicInstance: MusicKit.MusicKitInstance,
       user: TUser,
       service: string,
-      token: string
+      token: string,
+      refresh_token: string
     ) => {
       await selectService(selectedSong, appleMusicInstance, user, service).then(
         (bestFitId) => {
           if (bestFitId != "-1") {
-            fetchSong(bestFitId, token);
+            fetchSong(bestFitId, token, refresh_token);
           }
         }
       );
@@ -94,7 +106,8 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
         props.appleMusicInstance,
         user,
         service,
-        user.spotifyToken
+        user.spotifyToken,
+        user.spotifyRefreshToken
       );
     }
   }, [user, props.selectedSong]);
