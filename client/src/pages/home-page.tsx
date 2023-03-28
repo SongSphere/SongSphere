@@ -6,6 +6,7 @@ import Feed from "../components/feed/feed";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import { TMusicContent } from "../types/music-content";
+import FriendActivityCard from "../components/currentlyListening/friend-activity";
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -30,7 +31,7 @@ const HomePage = (props: IHomePageProps) => {
       <Navbar />
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
-          <div>this will be where the user activity be</div>
+          <FriendActivityCard />
         </div>
         <div className="col-span-2">
           <Feed setSong={setSong} user={user} />

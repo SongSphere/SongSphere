@@ -40,7 +40,7 @@ const FollowingList = (props: IFollowingListProps) => {
               <input
                 type="text"
                 className="flex-1 block w-full px-3 py-2 focus:outline-none"
-                placeholder="search blocked users"
+                placeholder="search following"
                 onChange={async (event) => {
                   // searching
                   let filteredUsers: Array<string> = Array<string>();
