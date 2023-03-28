@@ -74,7 +74,16 @@ const ProfileCard = (props: IProfileCardProps) => {
             >
               view likes
             </button>
-            
+          </div>
+          <div className="text-center">
+            <button
+              className="rounded-full text-slate-500"
+              onClick={() => {
+                navigate("/recents");
+              }}
+            >
+              recently played
+            </button>
           </div>
 
           <div className="px-2 py-2">
