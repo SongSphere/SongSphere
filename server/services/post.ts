@@ -93,6 +93,7 @@ export const comment = async (
   postId: string,
   replyingTo: string
 ): Promise<mongoose.Document<unknown, any, IComment>> => {
+  console.log(newComment);
   const comment = new Comment({
     username: newComment.username,
     userEmail: newComment.userEmail,
@@ -128,11 +129,8 @@ export const saveComment = async (
 };
 
 
-
 export const likeComment = async (commentId: string) => {
   try {
-   // await User.updateOne({ email: email }, { $pull: { like: commentId } });
-   console.log(`The commentid printed in servers/services: ${commentId}`);
     await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: 1 } });
   } catch (error) {
     throw error;
@@ -141,7 +139,6 @@ export const likeComment = async (commentId: string) => {
 
 export const unlikeComment = async (commentId: string) => {
 try {
-  console.log(`The commentid printed for unlike in servers/services: ${commentId}`);
     await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: -1 } });
   } catch (error) {
     throw error;

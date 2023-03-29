@@ -21,7 +21,7 @@ const Comment = () => {
             await sendComment(
               comment,
               "64235c28d1e8139b6a9e53af",
-              "6420e9af76577c8662d971e7"
+              "64244faba49f3fa743896a60" // If the subcomment disappers the dummy doesn't work
             );
           } catch (error) {
             console.error(error);

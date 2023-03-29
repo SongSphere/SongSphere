@@ -304,7 +304,6 @@ export const updateUnlikePost = (req: Request, res: Response) => {
 
 export const updateLikeComment = (req: Request, res: Response) => {
 
-  console.log(`The commentid printed in servers/controllers: ${req.body.comment._id}`);
   try {
     likeComment(req.body.comment._id);
   } catch (error) {

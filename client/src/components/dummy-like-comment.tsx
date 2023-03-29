@@ -1,13 +1,8 @@
-// import sendComment from "../services/post/send-comment";
-// import fetchUser from "../services/user/fetch-user";
-// //import { appleAuth } from "../services/apple/apple-music-link";
-// import { TComment } from "../types/comment";
-
 import likeComment from "../services/post/like-comment";
 import unLikeComment from "../services/post/unlike-comment";
 import { TComment } from "../types/comment";
 
-const LikeCommenDummy = () => {
+const LikeCommentDummy = () => {
     return(
         <div>
             <button
@@ -16,7 +11,7 @@ const LikeCommenDummy = () => {
                     console.log("Like comment dummy pressed");
                     try {
                         const comment: TComment = {
-                            _id: "64239de54313b9a6e22ec8b7",
+                            _id: "64245d1ff2aeeed572f12030",
                             username: "kyu",
                             userEmail: "davidkimworks@gmail.com",
                             text: "nice",
@@ -43,7 +38,7 @@ const LikeCommenDummy = () => {
                     console.log("unLike comment dummy pressed");
                     try {
                         const comment: TComment = {
-                            _id: "64239de54313b9a6e22ec8b7",
+                            _id: "64245d1ff2aeeed572f12030",
                             username: "kyu",
                             userEmail: "davidkimworks@gmail.com",
                             text: "nice",
@@ -71,7 +66,7 @@ const LikeCommenDummy = () => {
 
 };
 
-export default LikeCommenDummy;
+export default LikeCommentDummy;
 
 // export default LikeComment;
 
