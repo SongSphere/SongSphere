@@ -12,6 +12,7 @@ import {
 } from "../services/spotify/spotify-search";
 import RandomSongPost from "../components/feed/random-song-content";
 import { TPost } from "../types/post";
+import Comment from "../components/dummy-comment";
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -31,11 +32,9 @@ const HomePage = (props: IHomePageProps) => {
     if (user) {
       randomSongSpotifyFromBackend(user.spotifyToken).then(async (url) => {
         setRandomSong(await randomSongSpotify(user.spotifyToken, url));
-
       });
     }
   }, [user]);
-
 
   if (!user) {
     return <div>fetching user</div>;
@@ -44,7 +43,6 @@ const HomePage = (props: IHomePageProps) => {
   return (
     <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
       <Navbar />
-
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
           <div>this will be where the user activity be</div>

@@ -126,6 +126,20 @@ export const saveComment = async (
   }
 };
 
+export const fetchComments = async (postId: string) => {
+  try {
+    let post = await Post.findOne({ _id: postId });
+    let comments = [];
+    let commentIds = post.comments;
+    for (let i = 0; i < commentIds.length; i++) {
+      comments[i] = await Comment.findOne({ _id: commentIds[i] });
+    }
+    return comments;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const likePost = async (postId: string, email: string) => {
   try {
     await User.updateOne({ email: email }, { $push: { likes: postId } });
