@@ -19,7 +19,6 @@ const Post = (props: IPostProps) => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [postFocusPage, setPostFocusPage] = useState(false);
-  const [postSuccessFail, setPostSuccessFail] = useState<JSX.Element>();
   const [deleteSuccessText, setDeleteSuccessText] = useState<string>("");
   const [postOwner, setPostOwner] = useState<TUser | null>(null);
 
@@ -29,9 +28,6 @@ const Post = (props: IPostProps) => {
     setOpen(!open);
   };
 
-  const handlePostFocusPage = () => {
-    setPostFocusPage(!postFocusPage);
-  };
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -109,23 +105,13 @@ const Post = (props: IPostProps) => {
         </div>
       </Popup>
 
-      <Popup
-        open={postFocusPage}
-        closeOnDocumentClick
-        onClose={() => {
-          setPostFocusPage(false);
-        }}
-      >
-        <div className="modal">
-          <a
-            className="close"
-            onClick={() => {
-              setPostFocusPage(false);
-            }}
-          >
-            {postSuccessFail}
-          </a>
-        </div>
+      <Popup open={postFocusPage}>
+        <PostFocusPage
+          post={props.post}
+          setSong={props.setSong}
+          postOwner={postOwner}
+          setPostFocusPage={setPostFocusPage}
+        />
       </Popup>
 
       <div className="w-full">
@@ -160,14 +146,7 @@ const Post = (props: IPostProps) => {
             <div
               className="w-6 h-6 mt-1 ml-2 cursor-pointer"
               onClick={() => {
-                handlePostFocusPage();
-                setPostSuccessFail(
-                  <PostFocusPage
-                    post={props.post}
-                    setSong={props.setSong}
-                    postOwner={postOwner}
-                  />
-                );
+                setPostFocusPage(true);
               }}
             >
               <img src="/img/icons/comment.svg"></img>

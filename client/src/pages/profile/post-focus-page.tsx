@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LikeButton from "../../components/post/like-button";
+import fetchComments from "../../services/post/fetch-comments";
+import { TComment } from "../../types/comment";
 import { TMusicContent } from "../../types/music-content";
 import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
+import Session from "../../session";
+import sendComment from "../../services/post/send-comment";
 
 interface IPostFocusPageProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   postOwner: TUser | null;
+  setPostFocusPage: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PostFocusPage = (props: IPostFocusPageProps) => {
+  let [commentContent, setCommentContent] = useState("");
+  let [user, setUser] = useState<TUser | null>(null);
   let navigate = useNavigate();
+
+  useEffect(() => {
+    if (props.post._id) {
+      fetchComments(props.post._id).then((res) => {
+        console.log(res);
+      });
+    }
+    setUser(Session.getUser());
+  }, []);
+
+  if (!user) {
+    return <div>fetching user</div>;
+  }
 
   return (
     <div className="grid w-screen h-screen grid-cols-4 gap-2 md:grid-flow-col">
@@ -69,6 +89,43 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
           </div>
         </div>
         <hr className="h-0.5 bg-gray-300 border-0 "></hr>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (user && props.post._id && commentContent !== "") {
+              const comment: TComment = {
+                username: user.username,
+                userEmail: user.email,
+                text: commentContent,
+                subComments: [],
+              };
+
+              console.log("sending comment");
+              sendComment(comment, props.post._id, "");
+            }
+          }}
+        >
+          <label>
+            comment:
+            <input
+              type="text"
+              name="name"
+              value={commentContent}
+              onChange={(e) => {
+                setCommentContent(e.target.value);
+              }}
+            />
+          </label>
+          <button type="submit">Submit</button>
+        </form>
+        {/* <div
+          className="cursor-pointer"
+          onClick={() => {
+            props.setPostFocusPage(false);
+          }}
+        >
+          return
+        </div> */}
       </div>
     </div>
   );
