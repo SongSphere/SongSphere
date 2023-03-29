@@ -13,7 +13,9 @@ import ProfilePage from "../pages/profile/profile-page";
 import OtherUserProfilePage from "../pages/profile/other-user-profile-page";
 import NotificationPage from "../pages/notification-page";
 import RepostPage from "../pages/repost-page";
+import FollowRequestPage from "../pages/follow-request-page";
 import LikesPage from "../pages/likes-page";
+import RecentsPage from "../pages/recents-page";
 
 interface IRouterProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -36,7 +38,7 @@ const Router = (props: IRouterProps) => {
       ),
     },
     {
-      path: "/posts",
+      path: "/posts/:song?",
       element: <PostPage musicInstance={props.appleMusicInstance} />,
     },
     {
@@ -72,10 +74,16 @@ const Router = (props: IRouterProps) => {
       element: <RepostPage />,
     },
     {
+      path: "/followRequest",
+      element: <FollowRequestPage />,
+    },
+    {
       path: "/likes",
-      element: (
-        <LikesPage />
-      ),
+      element: <LikesPage />,
+    },
+    {
+      path: "/recents",
+      element: <RecentsPage appleMusicInstance={props.appleMusicInstance}/>,
     },
   ]);
   return element;

@@ -12,6 +12,7 @@ import { TUser } from "../types/user";
 import AdjustNamesLink from "../components/settings/adjust-names-link";
 import setOnboarded from "../services/user/set-onboarded";
 import Session from "../session";
+import { setDefaultPlatform } from "../services/user/default-platform";
 
 interface IOnBoardPageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -46,16 +47,26 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
         navigate("/");
       }
 
-      if (user.spotifyToken !== undefined) {
-        setSpotifyLinked(true);
-      } else {
-        setSpotifyLinked(false);
-      }
-
       if (user.appleToken !== undefined) {
+        user.defaultPlatform = "apple";
+        Session.setUser(user);
+        console.log("apple");
+        Session.setMusicService("apple");
+        setDefaultPlatform("apple");
         setAppleLinked(true);
       } else {
         setAppleLinked(false);
+      }
+
+      if (user.spotifyToken !== undefined) {
+        user.defaultPlatform = "spotify";
+        Session.setMusicService("spotify");
+        Session.setUser(user);
+        console.log("spotify");
+        setDefaultPlatform("apple");
+        setSpotifyLinked(true);
+      } else {
+        setSpotifyLinked(false);
       }
     }
   }, [user]);

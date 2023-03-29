@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 // import services
-import fetchUserPosts from "../../services/posts/fetch-user-posts";
+import fetchUserPosts from "../../services/post/fetch-user-posts";
 
 // import types
 import { TMusicContent } from "../../types/music-content";
@@ -17,7 +17,7 @@ import ProfileCard from "../../components/profile/profile-card";
 import ProfileFeed from "../../components/profile/profile-feed";
 import { NoPosts } from "../../components/profile/no-post";
 import Session from "../../session";
-import fetchPostsByUsername from "../../services/posts/fetch-user-posts";
+import fetchPostsByUsername from "../../services/post/fetch-user-posts";
 import FollowingList from "../../components/profile/following-list";
 import FollowerList from "../../components/profile/follower-list";
 
@@ -30,7 +30,6 @@ const ProfilePage = (props: IProfileProps) => {
   const [showFollowerModal, setShowFollowerModal] = useState(false);
   const [posts, setPosts] = useState<TPost[]>([]);
   const [song, setSong] = useState<TMusicContent | null>(null);
-  const [post, setPost] = useState<TPost | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
 

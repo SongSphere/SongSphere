@@ -1,6 +1,8 @@
 export type TComment = {
+  _id?: string;
   username: string;
   userEmail: string;
   text: string;
-  replyingTo?: string;
+  subComments?: string[];
+  like: number;
 };

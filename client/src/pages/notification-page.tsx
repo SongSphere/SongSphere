@@ -25,7 +25,7 @@ const NotificationPage = (props: INotificationPageProps) => {
         className="absolute right-0 z-10 w-full h-full overflow-x-hidden transition duration-700 ease-in-out transform translate-x-0"
         id="notification"
       >
-        <div className="right-0 h-screen p-8 overflow-y-auto 2xl:w-4/12 bg-navy">
+        <div className=" bg-navy h-screen overflow-y-auto p-8 right-0">
           <div className="flex items-center justify-between">
             <p className="text-2xl font-semibold leading-6 text-white">
               Notifications

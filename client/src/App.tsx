@@ -27,18 +27,8 @@ const App = () => {
                 Session.setUser(userData);
                 setUser(Session.getUser());
 
-                // set user's music service
-                if (
-                  userData.spotifyToken != undefined &&
-                  userData.appleToken != undefined
-                ) {
-                  Session.setMusicService("both");
-                }
-                if (userData.spotifyToken != undefined) {
-                  Session.setMusicService("spotify");
-                } else if (userData.appleToken != undefined) {
-                  Session.setMusicService("apple");
-                }
+                Session.setMusicService(userData.defaultPlatform);
+
                 setSessionUpdated(true);
               }
             });
