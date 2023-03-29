@@ -153,7 +153,7 @@ const Post = (props: IPostProps) => {
             Likes: {props.post.likes}
           </div>
           <div className="text-slate-500">{props.post.music.artist}</div>
-          <hr className="h-0.5 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+          <hr className="h-0.5 border-0 bg-gray-300"></hr>
           <div className="flex justify-end mt-2">
             <div className="w-full">{props.post.caption}</div>
             <LikeButton post={props.post} />

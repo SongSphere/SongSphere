@@ -16,8 +16,8 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
 
   return (
     <div className="grid w-screen h-screen grid-cols-4 gap-2 md:grid-flow-col">
-      <div className="col-span-2 col-start-2 mt-24">
-        <div className="flex w-full p-6 mb-8 bg-white rounded-lg drop-shadow-md h-5/6">
+      <div className="col-span-2 col-start-2 mt-24 bg-white rounded-lg h-5/6 drop-shadow-md ">
+        <div className="flex w-full p-6">
           <div
             className="w-32 h-32 cursor-pointer"
             onClick={() => {
@@ -52,7 +52,7 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
                 Likes: {props.post.likes}
               </div>
               <div className="text-slate-500">{props.post.music.artist}</div>
-              <hr className="h-0.5 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+              <hr className="h-0.5 border-0 bg-gray-300"></hr>
               <div className="flex justify-end mt-2">
                 <div className="w-full">{props.post.caption}</div>
                 <LikeButton post={props.post} />
@@ -68,6 +68,7 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
             </div>
           </div>
         </div>
+        <hr className="h-0.5 bg-gray-300 border-0 "></hr>
       </div>
     </div>
   );
