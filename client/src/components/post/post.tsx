@@ -23,7 +23,6 @@ const Post = (props: IPostProps) => {
   const [deleteSuccessText, setDeleteSuccessText] = useState<string>("");
   const [postOwner, setPostOwner] = useState<TUser | null>(null);
 
-  const closeModal = () => setPostFocusPage(false);
   const closeDeleteSuccess = () => setOpen2(false);
 
   const handleOpen = () => {
@@ -110,9 +109,20 @@ const Post = (props: IPostProps) => {
         </div>
       </Popup>
 
-      <Popup open={postFocusPage} closeOnDocumentClick onClose={closeModal}>
+      <Popup
+        open={postFocusPage}
+        closeOnDocumentClick
+        onClose={() => {
+          setPostFocusPage(false);
+        }}
+      >
         <div className="modal">
-          <a className="close" onClick={closeModal}>
+          <a
+            className="close"
+            onClick={() => {
+              setPostFocusPage(false);
+            }}
+          >
             &times;
             {postSuccessFail}
           </a>
@@ -148,15 +158,28 @@ const Post = (props: IPostProps) => {
             )}
           </div>
           <div className="text-2xl font-bold">{props.post.music.name}</div>
-          <div className="float-right pr-2 text-navy">{props.post.likes}</div>
+          <div className="float-right pr-2 text-navy">
+            Likes: {props.post.likes}
+          </div>
           <div className="text-slate-500">{props.post.music.artist}</div>
           <hr className="h-0.5 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-          <div className="">{props.post.caption}</div>
+          <div className="flex justify-end mt-2">
+            <div className="w-full">{props.post.caption}</div>
+            <LikeButton post={props.post} />
+            <img
+              className="w-6 h-6 mt-1 ml-1"
+              src="/img/icons/comment.svg"
+            ></img>
+          </div>
         </div>
       </div>
 
-      <div className="absolute bottom-5 right-5">
-        <LikeButton post={props.post} />
+      {/* <div className="absolute bottom-5 right-5">
+        <div className="flex">
+          <LikeButton post={props.post} />
+          <img src="/img/icons/comment.svg"></img>
+        </div>
+
         <button
           className="absolute bottom-2 text-lblue hover:text-navy right-10"
           onClick={() => {
@@ -165,7 +188,7 @@ const Post = (props: IPostProps) => {
         >
           Repost
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
