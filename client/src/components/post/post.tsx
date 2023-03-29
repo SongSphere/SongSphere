@@ -40,9 +40,9 @@ const Post = (props: IPostProps) => {
       setPostOwner(postOwner);
     });
   }, []);
-  
+
   return (
-    <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
+    <div className="flex w-full p-6 mb-8 bg-white rounded-lg drop-shadow-md">
       {/* Only display edit function if this post belongs to the user */}
       {props.post.username == props.user.username ? (
         <div className="dropdown">
@@ -98,7 +98,7 @@ const Post = (props: IPostProps) => {
           props.setSong(props.post.music);
         }}
       >
-        <img src={props.post.music.cover}></img>
+        <img className="rounded-sm" src={props.post.music.cover}></img>
       </div>
 
       <Popup open={open2} closeOnDocumentClick onClose={closeDeleteSuccess}>
@@ -154,9 +154,8 @@ const Post = (props: IPostProps) => {
           <div className="">{props.post.caption}</div>
         </div>
       </div>
-      
+
       <div className="absolute bottom-5 right-5">
-        
         <LikeButton post={props.post} />
         <button
           className="absolute bottom-2 text-lblue hover:text-navy right-10"
