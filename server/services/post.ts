@@ -125,7 +125,6 @@ export const comment = async (
 export const notificationForAlerts = async (
   newNotification: TNotification,
 ): Promise<mongoose.Document<unknown, any, INotification>> => {
-  console.log(`The object Notification in server/services : ${notificationForAlerts}`);
   const notification = new Notifications({
       userEmailSender: newNotification.userEmailSender,
       userEmailReceiver: newNotification.userEmailReceiver,

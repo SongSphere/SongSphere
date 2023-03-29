@@ -94,7 +94,6 @@ export const deletePost = async (req: Request, res: Response) => {
 
 export const sendNotification = async (req: Request, res: Response) => {
   try {
-    console.log(`The object Notification in server/controllers : ${notificationForAlerts}`);
     const newNotification = await notificationForAlerts(
       req.body.notificationForAlerts
     );
