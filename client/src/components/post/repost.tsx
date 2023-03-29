@@ -49,7 +49,7 @@ const Repost = (props: IPostProps) => {
   let navigate = useNavigate();
 
   return (
-    <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
+    <div className="flex w-full p-6 mb-8 bg-white rounded-lg drop-shadow-md">
       <div className="dropdown">
         <button onClick={handleOpen} className="absolute top-5 right-5 ">
           <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
