@@ -6,6 +6,7 @@ import Feed from "../components/feed/feed";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import { TMusicContent } from "../types/music-content";
+import Activity from "../components/feed/activity";
 import {
   randomSongSpotify,
   randomSongSpotifyFromBackend,
@@ -41,12 +42,11 @@ const HomePage = (props: IHomePageProps) => {
   }
 
   return (
-    <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
+    <div className="w-full h-full min-h-screen bg-orange-100 min-w-screen">
       <Navbar />
-      <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
-        <div className="">
-          <div>this will be where the user activity be</div>
-        </div>
+
+      <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
+        <Activity />
         <div className="col-span-2">
           {user.showRandomSong ? (
             <RandomSongPost song={randomSong} user={user} />
