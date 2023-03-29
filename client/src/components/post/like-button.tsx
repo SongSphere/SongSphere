@@ -38,7 +38,6 @@ const LikeButton = (props: LikeButtonProps) => {
   const [liked, setLiked] = useState<boolean | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
 
- 
   useEffect(() => {
     if (props.post._id) {
       fetchLikes(props.post._id).then((liked) => {
@@ -48,42 +47,41 @@ const LikeButton = (props: LikeButtonProps) => {
 
     const user = Session.getUser();
     setUser(user);
-    
- 
   }, []);
 
-
-  
-
   if (liked) {
-    return <LikedButton onClick={async () => {
-        
-        await UnlikePost(props.post);
-        
-        
-      }} />;
+    return (
+      <LikedButton
+        onClick={async () => {
+          await UnlikePost(props.post);
+        }}
+      />
+    );
   } else {
-    return <NotLikedButton onClick={async () => {
+    return (
+      <NotLikedButton
+        onClick={async () => {
+          const user = Session.getUser();
 
-      const user = Session.getUser();
-        console.log(`${user} is the user`);
-       
-          console.log("Inside the if statement");
-          const notificationForAlerts: TNotification = {
-            userEmailSender: "dsfd",
-            userEmailReceiver: props.post.userEmail,
-            notificationType: "Post",
-            text: "Someone liked your post!",
-          };
-          console.log(notificationForAlerts);
-  
-          await sendNotification(notificationForAlerts).then((error) => {
+          if (user) {
+            const notificationForAlerts: TNotification = {
+              userEmailSender: user.email,
+              userEmailReceiver: props.post.userEmail,
+              notificationType: "Post",
+              text: `${user.username} liked your post!`,
+            };
+      
+            await sendNotification(notificationForAlerts).then((error) => {
               console.log(error);
-          });
+            });
+          }
+
           
-          await LikePost(props.post)
-    
-    }} />;
+
+          await LikePost(props.post);
+        }}
+      />
+    );
   }
 };
 export default LikeButton;
