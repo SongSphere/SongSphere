@@ -4,6 +4,10 @@ import { TPost } from "../../types/post";
 import LikePost from "../../services/user/like-post";
 import UnlikePost from "../../services/user/unlike-post";
 import fetchLikes from "../../services/user/fetch-likes";
+import Session from "../../session";
+import { TUser } from "../../types/user";
+import { TNotification } from "../../types/notification";
+import sendNotification from "../../services/notification/send-notification";
 
 interface LikeButtonProps {
   post: TPost;
@@ -32,19 +36,54 @@ const NotLikedButton = styled.button`
 `;
 const LikeButton = (props: LikeButtonProps) => {
   const [liked, setLiked] = useState<boolean | null>(null);
+  const [user, setUser] = useState<TUser | null>(null);
 
+ 
   useEffect(() => {
     if (props.post._id) {
       fetchLikes(props.post._id).then((liked) => {
         setLiked(liked);
       });
     }
+
+    const user = Session.getUser();
+    setUser(user);
+    
+ 
   }, []);
 
+
+  
+
   if (liked) {
-    return <LikedButton onClick={async () => UnlikePost(props.post)} />;
+    return <LikedButton onClick={async () => {
+        
+        await UnlikePost(props.post);
+        
+        
+      }} />;
   } else {
-    return <NotLikedButton onClick={() => LikePost(props.post)} />;
+    return <NotLikedButton onClick={async () => {
+
+      const user = Session.getUser();
+        console.log(`${user} is the user`);
+       
+          console.log("Inside the if statement");
+          const notificationForAlerts: TNotification = {
+            userEmailSender: "dsfd",
+            userEmailReceiver: props.post.userEmail,
+            notificationType: "Post",
+            text: "Someone liked your post!",
+          };
+          console.log(notificationForAlerts);
+  
+          await sendNotification(notificationForAlerts).then((error) => {
+              console.log(error);
+          });
+          
+          await LikePost(props.post)
+    
+    }} />;
   }
 };
 export default LikeButton;

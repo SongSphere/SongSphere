@@ -27,7 +27,7 @@ const Comment = () => {
             // );
             const notificationForAlerts: TNotification = {
                 userEmailSender: "David",
-                userEmailReceiver: "Tony1",
+                userEmailReceiver: "Tony2",
                 notificationType: "comment",
                 text: "someone commented on your post",
             };
