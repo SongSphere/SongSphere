@@ -29,6 +29,7 @@ const SpotifySearch = async (
   return spotifySearch(term, category, token, limit);
 };
 
+
 interface ISearchSongProps {
   musicInstance: MusicKit.MusicKitInstance;
 }
@@ -52,6 +53,9 @@ const SearchSong = (props: ISearchSongProps) => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
   }, [Session.getUser()]);
+
+
+  
 
   const selectService = async (
     term: string,
@@ -77,22 +81,13 @@ const SearchSong = (props: ISearchSongProps) => {
   const handleOpen2 = () => {
     setOpen2(!open2);
   };
-
   return (
-    <div className="p-2">
-      <div className="dropdown">
-        <button
-          className="text-black bg-white border-2 border-solid border-lblue"
-          onClick={handleOpen}
-        >
-          Search For:
-        </button>
-
-        {open ? (
-          <ul className="text-left menu">
-            <li className="songs">
-              <button
-                className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+    <div className="grid h-full grid-cols-4 max-w-[95%]">
+    <div className="col-span-2 mt-5 ml-5 bg-lgrey rounded-2xl h-[90%]">
+    <h1 className="text-4xl text-center text-navy">Search For</h1>
+        <div className="grid w-full grid-flow-col">
+          <button
+                className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
                 onClick={async () =>
                   await selectService(song as string, "songs", 10).then(
                     (result) => {
@@ -105,11 +100,9 @@ const SearchSong = (props: ISearchSongProps) => {
               >
                 {" "}
                 Songs{" "}
-              </button>
-            </li>
-            <li className="albums">
-              <button
-                className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+           </button>
+           <button
+                className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl visited:border-b-yellow-100"
                 onClick={() =>
                   selectService(song as string, "albums", 10).then((result) => {
                     setCategory("albums");
@@ -121,10 +114,8 @@ const SearchSong = (props: ISearchSongProps) => {
                 {" "}
                 Albums{" "}
               </button>
-            </li>
-            <li className="artists">
               <button
-                className="text-black bg-white border-2 border-solid border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+                className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
                 onClick={() =>
                   selectService(song as string, "artists", 10).then(
                     (result) => {
@@ -138,53 +129,73 @@ const SearchSong = (props: ISearchSongProps) => {
                 {" "}
                 Artists{" "}
               </button>
-            </li>
-          </ul>
-        ) : null}
-        <br />
-        <input
-          className="w-1/2"
-          placeholder="Enter Post Title"
-          onChange={(event) =>
-            selectService(event.target.value as string, category, 10).then(
-              (result) => {
-                setSong(event.target.value);
-                songs = result!;
-                setSongs(result!);
-              }
-            )
-          }
-        />
-      </div>
-      {songs.map((s) => (
-        <div>
-          <button
-            className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
-            key={s.id}
-            onClick={() => setSelected(s)}
-          >
-            {s.name} {s.artist}
-          </button>
         </div>
-      ))}
-      <div>
-        Selected: {selected?.name} {selected?.artist}
-      </div>
-      <h1>Enter Caption</h1>
-      <form>
-        <label>
-          <input
-            type="text"
-            value={caption}
-            onChange={(e) => {
-              setCaption(e.target.value);
-            }}
+      <div className="grid justify-center w-full grid-flow-col mt-5">
+        <input
+            className=""
+            placeholder="Enter Post Title"
+            onChange={(event) =>
+              selectService(event.target.value as string, category, 7).then(
+                (result) => {
+                  setSong(event.target.value);
+                  songs = result!;
+                  setSongs(result!);
+                }
+              )
+            }
           />
-        </label>
-      </form>
+      </div>
+      <div className="w-[90%] mt-3 mx-auto">
+        {songs.map((s) => (
+          <div className="grid w-full grid-flow-col">
+            <button
+              className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
+              key={s.id}
+              onClick={() => setSelected(s)}
+            > 
+              <div className="flex text-center w-[100%]">
+                <div className="w-20 h-20 ">
+                  <img src={s.cover} />
+                </div>
+                {s.name} 
+                <br />
+                {s.artist}
+              </div>
+            </button>
+          </div>
+        ))}
+      </div>
       {/* This will be edited once merged to incoroporate username userSessionContext */}
-      <button
-        className="my-5 border-black rounded-md text-lgrey bg-navy"
+      
+      
+      </div>
+
+      <div className="w-full col-span-2 pt-5 m-5 h-5/6 rounded-xl bg-lgrey">
+        <div className="flex justify-center">
+          {
+            selected ? (
+              <img className="max-w-[75%]" src={selected.cover}/>
+            ) :null
+          }
+        </div>
+        <div className="grid-flow-col mt-5 text-center">
+          <h1 className="text-2xl text-navy">{selected?.name}</h1>
+          <h1 className="text-xl text-navy">{selected?.artist}</h1>
+          <form className="mt-5">
+            <label>
+              <input
+                type="text"
+                value={caption}
+                placeholder={"Enter a caption"}
+                onChange={(e) => {
+                  setCaption(e.target.value);
+                }}
+              />
+            </label>
+          </form>
+        </div>
+        <button
+        className="float-right p-2 mb-2 mr-10 rounded-md text-lgrey bg-navy hover:bg-lblue"
         onClick={async () => {
           setOpen2(true);
           if (user) {
@@ -208,19 +219,21 @@ const SearchSong = (props: ISearchSongProps) => {
               .catch((error) => {
                 <PostFailure />;
               });
-          }
-        }}
-      >
-        Submit
-      </button>
-      <Popup open={open2} closeOnDocumentClick onClose={closeModal}>
-        <div className="modal">
-          <a className="close" onClick={closeModal}>
-            &times;
-            {postSuccessFail}
-          </a>
-        </div>
-      </Popup>
+            }
+          }}
+        >
+          Submit
+        </button>
+        <Popup open={open2} closeOnDocumentClick onClose={closeModal}>
+          <div className="modal">
+            <a className="close" onClick={closeModal}>
+              &times;
+              {postSuccessFail}
+            </a>
+          </div>
+        </Popup>
+      </div>
+
     </div>
   );
 };

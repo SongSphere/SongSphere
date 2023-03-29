@@ -12,22 +12,22 @@ import {
   fetchPostById,
   comment,
   saveComment,
+  fetchComments,
 } from "../services/post";
 
 export const getSeedForRandomSong = async (req: Request, res: Response) => {
-
   try {
     const seed = Seed.getSeed();
     console.log(seed);
     res.status(201);
     res.json({ seed: seed });
     return seed;
-  } catch(error) {
-    console.log("error")
+  } catch (error) {
+    console.log("error");
     res.status(500);
     res.json({ error: error });
   }
-}
+};
 
 export const getPostsByUsername = async (req: Request, res: Response) => {
   try {
@@ -102,6 +102,17 @@ export const sendComment = async (req: Request, res: Response) => {
     await saveComment(c);
     res.status(201);
     res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+  }
+};
+
+export const getComments = async (req: Request, res: Response) => {
+  try {
+    let c = await fetchComments(req.params.id);
+    res.status(201);
+    res.json({ comments: c });
   } catch (error) {
     res.status(500);
     console.log(error);

@@ -8,7 +8,7 @@ import FollowingList from "../../components/profile/following-list";
 import { NoPosts } from "../../components/profile/no-post";
 import OtherProfileFeed from "../../components/profile/other-profile-feed";
 import OtherUserProfileCard from "../../components/profile/other-user-profile-card";
-import fetchPostsByUsername from "../../services/posts/fetch-user-posts";
+import fetchPostsByUsername from "../../services/post/fetch-user-posts";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
 import Session from "../../session";
 import { TMusicContent } from "../../types/music-content";

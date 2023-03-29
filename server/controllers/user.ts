@@ -14,6 +14,8 @@ import {
   updateBURL,
   fetchFeed,
   updateUserVisibility,
+  getDefaultPlatform,
+  setDefaultPlatform,
   updateShowRandomSong,
 } from "../services/user";
 
@@ -340,6 +342,26 @@ export const fetchLikedPosts = async (req: Request, res: Response) => {
     const likes = await fetchisLiked(req.params.username);
     res.status(200);
     res.json({ likes: likes });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getPlatform = async (req: Request, res: Response) => {
+  try {
+    let platform = await getDefaultPlatform(req.session.user.email);
+    res.status(201);
+    res.json({ platform: platform });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const setPlatform = async (req: Request, res: Response) => {
+  try {
+    await setDefaultPlatform(req.session.user.email, req.body.platform);
   } catch (error) {
     res.status(500);
     res.json({ error: error });

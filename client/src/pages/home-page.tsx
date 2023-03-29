@@ -6,6 +6,7 @@ import Feed from "../components/feed/feed";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import { TMusicContent } from "../types/music-content";
+import Activity from "../components/feed/activity";
 import {
   randomSongSpotify,
   randomSongSpotifyFromBackend,
@@ -13,6 +14,8 @@ import {
 import RandomSongPost from "../components/feed/random-song-content";
 import Comment from "../components/dummy-comment";
 import LikeCommentDummy from "../components/dummy-like-comment";
+import { TPost } from "../types/post";
+
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -32,47 +35,49 @@ const HomePage = (props: IHomePageProps) => {
     if (user) {
       randomSongSpotifyFromBackend(user.spotifyToken).then(async (url) => {
         setRandomSong(await randomSongSpotify(user.spotifyToken, url));
-
       });
     }
   }, [user]);
-
 
   if (!user) {
     return <div>fetching user</div>;
   }
 
   return (
-    <div className="w-full h-full min-h-screen min-w-screen bg-slate-100">
+    <div className="w-full h-full min-h-screen bg-orange-100 min-w-screen">
       <Navbar />
-      <div className="flex flex-row justify-between items-center"> 
+      {/* <div className="flex flex-row justify-between items-center"> 
         <Comment />
         <LikeCommentDummy />
-      </div>
+      </div> */}
       <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
         <div className="">
           <div>this will be where the user activity be</div>
         </div>
-        <div className="col-span-2">
-          {user.showRandomSong ? (
-            <RandomSongPost song={randomSong} user={user} />
-          ) : (
-            <div></div>
-          )}
 
-          <Feed setSong={setSong} user={user} />
+        <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
+          <Activity />
+          <div className="col-span-2">
+            {user.showRandomSong ? (
+              <RandomSongPost song={randomSong} user={user} />
+            ) : (
+              <div></div>
+            )}
+
+            <Feed setSong={setSong} user={user} />
+          </div>
+          {service === "apple" ? (
+            <AppleMusicPlayerCard
+              musicInstance={props.appleMusicInstance}
+              selectedSong={song}
+            />
+          ) : (
+            <SpotifyPlayerCard
+              selectedSong={song}
+              appleMusicInstance={props.appleMusicInstance}
+            />
+          )}
         </div>
-        {service === "apple" ? (
-          <AppleMusicPlayerCard
-            musicInstance={props.appleMusicInstance}
-            selectedSong={song}
-          />
-        ) : (
-          <SpotifyPlayerCard
-            selectedSong={song}
-            appleMusicInstance={props.appleMusicInstance}
-          />
-        )}
       </div>
     </div>
   );

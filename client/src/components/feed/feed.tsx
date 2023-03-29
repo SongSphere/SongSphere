@@ -32,7 +32,7 @@ const Feed = (props: IFeedProps) => {
 
   return (
     <div>
-      
+      <div className="mt-8"></div>
       {posts.map((post) => {
         const repost = post.repost;
 
@@ -49,16 +49,19 @@ const Feed = (props: IFeedProps) => {
           );
         }
       })}
-      <button
-        onClick={() => {
-          fetchFeed(pageNum + 1).then((newPosts) => {
-            setPosts(posts.concat(newPosts));
-            setPageNum(pageNum + 1);
-          });
-        }}
-      >
-        fetch more
-      </button>
+      <div className="flex justify-center">
+        <button
+          className="px-4 py-2 font-bold duration-300 bg-teal-100 border-2 rounded-lg border-slate-800 hover:bg-teal-200"
+          onClick={() => {
+            fetchFeed(pageNum + 1).then((newPosts) => {
+              setPosts(posts.concat(newPosts));
+              setPageNum(pageNum + 1);
+            });
+          }}
+        >
+          fetch more
+        </button>
+      </div>
     </div>
   );
 };

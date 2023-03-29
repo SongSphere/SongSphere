@@ -155,6 +155,7 @@ export const signInUp = async (
       isPrivate: false,
       showRandomSong: false,
       likes: Array<String>(),
+      defaultPlatform: "",
     };
 
     res.status(201);

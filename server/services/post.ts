@@ -128,7 +128,6 @@ export const saveComment = async (
   }
 };
 
-
 export const likeComment = async (commentId: string) => {
   try {
     await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: 1 } });
@@ -138,8 +137,23 @@ export const likeComment = async (commentId: string) => {
 };
 
 export const unlikeComment = async (commentId: string) => {
-try {
+  try {
     await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: -1 } });
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const fetchComments = async (postId: string) => {
+  try {
+    let post = await Post.findOne({ _id: postId });
+    let comments = [];
+    let commentIds = post.comments;
+    for (let i = 0; i < commentIds.length; i++) {
+      comments[i] = await Comment.findOne({ _id: commentIds[i] });
+    }
+    return comments;
   } catch (error) {
     throw error;
   }
@@ -154,8 +168,6 @@ export const likePost = async (postId: string, email: string) => {
     throw error;
   }
 };
-
-
 
 export const unlikePost = async (postId: string, email: string) => {
   try {

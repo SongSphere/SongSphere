@@ -47,7 +47,6 @@ const Repost = (props: IPostProps) => {
     });
   }, []);
   let navigate = useNavigate();
-  
 
   return (
     <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
@@ -94,9 +93,12 @@ const Repost = (props: IPostProps) => {
         ) : null}
       </div>
 
-      
       <div className="grid items-center justify-center grid-flow-rol">
-      <img className="absolute top-9 left-16" width={25} src="https://www.clipartmax.com/png/full/241-2417826_transparent-circular-arrow-icon.png" />
+        <img
+          className="absolute top-9 left-16"
+          width={25}
+          src="https://www.clipartmax.com/png/full/241-2417826_transparent-circular-arrow-icon.png"
+        />
         <div
           className="w-32 h-32 cursor-pointer"
           onClick={() => {
@@ -105,7 +107,6 @@ const Repost = (props: IPostProps) => {
         >
           <img src={props.post.music.cover}></img>
         </div>
-      
       </div>
 
       <Popup open={open2} closeOnDocumentClick onClose={closeDeleteSuccess}>
@@ -128,13 +129,13 @@ const Repost = (props: IPostProps) => {
 
       <div
         className="w-full"
-        onClick={() => {
-          handlePostFocusPage();
+        // onClick={() => {
+        //   handlePostFocusPage();
 
-          setPostSuccessFail(
-            <PostFocusPage post={props.post} setSong={props.setSong} />
-          );
-        }}
+        //   setPostSuccessFail(
+        //     <PostFocusPage post={props.post} setSong={props.setSong} />
+        //   );
+        // }}
       >
         <div className="w-full p-2 ml-2">
           <div className="ml-5">
@@ -179,14 +180,14 @@ const Repost = (props: IPostProps) => {
             <div className="">{parts[0]}</div>
           </div>
           <div className="mb-3 ml-5 text-slate-500">{parts[1]}</div>
-          
         </div>
       </div>
 
       <div className="absolute bottom-5 right-5">
-      <div className="float-left mt-1.5 mr-2 text-navy">{props.post.likes}</div>
+        <div className="float-left mt-1.5 mr-2 text-navy">
+          {props.post.likes}
+        </div>
         <LikeButton post={props.post} />
-       
       </div>
     </div>
   );

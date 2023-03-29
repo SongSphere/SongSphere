@@ -4,8 +4,6 @@ import User, { IUser } from "../db/user";
 import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
-import FollowRequest from "../db/follow-request";
-import { Session } from "inspector";
 
 export const createUser = async (
   userData: TokenPayload,
@@ -27,7 +25,6 @@ export const createUser = async (
     onboarded: false,
     isPrivate: false,
     likes: [],
-    showRandomSong: false,
   });
 
   return user;
@@ -308,6 +305,31 @@ export const updateBURL = async (email: string, url: string) => {
     await User.findOneAndUpdate({ email: email }, { backgroundImgUrl: url });
   } catch (error) {
     console.error(error);
+    throw error;
+  }
+};
+
+export const getDefaultPlatform = async (email: string) => {
+  try {
+    const user = await User.findOne({ email: email }, "defaultPlatform");
+    const platform = user.defaultPlatform;
+
+    return platform;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setDefaultPlatform = async (
+  email: string,
+  defaultPlatform: string
+) => {
+  try {
+    await User.findOneAndUpdate(
+      { email: email },
+      { defaultPlatform: defaultPlatform }
+    );
+  } catch (error) {
     throw error;
   }
 };

@@ -9,6 +9,7 @@ import {
   getPostById,
   getSeedForRandomSong,
   sendComment,
+  getComments,
 } from "../controllers/posting";
 
 // import middleware
@@ -22,5 +23,6 @@ router.post("/api/removepost", deletePost);
 router.get("/api/post/:id", getPostById);
 router.get("/api/randomsong/seed", getSeedForRandomSong);
 router.post("/api/post/comment", sendComment);
+router.get("/api/post/getComments/:id", getComments);
 
 export default router;
