@@ -74,73 +74,62 @@ export const spotifySearch = async (
   return content;
 };
 
-
 export const randomSongSpotify = async (token: string, url: string) => {
   return new Promise<TMusicContent>(async (resolve, reject) => {
-  let content: TMusicContent[] = [];
-  await fetch(
-    url,
-    {
+    let content: TMusicContent[] = [];
+
+    await fetch(url, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
-  )
-    .then(async (res) => {
-      // passes json to the next handler function
-      return res.json();
     })
-    .then((data) => {
+      .then(async (res) => {
+        // passes json to the next handler function
+        return res.json();
+      })
+      .then((data) => {
+        const tracks = data.tracks.items;
 
-      const tracks = data.tracks.items;
-
-      tracks.forEach(function (track: any) {
-        
-        content.push({
-          name: track.name,
-          artist: track.artists[0].name,
-          albumName: track.album.name,
-          id: track.id,
-          service: "spotify",
-          category: "song",
-          cover: track.album.images[0].url,
+        tracks.forEach(function (track: any) {
+          content.push({
+            name: track.name,
+            artist: track.artists[0].name,
+            albumName: track.album.name,
+            id: track.id,
+            service: "spotify",
+            category: "song",
+            cover: track.album.images[0].url,
+          });
         });
+
+        resolve(content[0]);
+      })
+      .catch((error) => {
+        reject(error);
       });
-
-      resolve(content[0]);
-
-    }).catch((error) => {
-      reject(error);
-    });
-   
-
   });
 };
 
-
 export const randomSongSpotifyFromBackend = async (token: string) => {
   return new Promise<string>(async (resolve, reject) => {
-
-  await fetch(`${process.env.REACT_APP_API}/api/randomsong/seed`, {
-    method: "get",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then(async (res) => {
-      // passes json to the next handler function
-      return res.json();
+    await fetch(`${process.env.REACT_APP_API}/api/randomsong/seed`, {
+      method: "get",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((data) => {
-      console.log(data);
-      resolve(data.seed)
-   
-    }).catch((error) => {
-      reject(error);
-    });
-  
-
+      .then(async (res) => {
+        // passes json to the next handler function
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        resolve(data.seed);
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
 };

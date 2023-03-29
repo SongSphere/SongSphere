@@ -45,6 +45,8 @@ export const spotifyAuth = async (code: string) => {
 export const spotifyRefresh = async (refresh_token: string) => {
   let newToken;
 
+  console.log("refreshing spotify token");
+
   await fetch(`${process.env.REACT_APP_API}/api/auth/spotifyrefresh`, {
     method: "POST",
     credentials: "include",
