@@ -106,7 +106,7 @@ const SearchSong = (props: ISearchSongProps) => {
           <button
                 className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
                 onClick={async () =>
-                  await selectService(song as string, "songs", 10).then(
+                  await selectService(song as string, "songs", 8).then(
                     (result) => {
                       setCategory("songs");
                       songs = result!;
@@ -121,7 +121,7 @@ const SearchSong = (props: ISearchSongProps) => {
            <button
                 className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl visited:border-b-yellow-100"
                 onClick={async () =>
-                  await selectService(song as string, "albums", 10).then((result) => {
+                  await selectService(song as string, "albums", 8).then((result) => {
                     setCategory("albums");
                     songs = result!;
                     setSongs(result!);
@@ -134,7 +134,7 @@ const SearchSong = (props: ISearchSongProps) => {
               <button
                 className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
                 onClick={async () =>
-                   await selectService(song as string, "artists", 10).then(
+                   await selectService(song as string, "artists", 8).then(
                     (result) => {
                       setCategory("artists");
                       songs = result!;
@@ -152,7 +152,7 @@ const SearchSong = (props: ISearchSongProps) => {
             className=""
             placeholder="Enter Post Title"
             onChange={(event) =>
-              selectService(event.target.value as string, category, 7).then(
+              selectService(event.target.value as string, category, 8).then(
                 (result) => {
                   setSong(event.target.value);
                   songs = result!;
