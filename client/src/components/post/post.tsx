@@ -123,21 +123,12 @@ const Post = (props: IPostProps) => {
               setPostFocusPage(false);
             }}
           >
-            &times;
             {postSuccessFail}
           </a>
         </div>
       </Popup>
 
-      <div
-        className="w-full"
-        onClick={() => {
-          handlePostFocusPage();
-          setPostSuccessFail(
-            <PostFocusPage post={props.post} setSong={props.setSong} />
-          );
-        }}
-      >
+      <div className="w-full">
         <div className="w-full p-2 ml-2">
           <div>
             {postOwner ? (
@@ -166,29 +157,32 @@ const Post = (props: IPostProps) => {
           <div className="flex justify-end mt-2">
             <div className="w-full">{props.post.caption}</div>
             <LikeButton post={props.post} />
-            <img
-              className="w-6 h-6 mt-1 ml-1"
-              src="/img/icons/comment.svg"
-            ></img>
+            <div
+              className="w-6 h-6 mt-1 ml-2 cursor-pointer"
+              onClick={() => {
+                handlePostFocusPage();
+                setPostSuccessFail(
+                  <PostFocusPage
+                    post={props.post}
+                    setSong={props.setSong}
+                    postOwner={postOwner}
+                  />
+                );
+              }}
+            >
+              <img src="/img/icons/comment.svg"></img>
+            </div>
+            <div
+              className="mt-1 ml-2 cursor-pointer w-7 h-7"
+              onClick={() => {
+                navigate(`/repost/${props.post._id}`);
+              }}
+            >
+              <img src="/img/icons/repost.svg"></img>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* <div className="absolute bottom-5 right-5">
-        <div className="flex">
-          <LikeButton post={props.post} />
-          <img src="/img/icons/comment.svg"></img>
-        </div>
-
-        <button
-          className="absolute bottom-2 text-lblue hover:text-navy right-10"
-          onClick={() => {
-            navigate(`/repost/${props.post._id}`);
-          }}
-        >
-          Repost
-        </button>
-      </div> */}
     </div>
   );
 };
