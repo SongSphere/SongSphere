@@ -88,7 +88,7 @@ const Router = (props: IRouterProps) => {
     },
     {
       path: "/playlist",
-      element: <PlaylistPage />,
+      element: <PlaylistPage appleMusicInstance={props.appleMusicInstance}/>,
     },
   ]);
   return element;
