@@ -1,13 +1,16 @@
 import Search from "../components/post/search-song";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/navbar";
 import { useState } from "react";
+import { TMusicContent } from "../types/music-content";
+import { useEffect } from "react";
 
 interface IPostPageProps {
   musicInstance: MusicKit.MusicKitInstance;
 }
 
 const PostPage = (props: IPostPageProps) => {
+  const {song} = useParams();
   return (
     <div className="w-screen h-full min-h-screen bg-lblue max-w-[100%]">
       <Navbar />
@@ -35,8 +38,13 @@ const PostPage = (props: IPostPageProps) => {
               </button>
         </Link>
       <div className="w-screen  max-w-[100%] h-screen bg-lblue">
-      
-        <Search musicInstance={props.musicInstance} />
+        {
+          
+          song ? (
+            <Search musicInstance={props.musicInstance} song={song}/>
+          ): <Search musicInstance={props.musicInstance} />
+        }
+        
       </div>
             
     </div>

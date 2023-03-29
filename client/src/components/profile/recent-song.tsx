@@ -1,7 +1,7 @@
 import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 import { useNavigate } from "react-router-dom";
-import PostPage from "../../pages/post-page";
+
 
 interface ISongProps {
     song: TMusicContent;
@@ -12,18 +12,19 @@ interface ISongProps {
 
 const RecentSong = (props: ISongProps) => {
     let navigate = useNavigate();
+
     return (
         <div className="flex w-full p-6 mb-8 bg-white rounded-lg drop-shadow-md">
             <div className="w-32 h-32 cursor-pointer"
              onClick={() => {
-                navigate('/posts')
+                navigate(`/posts/${props.song.name}`);
             }}
             >
                 <img className="rounded-sm" src={props.song.cover}></img>
             </div>
             <div className="my-auto ml-5 cursor-pointer"
              onClick={() => {
-                navigate('/posts')
+                navigate(`/posts/${props.song.name}`);
             }}
             >
                 <h1 className="text-3xl text-navy">{props.song.name}</h1>
