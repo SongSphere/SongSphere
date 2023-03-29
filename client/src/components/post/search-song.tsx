@@ -32,6 +32,7 @@ const SpotifySearch = async (
 
 interface ISearchSongProps {
   musicInstance: MusicKit.MusicKitInstance;
+  song?: string;
 }
 
 const SearchSong = (props: ISearchSongProps) => {
@@ -52,9 +53,24 @@ const SearchSong = (props: ISearchSongProps) => {
   useEffect(() => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
+    
   }, [Session.getUser()]);
 
-
+  useEffect(() => {
+    if(user) {
+      if(props.song && user) {
+        selectService(props.song, "songs", 1).then((result) =>{
+          setCategory("songs");
+          songs=result!;
+          setSongs(result!);
+          if(result) {
+            setSelected(result[0]);
+          }
+        })
+      }
+    }
+  }, [user])
+  
   
 
   const selectService = async (
@@ -72,6 +88,7 @@ const SearchSong = (props: ISearchSongProps) => {
       }
     }
   };
+  
 
   const closeModal = () => setOpen2(false);
 
@@ -103,8 +120,8 @@ const SearchSong = (props: ISearchSongProps) => {
            </button>
            <button
                 className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl visited:border-b-yellow-100"
-                onClick={() =>
-                  selectService(song as string, "albums", 10).then((result) => {
+                onClick={async () =>
+                  await selectService(song as string, "albums", 10).then((result) => {
                     setCategory("albums");
                     songs = result!;
                     setSongs(result!);
@@ -116,8 +133,8 @@ const SearchSong = (props: ISearchSongProps) => {
               </button>
               <button
                 className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
-                onClick={() =>
-                  selectService(song as string, "artists", 10).then(
+                onClick={async () =>
+                   await selectService(song as string, "artists", 10).then(
                     (result) => {
                       setCategory("artists");
                       songs = result!;

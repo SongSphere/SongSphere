@@ -38,7 +38,7 @@ const Router = (props: IRouterProps) => {
       ),
     },
     {
-      path: "/posts",
+      path: "/posts/:song?",
       element: <PostPage musicInstance={props.appleMusicInstance} />,
     },
     {
