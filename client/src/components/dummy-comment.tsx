@@ -3,6 +3,8 @@ import fetchUser from "../services/user/fetch-user";
 //import { appleAuth } from "../services/apple/apple-music-link";
 import { TComment } from "../types/comment";
 import fetchComments from "../services/post/fetch-comments";
+import sendNotification from "../services/notification/send-notification";
+import { TNotification } from "../types/notification";
 
 const Comment = () => {
   return (
@@ -18,11 +20,22 @@ const Comment = () => {
               subComments: [],
               like: 0,
             };
-            await sendComment(
-              comment,
-              "64235c28d1e8139b6a9e53af",
-              "64244faba49f3fa743896a60" // If the subcomment disappers the dummy doesn't work
+            // await sendComment(
+            //   comment,
+            //   "64235c28d1e8139b6a9e53af",
+            //   "64244faba49f3fa743896a60" // If the subcomment disappers the dummy doesn't work
+            // );
+            const notificationForAlerts: TNotification = {
+                userEmailSender: "David",
+                userEmailReceiver: "Tony1",
+                notificationType: "comment",
+                text: "someone commented on your post",
+            };
+            console.log(notificationForAlerts);
+            await sendNotification(
+                notificationForAlerts,
             );
+            console.log("Called in dummy comment");
           } catch (error) {
             console.error(error);
           }

@@ -13,6 +13,8 @@ import {
   comment,
   saveComment,
   fetchComments,
+  notificationForAlerts,
+  saveNotification,
 } from "../services/post";
 
 export const getSeedForRandomSong = async (req: Request, res: Response) => {
@@ -90,6 +92,22 @@ export const deletePost = async (req: Request, res: Response) => {
   }
 };
 
+export const sendNotification = async (req: Request, res: Response) => {
+  try {
+    console.log(`The object Notification in server/controllers : ${notificationForAlerts}`);
+    const newNotification = await notificationForAlerts(
+      req.body.notificationForAlerts
+    );
+    console.log(newNotification);
+    await saveNotification(newNotification);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
 export const sendComment = async (req: Request, res: Response) => {
   try {
     const c = await comment(
@@ -98,7 +116,6 @@ export const sendComment = async (req: Request, res: Response) => {
       req.body.replyingTo
       
     );
-    console.log(c);
     await saveComment(c);
     res.status(201);
     res.json({ msg: "success" });

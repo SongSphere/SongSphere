@@ -5,6 +5,10 @@ import { TPost } from "../types/post";
 import { TComment } from "../types/comment";
 import Comment, { IComment } from "../db/comment";
 import User from "../db/user";
+import { TNotification } from "../types/notification";
+import { INotification } from "../db/notification";
+
+import Notifications from "../db/notification";
 
 export const createPost = async (
   newPost: TPost
@@ -93,7 +97,7 @@ export const comment = async (
   postId: string,
   replyingTo: string
 ): Promise<mongoose.Document<unknown, any, IComment>> => {
-  console.log(newComment);
+ 
   const comment = new Comment({
     username: newComment.username,
     userEmail: newComment.userEmail,
@@ -116,6 +120,33 @@ export const comment = async (
   }
 
   return comment;
+};
+
+export const notificationForAlerts = async (
+  newNotification: TNotification,
+): Promise<mongoose.Document<unknown, any, INotification>> => {
+  console.log(`The object Notification in server/services : ${notificationForAlerts}`);
+  const notification = new Notifications({
+      userEmailSender: newNotification.userEmailSender,
+      userEmailReceiver: newNotification.userEmailReceiver,
+      notificationType: newNotification.notificationType,
+      text: newNotification.text,
+  });
+  
+  return notification;
+ 
+};
+
+export const saveNotification = async (
+  notificationForAlerts: mongoose.Document<unknown, any, INotification>
+) => {
+
+  console.log("save called in services/post.ts");
+  try {
+    await notificationForAlerts.save();
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const saveComment = async (

@@ -76,7 +76,6 @@ export const getFeed = async (req: Request, res: Response) => {
     res.status(200);
     res.json({ posts: posts });
   } catch (error) {
-    console.log("Bruh");
     res.status(404);
     res.json({ msg: "cannot fetch posts" });
   }
