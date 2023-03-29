@@ -4,4 +4,5 @@ export type TComment = {
   userEmail: string;
   text: string;
   subComments?: string[];
+  like: number;
 };

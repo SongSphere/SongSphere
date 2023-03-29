@@ -93,11 +93,13 @@ export const comment = async (
   postId: string,
   replyingTo: string
 ): Promise<mongoose.Document<unknown, any, IComment>> => {
+  console.log(newComment);
   const comment = new Comment({
     username: newComment.username,
     userEmail: newComment.userEmail,
     text: newComment.text,
     subComments: newComment.subComments,
+    like: 0,
   });
 
   let post = await Post.findOne({ _id: postId }, "comments");
@@ -125,6 +127,23 @@ export const saveComment = async (
     throw error;
   }
 };
+
+export const likeComment = async (commentId: string) => {
+  try {
+    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: 1 } });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const unlikeComment = async (commentId: string) => {
+  try {
+    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: -1 } });
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 export const fetchComments = async (postId: string) => {
   try {

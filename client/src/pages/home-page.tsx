@@ -12,8 +12,10 @@ import {
   randomSongSpotifyFromBackend,
 } from "../services/spotify/spotify-search";
 import RandomSongPost from "../components/feed/random-song-content";
-import { TPost } from "../types/post";
 import Comment from "../components/dummy-comment";
+import LikeCommentDummy from "../components/dummy-like-comment";
+import { TPost } from "../types/post";
+
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;

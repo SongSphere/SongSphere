@@ -85,7 +85,6 @@ export const spotifySearch = async (
 export const randomSongSpotify = async (token: string, url: string) => {
   return new Promise<TMusicContent>(async (resolve, reject) => {
   let content: TMusicContent[] = [];
-  console.log(url);
   await fetch(
     url,
     {
@@ -100,12 +99,11 @@ export const randomSongSpotify = async (token: string, url: string) => {
       return res.json();
     })
     .then((data) => {
-      console.log(data);
 
       const tracks = data.tracks.items;
 
       tracks.forEach(function (track: any) {
-        console.log("willy debug", track.album.images[0].url)
+        
         content.push({
           name: track.name,
           artist: track.artists[0].name,

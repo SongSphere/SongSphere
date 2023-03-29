@@ -96,6 +96,7 @@ export const sendComment = async (req: Request, res: Response) => {
       req.body.comment,
       req.body.postId,
       req.body.replyingTo
+      
     );
     console.log(c);
     await saveComment(c);
