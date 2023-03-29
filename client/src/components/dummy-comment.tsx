@@ -3,7 +3,6 @@ import fetchUser from "../services/user/fetch-user";
 //import { appleAuth } from "../services/apple/apple-music-link";
 import { TComment } from "../types/comment";
 
-
 const Comment = () => {
   return (
     <div>
