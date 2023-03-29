@@ -82,10 +82,10 @@ const SearchSong = (props: ISearchSongProps) => {
     setOpen2(!open2);
   };
   return (
-    <div className="grid w-full h-full grid-cols-4 max-w-[95%]">
+    <div className="grid h-full grid-cols-4 max-w-[95%]">
     <div className="col-span-2 mt-5 ml-5 bg-lgrey rounded-2xl h-[90%]">
     <h1 className="text-4xl text-center text-navy">Search For</h1>
-        <div className="grid grid-flow-col">
+        <div className="grid w-full grid-flow-col">
           <button
                 className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
                 onClick={async () =>
@@ -130,7 +130,7 @@ const SearchSong = (props: ISearchSongProps) => {
                 Artists{" "}
               </button>
         </div>
-      <div className="grid justify-center grid-flow-col mt-5">
+      <div className="grid justify-center w-full grid-flow-col mt-5">
         <input
             className=""
             placeholder="Enter Post Title"
@@ -145,11 +145,11 @@ const SearchSong = (props: ISearchSongProps) => {
             }
           />
       </div>
-      <div className="grid justify-center w-full grid-flow-row">
+      <div className="w-[90%] mt-3 mx-auto">
         {songs.map((s) => (
-          <div className="w-full">
+          <div className="grid w-full grid-flow-col">
             <button
-              className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+              className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
               key={s.id}
               onClick={() => setSelected(s)}
             > 
