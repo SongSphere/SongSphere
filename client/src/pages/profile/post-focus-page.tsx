@@ -8,6 +8,7 @@ import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
 import Session from "../../session";
 import sendComment from "../../services/post/send-comment";
+import CommentLoader from "../../components/post/comment-loader";
 
 interface IPostFocusPageProps {
   post: TPost;
@@ -18,13 +19,14 @@ interface IPostFocusPageProps {
 
 const PostFocusPage = (props: IPostFocusPageProps) => {
   let [commentContent, setCommentContent] = useState("");
+  let [comments, setComments] = useState<TComment[]>([]);
   let [user, setUser] = useState<TUser | null>(null);
   let navigate = useNavigate();
 
   useEffect(() => {
     if (props.post._id) {
-      fetchComments(props.post._id).then((res) => {
-        console.log(res);
+      fetchComments(props.post._id).then((comments) => {
+        setComments(comments);
       });
     }
     setUser(Session.getUser());
@@ -118,14 +120,15 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
           </label>
           <button type="submit">Submit</button>
         </form>
-        {/* <div
+        <CommentLoader comments={comments} />
+        <div
           className="cursor-pointer"
           onClick={() => {
             props.setPostFocusPage(false);
           }}
         >
           return
-        </div> */}
+        </div>
       </div>
     </div>
   );
