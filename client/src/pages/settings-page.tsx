@@ -17,11 +17,15 @@ import Navbar from "../components/navbar";
 import AppleLink from "../components/settings/apple-link";
 import SpotifyLinkButton from "../components/settings/spotify-link";
 import unlinkMusic from "../services/user/unlink-music";
+import DefaultPlatform from "../components/settings/set-default-platform";
 import fetchUser from "../services/user/fetch-user";
 import Session from "../session";
 import setVisibilityPublic from "../services/settings/set-visibility-public";
 import setVisibilityPrivate from "../services/settings/set-visibility-private";
-import { randomSongSpotify, randomSongSpotifyFromBackend } from "../services/spotify/spotify-search";
+import {
+  randomSongSpotify,
+  randomSongSpotifyFromBackend,
+} from "../services/spotify/spotify-search";
 import setFalseRandomSong from "../services/settings/set-false-random-song";
 import setTrueRandomSong from "../services/settings/set-true-random-song";
 import { TMusicContent } from "../types/music-content";
@@ -74,8 +78,8 @@ const SettingsPage = (props: ISettingPageProps) => {
   const [appleAccountStatus, setAppleAccountStatus] = useState<boolean>(false);
   const [spotifyAccountStatus, setSpotifyAccountStatus] =
     useState<boolean>(false);
+  const [defaultPlatform, setDefaultPlatform] = useState<string>("");
 
-  
   let [song, setSong] = useState<TMusicContent[]>([]);
   const handleBlockOpen = () => {
     setShowBlockModal(true);
@@ -109,12 +113,14 @@ const SettingsPage = (props: ISettingPageProps) => {
       } else {
         setIsPrivateStatus(true);
       }
+      setBackgroundImgUrl(user.backgroundImgUrl);
+      setProfileImgUrl(user.profileImgUrl);
+      setDefaultPlatform(user.defaultPlatform);
       if (user.showRandomSong == false) {
         setIsRandomStatus(false);
       } else {
         setIsRandomStatus(true);
       }
-
     }
   }, [user]);
 
@@ -222,13 +228,9 @@ const SettingsPage = (props: ISettingPageProps) => {
                   }
                 }}
               />
-              <label
-                className="inline-block pl-[0.15rem] hover:cursor-pointer"
-              ></label>
+              <label className="inline-block pl-[0.15rem] hover:cursor-pointer"></label>
             </div>
           </div>
-
-         
 
           <div>{`Random Song Feature: ${isRandomStatus}`}</div>
 
@@ -271,9 +273,7 @@ const SettingsPage = (props: ISettingPageProps) => {
                   }
                 }}
               />
-              <label
-                className="inline-block pl-[0.15rem] hover:cursor-pointer"
-              ></label>
+              <label className="inline-block pl-[0.15rem] hover:cursor-pointer"></label>
             </div>
           </div>
           <Button onClick={handleBlockOpen}>View blocked accounts</Button>
@@ -328,6 +328,8 @@ const SettingsPage = (props: ISettingPageProps) => {
           </button>
           <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
 
+          <DefaultPlatform />
+
           <button
             className="bg-grey"
             onClick={async () => {
@@ -361,12 +363,12 @@ const SettingsPage = (props: ISettingPageProps) => {
               //   console.log(error);
               // });
 
-
-              await randomSongSpotifyFromBackend(user.spotifyToken).then(async (song) => {
-                console.log("In settings randomSongBackend");
-                console.log(song);
-              });
-            
+              await randomSongSpotifyFromBackend(user.spotifyToken).then(
+                async (song) => {
+                  console.log("In settings randomSongBackend");
+                  console.log(song);
+                }
+              );
             }}
           >
             Random

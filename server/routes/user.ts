@@ -18,6 +18,8 @@ import {
   updateLikePost,
   updateUnlikePost,
   fetchIsLiked,
+  getPlatform,
+  setPlatform,
   changeShowRandomSong,
   fetchLikedPosts,
 } from "../controllers/user";
@@ -67,5 +69,7 @@ router.post("/user/updateBackgroundURL", auth, updateBackgroundURL);
 
 router.get("/user/images/:imageName", getProfilePhoto);
 router.get("/user/background/:imageName", getProfilePhoto);
+router.get("/user/getDefaultPlatform", getPlatform);
+router.post("/user/setDefaultPlatform", setPlatform);
 
 export default router;
