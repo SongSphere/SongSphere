@@ -57,15 +57,7 @@ const Repost = (props: IPostProps) => {
 
         {open ? (
           <ul className="absolute right-0 top-10">
-            <li className=" text-lblue hover:text-lgrey">
-              <button
-                onClick={() => {
-                  navigate(`/edit/${props.post._id}`);
-                }}
-              >
-                Edit
-              </button>
-            </li>
+            
 
             <li>
               <button
