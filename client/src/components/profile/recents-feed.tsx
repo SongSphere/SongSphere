@@ -5,7 +5,7 @@ import RecentSong from "./recent-song";
 import { useEffect } from "react";
 
 interface IRecentsFeedProps {
-    posts: TPost[];
+    posts: TMusicContent[];
     user: TUser;
     setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   }
@@ -16,7 +16,7 @@ interface IRecentsFeedProps {
         <div className="w-full">
         {props.posts.map((post) => {
           return (
-            <RecentSong song={post.music} user={props.user} setSong={props.setSong}/>
+            <RecentSong song={post} user={props.user} setSong={props.setSong}/>
           );
         })}
         </div>

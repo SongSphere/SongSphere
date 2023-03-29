@@ -35,6 +35,7 @@ import PostFailure from "../components/popup/post-failure";
 import PostSucess from "../components/popup/post-sucess";
 import BlockedList from "../components/settings/blocked-list";
 import styled from "styled-components";
+import { getSpotifyRecentlyPlayedSongs } from "../services/spotify/spotify-recently-played";
 
 interface ISettingPageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
