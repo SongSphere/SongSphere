@@ -46,38 +46,29 @@ const HomePage = (props: IHomePageProps) => {
   return (
     <div className="w-full h-full min-h-screen bg-orange-100 min-w-screen">
       <Navbar />
-      {/* <div className="flex flex-row justify-between items-center"> 
-        <Comment />
-        <LikeCommentDummy />
-      </div> */}
-      <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
-        <div className="">
-          <div>this will be where the user activity be</div>
-        </div>
 
-        <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
-          <Activity />
-          <div className="col-span-2">
-            {user.showRandomSong ? (
-              <RandomSongPost song={randomSong} user={user} />
-            ) : (
-              <div></div>
-            )}
-
-            <Feed setSong={setSong} user={user} />
-          </div>
-          {service === "apple" ? (
-            <AppleMusicPlayerCard
-              musicInstance={props.appleMusicInstance}
-              selectedSong={song}
-            />
+      <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
+        <Activity />
+        <div className="col-span-2">
+          {user.showRandomSong ? (
+            <RandomSongPost song={randomSong} user={user} />
           ) : (
-            <SpotifyPlayerCard
-              selectedSong={song}
-              appleMusicInstance={props.appleMusicInstance}
-            />
+            <div></div>
           )}
+
+          <Feed setSong={setSong} user={user} />
         </div>
+        {service === "apple" ? (
+          <AppleMusicPlayerCard
+            musicInstance={props.appleMusicInstance}
+            selectedSong={song}
+          />
+        ) : (
+          <SpotifyPlayerCard
+            selectedSong={song}
+            appleMusicInstance={props.appleMusicInstance}
+          />
+        )}
       </div>
     </div>
   );
