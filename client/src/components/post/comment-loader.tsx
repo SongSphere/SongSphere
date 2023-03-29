@@ -3,6 +3,7 @@ import fetchCommentById from "../../services/post/fetch-comment-by-id";
 import fetchSubComments from "../../services/post/fetch-sub-comments";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
 import { TComment } from "../../types/comment";
+import { TPopulatedComment } from "../../types/populated-comment";
 import { TUser } from "../../types/user";
 import CommentCard from "./comment-card";
 
@@ -11,25 +12,25 @@ interface ICommentCardProps {
   user: TUser;
 }
 
-interface IPopulatedComment {
-  _id: string;
-  username: string;
-  profileImgUrl: string;
-  userEmail: string;
-  text: string;
-  subComments: IPopulatedComment[];
-}
+// interface TPopulatedComment {
+//   _id: string;
+//   username: string;
+//   profileImgUrl: string;
+//   userEmail: string;
+//   text: string;
+//   subComments: TPopulatedComment[];
+// }
 
 const CommentLoader = (props: ICommentCardProps) => {
-  const [comments, setComments] = useState<IPopulatedComment[] | null>(null);
+  const [comments, setComments] = useState<TPopulatedComment[] | null>(null);
 
   const renderComment = async (comment: TComment) => {
     if (comment == null) {
       return null;
     }
     const subCommentIds = comment.subComments;
-    const subPopulatedComments: IPopulatedComment[] = [];
-    let populatedComment: IPopulatedComment;
+    const subPopulatedComments: TPopulatedComment[] = [];
+    let populatedComment: TPopulatedComment;
 
     if (subCommentIds) {
       for (let i = 0; i < subCommentIds.length; i++) {
@@ -57,39 +58,8 @@ const CommentLoader = (props: ICommentCardProps) => {
     return populatedComment;
   };
 
-  // const renderSubComments = async (comments: TComment[]) => {
-  //   // console.log("comment length", comments.length);
-  //   if (comments.length == 0) return;
-  //   let populatedComments: IPopulatedComment[] = [];
-  //   for (let i = 0; i < comments.length; ++i) {
-  //     const comment = comments[i];
-  //     console.log(comment);
-  //     if (comment._id) {
-  //       const subComments = await fetchSubComments(comment._id);
-  //       let populatedSubComments = await renderSubComments(subComments);
-  //       if (!populatedSubComments) {
-  //         populatedSubComments = [];
-  //       }
-  //       const profileImgUrl = (await fetchUserByUsername(comment.username))
-  //         .profileImgUrl;
-
-  //       const populatedComment: IPopulatedComment = {
-  //         _id: comment._id,
-  //         username: comment.username,
-  //         profileImgUrl: profileImgUrl,
-  //         userEmail: comment.userEmail,
-  //         text: comment.text,
-  //         subComments: populatedSubComments,
-  //       };
-
-  //       populatedComments.push(populatedComment);
-  //     }
-  //   }
-  //   return populatedComments;
-  // };
-
   const renderComments = async (comments: TComment[]) => {
-    let populatedComments: IPopulatedComment[] = [];
+    let populatedComments: TPopulatedComment[] = [];
     for (let i = 0; i < comments.length; i++) {
       const populatedComment = await renderComment(comments[i]);
       if (populatedComment) {
@@ -104,9 +74,6 @@ const CommentLoader = (props: ICommentCardProps) => {
       renderComments(props.comments).then((comments) => {
         setComments(comments);
       });
-      // renderSubComments(props.comments).then((d) => {
-      //   console.log("populated data ", d);
-      // });
     }
   }, []);
 
@@ -116,9 +83,13 @@ const CommentLoader = (props: ICommentCardProps) => {
     }
   }, [comments]);
 
+  if (!comments) {
+    return <div>comments fetching</div>;
+  }
+
   return (
     <div>
-      {props.comments.map((comment) => {
+      {comments.map((comment) => {
         return (
           <div key={comment._id}>
             <CommentCard comment={comment} user={props.user} />

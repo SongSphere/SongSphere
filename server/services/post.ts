@@ -133,6 +133,9 @@ export const fetchComments = async (postId: string) => {
     for (let i = 0; i < commentIds.length; i++) {
       comments[i] = await Comment.findOne({ _id: commentIds[i] });
     }
+    comments.sort(function (a, b) {
+      return b.get("createdAt") - a.get("createdAt");
+    });
     return comments;
   } catch (error) {
     throw error;

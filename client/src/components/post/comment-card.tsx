@@ -1,15 +1,24 @@
 import { useState } from "react";
 import sendComment from "../../services/post/send-comment";
 import { TComment } from "../../types/comment";
+import { TPopulatedComment } from "../../types/populated-comment";
 import { TUser } from "../../types/user";
 
 interface ICommentCardProps {
-  comment: TComment;
+  comment: TPopulatedComment;
   user: TUser;
 }
 
 const CommentCard = (props: ICommentCardProps) => {
   let [commentContent, setCommentContent] = useState("");
+
+  const nestedComments = props.comment.subComments.map((comment) => {
+    return (
+      <div key={comment._id}>
+        <CommentCard comment={comment} user={props.user} />
+      </div>
+    );
+  });
 
   return (
     <div className="px-4 py-4 mb-2 w-fit ">
@@ -44,6 +53,7 @@ const CommentCard = (props: ICommentCardProps) => {
         </label>
         <button type="submit">Submit</button>
       </form>
+      {nestedComments}
     </div>
   );
 };
