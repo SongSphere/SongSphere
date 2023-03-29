@@ -19,7 +19,7 @@ interface IPostFocusPageProps {
 
 const PostFocusPage = (props: IPostFocusPageProps) => {
   let [commentContent, setCommentContent] = useState("");
-  let [comments, setComments] = useState<TComment[]>([]);
+  let [comments, setComments] = useState<TComment[] | null>(null);
   let [user, setUser] = useState<TUser | null>(null);
   let navigate = useNavigate();
 
@@ -32,14 +32,14 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
     setUser(Session.getUser());
   }, []);
 
-  if (!user) {
-    return <div>fetching user</div>;
+  if (!user || !comments) {
+    return <div>fetching user and comments</div>;
   }
 
   return (
     <div className="grid w-screen h-screen grid-cols-4 gap-2 md:grid-flow-col">
       <div className="col-span-2 col-start-2 mt-24 bg-white rounded-lg h-5/6 drop-shadow-md ">
-        <div className="flex w-full p-6">
+        <div className="flex w-full p-6 bg-white">
           <div
             className="w-32 h-32 cursor-pointer"
             onClick={() => {
@@ -91,43 +91,45 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
           </div>
         </div>
         <hr className="h-0.5 bg-gray-300 border-0 "></hr>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (user && props.post._id && commentContent !== "") {
-              const comment: TComment = {
-                username: user.username,
-                userEmail: user.email,
-                text: commentContent,
-                subComments: [],
-              };
+        <div className="p-2">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (user && props.post._id && commentContent !== "") {
+                const comment: TComment = {
+                  username: user.username,
+                  userEmail: user.email,
+                  text: commentContent,
+                  subComments: [],
+                };
 
-              console.log("sending comment");
-              sendComment(comment, props.post._id, "");
-            }
-          }}
-        >
-          <label>
-            comment:
-            <input
-              type="text"
-              name="name"
-              value={commentContent}
-              onChange={(e) => {
-                setCommentContent(e.target.value);
-              }}
-            />
-          </label>
-          <button type="submit">Submit</button>
-        </form>
-        <CommentLoader comments={comments} />
-        <div
-          className="cursor-pointer"
-          onClick={() => {
-            props.setPostFocusPage(false);
-          }}
-        >
-          return
+                console.log("sending comment");
+                sendComment(comment, props.post._id, "");
+              }
+            }}
+          >
+            <label>
+              comment:
+              <input
+                type="text"
+                name="name"
+                value={commentContent}
+                onChange={(e) => {
+                  setCommentContent(e.target.value);
+                }}
+              />
+            </label>
+            <button type="submit">Submit</button>
+          </form>
+          <CommentLoader comments={comments} user={user} />
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              props.setPostFocusPage(false);
+            }}
+          >
+            return
+          </div>
         </div>
       </div>
     </div>

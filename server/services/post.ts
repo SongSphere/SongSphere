@@ -139,6 +139,15 @@ export const fetchComments = async (postId: string) => {
   }
 };
 
+export const fetchCommentById = async (commentId: string) => {
+  try {
+    let comment = await Comment.findOne({ _id: commentId });
+    return comment;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const fetchSubComments = async (id: string) => {
   try {
     let comment = await Comment.findOne({ _id: id });
