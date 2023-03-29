@@ -38,7 +38,7 @@ const Router = (props: IRouterProps) => {
       ),
     },
     {
-      path: "/posts",
+      path: "/posts/:song?",
       element: <PostPage musicInstance={props.appleMusicInstance} />,
     },
     {
@@ -83,7 +83,7 @@ const Router = (props: IRouterProps) => {
     },
     {
       path: "/recents",
-      element: <RecentsPage />,
+      element: <RecentsPage appleMusicInstance={props.appleMusicInstance}/>,
     },
   ]);
   return element;
