@@ -98,6 +98,7 @@ export const comment = async (
     userEmail: newComment.userEmail,
     text: newComment.text,
     subComments: newComment.subComments,
+    like: 0,
   });
 
   let post = await Post.findOne({ _id: postId }, "comments");
@@ -126,6 +127,27 @@ export const saveComment = async (
   }
 };
 
+
+
+export const likeComment = async (commentId: string) => {
+  try {
+   // await User.updateOne({ email: email }, { $pull: { like: commentId } });
+   console.log(`The commentid printed in servers/services: ${commentId}`);
+    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: 1 } });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const unlikeComment = async (commentId: string) => {
+try {
+  console.log(`The commentid printed for unlike in servers/services: ${commentId}`);
+    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: -1 } });
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const likePost = async (postId: string, email: string) => {
   try {
     await User.updateOne({ email: email }, { $push: { likes: postId } });
@@ -135,6 +157,8 @@ export const likePost = async (postId: string, email: string) => {
     throw error;
   }
 };
+
+
 
 export const unlikePost = async (postId: string, email: string) => {
   try {

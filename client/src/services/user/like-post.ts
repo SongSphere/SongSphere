@@ -19,4 +19,5 @@ const LikePost = async (post: TPost) => {
     }
     
 };
+
 export default LikePost;

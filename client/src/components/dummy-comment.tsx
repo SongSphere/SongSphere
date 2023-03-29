@@ -12,14 +12,15 @@ const Comment = () => {
         onClick={async () => {
           try {
             const comment: TComment = {
-              username: "anthonyfmb",
-              userEmail: "anthonyfbaumann@gmail.com",
-              text: "you are a hideous orangutan",
+              username: "Kyu",
+              userEmail: "davidkimworks@gmail.com",
+              text: "nice",
               subComments: [],
+              like: 0,
             };
             await sendComment(
               comment,
-              "641ccfc61581404785800928",
+              "64235c28d1e8139b6a9e53af",
               "6420e9af76577c8662d971e7"
             );
           } catch (error) {

@@ -1,24 +1,19 @@
 import { TComment } from "../../types/comment";
 
-const sendComment = async (
-  comment: TComment,
-  postId: string,
-  replyingTo: string
-) => {
-  await fetch(`${process.env.REACT_APP_API}/api/post/comment`, {
+const likeComment = async (comment: TComment) => {
+  await fetch(`${process.env.REACT_APP_API}/api/user/updateLikeComment`, {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({
       comment: comment,
-      postId: postId,
-      replyingTo: replyingTo,
     }),
     headers: {
       "Content-Type": "application/json",
     },
   }).catch((error) => {
+
     console.log(error);
   });
 };
 
-export default sendComment;
+export default likeComment;
