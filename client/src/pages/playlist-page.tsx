@@ -62,8 +62,8 @@ const PlaylistPage = (props:IPlaylistProps) => {
             <h1 className="mt-5 text-4xl text-center text-white">My Playlist</h1>
             <h1 className="text-xl text-center text-white">A custom playlist made just for you based on the people you follow</h1>
             
-            <div className="grid grid-cols-3">
-                <div className="flex items-center justify-center w-full col-span-2 mt-8 ml-8 rounded-lg bg-navy max-h-[60%]">
+            <div className="grid grid-cols-3 min-h-[60%]">
+                <div className="flex items-center justify-center w-full max-h-full col-span-2 mt-8 ml-8 rounded-lg bg-navy">
                     <div className="w-full max-h-[100%] overflow-auto rounded-lg">
                         <PlaylistFeed posts={posts} user={user} setSong={setSong} />
                     </div>
