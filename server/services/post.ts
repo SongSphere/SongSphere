@@ -100,13 +100,12 @@ export const comment = async (
     subComments: newComment.subComments,
   });
 
-  let post = await Post.findOne({ _id: postId }, "comments");
-  let comments = post.comments;
-  comments.push(comment._id.toString());
-
-  await Post.findByIdAndUpdate(postId, { comments: comments });
-
-  if (replyingTo.length != 0) {
+  if (replyingTo.length == 0) {
+    let post = await Post.findOne({ _id: postId }, "comments");
+    let comments = post.comments;
+    comments.push(comment._id.toString());
+    await Post.findByIdAndUpdate(postId, { comments: comments });
+  } else {
     let c = await Comment.findOne({ _id: replyingTo }, "subComments");
     let subC = c.subComments;
     subC.push(comment._id.toString());
@@ -135,6 +134,20 @@ export const fetchComments = async (postId: string) => {
       comments[i] = await Comment.findOne({ _id: commentIds[i] });
     }
     return comments;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchSubComments = async (id: string) => {
+  try {
+    let comment = await Comment.findOne({ _id: id });
+    let subComments = [];
+    let commentIds = comment.subComments;
+    for (let i = 0; i < commentIds.length; i++) {
+      subComments[i] = await Comment.findOne({ _id: commentIds[i] });
+    }
+    return subComments;
   } catch (error) {
     throw error;
   }
