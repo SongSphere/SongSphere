@@ -1,6 +1,7 @@
 import { TPost } from "../../types/post";
 
 const LikePost = async (post: TPost) => {
+  
     try {
         await fetch(`${process.env.REACT_APP_API}/api/user/updateLikePost`, {
             method: "POST",
@@ -12,8 +13,11 @@ const LikePost = async (post: TPost) => {
               "Content-Type": "application/json",
             },
           });
+        
     } catch (error) {
        
     }
+    
 };
+
 export default LikePost;

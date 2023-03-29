@@ -34,7 +34,11 @@ const FollowingList = (props: IFollowingListProps) => {
           Following
         </h1>
 
-        <form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <div className="py-2">
             <div className="flex justify-between bg-white rounded-md shadow shadow-black/20">
               <input

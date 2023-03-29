@@ -6,31 +6,41 @@ export interface IComment {
   username: string;
   userEmail: string;
   text: string;
-  replyingTo: string;
+  subComments: Array<String>;
+  like: number;
 }
 
-const CommentSchema = new Schema<IComment>({
-  id: {
-    type: String,
-    required: false,
+const CommentSchema = new Schema<IComment>(
+  {
+    id: {
+      type: String,
+      required: false,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    userEmail: {
+      type: String,
+      required: true,
+    },
+    text: {
+      type: String,
+      required: true,
+    },
+    subComments: {
+      type: Array<String>(),
+      required: false,
+    },
+    like: {
+      type: Number,
+      required: true,
+    },
   },
-  username: {
-    type: String,
-    required: true,
-  },
-  userEmail: {
-    type: String,
-    required: true,
-  },
-  text: {
-    type: String,
-    required: true,
-  },
-  replyingTo: {
-    type: String,
-    required: false,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
-const Post = mongoose.model<IComment>("Comment", CommentSchema);
-export default Post;
+const Comment = mongoose.model<IComment>("Comment", CommentSchema);
+export default Comment;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import fetchUser from "../../services/user/fetch-user";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
-import { follow, unfollow } from "../../services/user/follow";
+import { follow, unfollow } from "../../services/follow/follow";
 import Session from "../../session";
 import { TUser } from "../../types/user";
 import BlockUserModal from "./block-user-modal";
@@ -44,11 +44,7 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
 
     if (props.selectedUser && user) {
       if (!isFollowing) {
-        follow(
-          user.username,
-          props.selectedUser.username,
-          props.selectedUser.email
-        ).then(async () => {
+        follow(user.username, props.selectedUser.username).then(async () => {
           Session.setUser(await fetchUser());
           const updatedUser = await fetchUserByUsername(
             props.selectedUser.username
@@ -58,11 +54,7 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
           setIsFollowing(true);
         });
       } else {
-        unfollow(
-          user.username,
-          props.selectedUser?.username!,
-          props.selectedUser?.email!
-        ).then(async () => {
+        unfollow(user.username, props.selectedUser.username).then(async () => {
           Session.setUser(await fetchUser());
           const updatedUser = await fetchUserByUsername(
             props.selectedUser.username

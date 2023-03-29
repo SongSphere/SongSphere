@@ -5,12 +5,13 @@ import Session from "../session";
 interface INavbarProps {}
 
 const Navbar = (props: INavbarProps) => {
-  
-
   return (
     <div className="relative z-10 h-16">
       <div className="fixed w-screen bg-white drop-shadow-md">
         <div className="flex flex-row justify-end">
+          <Link className="p-5" to="/followRequest">
+            Follow Request (Temp)
+          </Link>
           <Link className="p-5" to="/">
             Home
           </Link>
@@ -27,7 +28,7 @@ const Navbar = (props: INavbarProps) => {
           <Link className="p-5" to="/notificationsPage">
             Notification
           </Link>
-       
+
           <Link className="p-5" to="/settings">
             Setting
           </Link>

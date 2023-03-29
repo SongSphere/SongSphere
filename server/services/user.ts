@@ -138,6 +138,23 @@ export const updateUserVisibility = async (
   }
 };
 
+export const updateShowRandomSong = async (
+  email: string,
+  showRandomSong: boolean
+) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { showRandomSong: showRandomSong },
+      { new: true }
+    );
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const fetchUserById = async (
   id: string
 ): Promise<mongoose.Document<unknown, any, IUser>> => {
@@ -250,90 +267,6 @@ export const deleteUserInServices = async (email: string) => {
   }
 };
 
-export const addFollow = async (
-  usernameOfUserGettingFollowed: string,
-  usernameOfUserMakingFollow: string,
-  emailOfUserBeingFollowed: string,
-  emailOfUserFollowing: string
-) => {
-  try {
-    // add user being followed to following[] of the user doing the following
-    await User.updateOne(
-      { email: emailOfUserFollowing },
-      { $push: { following: usernameOfUserGettingFollowed } }
-    );
-    // add user doing the following to followers[] of the user being followed
-    await User.updateOne(
-      { email: emailOfUserBeingFollowed },
-      { $push: { followers: usernameOfUserMakingFollow } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const removeFollow = async (
-  usernameOfUserUnfollowing: string,
-  usernameOfUserGettingUnfollowed: string,
-  emailOfUserBeingUnfollowed: string,
-  emailOfUserUnfollowing: string
-) => {
-  try {
-    // remove user being unfollowed from following[] of the user doing the unfollowing
-    await User.updateOne(
-      { email: emailOfUserUnfollowing },
-      { $pull: { following: usernameOfUserGettingUnfollowed } }
-    );
-    // remove user doing the unfollowing from followers[] of the user being unfollowed
-    await User.updateOne(
-      { email: emailOfUserBeingUnfollowed },
-      { $pull: { followers: usernameOfUserUnfollowing } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const addBlockedAccount = async (
-  emailOfUserMakingBlock: string,
-  usernameOfUserMakingBlock: string,
-  usernameOfUserGettingBlocked: string,
-  emailOfUserGettingBlocked: string
-) => {
-  try {
-    await User.updateOne(
-      { email: emailOfUserMakingBlock },
-      { $push: { blockedUsers: usernameOfUserGettingBlocked } }
-    );
-    await User.updateOne(
-      { email: emailOfUserGettingBlocked },
-      { $push: { blockedBy: usernameOfUserMakingBlock } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const unBlockAccount = async (
-  usernameOfUserUnblocking: string,
-  usernameOfUserGettingUnblocked: string,
-  emailOfUserGettingUnblocked: string,
-  emailOfUserUnblocking: string
-) => {
-  try {
-    await User.updateOne(
-      { email: emailOfUserUnblocking },
-      { $pull: { blockedUsers: usernameOfUserGettingUnblocked } }
-    );
-    await User.updateOne(
-      { email: emailOfUserGettingUnblocked },
-      { $pull: { blockedBy: usernameOfUserUnblocking } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const updatePFP = async (email: string, filename: string) => {
   try {
     await User.findOneAndUpdate(
@@ -376,18 +309,26 @@ export const updateBURL = async (email: string, url: string) => {
   }
 };
 
-export const likePost = async (postId: string, email: string) => {
+export const getDefaultPlatform = async (email: string) => {
   try {
-    await User.findOneAndUpdate({ email: email }, { $push: { likes: postId } });
+    const user = await User.findOne({ email: email }, "defaultPlatform");
+    const platform = user.defaultPlatform;
+
+    return platform;
   } catch (error) {
     throw error;
   }
 };
 
-export const isLiked = async (postId: string, email: string) => {
+export const setDefaultPlatform = async (
+  email: string,
+  defaultPlatform: string
+) => {
   try {
-    const isLiked = await User.exists({ likes: postId });
-    return isLiked;
+    await User.findOneAndUpdate(
+      { email: email },
+      { defaultPlatform: defaultPlatform }
+    );
   } catch (error) {
     throw error;
   }

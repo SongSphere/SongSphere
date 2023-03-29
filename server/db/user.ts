@@ -21,6 +21,8 @@ export interface IUser {
   onboarded: Boolean;
   isPrivate: Boolean;
   likes: Array<String>;
+  defaultPlatform: string;
+  showRandomSong: Boolean;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -101,10 +103,18 @@ const UserSchema = new Schema<IUser>(
       type: Boolean,
       required: true,
     },
+    showRandomSong: {
+      type: Boolean,
+      required: false,
+    },
     likes: {
       type: Array<String>(),
       required: false,
-    }
+    },
+    defaultPlatform: {
+      type: String,
+      required: false,
+    },
   },
   {
     // this enables createdAt and updatedAt

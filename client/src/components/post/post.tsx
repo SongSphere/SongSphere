@@ -23,7 +23,6 @@ const Post = (props: IPostProps) => {
   const [deleteSuccessText, setDeleteSuccessText] = useState<string>("");
   const [postOwner, setPostOwner] = useState<TUser | null>(null);
 
-  const closeModal = () => setPostFocusPage(false);
   const closeDeleteSuccess = () => setOpen2(false);
 
   const handleOpen = () => {
@@ -42,7 +41,7 @@ const Post = (props: IPostProps) => {
   }, []);
 
   return (
-    <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
+    <div className="flex w-full p-6 mb-8 bg-white rounded-lg drop-shadow-md">
       {/* Only display edit function if this post belongs to the user */}
       {props.post.username == props.user.username ? (
         <div className="dropdown">
@@ -98,7 +97,7 @@ const Post = (props: IPostProps) => {
           props.setSong(props.post.music);
         }}
       >
-        <img src={props.post.music.cover}></img>
+        <img className="rounded-sm" src={props.post.music.cover}></img>
       </div>
 
       <Popup open={open2} closeOnDocumentClick onClose={closeDeleteSuccess}>
@@ -110,24 +109,26 @@ const Post = (props: IPostProps) => {
         </div>
       </Popup>
 
-      <Popup open={postFocusPage} closeOnDocumentClick onClose={closeModal}>
+      <Popup
+        open={postFocusPage}
+        closeOnDocumentClick
+        onClose={() => {
+          setPostFocusPage(false);
+        }}
+      >
         <div className="modal">
-          <a className="close" onClick={closeModal}>
-            &times;
+          <a
+            className="close"
+            onClick={() => {
+              setPostFocusPage(false);
+            }}
+          >
             {postSuccessFail}
           </a>
         </div>
       </Popup>
 
-      <div
-        className="w-full"
-        onClick={() => {
-          handlePostFocusPage();
-          setPostSuccessFail(
-            <PostFocusPage post={props.post} setSong={props.setSong} />
-          );
-        }}
-      >
+      <div className="w-full">
         <div className="w-full p-2 ml-2">
           <div>
             {postOwner ? (
@@ -148,21 +149,39 @@ const Post = (props: IPostProps) => {
             )}
           </div>
           <div className="text-2xl font-bold">{props.post.music.name}</div>
+          <div className="float-right pr-2 text-navy">
+            Likes: {props.post.likes}
+          </div>
           <div className="text-slate-500">{props.post.music.artist}</div>
-          <hr className="h-0.5 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-          <div className="">{props.post.caption}</div>
+          <hr className="h-0.5 border-0 bg-gray-300"></hr>
+          <div className="flex justify-end mt-2">
+            <div className="w-full">{props.post.caption}</div>
+            <LikeButton post={props.post} />
+            <div
+              className="w-6 h-6 mt-1 ml-2 cursor-pointer"
+              onClick={() => {
+                handlePostFocusPage();
+                setPostSuccessFail(
+                  <PostFocusPage
+                    post={props.post}
+                    setSong={props.setSong}
+                    postOwner={postOwner}
+                  />
+                );
+              }}
+            >
+              <img src="/img/icons/comment.svg"></img>
+            </div>
+            <div
+              className="mt-1 ml-2 cursor-pointer w-7 h-7"
+              onClick={() => {
+                navigate(`/repost/${props.post._id}`);
+              }}
+            >
+              <img src="/img/icons/repost.svg"></img>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="absolute bottom-5 right-5">
-        <LikeButton post={props.post} />
-        <button
-          className="absolute bottom-2 text-lblue hover:text-navy right-10"
-          onClick={() => {
-            navigate(`/repost/${props.post._id}`);
-          }}
-        >
-          Repost
-        </button>
       </div>
     </div>
   );

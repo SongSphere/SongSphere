@@ -34,7 +34,11 @@ const FollowerList = (props: IFollowerListProps) => {
           Followers
         </h1>
 
-        <form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <div className="py-2">
             <div className="flex justify-between bg-white rounded-md shadow shadow-black/20">
               <input
@@ -60,7 +64,7 @@ const FollowerList = (props: IFollowerListProps) => {
               <div className="overflow-y-auto max-h-[45vh]">
                 {followers.map((user) => {
                   return (
-                    <div className="flex">
+                    <div className="flex" key={user}>
                       <div className="flex-1 inline-block text-left">
                         {user}
                       </div>
