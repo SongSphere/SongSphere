@@ -44,7 +44,7 @@ const HomePage = (props: IHomePageProps) => {
   }
 
   return (
-    <div className="w-full h-full min-h-screen bg-orange-100 min-w-screen">
+    <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
       <Navbar />
 
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
