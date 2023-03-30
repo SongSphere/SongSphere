@@ -9,6 +9,8 @@ import CommentCard from "./comment-card";
 interface ICommentCardProps {
   comments: TComment[];
   user: TUser;
+  commentChanged: number;
+  setCommentChanged: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const CommentLoader = (props: ICommentCardProps) => {
@@ -64,13 +66,7 @@ const CommentLoader = (props: ICommentCardProps) => {
         setComments(comments);
       });
     }
-  }, []);
-
-  useEffect(() => {
-    if (comments) {
-      console.log(comments);
-    }
-  }, [comments]);
+  }, [props.comments]);
 
   if (!comments) {
     return <div>comments fetching</div>;
@@ -81,7 +77,12 @@ const CommentLoader = (props: ICommentCardProps) => {
       {comments.map((comment) => {
         return (
           <div key={comment._id}>
-            <CommentCard comment={comment} user={props.user} />
+            <CommentCard
+              comment={comment}
+              user={props.user}
+              commentChanged={props.commentChanged}
+              setCommentChanged={props.setCommentChanged}
+            />
           </div>
         );
       })}

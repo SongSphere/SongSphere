@@ -7,6 +7,8 @@ interface ICommentCreatorProp {
   user: TUser;
   id: string;
   commentType: string; // this can be "Post" or "Comment"
+  commentChanged: number;
+  setCommentChanged: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const CommentCreater = (props: ICommentCreatorProp) => {
@@ -14,8 +16,9 @@ const CommentCreater = (props: ICommentCreatorProp) => {
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
+        let res = false;
         if (props.user && commentContent !== "") {
           const comment: TComment = {
             username: props.user.username,
@@ -26,10 +29,15 @@ const CommentCreater = (props: ICommentCreatorProp) => {
           };
 
           if (props.commentType === "Post") {
-            sendComment(comment, props.id, "");
+            res = await sendComment(comment, props.id, "");
           } else if (props.commentType === "Comment") {
-            sendComment(comment, "", props.id);
+            res = await sendComment(comment, "", props.id);
           }
+        }
+
+        if (res) {
+          setCommentContent("");
+          props.setCommentChanged(props.commentChanged + 1);
         }
       }}
     >
@@ -49,12 +57,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
               setCommentContent(e.target.value);
             }}
           />
-          <input
-            type="image"
-            className="w-12 h-12 border-black cursor-pointer"
-            src="img/icons/upload.svg"
-          ></input>
-          {/* <button type="submit">Submit</button> */}
         </div>
       </label>
     </form>

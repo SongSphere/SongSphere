@@ -9,13 +9,20 @@ import LikeButton from "./like-button";
 interface ICommentCardProps {
   comment: TPopulatedComment;
   user: TUser;
+  commentChanged: number;
+  setCommentChanged: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const CommentCard = (props: ICommentCardProps) => {
   const nestedComments = props.comment.subComments.map((comment) => {
     return (
       <div key={comment._id}>
-        <CommentCard comment={comment} user={props.user} />
+        <CommentCard
+          comment={comment}
+          user={props.user}
+          commentChanged={props.commentChanged}
+          setCommentChanged={props.setCommentChanged}
+        />
       </div>
     );
   });
@@ -23,14 +30,12 @@ const CommentCard = (props: ICommentCardProps) => {
   const [subCommentCreator, setSubCommentCreator] = useState(false);
 
   return (
-    <div className="px-4 py-4 mb-2 w-fit">
+    <div className="w-full px-4 py-4 mb-2">
       <div className="flex">
-        <div className="">
-          <img
-            className="w-12 h-12 border-2 rounded-full"
-            src={props.comment.profileImgUrl}
-          ></img>
-        </div>
+        <img
+          className="w-12 h-12 border-2 rounded-full"
+          src={props.comment.profileImgUrl}
+        ></img>
         <div className="ml-2">
           <a href={`/user/${props.user.username}`}>
             <div className="font-bold">{props.comment.username}</div>
@@ -47,20 +52,20 @@ const CommentCard = (props: ICommentCardProps) => {
               <img src="/img/icons/comment.svg"></img>
             </div>
           </div>
-
-          {subCommentCreator ? (
-            <CommentCreater
-              user={props.user}
-              id={props.comment._id}
-              commentType="Comment"
-            />
-          ) : (
-            <div></div>
-          )}
-
-          {nestedComments}
         </div>
       </div>
+      {subCommentCreator ? (
+        <CommentCreater
+          user={props.user}
+          id={props.comment._id}
+          commentType="Comment"
+          commentChanged={props.commentChanged}
+          setCommentChanged={props.setCommentChanged}
+        />
+      ) : (
+        <div></div>
+      )}
+      {nestedComments}
     </div>
   );
 };

@@ -20,6 +20,8 @@ interface IPostFocusPageProps {
 const PostFocusPage = (props: IPostFocusPageProps) => {
   let [comments, setComments] = useState<TComment[] | null>(null);
   let [user, setUser] = useState<TUser | null>(null);
+  const [commentChanged, setCommentChanged] = useState(0);
+
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +31,7 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
       });
     }
     setUser(Session.getUser());
-  }, []);
+  }, [commentChanged]);
 
   if (!user || !comments) {
     return <div>fetching user and comments</div>;
@@ -98,12 +100,23 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
         </div>
         <hr className="h-0.5 bg-gray-300 border-0 "></hr>
         <div className="fixed w-full mt-2">
-          <CommentCreater user={user} id={props.post._id!} commentType="Post" />
+          <CommentCreater
+            user={user}
+            id={props.post._id!}
+            commentType="Post"
+            commentChanged={commentChanged}
+            setCommentChanged={setCommentChanged}
+          />
         </div>
         <hr className="w-full mt-16 h-0.5 bg-gray-300 border-0 "></hr>
         <div className="overflow-auto h-96">
           <div className="overflow-auto h-88">
-            <CommentLoader comments={comments} user={user} />
+            <CommentLoader
+              comments={comments}
+              user={user}
+              commentChanged={commentChanged}
+              setCommentChanged={setCommentChanged}
+            />
           </div>
         </div>
       </div>
