@@ -12,6 +12,9 @@ import fetchCommentLiked from "../../services/user/fetch-comment-liked";
 
 import fetchPostLikes from "../../services/post/fetch-post-likes";
 import fetchCommentLikes from "../../services/post/fetch-comment-likes";
+import Session from "../../session";
+import { TNotification } from "../../types/notification";
+import sendNotification from "../../services/notification/send-notification";
 
 const LikedButton = styled.button`
   width: 2rem;
@@ -39,6 +42,7 @@ const NotLikedButton = styled.button`
 interface LikeButtonProps {
   id: string | undefined;
   type: string; // this can be "Post" or "Comment"
+  postUserEmail: string;
 }
 
 const LikeButton = (props: LikeButtonProps) => {
@@ -48,8 +52,28 @@ const LikeButton = (props: LikeButtonProps) => {
   const likeHandler = async (id: string) => {
     if (props.type == "Post") {
       await likePost(id);
+      const user = Session.getUser();
+      if (user) {
+        const notificationForAlerts: TNotification = {
+          userEmailSender: user.email,
+          userEmailReceiver: props.postUserEmail,
+          notificationType: "Like",
+          text: `${user.username} liked your post!`,
+        };
+        await sendNotification(notificationForAlerts);
+      }
     } else if (props.type == "Comment") {
       await likeComment(id);
+      const user = Session.getUser();
+      if (user) {
+        const notificationForAlerts: TNotification = {
+          userEmailSender: user.email,
+          userEmailReceiver: props.postUserEmail,
+          notificationType: "Like",
+          text: `${user.username} liked your comment!`,
+        };
+        await sendNotification(notificationForAlerts);
+      }
     }
     await updateLiking(id);
   };

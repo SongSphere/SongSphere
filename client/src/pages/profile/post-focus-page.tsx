@@ -33,7 +33,7 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
     setUser(Session.getUser());
   }, [commentChanged]);
 
-  if (!user || !comments) {
+  if (!user || !comments || !props.postOwner) {
     return <div>fetching user and comments</div>;
   }
 
@@ -85,7 +85,11 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
               <hr className="h-0.5 border-0 bg-gray-300"></hr>
               <div className="flex justify-end mt-2">
                 <div className="w-full">{props.post.caption}</div>
-                <LikeButton id={props.post._id} type="Post" />
+                <LikeButton
+                  id={props.post._id}
+                  type="Post"
+                  postUserEmail={props.post.userEmail}
+                />
                 <div
                   className="mt-1 ml-2 cursor-pointer w-7 h-7"
                   onClick={() => {
@@ -106,6 +110,7 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
             commentType="Post"
             commentChanged={commentChanged}
             setCommentChanged={setCommentChanged}
+            creator={props.postOwner.email}
           />
         </div>
         <hr className="w-full mt-16 h-0.5 bg-gray-300 border-0 "></hr>

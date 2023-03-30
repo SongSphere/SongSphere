@@ -16,10 +16,6 @@ interface IOtherProfileFeedProps {
 }
 
 const OtherProfileFeed = (props: IOtherProfileFeedProps) => {
-  // useEffect(() => {
-  //   console.log(`The page should be ${props.blur}`);
-  // });
-
   return (
     <div className="justify-center mt-8">
       <div className="w-full">

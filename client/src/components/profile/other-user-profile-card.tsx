@@ -5,6 +5,8 @@ import { follow, unfollow } from "../../services/follow/follow";
 import Session from "../../session";
 import { TUser } from "../../types/user";
 import BlockUserModal from "./block-user-modal";
+import { TNotification } from "../../types/notification";
+import sendNotification from "../../services/notification/send-notification";
 
 interface IProfileCardProps {
   selectedUser: TUser;
@@ -52,6 +54,15 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
           props.setSelectedUser(updatedUser);
           props.setFollowers(updatedUser.followers);
           setIsFollowing(true);
+
+          const notificationForAlerts: TNotification = {
+            userEmailSender: user.email,
+            userEmailReceiver: props.selectedUser.email,
+            notificationType: "Follow",
+            text: `${user.username} is now following you!`,
+          };
+
+          await sendNotification(notificationForAlerts);
         });
       } else {
         unfollow(user.username, props.selectedUser.username).then(async () => {

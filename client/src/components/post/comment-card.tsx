@@ -1,6 +1,4 @@
 import { useState } from "react";
-import likeComment from "../../services/post/like-comment";
-import unLikeComment from "../../services/post/unlike-comment";
 import { TPopulatedComment } from "../../types/populated-comment";
 import { TUser } from "../../types/user";
 import CommentCreater from "./comment-creater";
@@ -42,7 +40,11 @@ const CommentCard = (props: ICommentCardProps) => {
           </a>
           <div>{props.comment.text}</div>
           <div className="flex">
-            <LikeButton id={props.comment._id} type="Comment" />
+            <LikeButton
+              id={props.comment._id}
+              postUserEmail={props.comment.userEmail}
+              type="Comment"
+            />
             <div
               className="w-6 h-6 mt-1 ml-2 cursor-pointer"
               onClick={() => {
@@ -61,6 +63,7 @@ const CommentCard = (props: ICommentCardProps) => {
           commentType="Comment"
           commentChanged={props.commentChanged}
           setCommentChanged={props.setCommentChanged}
+          creator={props.comment.userEmail}
         />
       ) : (
         <div></div>

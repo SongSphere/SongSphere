@@ -13,6 +13,9 @@ import {
   comment,
   saveComment,
   fetchComments,
+  notificationForAlerts,
+  saveNotification,
+  fetchNotificationByEmailAddress,
   fetchSubComments,
   fetchCommentById,
   unlikePost,
@@ -44,6 +47,21 @@ export const getPostsByUsername = async (req: Request, res: Response) => {
 
     res.status(201);
     res.json({ posts: posts });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getNotificationsByEmail = async (req: Request, res: Response) => {
+  console.log(`Server/Controllers/${req.params.userEmailReceiver}`);
+  try {
+    const notifications = await fetchNotificationByEmailAddress(
+      req.params.userEmailReceiver
+    );
+
+    res.status(201);
+    res.json({ notifications: notifications });
   } catch (error) {
     res.status(500);
     res.json({ error: error });
@@ -91,6 +109,21 @@ export const deletePost = async (req: Request, res: Response) => {
   try {
     await removePost(req.body.post);
 
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const sendNotification = async (req: Request, res: Response) => {
+  try {
+    const newNotification = await notificationForAlerts(
+      req.body.notificationForAlerts
+    );
+    console.log(newNotification);
+    await saveNotification(newNotification);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
@@ -151,7 +184,8 @@ export const getSubComments = async (req: Request, res: Response) => {
 export const updateLikePost = async (req: Request, res: Response) => {
   try {
     const email = req.session.user.email;
-    await likePost(req.body.postId, email);
+    console.log("like from ", email);
+    await likePost(req.body.id, email);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
@@ -163,7 +197,7 @@ export const updateLikePost = async (req: Request, res: Response) => {
 export const updateUnlikePost = async (req: Request, res: Response) => {
   try {
     const email = req.session.user.email;
-    await unlikePost(req.body.postId, email);
+    await unlikePost(req.body.id, email);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {

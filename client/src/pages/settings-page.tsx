@@ -214,7 +214,6 @@ const SettingsPage = (props: ISettingPageProps) => {
                       });
                   } else {
                     // call to set it private
-
                     setVisibilityPrivate(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());
@@ -254,7 +253,6 @@ const SettingsPage = (props: ISettingPageProps) => {
                       });
                   } else {
                     // call to set it private
-
                     setTrueRandomSong(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());
@@ -322,50 +320,6 @@ const SettingsPage = (props: ISettingPageProps) => {
           <div>{`Spotify API connected: ${spotifyAccountStatus}`}</div>
 
           <DefaultPlatform />
-
-          <button
-            className="bg-grey"
-            onClick={async () => {
-              // await randomSongSpotify(user.spotifyToken).then(async (song) => {
-              //   console.log("In settings")
-              //   setSong(song);
-              //   if (user) {
-              //     const newPost: TPost = {
-              //       username: user.username,
-              //       userEmail: user.email,
-              //       caption: "Random Song of the Day",
-              //       music: song[0]!,
-              //       comments: [],
-              //       likes: 0,
-              //       repost: false,
-              //     };
-              //     await sendPost(newPost)
-              //       .then((res) => {
-              //         if (!res) {
-              //           setPostSuccessFail(<PostFailure />);
-              //         } else {
-              //           setPostSuccessFail(<PostSucess />);
-              //         }
-              //       })
-              //       .catch((error) => {
-              //         <PostFailure />;
-              //       });
-              //   }
-              // }).catch((error) => {
-              //   console.log("Song not there")
-              //   console.log(error);
-              // });
-
-              await randomSongSpotifyFromBackend(user.spotifyToken).then(
-                async (song) => {
-                  console.log("In settings randomSongBackend");
-                  console.log(song);
-                }
-              );
-            }}
-          >
-            Random
-          </button>
         </div>
         <BlockedList
           blockedList={user.blockedUsers}

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import sendNotification from "../../services/notification/send-notification";
 import sendComment from "../../services/post/send-comment";
 import { TComment } from "../../types/comment";
+import { TNotification } from "../../types/notification";
 import { TUser } from "../../types/user";
 
 interface ICommentCreatorProp {
@@ -9,6 +11,7 @@ interface ICommentCreatorProp {
   commentType: string; // this can be "Post" or "Comment"
   commentChanged: number;
   setCommentChanged: React.Dispatch<React.SetStateAction<number>>;
+  creator: string;
 }
 
 const CommentCreater = (props: ICommentCreatorProp) => {
@@ -30,8 +33,23 @@ const CommentCreater = (props: ICommentCreatorProp) => {
 
           if (props.commentType === "Post") {
             res = await sendComment(comment, props.id, "");
+            const notificationForAlerts: TNotification = {
+              userEmailSender: props.user.email,
+              userEmailReceiver: props.creator,
+              notificationType: "Comment",
+              text: `${props.user.username} commented on your post!`,
+            };
+            await sendNotification(notificationForAlerts);
           } else if (props.commentType === "Comment") {
             res = await sendComment(comment, "", props.id);
+            const notificationForAlerts: TNotification = {
+              userEmailSender: props.user.email,
+              userEmailReceiver: props.creator,
+              notificationType: "Comment",
+              text: `${props.user.username} commented on your comment!`,
+            };
+
+            await sendNotification(notificationForAlerts);
           }
         }
 

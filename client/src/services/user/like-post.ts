@@ -4,7 +4,7 @@ const likePost = async (id: string) => {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
-        postId: id,
+        id: id,
       }),
       headers: {
         "Content-Type": "application/json",

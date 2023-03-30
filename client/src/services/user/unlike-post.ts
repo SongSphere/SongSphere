@@ -1,12 +1,10 @@
-import { TPost } from "../../types/post";
-
 const unLikePost = async (id: string) => {
   try {
     await fetch(`${process.env.REACT_APP_API}/api/post/updateUnlikePost`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
-        postId: id,
+        id: id,
       }),
       headers: {
         "Content-Type": "application/json",
