@@ -1,4 +1,5 @@
 import { TMusicContent } from "../../types/music-content";
+import { spotifyRefresh } from "./spotify-refresh";
 
 const SPOTIFY_API = "https://api.spotify.com/v1";
 
@@ -19,6 +20,8 @@ export const spotifySearch = async (
   }
 
   let content: TMusicContent[] = [];
+
+  await spotifyRefresh();
 
   await fetch(
     `${SPOTIFY_API}/search?q=${encodeURIComponent(
@@ -84,6 +87,9 @@ export const spotifySearch = async (
 export const randomSongSpotify = async (token: string, url: string) => {
   return new Promise<TMusicContent>(async (resolve, reject) => {
     let content: TMusicContent[] = [];
+
+    await spotifyRefresh();
+
     await fetch(url, {
       method: "GET",
       headers: {

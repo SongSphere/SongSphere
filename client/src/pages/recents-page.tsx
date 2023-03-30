@@ -15,7 +15,7 @@ interface IRecentProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
 }
 
-const RecentsPage = (props:IRecentProps) => {
+const RecentsPage = (props: IRecentProps) => {
   const [posts, setPosts] = useState<TMusicContent[]>([]);
   const [user, setUser] = useState<TUser | null>(null);
   const [song, setSong] = useState<TMusicContent | null>(null);
@@ -26,16 +26,15 @@ const RecentsPage = (props:IRecentProps) => {
   }, [Session.getUser()]);
   useEffect(() => {
     if (user) {
-      if(service == "spotify") {
-         getSpotifyRecentlyPlayedSongs(user.spotifyToken, 10).then((posts) => {
+      if (service == "spotify") {
+        getSpotifyRecentlyPlayedSongs(user.spotifyToken, 10).then((posts) => {
           setPosts(posts);
-         })
+        });
       } else {
-
       }
     }
   }, [user]);
-  
+
   if (!user) {
     return <div>fetching user</div>;
   }
@@ -44,7 +43,7 @@ const RecentsPage = (props:IRecentProps) => {
     <div className="min-h-screen min-w-screen bg-lblue">
       <Navbar />
       <h1 className="text-4xl text-center text-white fixed-scroll">
-              Recently Played
+        Recently Played
       </h1>
       <div className="grid grid-cols-3">
         <div className="flex items-center justify-center col-span-2 mt-5">
@@ -53,17 +52,17 @@ const RecentsPage = (props:IRecentProps) => {
           </div>
         </div>
         <div className="mt-5">
-        {service === "apple" ? (
-          <AppleMusicPlayerCard
-            musicInstance={props.appleMusicInstance}
-            selectedSong={song}
-          />
-        ) : (
-          <SpotifyPlayerCard
-            selectedSong={song}
-            appleMusicInstance={props.appleMusicInstance}
-          />
-        )}
+          {service === "apple" ? (
+            <AppleMusicPlayerCard
+              musicInstance={props.appleMusicInstance}
+              selectedSong={song}
+            />
+          ) : (
+            <SpotifyPlayerCard
+              selectedSong={song}
+              appleMusicInstance={props.appleMusicInstance}
+            />
+          )}
         </div>
       </div>
     </div>

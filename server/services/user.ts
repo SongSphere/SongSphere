@@ -42,18 +42,16 @@ export const checkUser = async (email: string) => {
 export const updateSpotifyTokens = async (
   email: string,
   token: string,
+  token_expires: Date,
   refresh_token: string
 ) => {
   try {
     // call mongoose findOneAndUpdate function with data, this updates database
-    const user = await User.findOneAndUpdate(
-      { email: email },
-      { spotifyToken: token }
-    );
-    await User.findOneAndUpdate(
-      { email: email },
-      { spotifyRefreshToken: refresh_token }
-    );
+    const user = await User.findOne({ email: email });
+    user.spotifyToken = token;
+    user.spotifyTokenEndDate = token_expires;
+    user.spotifyRefreshToken = refresh_token;
+    await user.save();
   } catch (error) {
     throw error;
   }
@@ -64,6 +62,7 @@ export const removeSpotifyTokens = async (email: string) => {
     const user = await User.findOne({ email: email });
     user.spotifyToken = undefined;
     user.spotifyRefreshToken = undefined;
+    user.spotifyTokenEndDate = undefined;
     await user.save();
   } catch (error) {
     throw error;

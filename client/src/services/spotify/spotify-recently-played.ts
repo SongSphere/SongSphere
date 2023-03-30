@@ -1,4 +1,5 @@
 import { TMusicContent } from "../../types/music-content";
+import { spotifyRefresh } from "./spotify-refresh";
 
 const SPOTIFY_API = "https://api.spotify.com/v1";
 
@@ -7,6 +8,8 @@ export const getSpotifyRecentlyPlayedSongs = async (
   limit: number
 ) => {
   let content: TMusicContent[] = [];
+
+  await spotifyRefresh();
 
   await fetch(`${SPOTIFY_API}/me/player/recently-played?&limit=${limit}`, {
     method: "GET",
