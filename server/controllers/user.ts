@@ -19,6 +19,7 @@ import {
   updateShowRandomSong,
   getFriendActivity,
   setPlayingSong,
+  setShowSong,
 } from "../services/user";
 
 import {
@@ -389,6 +390,17 @@ export const setActivity = async (req: Request, res: Response) => {
   try {
     await setPlayingSong(req.session.user.email, req.body.song);
     res.status(201);
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const setDisplaySong = async (req: Request, res: Response) => {
+  try {
+    await setShowSong(req.session.user.email, req.body.set);
+    res.status(200);
+    res.json({ msg: "Success" });
   } catch (error) {
     res.status(500);
     res.json({ error: error });

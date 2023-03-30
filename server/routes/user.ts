@@ -26,6 +26,7 @@ import {
   updateUnlikeComment,
   getActivity,
   setActivity,
+  setDisplaySong,
 } from "../controllers/user";
 import { getPostsByUsername } from "../controllers/posting";
 
@@ -80,5 +81,6 @@ router.get("/user/getDefaultPlatform", getPlatform);
 router.post("/user/setDefaultPlatform", setPlatform);
 router.get("/user/activeListening", getActivity);
 router.post("/user/setPlayingSong", setActivity);
+router.post("/api/user/setShowSong", setDisplaySong);
 
 export default router;

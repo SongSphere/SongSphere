@@ -378,3 +378,16 @@ export const setPlayingSong = async (
     throw error;
   }
 };
+
+export const setShowSong = async (email: string, set: boolean) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { showPlayingSong: set },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
