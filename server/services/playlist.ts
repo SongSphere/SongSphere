@@ -7,7 +7,7 @@ export const fetchPlaylist = async (username: string) => {
     const user = await User.findOne({ username: username });
     const followers = user.following;
 
-    console.log("user", user);
+    // console.log("user", user);
     console.log("followers", followers);
 
     let selectedSongCount = 0;

@@ -13,9 +13,7 @@ export const fetchPlaylist = (username: string) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
-        // posts.push(...(data.posts as TPost[]));
-        resolve(data.posts as TPost[]);
+        resolve(data.playlist as TPost[]);
       })
       .catch((error) => {
         console.error(error);

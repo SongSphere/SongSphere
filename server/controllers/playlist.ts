@@ -3,8 +3,6 @@ import { fetchPlaylist } from "../services/playlist";
 
 export const getPlayList = async (req: Request, res: Response) => {
   try {
-    console.log("get playlist called");
-    console.log(req.session.user);
     const username = req.session.user.username;
     const playlist = await fetchPlaylist(username);
     res.status(201);
