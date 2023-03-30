@@ -12,18 +12,11 @@ import {
 } from "../services/follow";
 
 export const follow = async (req: Request, res: Response) => {
-  // const emailOfUserMakingFollow = req.session.user.email;
   const usernameOfUserMakingFollow = req.body.usernameOfUserMakingFollow;
   const usernameOfUserGettingFollowed = req.body.usernameOfUserGettingFollowed;
-  // const emailOfUserGettingFollowed = req.body.emailOfUserGettingFollowed;
 
   try {
-    await addFollow(
-      usernameOfUserGettingFollowed,
-      usernameOfUserMakingFollow
-      // emailOfUserGettingFollowed,
-      // emailOfUserMakingFollow
-    );
+    await addFollow(usernameOfUserGettingFollowed, usernameOfUserMakingFollow);
 
     res.status(201);
     res.json({ msg: "followed successfully" });
@@ -34,11 +27,9 @@ export const follow = async (req: Request, res: Response) => {
 };
 
 export const unfollow = async (req: Request, res: Response) => {
-  // const emailOfUserUnfollowing = req.session.user.email;
   const usernameOfUserUnfollowing = req.body.usernameOfUserUnfollowing;
   const usernameOfUserGettingUnfollowed =
     req.body.usernameOfUserGettingUnfollowed;
-  // const emailOfUserGettingUnfollowed = req.body.emailOfUserGettingUnfollowed;
 
   try {
     await removeFollow(

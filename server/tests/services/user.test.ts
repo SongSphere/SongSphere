@@ -17,6 +17,8 @@ import {
   updateUserVisibility,
 } from "../../services/user";
 
+import { addFollow } from "../../services/follow";
+
 // This creates a new backend in the database
 
 const app = createApp("testUserService");
@@ -53,6 +55,7 @@ describe("Testing db services", () => {
       following: [],
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     const savedUser = await user.save();
@@ -76,6 +79,7 @@ describe("Testing db services", () => {
       token: "idk",
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     await user.save();
@@ -114,6 +118,7 @@ describe("Testing db services", () => {
       spotifyRefreshToken: "test_refresh_token_1234",
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     await user.save();
@@ -129,37 +134,38 @@ describe("Testing db services", () => {
     expect(updatedUser.spotifyRefreshToken).toBe(undefined);
   });
 
-  // test("Testing isPrivate to false", async () => {
-  //   const tonyUser = new User({
-  //     name: "Willy",
-  //     username: "Magician",
-  //     givenName: "Chi",
-  //     middleName: "Wei",
-  //     familyName: "Lien",
-  //     email: "willy@gmail.com",
+  // test("Testing user feed", async () => {
+  //   const userA = new User({
+  //     name: "Dominic",
+  //     username: "domdan",
+  //     givenName: "Dominic",
+  //     familyName: "Danborn",
+  //     email: "dominicdanborn@gmail.com",
   //     emailVerified: true,
-  //     profileImgUrl:
-  //       "https://lh3.googleusercontent.com/a/AEdFTp6LDtlFlsOSWZstQy1jaYLjDcje3Y…",
-  //     backgroundImgUrl:
-  //       "https://lh3.googleusercontent.com/a/AEdFTp6LDtlFlsOSWZstQy1jaYLjDcje3Y…",
-  //     token:
-  //       "https://lh3.googleusercontent.com/a/AEdFTp6LDtlFlsOSWZstQy1jaYLjDcje3Y…c",
-  //     followers: [],
-  //     following: [],
+  //     profileImgUrl: "google.com",
+  //     backgroundImgUrl: "google.com",
+  //     token: "idk",
   //     onboarded: false,
-  //     isPrivate: true,
+  //     isPrivate: false,
   //   });
+  //   await userA.save();
 
-  //   const savedUser = await tonyUser.save();
+  //   const userB = new User({
+  //     name: "Willy",
+  //     username: "magician3124",
+  //     givenName: "Chi-Wei",
+  //     familyName: "Lien",
+  //     email: "crashingballoon@gmail.com",
+  //     emailVerified: true,
+  //     profileImgUrl: "google.com",
+  //     backgroundImgUrl: "google.com",
+  //     token: "idk",
+  //     onboarded: false,
+  //     isPrivate: false,
+  //   });
+  //   await userB.save();
 
-  //   console.log(savedUser);
-
-  //   updateUserVisibility("willy@gmail.com", false);
-
-  //   const updatedUser1 = await User.findOne({ email: "willy@gmail.com" });
-  //   console.log("Skip")
-  //   console.log(updatedUser1);
-
-  //   expect(updatedUser1.isPrivate).toBe(false);
+  //   // user A follow user B
+  //   addFollow(userB.username, userA.username);
   // });
 });

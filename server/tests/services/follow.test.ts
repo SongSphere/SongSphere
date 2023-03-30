@@ -52,6 +52,7 @@ describe("Testing db services", () => {
       blockedBy: [],
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     const user2 = new User({
@@ -70,6 +71,7 @@ describe("Testing db services", () => {
       blockedBy: [],
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     await user1.save();
@@ -106,6 +108,7 @@ describe("Testing db services", () => {
       blockedBy: [],
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     const user2 = new User({
@@ -124,6 +127,7 @@ describe("Testing db services", () => {
       blockedBy: [],
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     await user1.save();
@@ -160,6 +164,7 @@ describe("Testing db services", () => {
       blockedBy: [],
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     const user2 = new User({
@@ -178,6 +183,7 @@ describe("Testing db services", () => {
       blockedBy: [],
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     await user1.save();
@@ -219,6 +225,7 @@ describe("Testing db services", () => {
       blockedBy: [],
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     const user2 = new User({
@@ -237,6 +244,7 @@ describe("Testing db services", () => {
       blockedBy: ["domdan"],
       onboarded: false,
       isPrivate: false,
+      showPlayingSong: false,
     });
 
     await user1.save();
