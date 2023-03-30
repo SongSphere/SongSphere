@@ -78,7 +78,7 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
               <hr className="h-0.5 border-0 bg-gray-300"></hr>
               <div className="flex justify-end mt-2">
                 <div className="w-full">{props.post.caption}</div>
-                <LikeButton post={props.post} />
+                <LikeButton id={props.post._id} type="Post" />
                 <div
                   className="mt-1 ml-2 cursor-pointer w-7 h-7"
                   onClick={() => {
