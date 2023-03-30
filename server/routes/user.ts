@@ -18,6 +18,9 @@ import {
   getPlatform,
   setPlatform,
   changeShowRandomSong,
+  getActivity,
+  setActivity,
+  setDisplaySong,
 } from "../controllers/user";
 import {
   getNotificationsByEmail,
@@ -73,5 +76,8 @@ router.get("/user/images/:imageName", getProfilePhoto);
 router.get("/user/background/:imageName", getProfilePhoto);
 router.get("/user/getDefaultPlatform", getPlatform);
 router.post("/user/setDefaultPlatform", setPlatform);
+router.get("/user/activeListening", getActivity);
+router.post("/user/setPlayingSong", setActivity);
+router.post("/api/user/setShowSong", setDisplaySong);
 
 export default router;
