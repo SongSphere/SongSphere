@@ -17,17 +17,29 @@ import {
   comment,
   saveComment,
   fetchComments,
+  notificationForAlerts,
+  saveNotification,
+  fetchNotificationByEmailAddress,
+  fetchSubComments,
+  fetchCommentById,
+  unlikePost,
+  likePost,
+  unlikeComment,
+  postIsLiked,
+  commentIsLiked,
+  fetchisLiked,
+  likeComment,
+  fetchPostLikes,
+  fetchCommentLikes,
 } from "../services/post";
 
 export const getSeedForRandomSong = async (req: Request, res: Response) => {
   try {
     const seed = Seed.getSeed();
-    console.log(seed);
     res.status(201);
     res.json({ seed: seed });
     return seed;
   } catch (error) {
-    console.log("error");
     res.status(500);
     res.json({ error: error });
   }
@@ -39,6 +51,20 @@ export const getPostsByUsername = async (req: Request, res: Response) => {
 
     res.status(201);
     res.json({ posts: posts });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getNotificationsByEmail = async (req: Request, res: Response) => {
+  try {
+    const notifications = await fetchNotificationByEmailAddress(
+      req.params.userEmailReceiver
+    );
+
+    res.status(201);
+    res.json({ notifications: notifications });
   } catch (error) {
     res.status(500);
     res.json({ error: error });
@@ -94,6 +120,20 @@ export const deletePost = async (req: Request, res: Response) => {
   }
 };
 
+export const sendNotification = async (req: Request, res: Response) => {
+  try {
+    const newNotification = await notificationForAlerts(
+      req.body.notificationForAlerts
+    );
+    await saveNotification(newNotification);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
 export const sendComment = async (req: Request, res: Response) => {
   try {
     const c = await comment(
@@ -101,13 +141,23 @@ export const sendComment = async (req: Request, res: Response) => {
       req.body.postId,
       req.body.replyingTo
     );
-    console.log(c);
     await saveComment(c);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.error(error);
+  }
+};
+
+export const getComment = async (req: Request, res: Response) => {
+  try {
+    let c = await fetchCommentById(req.params.id);
+    res.status(201);
+    res.json({ comment: c });
+  } catch (error) {
+    res.status(500);
+    console.error(error);
   }
 };
 
@@ -118,7 +168,121 @@ export const getComments = async (req: Request, res: Response) => {
     res.json({ comments: c });
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.error(error);
+  }
+};
+
+export const getSubComments = async (req: Request, res: Response) => {
+  try {
+    let c = await fetchSubComments(req.params.id);
+    res.status(201);
+    res.json({ comments: c });
+  } catch (error) {
+    res.status(500);
+    console.error(error);
+  }
+};
+
+export const updateLikePost = async (req: Request, res: Response) => {
+  try {
+    const email = req.session.user.email;
+    await likePost(req.body.id, email);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const updateUnlikePost = async (req: Request, res: Response) => {
+  try {
+    const email = req.session.user.email;
+    await unlikePost(req.body.id, email);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const updateLikeComment = async (req: Request, res: Response) => {
+  try {
+    await likeComment(req.body.id, req.session.user.email);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const updateUnlikeComment = async (req: Request, res: Response) => {
+  try {
+    await unlikeComment(req.body.id, req.session.user.email);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getPostLiked = async (req: Request, res: Response) => {
+  try {
+    const email = req.session.user.email;
+    const liked = await postIsLiked(req.params.id, email);
+    res.status(201);
+    res.json({ liked: liked });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getCommentLiked = async (req: Request, res: Response) => {
+  try {
+    const email = req.session.user.email;
+    const liked = await commentIsLiked(req.params.id, email);
+    res.status(201);
+    res.json({ liked: liked });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getPostLikes = async (req: Request, res: Response) => {
+  try {
+    const likes = await fetchPostLikes(req.params.id);
+    res.status(201);
+    res.json({ likes: likes });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getCommentLikes = async (req: Request, res: Response) => {
+  try {
+    const likes = await fetchCommentLikes(req.params.id);
+    res.status(201);
+    res.json({ likes: likes });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const fetchLikedPosts = async (req: Request, res: Response) => {
+  try {
+    const likes = await fetchisLiked(req.params.username);
+    res.status(200);
+    res.json({ likes: likes });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
   }
 };
 

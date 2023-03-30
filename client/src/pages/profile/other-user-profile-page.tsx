@@ -64,9 +64,7 @@ const OtherUserProfilePage = () => {
     // Test if this works
     if (selectedUser && user) {
       for (let i = 0; i < selectedUser.followers.length; i++) {
-        // console.log(`cur followers: ${selectedUser.followers[i]}`);
         if (user.username == selectedUser.followers[i]) {
-          // console.log(`${user.username} is following ${selectedUser.username}`);
           setIsFollowing(true);
           break;
         }

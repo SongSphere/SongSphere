@@ -41,7 +41,6 @@ export const unfollow = async (req: Request, res: Response) => {
   // const emailOfUserGettingUnfollowed = req.body.emailOfUserGettingUnfollowed;
 
   try {
-    console.log("unfollow called");
     await removeFollow(
       usernameOfUserGettingUnfollowed,
       usernameOfUserUnfollowing
@@ -87,13 +86,11 @@ export const block = async (req: Request, res: Response) => {
     res.status(201);
     res.json({ msg: "blocked successfully" });
   } catch (error) {
-    console.log(error);
     res.json({ error: error });
   }
 };
 
 export const processFollowRequest = async (req: Request, res: Response) => {
-  console.log("processing follow request");
   try {
     await modifyFollowRequest(
       req.body.id,

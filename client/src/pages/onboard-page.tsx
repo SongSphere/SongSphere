@@ -46,7 +46,6 @@ const OnBoardPage = () => {
       if (user.appleToken !== undefined) {
         user.defaultPlatform = "apple";
         Session.setUser(user);
-        console.log("apple");
         Session.setMusicService("apple");
         setDefaultPlatform("apple");
         setAppleLinked(true);
@@ -58,7 +57,6 @@ const OnBoardPage = () => {
         user.defaultPlatform = "spotify";
         Session.setMusicService("spotify");
         Session.setUser(user);
-        console.log("spotify");
         setDefaultPlatform("spotify");
         setSpotifyLinked(true);
       } else {

@@ -10,6 +10,7 @@ import { TMusicContent } from "../types/music-content";
 import PlaylistFeed from "../components/profile/playlist-feed";
 import { TPost } from "../types/post";
 import fetchPostsByUsername from "../services/post/fetch-user-posts";
+import { fetchPlaylist } from "../services/user/fetch-playlist";
 
 const PlaylistPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
@@ -17,6 +18,7 @@ const PlaylistPage = () => {
   const [followers, setFollowers] = React.useState(false);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [service, setService] = useState<string>("");
+
   useEffect(() => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
@@ -26,7 +28,7 @@ const PlaylistPage = () => {
       if (user.following.length > 0) {
         setFollowers(true);
       }
-      fetchPostsByUsername(user.username).then((posts) => {
+      fetchPlaylist(user.username).then((posts) => {
         setPosts(posts);
       });
     }

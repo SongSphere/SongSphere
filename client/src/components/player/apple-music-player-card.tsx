@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import setActivity from "../../services/general/set-activity";
 import selectService from "../../services/user/select-service";
 import Session from "../../session";
 import { TMusicContent } from "../../types/music-content";
@@ -83,8 +84,14 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
     if (AMInstance != null) {
       if (!isPlaying) {
         AMInstance.play();
+        if (props.selectedSong) {
+          setActivity(props.selectedSong);
+        }
       } else {
         AMInstance.pause();
+        if (props.selectedSong) {
+          setActivity(null);
+        }
       }
     } else {
       console.error("music not instantiated");

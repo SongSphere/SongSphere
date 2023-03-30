@@ -9,9 +9,10 @@ import { TUser } from "../types/user";
 import RecentFeed from "../components/profile/recents-feed";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
+import { getSpotifyRecentlyPlayedSongs } from "../services/spotify/spotify-recently-played";
 
 const RecentsPage = () => {
-  const [posts, setPosts] = useState<TPost[]>([]);
+  const [posts, setPosts] = useState<TMusicContent[]>([]);
   const [user, setUser] = useState<TUser | null>(null);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [service, setService] = useState<string>("");
@@ -21,9 +22,12 @@ const RecentsPage = () => {
   }, [Session.getUser()]);
   useEffect(() => {
     if (user) {
-      fetchPostsByUsername(user.username).then((posts) => {
-        setPosts(posts);
-      });
+      if (service == "spotify") {
+        getSpotifyRecentlyPlayedSongs(user.spotifyToken, 10).then((posts) => {
+          setPosts(posts);
+        });
+      } else {
+      }
     }
   }, [user]);
 

@@ -16,7 +16,7 @@ const fetchComments = async (id: string) => {
       comments.push(...(data.comments as TComment[]));
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
     });
   return comments;
 };

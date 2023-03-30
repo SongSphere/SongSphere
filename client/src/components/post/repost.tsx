@@ -49,7 +49,7 @@ const Repost = (props: IPostProps) => {
   let navigate = useNavigate();
 
   return (
-    <div className="flex w-full p-6 mb-8 bg-white drop-shadow-md">
+    <div className="flex w-full p-6 mb-8 bg-white rounded-lg drop-shadow-md">
       <div className="dropdown">
         <button onClick={handleOpen} className="absolute top-5 right-5 ">
           <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
@@ -57,16 +57,6 @@ const Repost = (props: IPostProps) => {
 
         {open ? (
           <ul className="absolute right-0 top-10">
-            <li className=" text-lblue hover:text-lgrey">
-              <button
-                onClick={() => {
-                  navigate(`/edit/${props.post._id}`);
-                }}
-              >
-                Edit
-              </button>
-            </li>
-
             <li>
               <button
                 className=" text-lblue hover:text-lgrey"
@@ -187,7 +177,7 @@ const Repost = (props: IPostProps) => {
         <div className="float-left mt-1.5 mr-2 text-navy">
           {props.post.likes}
         </div>
-        <LikeButton post={props.post} />
+        <LikeButton id={props.post._id} type="Post" postUserEmail={props.post.userEmail} />
       </div>
     </div>
   );
