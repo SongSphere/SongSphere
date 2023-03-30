@@ -54,7 +54,6 @@ export const getPostsByUsername = async (req: Request, res: Response) => {
 };
 
 export const getNotificationsByEmail = async (req: Request, res: Response) => {
-  console.log(`Server/Controllers/${req.params.userEmailReceiver}`);
   try {
     const notifications = await fetchNotificationByEmailAddress(
       req.params.userEmailReceiver
@@ -122,7 +121,6 @@ export const sendNotification = async (req: Request, res: Response) => {
     const newNotification = await notificationForAlerts(
       req.body.notificationForAlerts
     );
-    console.log(newNotification);
     await saveNotification(newNotification);
     res.status(201);
     res.json({ msg: "success" });
@@ -184,7 +182,6 @@ export const getSubComments = async (req: Request, res: Response) => {
 export const updateLikePost = async (req: Request, res: Response) => {
   try {
     const email = req.session.user.email;
-    console.log("like from ", email);
     await likePost(req.body.id, email);
     res.status(201);
     res.json({ msg: "success" });

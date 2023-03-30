@@ -43,8 +43,6 @@ export const fetchPostsByUsername = async (username: string) => {
 };
 
 export const fetchNotificationByEmailAddress = async (email: string) => {
-  console.log(`Server/Services/${email}`);
-
   try {
     const notifications = await Notifications.find({
       userEmailReceiver: email,
@@ -54,7 +52,6 @@ export const fetchNotificationByEmailAddress = async (email: string) => {
       return b.get("createdAt") - a.get("createdAt");
     });
 
-    console.log(notifications);
     return notifications;
   } catch (error) {
     throw error;
@@ -155,7 +152,6 @@ export const notificationForAlerts = async (
 export const saveNotification = async (
   notificationForAlerts: mongoose.Document<unknown, any, INotification>
 ) => {
-  console.log("save called in services/post.ts");
   try {
     await notificationForAlerts.save();
   } catch (error) {
@@ -238,7 +234,6 @@ export const fetchSubComments = async (id: string) => {
 };
 
 export const likePost = async (postId: string, email: string) => {
-  console.log("liked service called", postId);
   try {
     await User.updateOne({ email: email }, { $push: { likes: postId } });
     await Post.findOneAndUpdate({ _id: postId }, { $inc: { likes: 1 } });
