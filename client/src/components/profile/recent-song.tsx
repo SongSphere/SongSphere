@@ -17,14 +17,14 @@ const RecentSong = (props: ISongProps) => {
         <div className="flex w-full p-6 mb-8 bg-white rounded-lg drop-shadow-md">
             <div className="w-32 h-32 cursor-pointer"
              onClick={() => {
-                navigate(`/posts/${props.song.name}`);
+                navigate(`/posts/${props.song.id}`);
             }}
             >
                 <img className="rounded-sm" src={props.song.cover}></img>
             </div>
             <div className="my-auto ml-5 cursor-pointer"
              onClick={() => {
-                navigate(`/posts/${props.song.name}`);
+                navigate(`/posts/${props.song.name + " " + props.song.artist}`);
             }}
             >
                 <h1 className="text-3xl text-navy">{props.song.name}</h1>
