@@ -13,6 +13,7 @@ export interface IUser {
   backgroundImgUrl: string;
   token: string; // this is for debugging purposese
   spotifyToken: string;
+  spotifyTokenEndDate: Date;
   spotifyRefreshToken: string;
   appleToken: string;
   following: Array<String>;
@@ -72,6 +73,10 @@ const UserSchema = new Schema<IUser>(
     },
     spotifyToken: {
       type: String,
+      required: false,
+    },
+    spotifyTokenEndDate: {
+      type: Date,
       required: false,
     },
     spotifyRefreshToken: {

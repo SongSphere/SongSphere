@@ -13,6 +13,11 @@ import {
   comment,
   saveComment,
   fetchComments,
+  notificationForAlerts,
+  saveNotification,
+  fetchNotificationByEmailAddress,
+  fetchSubComments,
+  fetchCommentById,
 } from "../services/post";
 
 export const getSeedForRandomSong = async (req: Request, res: Response) => {
@@ -40,6 +45,21 @@ export const getPostsByUsername = async (req: Request, res: Response) => {
     res.json({ error: error });
   }
 };
+
+export const getNotificationsByEmail = async (req: Request, res: Response) => {
+  console.log(`Server/Controllers/${req.params.userEmailReceiver}`);
+  try {
+    const notifications = await fetchNotificationByEmailAddress(req.params.userEmailReceiver);
+
+    res.status(201);
+    res.json({ notifications: notifications });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+
 
 export const getPostById = async (req: Request, res: Response) => {
   try {
@@ -90,6 +110,21 @@ export const deletePost = async (req: Request, res: Response) => {
   }
 };
 
+export const sendNotification = async (req: Request, res: Response) => {
+  try {
+    const newNotification = await notificationForAlerts(
+      req.body.notificationForAlerts
+    );
+    console.log(newNotification);
+    await saveNotification(newNotification);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
 export const sendComment = async (req: Request, res: Response) => {
   try {
     const c = await comment(
@@ -98,7 +133,6 @@ export const sendComment = async (req: Request, res: Response) => {
       req.body.replyingTo
       
     );
-    console.log(c);
     await saveComment(c);
     res.status(201);
     res.json({ msg: "success" });
@@ -108,9 +142,31 @@ export const sendComment = async (req: Request, res: Response) => {
   }
 };
 
+export const getComment = async (req: Request, res: Response) => {
+  try {
+    let c = await fetchCommentById(req.params.id);
+    res.status(201);
+    res.json({ comment: c });
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+  }
+};
+
 export const getComments = async (req: Request, res: Response) => {
   try {
     let c = await fetchComments(req.params.id);
+    res.status(201);
+    res.json({ comments: c });
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+  }
+};
+
+export const getSubComments = async (req: Request, res: Response) => {
+  try {
+    let c = await fetchSubComments(req.params.id);
     res.status(201);
     res.json({ comments: c });
   } catch (error) {

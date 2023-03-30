@@ -1,22 +1,22 @@
 import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
 import { TMusicContent } from "../../types/music-content";
-import RecentSong from "./recent-song";
+import PlaylistSong from "./playlist-song";
 import { useEffect } from "react";
 
-interface IRecentsFeedProps {
-    posts: TMusicContent[];
+interface IPlaylistFeedProps {
+    posts: TPost[];
     user: TUser;
     setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   }
   
-  const RecentFeed = (props: IRecentsFeedProps) => {
+  const PlaylistFeed = (props: IPlaylistFeedProps) => {
     return (
-      <div className="justify-center mt-8">
+      <div className="justify-center">
         <div className="w-full">
         {props.posts.map((post) => {
           return (
-            <RecentSong song={post} user={props.user} setSong={props.setSong}/>
+            <PlaylistSong song={post.music} user={props.user} setSong={props.setSong}/>
           );
         })}
         </div>
@@ -24,4 +24,4 @@ interface IRecentsFeedProps {
     );
   };
   
-  export default RecentFeed;
+  export default PlaylistFeed;

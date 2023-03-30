@@ -63,7 +63,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
         Session.setMusicService("spotify");
         Session.setUser(user);
         console.log("spotify");
-        setDefaultPlatform("apple");
+        setDefaultPlatform("spotify");
         setSpotifyLinked(true);
       } else {
         setSpotifyLinked(false);

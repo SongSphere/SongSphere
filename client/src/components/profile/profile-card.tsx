@@ -85,6 +85,16 @@ const ProfileCard = (props: IProfileCardProps) => {
               recently played
             </button>
           </div>
+          <div className="text-center">
+            <button
+              className="rounded-full text-slate-500"
+              onClick={() => {
+                navigate("/playlist");
+              }}
+            >
+              My Playlist
+            </button>
+          </div>
 
           <div className="px-2 py-2">
             <div className="p-1 rounded-lg bg-lgrey">

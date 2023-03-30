@@ -28,7 +28,7 @@ import {
   setActivity,
   setDisplaySong,
 } from "../controllers/user";
-import { getPostsByUsername } from "../controllers/posting";
+import { getNotificationsByEmail, getPostsByUsername } from "../controllers/posting";
 
 // import middleware
 import auth from "../middleware/auth";
@@ -38,8 +38,13 @@ const router = express.Router();
 router.get("/user", auth, sessionUpdate);
 router.get("/user/feed/:num", getFeed);
 router.get("/api/user/posts/:username", auth, getPostsByUsername);
+
+router.get("/api/user/getNotification/:userEmailReceiver", auth, getNotificationsByEmail);
+
 router.get("/api/user/:username", auth, getUserByUsername);
 router.get("/user/feed/:num", getFeed);
+
+
 router.get("/api/user/fetchIsLiked/:id", auth, fetchIsLiked);
 router.get("/api/user/fetchLikedPosts/:username", auth, fetchLikedPosts);
 
