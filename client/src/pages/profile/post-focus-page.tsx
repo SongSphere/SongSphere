@@ -1,22 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LikeButton from "../../components/post/like-button";
+import fetchComments from "../../services/post/fetch-comments";
+import { TComment } from "../../types/comment";
 import { TMusicContent } from "../../types/music-content";
 import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
+import Session from "../../session";
+import CommentLoader from "../../components/post/comment-loader";
+import CommentCreater from "../../components/post/comment-creater";
 
 interface IPostFocusPageProps {
   post: TPost;
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
   postOwner: TUser | null;
+  setPostFocusPage: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PostFocusPage = (props: IPostFocusPageProps) => {
+  let [comments, setComments] = useState<TComment[] | null>(null);
+  let [user, setUser] = useState<TUser | null>(null);
+  const [commentChanged, setCommentChanged] = useState(0);
+
   let navigate = useNavigate();
+
+  useEffect(() => {
+    if (props.post._id) {
+      fetchComments(props.post._id).then((comments) => {
+        setComments(comments);
+      });
+    }
+    setUser(Session.getUser());
+  }, [commentChanged]);
+
+  if (!user || !comments || !props.postOwner) {
+    return <div>fetching user and comments</div>;
+  }
 
   return (
     <div className="grid w-screen h-screen grid-cols-4 gap-2 md:grid-flow-col">
-      <div className="col-span-2 col-start-2 mt-24 bg-white rounded-lg h-5/6 drop-shadow-md ">
+      <div className="relative col-span-2 col-start-2 mt-24 bg-white rounded-lg h-5/6 drop-shadow-md">
+        <div
+          className="absolute cursor-pointer right-4 top-4"
+          onClick={() => {
+            props.setPostFocusPage(false);
+          }}
+        >
+          <img className="w-4 h-4" src="\img\icons\close.svg"></img>
+        </div>
         <div className="flex w-full p-6">
           <div
             className="w-32 h-32 cursor-pointer"
@@ -26,10 +57,9 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
           >
             <img className="rounded-sm" src={props.post.music.cover}></img>
           </div>
-
           <div className="w-full">
             <div className="w-full p-2 ml-2">
-              <div>
+              <div className="relative">
                 {props.postOwner ? (
                   <a href={`/user/${props.postOwner.username}`}>
                     <img
@@ -55,7 +85,11 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
               <hr className="h-0.5 border-0 bg-gray-300"></hr>
               <div className="flex justify-end mt-2">
                 <div className="w-full">{props.post.caption}</div>
-                <LikeButton post={props.post} />
+                <LikeButton
+                  id={props.post._id}
+                  type="Post"
+                  postUserEmail={props.post.userEmail}
+                />
                 <div
                   className="mt-1 ml-2 cursor-pointer w-7 h-7"
                   onClick={() => {
@@ -69,6 +103,27 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
           </div>
         </div>
         <hr className="h-0.5 bg-gray-300 border-0 "></hr>
+        <div className="fixed w-full mt-2">
+          <CommentCreater
+            user={user}
+            id={props.post._id!}
+            commentType="Post"
+            commentChanged={commentChanged}
+            setCommentChanged={setCommentChanged}
+            creator={props.postOwner.email}
+          />
+        </div>
+        <hr className="w-full mt-16 h-0.5 bg-gray-300 border-0 "></hr>
+        <div className="overflow-auto h-96">
+          <div className="overflow-auto h-88">
+            <CommentLoader
+              comments={comments}
+              user={user}
+              commentChanged={commentChanged}
+              setCommentChanged={setCommentChanged}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

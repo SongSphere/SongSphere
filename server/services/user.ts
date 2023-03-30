@@ -4,6 +4,7 @@ import User, { IUser } from "../db/user";
 import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
+import { TMusicContent } from "../types/music-content";
 
 export const createUser = async (
   userData: TokenPayload,
@@ -25,6 +26,10 @@ export const createUser = async (
     onboarded: false,
     isPrivate: false,
     likes: [],
+    showRandomSong: false,
+    currentlyPlayingSong: null,
+    showPlayingSong: false,
+    commentLikes: [],
   });
 
   return user;
@@ -42,18 +47,16 @@ export const checkUser = async (email: string) => {
 export const updateSpotifyTokens = async (
   email: string,
   token: string,
+  token_expires: Date,
   refresh_token: string
 ) => {
   try {
     // call mongoose findOneAndUpdate function with data, this updates database
-    const user = await User.findOneAndUpdate(
-      { email: email },
-      { spotifyToken: token }
-    );
-    await User.findOneAndUpdate(
-      { email: email },
-      { spotifyRefreshToken: refresh_token }
-    );
+    const user = await User.findOne({ email: email });
+    user.spotifyToken = token;
+    user.spotifyTokenEndDate = token_expires;
+    user.spotifyRefreshToken = refresh_token;
+    await user.save();
   } catch (error) {
     throw error;
   }
@@ -64,6 +67,7 @@ export const removeSpotifyTokens = async (email: string) => {
     const user = await User.findOne({ email: email });
     user.spotifyToken = undefined;
     user.spotifyRefreshToken = undefined;
+    user.spotifyTokenEndDate = undefined;
     await user.save();
   } catch (error) {
     throw error;
@@ -253,7 +257,7 @@ export const fetchFeed = async (email: string, num: number) => {
     }
     return posts.slice(num * 3, num * 3 + 3);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -329,6 +333,60 @@ export const setDefaultPlatform = async (
       { email: email },
       { defaultPlatform: defaultPlatform }
     );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getFriendActivity = async (email: string) => {
+  interface IActivity {
+    user: IUser;
+    song: TMusicContent;
+  }
+
+  try {
+    let activity: IActivity[] = [];
+    const user = await User.findOne({ email: email });
+    let following = user.following;
+    for (let i = 0; i < following.length; i++) {
+      let user = await User.findOne({ username: following[i] });
+      if (user.currentlyPlayingSong != null && user.showPlayingSong == true) {
+        let song: TMusicContent = user.currentlyPlayingSong;
+        const newActivity = {
+          user: user,
+          song: song,
+        };
+        activity.push(newActivity);
+      }
+    }
+    return activity;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setPlayingSong = async (
+  email: string,
+  song: TMusicContent | null
+) => {
+  try {
+    await User.findOneAndUpdate(
+      { email: email },
+      { currentlyPlayingSong: song }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setShowSong = async (email: string, set: boolean) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { showPlayingSong: set },
+      { new: true }
+    );
+    return user;
   } catch (error) {
     throw error;
   }

@@ -17,9 +17,11 @@ import {
   getDefaultPlatform,
   setDefaultPlatform,
   updateShowRandomSong,
+  getFriendActivity,
+  setPlayingSong,
+  setShowSong,
 } from "../services/user";
 
-import { likePost, unlikePost, isLiked, fetchisLiked, likeComment, unlikeComment } from "../services/post";
 import fs from "fs";
 
 export const sessionUpdate = async (
@@ -76,7 +78,6 @@ export const getFeed = async (req: Request, res: Response) => {
     res.status(200);
     res.json({ posts: posts });
   } catch (error) {
-    console.log("Bruh");
     res.status(404);
     res.json({ msg: "cannot fetch posts" });
   }
@@ -96,6 +97,12 @@ export const changeNames = async (
       req.body.middleName,
       req.body.familyName
     );
+
+    req.session.user.username = req.body.username;
+    req.session.user.givenName = req.body.givenName;
+    req.session.user.middleName = req.body.middleName;
+    req.session.user.familyName = req.body.familyName;
+
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
@@ -284,70 +291,6 @@ export const getProfilePhoto = (req: Request, res: Response) => {
   }
 };
 
-export const updateLikePost = (req: Request, res: Response) => {
-  const email = req.session.user.email;
-  try {
-    likePost(req.body.postId, email);
-  } catch (error) {
-    res.status(500);
-    res.json({ error: error });
-  }
-};
-
-export const updateUnlikePost = (req: Request, res: Response) => {
-  const email = req.session.user.email;
-  try {
-    unlikePost(req.body.postId, email);
-  } catch (error) {
-    res.status(500);
-    res.json({ error: error });
-  }
-};
-
-export const updateLikeComment = (req: Request, res: Response) => {
-
-  try {
-    likeComment(req.body.comment._id);
-  } catch (error) {
-    res.status(500);
-    res.json({ error: error });
-  }
-}
-
-export const updateUnlikeComment = (req: Request, res: Response) => {
-  
-  try {
-    unlikeComment(req.body.comment._id);
-  } catch (error) {
-    res.status(500);
-    res.json({ error: error });
-  }
-}
-
-
-export const fetchIsLiked = async (req: Request, res: Response) => {
-  try {
-    const email = req.session.user.email;
-    const likes = await isLiked(req.params.id, email);
-    res.status(201);
-    res.json({ likes: likes });
-  } catch (error) {
-    res.status(500);
-    res.json({ error: error });
-  }
-};
-
-export const fetchLikedPosts = async (req: Request, res: Response) => {
-  try {
-    const likes = await fetchisLiked(req.params.username);
-    res.status(200);
-    res.json({ likes: likes });
-  } catch (error) {
-    res.status(500);
-    res.json({ error: error });
-  }
-};
-
 export const getPlatform = async (req: Request, res: Response) => {
   try {
     let platform = await getDefaultPlatform(req.session.user.email);
@@ -362,6 +305,38 @@ export const getPlatform = async (req: Request, res: Response) => {
 export const setPlatform = async (req: Request, res: Response) => {
   try {
     await setDefaultPlatform(req.session.user.email, req.body.platform);
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getActivity = async (req: Request, res: Response) => {
+  try {
+    const activity = await getFriendActivity(req.session.user.email);
+    res.status(201);
+    res.json({ activity: activity });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const setActivity = async (req: Request, res: Response) => {
+  try {
+    await setPlayingSong(req.session.user.email, req.body.song);
+    res.status(201);
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const setDisplaySong = async (req: Request, res: Response) => {
+  try {
+    await setShowSong(req.session.user.email, req.body.set);
+    res.status(200);
+    res.json({ msg: "Success" });
   } catch (error) {
     res.status(500);
     res.json({ error: error });

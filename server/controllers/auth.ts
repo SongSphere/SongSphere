@@ -14,6 +14,7 @@ import {
   removeSpotifyTokens,
   updateAppleToken,
   removeAppleToken,
+  fetchUserByEmail,
 } from "../services/user";
 
 const client_id = process.env.SPOTIFY_CLIENT_ID;
@@ -23,12 +24,7 @@ const auth_token = Buffer.from(
   "utf-8"
 ).toString("base64");
 
-export const RandomSongSpotify = async (req: Request, res: Response) => {
-
-  
-}
-
-
+export const RandomSongSpotify = async (req: Request, res: Response) => {};
 
 export const spotifyAuth = async (req: Request, res: Response) => {
   const email = req.session.user.email;
@@ -52,14 +48,16 @@ export const spotifyAuth = async (req: Request, res: Response) => {
         },
       }
     );
-      
+
     if (tokenRes.status != 200) {
       throw new Error("fetch token failed with invalid data");
     }
 
-      
     const spotifyToken = tokenRes.data.access_token;
     const spotifyRefreshToken = tokenRes.data.refresh_token;
+    const expirationTime: Date = new Date(
+      new Date().getTime() + tokenRes.data.expires_in * 1000
+    );
 
     if (remove) {
       try {
@@ -72,13 +70,73 @@ export const spotifyAuth = async (req: Request, res: Response) => {
       }
     } else {
       try {
-        await updateSpotifyTokens(email, spotifyToken, spotifyRefreshToken);
+        await updateSpotifyTokens(
+          email,
+          spotifyToken,
+          expirationTime,
+          spotifyRefreshToken
+        );
         res.status(201);
         res.json({ msg: "spotify tokens successfully updated" });
       } catch (error) {
         console.error(error);
         res.json({ error: error });
       }
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    res.json({ msg: "token fetch failed" });
+  }
+};
+
+export const spotifyRefresh = async (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const refresh_token = req.body.refresh_token;
+
+  const data = qs.stringify({
+    grant_type: "refresh_token",
+    refresh_token: refresh_token,
+  });
+
+  let tokenRes;
+
+  try {
+    tokenRes = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      data,
+      {
+        headers: {
+          Authorization: `Basic ${auth_token}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    if (tokenRes.status != 200) {
+      throw new Error("fetch token failed with invalid data");
+    }
+
+    const spotifyToken = tokenRes.data.access_token;
+    const expirationTime: Date = new Date(
+      new Date().getTime() + tokenRes.data.expires_in * 1000
+    );
+
+    try {
+      await updateSpotifyTokens(
+        email,
+        spotifyToken,
+        expirationTime,
+        refresh_token
+      );
+      res.status(201);
+      res.json({
+        new_token: spotifyToken,
+        expiration_time: expirationTime,
+      });
+    } catch (error) {
+      console.error(error);
+      res.json({ error: error });
     }
   } catch (error) {
     console.error(error);
@@ -126,37 +184,43 @@ export const signInUp = async (
     if (exist) {
       // exist == document with _id
       await updateUserToken(userData.email, token);
+      const user = await fetchUserByEmail(userData.email);
+      req.session.user = user;
     } else {
       // exist == null
       const user = await createUser(userData, token);
       existingAccount = false;
       await saveUser(user);
-    }
 
-    req.session.user = {
-      name: userData.name,
-      username: "",
-      givenName: userData.given_name,
-      middleName: "",
-      familyName: userData.family_name,
-      email: userData.email,
-      emailVerified: userData.email_verified,
-      profileImgUrl: userData.picture,
-      backgroundImgUrl: userData.picture,
-      token: token,
-      spotifyToken: "",
-      spotifyRefreshToken: "",
-      appleToken: "",
-      followers: Array<String>(),
-      following: Array<String>(),
-      blockedUsers: Array<String>(),
-      blockedBy: Array<String>(),
-      onboarded: false,
-      isPrivate: false,
-      showRandomSong: false,
-      likes: Array<String>(),
-      defaultPlatform: "",
-    };
+      req.session.user = {
+        name: userData.name,
+        username: "",
+        givenName: userData.given_name,
+        middleName: "",
+        familyName: userData.family_name,
+        email: userData.email,
+        emailVerified: userData.email_verified,
+        profileImgUrl: userData.picture,
+        backgroundImgUrl: userData.picture,
+        token: token,
+        spotifyToken: "",
+        spotifyRefreshToken: "",
+        spotifyTokenEndDate: null,
+        appleToken: "",
+        followers: Array<String>(),
+        following: Array<String>(),
+        blockedUsers: Array<String>(),
+        blockedBy: Array<String>(),
+        onboarded: false,
+        isPrivate: false,
+        showRandomSong: false,
+        likes: Array<String>(),
+        commentLikes: Array<String>(),
+        defaultPlatform: "",
+        currentlyPlayingSong: null,
+        showPlayingSong: false,
+      };
+    }
 
     res.status(201);
     res.json({ user: req.session.user, existingAccount: existingAccount });

@@ -7,7 +7,7 @@ export interface IComment {
   userEmail: string;
   text: string;
   subComments: Array<String>;
-  like: number;
+  likes: number;
 }
 
 const CommentSchema = new Schema<IComment>(
@@ -32,7 +32,7 @@ const CommentSchema = new Schema<IComment>(
       type: Array<String>(),
       required: false,
     },
-    like: {
+    likes: {
       type: Number,
       required: true,
     },

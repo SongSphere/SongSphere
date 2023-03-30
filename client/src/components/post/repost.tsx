@@ -57,8 +57,6 @@ const Repost = (props: IPostProps) => {
 
         {open ? (
           <ul className="absolute right-0 top-10">
-            
-
             <li>
               <button
                 className=" text-lblue hover:text-lgrey"
@@ -179,7 +177,7 @@ const Repost = (props: IPostProps) => {
         <div className="float-left mt-1.5 mr-2 text-navy">
           {props.post.likes}
         </div>
-        <LikeButton post={props.post} />
+        <LikeButton id={props.post._id} type="Post" postUserEmail={props.post.userEmail} />
       </div>
     </div>
   );

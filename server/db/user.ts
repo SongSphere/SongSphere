@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { TMusicContent } from "../types/music-content";
 
 export interface IUser {
   name: string;
@@ -12,6 +13,7 @@ export interface IUser {
   backgroundImgUrl: string;
   token: string; // this is for debugging purposese
   spotifyToken: string;
+  spotifyTokenEndDate: Date;
   spotifyRefreshToken: string;
   appleToken: string;
   following: Array<String>;
@@ -21,8 +23,11 @@ export interface IUser {
   onboarded: Boolean;
   isPrivate: Boolean;
   likes: Array<String>;
+  commentLikes: Array<String>;
   defaultPlatform: string;
   showRandomSong: Boolean;
+  currentlyPlayingSong: TMusicContent;
+  showPlayingSong: Boolean;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -71,6 +76,10 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: false,
     },
+    spotifyTokenEndDate: {
+      type: Date,
+      required: false,
+    },
     spotifyRefreshToken: {
       type: String,
       required: false,
@@ -111,9 +120,29 @@ const UserSchema = new Schema<IUser>(
       type: Array<String>(),
       required: false,
     },
+    commentLikes: {
+      type: Array<String>(),
+      required: false,
+    },
     defaultPlatform: {
       type: String,
       required: false,
+    },
+    currentlyPlayingSong: {
+      type: {
+        name: String,
+        artist: String,
+        albumName: String,
+        id: String,
+        service: String,
+        category: String,
+        cover: String,
+      },
+      required: false,
+    },
+    showPlayingSong: {
+      type: Boolean,
+      required: true,
     },
   },
   {

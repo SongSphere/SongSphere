@@ -3,6 +3,8 @@ import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 import selectService from "../../services/user/select-service";
 import Session from "../../session";
+import setActivity from "../../services/general/set-activity";
+import { spotifyRefresh } from "../../services/spotify/spotify-refresh";
 
 interface ISpotifySong {
   name: string;
@@ -36,8 +38,14 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
     if (player) {
       if (!isPlaying) {
         player.resume();
+        if (props.selectedSong) {
+          setActivity(props.selectedSong);
+        }
       } else {
         player.pause();
+        if (props.selectedSong) {
+          setActivity(null);
+        }
       }
     } else {
       console.error("music not instantiated");
@@ -45,6 +53,8 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   };
 
   const fetchSong = async (songId: string, token: string) => {
+    await spotifyRefresh();
+
     await fetch(`https://api.spotify.com/v1/tracks/${songId}`, {
       method: "GET",
       headers: {
@@ -101,6 +111,8 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
 
   useEffect(() => {
     const setSong = async (song_uri: string, deviceId: string) => {
+      await spotifyRefresh();
+
       const url =
         "https://api.spotify.com/v1/me/player/play?" +
         new URLSearchParams({ device_id: deviceId });
@@ -128,6 +140,13 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   useEffect(() => {
     if (user) {
       // dynamically import Spotify
+
+      const refresh = async () => {
+        await spotifyRefresh();
+      };
+
+      refresh();
+
       const script = document.createElement("script");
       script.src = "https://sdk.scdn.co/spotify-player.js";
       script.async = true;

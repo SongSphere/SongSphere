@@ -8,6 +8,7 @@ import {
   signout,
   appleAuth,
   spotifyAuth,
+  spotifyRefresh,
 } from "../controllers/auth";
 
 // import middleware
@@ -20,6 +21,7 @@ router.get("/api/auth/signout", signout);
 router.get("/api/testauth", auth, testauth);
 
 router.post("/api/auth/spotify", auth, spotifyAuth);
+router.post("/api/auth/spotifyrefresh", auth, spotifyRefresh);
 router.post("/api/auth/apple", auth, appleAuth);
 
 export default router;
