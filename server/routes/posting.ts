@@ -10,6 +10,7 @@ import {
   getSeedForRandomSong,
   sendComment,
   getComments,
+  addToSpotifyLibrary,
 } from "../controllers/posting";
 
 // import middleware
@@ -18,6 +19,7 @@ import auth from "../middleware/auth";
 const router = express.Router();
 
 router.post("/api/makepost", storePost);
+router.post("/api/spotify/addtolib", addToSpotifyLibrary);
 router.post("/api/editpost", editPost);
 router.post("/api/removepost", deletePost);
 router.get("/api/post/:id", getPostById);

@@ -8,6 +8,7 @@ import Popup from "reactjs-popup";
 import { TUser } from "../../types/user";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
 import LikeButton from "./like-button";
+import { addToLibrary } from "../../services/spotify/add-to-library";
 
 interface IPostProps {
   post: TPost;
@@ -22,6 +23,12 @@ const Post = (props: IPostProps) => {
   const [postSuccessFail, setPostSuccessFail] = useState<JSX.Element>();
   const [deleteSuccessText, setDeleteSuccessText] = useState<string>("");
   const [postOwner, setPostOwner] = useState<TUser | null>(null);
+
+  const closeModal = (e: React.ChangeEvent<any>) => {
+    if (e.target.id === "modal-container") {
+      setOpen(false);
+    }
+  };
 
   const closeDeleteSuccess = () => setOpen2(false);
 
@@ -49,40 +56,63 @@ const Post = (props: IPostProps) => {
             <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
           </button>
           {open ? (
-            <ul className="absolute right-0 top-10">
-              <li className=" text-lblue hover:text-lgrey">
-                <button
-                  onClick={() => {
-                    navigate(`/edit/${props.post._id}`);
-                  }}
-                >
-                  Edit
-                </button>
-              </li>
+            <div
+              id="modal-container"
+              onClick={closeModal}
+              className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
+            >
+              <div className="w-1/4 p-4 bg-gray-200 rounded-md">
+                <ul>
+                  <li className="px-2 py-1 rounded-sm">
+                    <button
+                      className="w-full py-2 text-xs text-white transition-colors duration-200 rounded-sm bg-lblue hover:bg-gray-800"
+                      onClick={() => {
+                        navigate(`/edit/${props.post._id}`);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </li>
 
-              <li>
-                <button
-                  className=" text-lblue hover:text-lgrey"
-                  onClick={async () => {
-                    await deletePost(props.post).then((res) => {
-                      setOpen2(true);
-                      // temp solution
-                      if (res) {
-                        setDeleteSuccessText("Success");
-                      } else {
-                        setDeleteSuccessText("Fail");
-                      }
+                  <li className="px-2 py-1 rounded-sm">
+                    <button
+                      className="w-full py-2 text-xs text-white transition-colors duration-200 rounded-sm bg-lblue hover:bg-gray-800"
+                      onClick={async () => {
+                        await deletePost(props.post).then((res) => {
+                          setOpen2(true);
+                          // temp solution
+                          if (res) {
+                            setDeleteSuccessText("Success");
+                          } else {
+                            setDeleteSuccessText("Fail");
+                          }
 
-                      setTimeout(() => {
-                        window.location.reload();
-                      }, 1500);
-                    });
-                  }}
-                >
-                  Delete
-                </button>
-              </li>
-            </ul>
+                          setTimeout(() => {
+                            window.location.reload();
+                          }, 1500);
+                        });
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </li>
+                  <li className="px-2 py-1 rounded-sm">
+                    <button
+                      className="w-full py-2 text-xs text-white transition-colors duration-200 rounded-sm bg-lblue hover:bg-gray-800"
+                      onClick={async () => {
+                        await addToLibrary(
+                          props.post.music.id,
+                          props.user.spotifyToken
+                        );
+                        setOpen(false);
+                      }}
+                    >
+                      Add to my library
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
           ) : (
             <div></div>
           )}

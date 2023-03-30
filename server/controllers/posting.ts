@@ -1,6 +1,10 @@
 // import packages
+import axios from "axios";
 import { Request, Response, NextFunction } from "express";
+import qs from "qs";
 import Seed from "../seed";
+
+const SPOTIFY_API = "https://api.spotify.com/v1";
 
 // import services
 import {
@@ -96,7 +100,6 @@ export const sendComment = async (req: Request, res: Response) => {
       req.body.comment,
       req.body.postId,
       req.body.replyingTo
-      
     );
     console.log(c);
     await saveComment(c);
@@ -113,6 +116,30 @@ export const getComments = async (req: Request, res: Response) => {
     let c = await fetchComments(req.params.id);
     res.status(201);
     res.json({ comments: c });
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+  }
+};
+
+export const addToSpotifyLibrary = async (req: Request, res: Response) => {
+  try {
+    let addreq = await axios.put(
+      `${SPOTIFY_API}/me/tracks?ids=${req.body.id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${req.body.token}`,
+        },
+      }
+    );
+
+    if (addreq.status != 200) {
+      throw new Error("add song failed");
+    }
+
+    res.status(201);
+    res.json({ msg: "success" });
   } catch (error) {
     res.status(500);
     console.log(error);

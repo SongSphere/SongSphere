@@ -13,7 +13,7 @@ export const requestSpotifyAuthorization = async () => {
 
     url +=
       "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position " +
-      "user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
+      "user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private user-library-modify";
 
     window.location.href = url;
   } catch (error) {
