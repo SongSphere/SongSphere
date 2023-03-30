@@ -15,6 +15,7 @@ import {
   fetchComments,
   notificationForAlerts,
   saveNotification,
+  fetchNotificationByEmailAddress,
 } from "../services/post";
 
 export const getSeedForRandomSong = async (req: Request, res: Response) => {
@@ -42,6 +43,21 @@ export const getPostsByUsername = async (req: Request, res: Response) => {
     res.json({ error: error });
   }
 };
+
+export const getNotificationsByEmail = async (req: Request, res: Response) => {
+  console.log(`Server/Controllers/${req.params.userEmailReceiver}`);
+  try {
+    const notifications = await fetchNotificationByEmailAddress(req.params.userEmailReceiver);
+
+    res.status(201);
+    res.json({ notifications: notifications });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+
 
 export const getPostById = async (req: Request, res: Response) => {
   try {

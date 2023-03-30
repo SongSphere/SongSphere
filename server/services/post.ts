@@ -42,6 +42,24 @@ export const fetchPostsByUsername = async (username: string) => {
   }
 };
 
+export const fetchNotificationByEmailAddress = async (email: string) => {
+
+  console.log(`Server/Services/${email}`);
+
+  try {
+    const notifications = await Notifications.find({userEmailReceiver: email})
+
+    notifications.sort(function (a, b) {
+      return b.get("createdAt") - a.get("createdAt");
+    });
+    
+    console.log(notifications);
+    return notifications;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const fetchPostById = async (id: string) => {
   try {
     const post = await Post.findOne({ _id: id });
