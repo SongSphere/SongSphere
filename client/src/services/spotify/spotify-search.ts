@@ -137,7 +137,6 @@ export const randomSongSpotifyFromBackend = async (token: string) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         resolve(data.seed);
       })
       .catch((error) => {
