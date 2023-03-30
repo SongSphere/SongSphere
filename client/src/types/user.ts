@@ -10,6 +10,7 @@ export type TUser = {
   backgroundImgUrl: string;
   token: string;
   spotifyToken: string;
+  spotifyTokenEndDate: Date;
   spotifyRefreshToken: string;
   appleToken: string;
   following: string[];

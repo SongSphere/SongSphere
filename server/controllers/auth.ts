@@ -23,12 +23,7 @@ const auth_token = Buffer.from(
   "utf-8"
 ).toString("base64");
 
-export const RandomSongSpotify = async (req: Request, res: Response) => {
-
-  
-}
-
-
+export const RandomSongSpotify = async (req: Request, res: Response) => {};
 
 export const spotifyAuth = async (req: Request, res: Response) => {
   const email = req.session.user.email;
@@ -52,14 +47,16 @@ export const spotifyAuth = async (req: Request, res: Response) => {
         },
       }
     );
-      
+
     if (tokenRes.status != 200) {
       throw new Error("fetch token failed with invalid data");
     }
 
-      
     const spotifyToken = tokenRes.data.access_token;
     const spotifyRefreshToken = tokenRes.data.refresh_token;
+    const expirationTime: Date = new Date(
+      new Date().getTime() + tokenRes.data.expires_in * 1000
+    );
 
     if (remove) {
       try {
@@ -72,13 +69,73 @@ export const spotifyAuth = async (req: Request, res: Response) => {
       }
     } else {
       try {
-        await updateSpotifyTokens(email, spotifyToken, spotifyRefreshToken);
+        await updateSpotifyTokens(
+          email,
+          spotifyToken,
+          expirationTime,
+          spotifyRefreshToken
+        );
         res.status(201);
         res.json({ msg: "spotify tokens successfully updated" });
       } catch (error) {
         console.error(error);
         res.json({ error: error });
       }
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+    res.json({ msg: "token fetch failed" });
+  }
+};
+
+export const spotifyRefresh = async (req: Request, res: Response) => {
+  const email = req.session.user.email;
+  const refresh_token = req.body.refresh_token;
+
+  const data = qs.stringify({
+    grant_type: "refresh_token",
+    refresh_token: refresh_token,
+  });
+
+  let tokenRes;
+
+  try {
+    tokenRes = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      data,
+      {
+        headers: {
+          Authorization: `Basic ${auth_token}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    if (tokenRes.status != 200) {
+      throw new Error("fetch token failed with invalid data");
+    }
+
+    const spotifyToken = tokenRes.data.access_token;
+    const expirationTime: Date = new Date(
+      new Date().getTime() + tokenRes.data.expires_in * 1000
+    );
+
+    try {
+      await updateSpotifyTokens(
+        email,
+        spotifyToken,
+        expirationTime,
+        refresh_token
+      );
+      res.status(201);
+      res.json({
+        new_token: spotifyToken,
+        expiration_time: expirationTime,
+      });
+    } catch (error) {
+      console.log(error);
+      res.json({ error: error });
     }
   } catch (error) {
     console.error(error);
@@ -146,6 +203,7 @@ export const signInUp = async (
       token: token,
       spotifyToken: "",
       spotifyRefreshToken: "",
+      spotifyTokenEndDate: null,
       appleToken: "",
       followers: Array<String>(),
       following: Array<String>(),
