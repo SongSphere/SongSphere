@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import likePost from "../../services/user/like-post";
-import unLikePost from "../../services/user/unlike-post";
+import likePost from "../../services/post/like-post";
+import unLikePost from "../../services/post/unlike-post";
 
 import likeComment from "../../services/post/like-comment";
 import unLikeComment from "../../services/post/unlike-comment";
 
-import fetchPostLiked from "../../services/user/fetch-post-liked";
-import fetchCommentLiked from "../../services/user/fetch-comment-liked";
+import fetchPostLiked from "../../services/post/fetch-post-liked";
+import fetchCommentLiked from "../../services/post/fetch-comment-liked";
 
 import fetchPostLikes from "../../services/post/fetch-post-likes";
 import fetchCommentLikes from "../../services/post/fetch-comment-likes";
