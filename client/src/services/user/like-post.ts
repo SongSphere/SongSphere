@@ -1,6 +1,4 @@
-import { TPost } from "../../types/post";
-
-const LikePost = async (id: string) => {
+const likePost = async (id: string) => {
   try {
     await fetch(`${process.env.REACT_APP_API}/api/user/updateLikePost`, {
       method: "POST",
@@ -15,4 +13,4 @@ const LikePost = async (id: string) => {
   } catch (error) {}
 };
 
-export default LikePost;
+export default likePost;

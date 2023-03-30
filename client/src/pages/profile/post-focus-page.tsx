@@ -7,7 +7,6 @@ import { TMusicContent } from "../../types/music-content";
 import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
 import Session from "../../session";
-import sendComment from "../../services/post/send-comment";
 import CommentLoader from "../../components/post/comment-loader";
 import CommentCreater from "../../components/post/comment-creater";
 
@@ -37,11 +36,8 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
   }
 
   return (
-    <div className="grid w-full h-screen grid-cols-4 gap-2 md:grid-flow-col">
+    <div className="grid w-screen h-screen grid-cols-4 gap-2 md:grid-flow-col">
       <div className="relative col-span-2 col-start-2 mt-24 bg-white rounded-lg h-5/6 drop-shadow-md">
-        {/* <div className="flex justify-end p-3">
-          <img className="w-4 h-4" src="\img\icons\close.svg"></img>
-        </div> */}
         <div
           className="absolute cursor-pointer right-4 top-4"
           onClick={() => {
@@ -107,10 +103,8 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
         <hr className="w-full mt-16 h-0.5 bg-gray-300 border-0 "></hr>
         <div className="overflow-auto h-96">
           <div className="overflow-auto h-88">
-            {/* <div className="pb-5"> */}
             <CommentLoader comments={comments} user={user} />
           </div>
-          {/* </div> */}
         </div>
       </div>
     </div>
@@ -118,45 +112,3 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
 };
 
 export default PostFocusPage;
-
-{
-  /* <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (user && props.post._id && commentContent !== "") {
-                const comment: TComment = {
-                  username: user.username,
-                  userEmail: user.email,
-                  text: commentContent,
-                  subComments: [],
-                };
-                sendComment(comment, props.post._id, "");
-              }
-            }}
-          >
-            <label>
-              <div className="flex">
-                <img
-                  className="w-12 h-12 border rounded-full"
-                  src={user.profileImgUrl}
-                ></img>
-                <input
-                  className="w-full pl-4 mx-2 border rounded-full"
-                  type="text"
-                  placeholder="Type ur comment here!"
-                  name="name"
-                  value={commentContent}
-                  onChange={(e) => {
-                    setCommentContent(e.target.value);
-                  }}
-                />
-                <input
-                  type="image"
-                  className="w-12 h-12 border-black cursor-pointer"
-                  src="img/icons/upload.svg"
-                ></input>
-                {/* <button type="submit">Submit</button> */
-}
-//     </div>
-//   </label>
-// </form> */}

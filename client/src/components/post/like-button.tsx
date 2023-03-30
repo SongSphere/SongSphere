@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-// import { TPost } from "../../types/post";
-import LikePost from "../../services/user/like-post";
-import UnlikePost from "../../services/user/unlike-post";
+import likePost from "../../services/user/like-post";
+import unLikePost from "../../services/user/unlike-post";
 import fetchLikes from "../../services/user/fetch-likes";
-import { TComment } from "../../types/comment";
+import likeComment from "../../services/post/like-comment";
+import unLikeComment from "../../services/post/unlike-comment";
 
 const LikedButton = styled.button`
   width: 2rem;
@@ -34,6 +34,22 @@ interface LikeButtonProps {
   type: string; // this can be "Post" or "Comment"
 }
 
+const likeHandler = (id: string, type: string) => {
+  if (type == "Post") {
+    likePost(id);
+  } else if (type == "Comment") {
+    likeComment(id);
+  }
+};
+
+const unLikeHandler = (id: string, type: string) => {
+  if (type == "Post") {
+    unLikePost(id);
+  } else if (type == "Comment") {
+    unLikeComment(id);
+  }
+};
+
 const LikeButton = (props: LikeButtonProps) => {
   const [liked, setLiked] = useState<boolean | null>(null);
 
@@ -50,7 +66,7 @@ const LikeButton = (props: LikeButtonProps) => {
       <LikedButton
         onClick={() => {
           if (props.id) {
-            UnlikePost(props.id);
+            unLikeHandler(props.id, props.type);
           }
         }}
       ></LikedButton>
@@ -60,7 +76,7 @@ const LikeButton = (props: LikeButtonProps) => {
       <NotLikedButton
         onClick={() => {
           if (props.id) {
-            LikePost(props.id);
+            likeHandler(props.id, props.type);
           }
         }}
       ></NotLikedButton>

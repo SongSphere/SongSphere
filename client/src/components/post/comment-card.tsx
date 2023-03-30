@@ -1,10 +1,10 @@
 import { useState } from "react";
 import likeComment from "../../services/post/like-comment";
-import sendComment from "../../services/post/send-comment";
 import unLikeComment from "../../services/post/unlike-comment";
-import { TComment } from "../../types/comment";
 import { TPopulatedComment } from "../../types/populated-comment";
 import { TUser } from "../../types/user";
+import CommentCreater from "./comment-creater";
+import LikeButton from "./like-button";
 
 interface ICommentCardProps {
   comment: TPopulatedComment;
@@ -20,6 +20,8 @@ const CommentCard = (props: ICommentCardProps) => {
     );
   });
 
+  const [subCommentCreator, setSubCommentCreator] = useState(false);
+
   return (
     <div className="px-4 py-4 mb-2 w-fit">
       <div className="flex">
@@ -34,22 +36,30 @@ const CommentCard = (props: ICommentCardProps) => {
             <div className="font-bold">{props.comment.username}</div>
           </a>
           <div>{props.comment.text}</div>
+          <div className="flex">
+            <LikeButton id={props.comment._id} type="Comment" />
+            <div
+              className="w-6 h-6 mt-1 ml-2 cursor-pointer"
+              onClick={() => {
+                setSubCommentCreator(!subCommentCreator);
+              }}
+            >
+              <img src="/img/icons/comment.svg"></img>
+            </div>
+          </div>
+
+          {subCommentCreator ? (
+            <CommentCreater
+              user={props.user}
+              id={props.comment._id}
+              commentType="Comment"
+            />
+          ) : (
+            <div></div>
+          )}
+
           {nestedComments}
         </div>
-        <button
-          onClick={() => {
-            likeComment(props.comment._id);
-          }}
-        >
-          like
-        </button>
-        <button
-          onClick={() => {
-            unLikeComment(props.comment._id);
-          }}
-        >
-          unlike
-        </button>
       </div>
     </div>
   );
