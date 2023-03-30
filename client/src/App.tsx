@@ -26,9 +26,7 @@ const App = () => {
               if (userData) {
                 Session.setUser(userData);
                 setUser(Session.getUser());
-
                 Session.setMusicService(userData.defaultPlatform);
-
                 setSessionUpdated(true);
               }
             });
