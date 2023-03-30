@@ -9,6 +9,8 @@ interface ICommentCreatorProp {
   user: TUser;
   id: string;
   commentType: string; // this can be "Post" or "Comment"
+  commentChanged: number;
+  setCommentChanged: React.Dispatch<React.SetStateAction<number>>;
   creator: string;
 }
 
@@ -19,6 +21,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
     <form
       onSubmit={async (e) => {
         e.preventDefault();
+        let res = false;
         if (props.user && commentContent !== "") {
           const comment: TComment = {
             username: props.user.username,
@@ -29,34 +32,35 @@ const CommentCreater = (props: ICommentCreatorProp) => {
           };
 
           if (props.commentType === "Post") {
-            sendComment(comment, props.id, "");
-
+            res = await sendComment(comment, props.id, "");
             const notificationForAlerts: TNotification = {
               userEmailSender: props.user.email,
               userEmailReceiver: props.creator,
               notificationType: "Comment",
               text: `${props.user.username} commented on your post!`,
             };
-
-      
             await sendNotification(notificationForAlerts);
           } else if (props.commentType === "Comment") {
-            sendComment(comment, "", props.id);
-
+            res = await sendComment(comment, "", props.id);
             const notificationForAlerts: TNotification = {
               userEmailSender: props.user.email,
               userEmailReceiver: props.creator,
               notificationType: "Comment",
               text: `${props.user.username} commented on your comment!`,
             };
-      
+
             await sendNotification(notificationForAlerts);
           }
+        }
+
+        if (res) {
+          setCommentContent("");
+          props.setCommentChanged(props.commentChanged + 1);
         }
       }}
     >
       <label>
-        <div className="flex">
+        <div className="flex px-2">
           <img
             className="w-12 h-12 border rounded-full"
             src={props.user.profileImgUrl}
@@ -71,12 +75,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
               setCommentContent(e.target.value);
             }}
           />
-          <input
-            type="image"
-            className="w-12 h-12 border-black cursor-pointer"
-            src="img/icons/upload.svg"
-          ></input>
-          {/* <button type="submit">Submit</button> */}
         </div>
       </label>
     </form>

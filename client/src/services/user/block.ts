@@ -17,7 +17,7 @@ export const block = async (
       },
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -40,6 +40,6 @@ export const unblock = async (
       },
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };

@@ -134,7 +134,7 @@ export const spotifyRefresh = async (req: Request, res: Response) => {
         expiration_time: expirationTime,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.json({ error: error });
     }
   } catch (error) {
@@ -213,6 +213,7 @@ export const signInUp = async (
       isPrivate: false,
       showRandomSong: false,
       likes: Array<String>(),
+      commentLikes: Array<String>(),
       defaultPlatform: "",
       currentlyPlayingSong: null,
       showPlayingSong: false,

@@ -23,6 +23,7 @@ export interface IUser {
   onboarded: Boolean;
   isPrivate: Boolean;
   likes: Array<String>;
+  commentLikes: Array<String>;
   defaultPlatform: string;
   showRandomSong: Boolean;
   currentlyPlayingSong: TMusicContent;
@@ -116,6 +117,10 @@ const UserSchema = new Schema<IUser>(
       required: false,
     },
     likes: {
+      type: Array<String>(),
+      required: false,
+    },
+    commentLikes: {
       type: Array<String>(),
       required: false,
     },

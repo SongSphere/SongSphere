@@ -29,6 +29,7 @@ export const createUser = async (
     showRandomSong: false,
     currentlyPlayingSong: null,
     showPlayingSong: false,
+    commentLikes: [],
   });
 
   return user;
@@ -256,7 +257,7 @@ export const fetchFeed = async (email: string, num: number) => {
     }
     return posts.slice(num * 3, num * 3 + 3);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };

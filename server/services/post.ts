@@ -43,22 +43,20 @@ export const fetchPostsByUsername = async (username: string) => {
 };
 
 export const fetchNotificationByEmailAddress = async (email: string) => {
-
-  console.log(`Server/Services/${email}`);
-
   try {
-    const notifications = await Notifications.find({userEmailReceiver: email})
+    const notifications = await Notifications.find({
+      userEmailReceiver: email,
+    });
 
     notifications.sort(function (a, b) {
       return b.get("createdAt") - a.get("createdAt");
     });
-    
-    console.log(notifications);
+
     return notifications;
   } catch (error) {
     throw error;
   }
-}
+};
 
 export const fetchPostById = async (id: string) => {
   try {
@@ -115,13 +113,12 @@ export const comment = async (
   postId: string,
   replyingTo: string
 ): Promise<mongoose.Document<unknown, any, IComment>> => {
- 
   const comment = new Comment({
     username: newComment.username,
     userEmail: newComment.userEmail,
     text: newComment.text,
     subComments: newComment.subComments,
-    like: 0,
+    likes: 0,
   });
 
   if (replyingTo.length == 0) {
@@ -140,24 +137,21 @@ export const comment = async (
 };
 
 export const notificationForAlerts = async (
-  newNotification: TNotification,
+  newNotification: TNotification
 ): Promise<mongoose.Document<unknown, any, INotification>> => {
   const notification = new Notifications({
-      userEmailSender: newNotification.userEmailSender,
-      userEmailReceiver: newNotification.userEmailReceiver,
-      notificationType: newNotification.notificationType,
-      text: newNotification.text,
+    userEmailSender: newNotification.userEmailSender,
+    userEmailReceiver: newNotification.userEmailReceiver,
+    notificationType: newNotification.notificationType,
+    text: newNotification.text,
   });
-  
+
   return notification;
- 
 };
 
 export const saveNotification = async (
   notificationForAlerts: mongoose.Document<unknown, any, INotification>
 ) => {
-
-  console.log("save called in services/post.ts");
   try {
     await notificationForAlerts.save();
   } catch (error) {
@@ -175,22 +169,29 @@ export const saveComment = async (
   }
 };
 
-export const likeComment = async (commentId: string) => {
+export const likeComment = async (commentId: string, email: string) => {
   try {
-    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: 1 } });
+    await User.updateOne(
+      { email: email },
+      { $push: { commentLikes: commentId } }
+    );
+    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { likes: 1 } });
   } catch (error) {
     throw error;
   }
 };
 
-export const unlikeComment = async (commentId: string) => {
+export const unlikeComment = async (commentId: string, email: string) => {
   try {
-    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: -1 } });
+    await User.updateOne(
+      { email: email },
+      { $pull: { commentLikes: commentId } }
+    );
+    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { likes: -1 } });
   } catch (error) {
     throw error;
   }
 };
-
 
 export const fetchComments = async (postId: string) => {
   try {
@@ -236,7 +237,6 @@ export const likePost = async (postId: string, email: string) => {
   try {
     await User.updateOne({ email: email }, { $push: { likes: postId } });
     await Post.findOneAndUpdate({ _id: postId }, { $inc: { likes: 1 } });
-    console.log("here");
   } catch (error) {
     throw error;
   }
@@ -251,10 +251,40 @@ export const unlikePost = async (postId: string, email: string) => {
   }
 };
 
-export const isLiked = async (postId: string, email: string) => {
+export const fetchPostLikes = async (postId: string) => {
+  try {
+    const post = await Post.findOne({ _id: postId });
+    const likes = post.likes;
+    return likes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchCommentLikes = async (postId: string) => {
+  try {
+    const comment = await Comment.findOne({ _id: postId });
+    const likes = comment.likes;
+    return likes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postIsLiked = async (postId: string, email: string) => {
   try {
     const user = await User.findOne({ email: email });
     const isLiked = user.likes.includes(postId);
+    return isLiked;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const commentIsLiked = async (commentId: string, email: string) => {
+  try {
+    const user = await User.findOne({ email: email });
+    const isLiked = user.commentLikes.includes(commentId);
     return isLiked;
   } catch (error) {
     throw error;

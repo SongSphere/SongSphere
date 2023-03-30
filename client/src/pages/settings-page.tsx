@@ -222,7 +222,6 @@ const SettingsPage = (props: ISettingPageProps) => {
                       });
                   } else {
                     // call to set it private
-
                     setVisibilityPrivate(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());
@@ -252,7 +251,6 @@ const SettingsPage = (props: ISettingPageProps) => {
                   if (isRandomStatus) {
                     // True (that means it is Private account) // False (that means it is Public account)
                     // It is private then call to set it public
-
                     setFalseRandomSong(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());
@@ -263,7 +261,6 @@ const SettingsPage = (props: ISettingPageProps) => {
                       });
                   } else {
                     // call to set it private
-
                     setTrueRandomSong(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());

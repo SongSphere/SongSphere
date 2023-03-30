@@ -1,7 +1,5 @@
-import { TComment } from "../../types/comment";
-
 const likeComment = async (id: string) => {
-  await fetch(`${process.env.REACT_APP_API}/api/user/updateLikeComment`, {
+  await fetch(`${process.env.REACT_APP_API}/api/post/updateLikeComment`, {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({
@@ -11,7 +9,7 @@ const likeComment = async (id: string) => {
       "Content-Type": "application/json",
     },
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 };
 

@@ -42,7 +42,7 @@ const HomePage = (props: IHomePageProps) => {
   return (
     <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
       <Navbar />
-          {/* <div className="flex flex-row justify-between items-center"> 
+      {/* <div className="flex flex-row justify-between items-center"> 
          <Comment />
          <LikeCommentDummy />
        </div> */}

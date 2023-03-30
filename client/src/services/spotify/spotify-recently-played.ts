@@ -18,12 +18,10 @@ export const getSpotifyRecentlyPlayedSongs = async (
     },
   })
     .then(async (res) => {
-      console.log(res.status);
       // passes json to the next handler function
       return res.json();
     })
     .then((data) => {
-
       const items = data.items;
 
       items.forEach(function (item: any) {
