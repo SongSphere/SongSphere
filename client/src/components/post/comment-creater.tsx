@@ -22,6 +22,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             userEmail: props.user.email,
             text: commentContent,
             subComments: [],
+            like: 0,
           };
 
           if (props.commentType === "Post") {

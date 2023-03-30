@@ -12,8 +12,10 @@ import {
   randomSongSpotifyFromBackend,
 } from "../services/spotify/spotify-search";
 import RandomSongPost from "../components/feed/random-song-content";
-import { TPost } from "../types/post";
 import Comment from "../components/dummy-comment";
+import LikeCommentDummy from "../components/dummy-like-comment";
+import { TPost } from "../types/post";
+
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -42,7 +44,7 @@ const HomePage = (props: IHomePageProps) => {
   }
 
   return (
-    <div className="w-full h-full min-h-screen bg-orange-100 min-w-screen">
+    <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
       <Navbar />
 
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">

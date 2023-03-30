@@ -22,6 +22,8 @@ import {
   setPlatform,
   changeShowRandomSong,
   fetchLikedPosts,
+  updateLikeComment,
+  updateUnlikeComment,
 } from "../controllers/user";
 import { getPostsByUsername } from "../controllers/posting";
 
@@ -49,6 +51,11 @@ router.post("/api/user/queryUsernames", auth, findUsersByUserName);
 router.post("/api/user/queryUsername", auth, findUsersByUserName);
 router.post("/api/user/updateLikePost", auth, updateLikePost);
 router.post("/api/user/updateUnlikePost", auth, updateUnlikePost);
+
+
+router.post("/api/user/updateLikeComment", auth, updateLikeComment);
+router.post("/api/user/updateUnlikeComment", auth, updateUnlikeComment);
+
 
 import multer from "multer";
 const upload = multer({ dest: "images/" });

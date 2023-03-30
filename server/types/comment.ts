@@ -3,5 +3,7 @@ export type TComment = {
   username: string;
   userEmail: string;
   text: string;
+  like: number; 
   subComments?: string[];
+  
 };

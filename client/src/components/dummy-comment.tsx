@@ -13,15 +13,16 @@ const Comment = () => {
         onClick={async () => {
           try {
             const comment: TComment = {
-              username: "anthonyfmb",
-              userEmail: "anthonyfbaumann@gmail.com",
-              text: "testing subcomments wow",
+              username: "Kyu",
+              userEmail: "davidkimworks@gmail.com",
+              text: "nice",
               subComments: [],
+              like: 0,
             };
             await sendComment(
               comment,
-              "64244e18a49f3fa743896a21",
-              "64244f78a49f3fa743896a5c"
+              "64235c28d1e8139b6a9e53af",
+              "64244faba49f3fa743896a60" // If the subcomment disappers the dummy doesn't work
             );
           } catch (error) {
             console.error(error);
