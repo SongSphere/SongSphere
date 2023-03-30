@@ -18,11 +18,7 @@ import LikesPage from "../pages/likes-page";
 import RecentsPage from "../pages/recents-page";
 import PlaylistPage from "../pages/playlist-page";
 
-interface IRouterProps {
-  appleMusicInstance: MusicKit.MusicKitInstance;
-}
-
-const Router = (props: IRouterProps) => {
+const Router = () => {
   let element = useRoutes([
     {
       path: "/auth",
@@ -30,41 +26,35 @@ const Router = (props: IRouterProps) => {
     },
     {
       path: "/",
-      element: <HomePage appleMusicInstance={props.appleMusicInstance} />,
+      element: <HomePage />,
     },
     {
       path: "/notificationsPage",
-      element: (
-        <NotificationPage appleMusicInstance={props.appleMusicInstance} />
-      ),
+      element: <NotificationPage />,
     },
     {
       path: "/posts/:song?",
-      element: <PostPage musicInstance={props.appleMusicInstance} />,
+      element: <PostPage />,
     },
     {
       path: "/searchUsers",
-      element: (
-        <SearchUsersPage appleMusicInstance={props.appleMusicInstance} />
-      ),
+      element: <SearchUsersPage />,
     },
     {
       path: "/user/:username",
-      element: (
-        <OtherUserProfilePage appleMusicInstance={props.appleMusicInstance} />
-      ),
+      element: <OtherUserProfilePage />,
     },
     {
       path: "/profile",
-      element: <ProfilePage appleMusicInstance={props.appleMusicInstance} />,
+      element: <ProfilePage />,
     },
     {
       path: "/onboard",
-      element: <OnBoardPage appleMusicInstance={props.appleMusicInstance} />,
+      element: <OnBoardPage />,
     },
     {
       path: "/settings",
-      element: <SettingsPage appleMusicInstance={props.appleMusicInstance} />,
+      element: <SettingsPage />,
     },
     {
       path: "/edit/:id",
@@ -84,11 +74,11 @@ const Router = (props: IRouterProps) => {
     },
     {
       path: "/recents",
-      element: <RecentsPage appleMusicInstance={props.appleMusicInstance}/>,
+      element: <RecentsPage />,
     },
     {
       path: "/playlist",
-      element: <PlaylistPage appleMusicInstance={props.appleMusicInstance}/>,
+      element: <PlaylistPage />,
     },
   ]);
   return element;

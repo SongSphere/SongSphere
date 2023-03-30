@@ -14,11 +14,7 @@ import setOnboarded from "../services/user/set-onboarded";
 import Session from "../session";
 import { setDefaultPlatform } from "../services/user/default-platform";
 
-interface IOnBoardPageProps {
-  appleMusicInstance: MusicKit.MusicKitInstance;
-}
-
-const OnBoardPage = (props: IOnBoardPageProps) => {
+const OnBoardPage = () => {
   let navigate = useNavigate();
 
   const [username, setUsername] = useState<string>();
@@ -91,7 +87,7 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
       </div>
 
       <div className="w-full text-center sm:w-1/2 sm:px-6">
-        <AppleLink appleMusicInstance={props.appleMusicInstance} />
+        <AppleLink />
         <div>{`apple linked: ${appleLinked}`}</div>
 
         <SpotifyLinkButton />
@@ -113,7 +109,6 @@ const OnBoardPage = (props: IOnBoardPageProps) => {
           value={middleName}
         />
         <AdjustNamesLink
-          appleMusicInstance={props.appleMusicInstance}
           username={username ? username : ""}
           givenName={givenName ? givenName : ""}
           middleName={middleName ? middleName : ""}
