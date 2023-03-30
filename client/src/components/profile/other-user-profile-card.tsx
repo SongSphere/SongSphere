@@ -55,15 +55,18 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
           props.setFollowers(updatedUser.followers);
           setIsFollowing(true);
 
-          const notificationForAlerts: TNotification = {
-            userEmailSender: user.email,
-            userEmailReceiver: props.selectedUser.email,
-            notificationType: "Follow",
-            text: `${user.username} is now following you!`,
-          };
+          if (user.email !== props.selectedUser.email) {
+            const notificationForAlerts: TNotification = {
+              userEmailSender: user.email,
+              userEmailReceiver: props.selectedUser.email,
+              notificationType: "Follow",
+              text: `${user.username} is now following you!`,
+            };
 
-          await sendNotification(notificationForAlerts);
+            await sendNotification(notificationForAlerts);
+          }
         });
+        
       } else {
         unfollow(user.username, props.selectedUser.username).then(async () => {
           Session.setUser(await fetchUser());

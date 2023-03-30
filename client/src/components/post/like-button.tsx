@@ -53,7 +53,8 @@ const LikeButton = (props: LikeButtonProps) => {
     if (props.type == "Post") {
       await likePost(id);
       const user = Session.getUser();
-      if (user) {
+      // Should not send notification if user and postUserEmail are the same
+      if (user && user.email !== props.postUserEmail) {
         const notificationForAlerts: TNotification = {
           userEmailSender: user.email,
           userEmailReceiver: props.postUserEmail,
@@ -65,7 +66,8 @@ const LikeButton = (props: LikeButtonProps) => {
     } else if (props.type == "Comment") {
       await likeComment(id);
       const user = Session.getUser();
-      if (user) {
+      // should not send notification if user and postUserEmail are the same
+      if (user && user.email !== props.postUserEmail) {
         const notificationForAlerts: TNotification = {
           userEmailSender: user.email,
           userEmailReceiver: props.postUserEmail,

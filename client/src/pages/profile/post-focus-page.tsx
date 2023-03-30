@@ -110,7 +110,7 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
             commentType="Post"
             commentChanged={commentChanged}
             setCommentChanged={setCommentChanged}
-            creator={props.postOwner.email}
+            commentCreatorEmail={props.postOwner.email}
           />
         </div>
         <hr className="w-full mt-16 h-0.5 bg-gray-300 border-0 "></hr>

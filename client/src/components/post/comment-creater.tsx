@@ -11,7 +11,7 @@ interface ICommentCreatorProp {
   commentType: string; // this can be "Post" or "Comment"
   commentChanged: number;
   setCommentChanged: React.Dispatch<React.SetStateAction<number>>;
-  creator: string;
+  commentCreatorEmail: string;
 }
 
 const CommentCreater = (props: ICommentCreatorProp) => {
@@ -33,23 +33,29 @@ const CommentCreater = (props: ICommentCreatorProp) => {
 
           if (props.commentType === "Post") {
             res = await sendComment(comment, props.id, "");
-            const notificationForAlerts: TNotification = {
-              userEmailSender: props.user.email,
-              userEmailReceiver: props.creator,
-              notificationType: "Comment",
-              text: `${props.user.username} commented on your post!`,
-            };
-            await sendNotification(notificationForAlerts);
+
+            if (props.user.email !== props.commentCreatorEmail) {
+              const notificationForAlerts: TNotification = {
+                userEmailSender: props.user.email,
+                userEmailReceiver: props.commentCreatorEmail,
+                notificationType: "Comment",
+                text: `${props.user.username} commented on your post!`,
+              };
+              await sendNotification(notificationForAlerts);
+            }
           } else if (props.commentType === "Comment") {
             res = await sendComment(comment, "", props.id);
-            const notificationForAlerts: TNotification = {
-              userEmailSender: props.user.email,
-              userEmailReceiver: props.creator,
-              notificationType: "Comment",
-              text: `${props.user.username} commented on your comment!`,
-            };
 
-            await sendNotification(notificationForAlerts);
+            if (props.user.email !== props.commentCreatorEmail) {
+              const notificationForAlerts: TNotification = {
+                userEmailSender: props.user.email,
+                userEmailReceiver: props.commentCreatorEmail,
+                notificationType: "Comment",
+                text: `${props.user.username} commented on your comment!`,
+              };
+
+              await sendNotification(notificationForAlerts);
+            }
           }
         }
 

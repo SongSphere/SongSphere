@@ -12,11 +12,8 @@ import createApp from "../../app";
 // import db
 import { connect } from "../../db/connect";
 import {
-  checkUser,
-  createUser,
-  fetchUserById,
-  saveUser,
-  updateUserToken,
+  removeSpotifyTokens,
+  updateSpotifyTokens,
   updateUserVisibility,
 } from "../../services/user";
 
@@ -63,8 +60,73 @@ describe("Testing db services", () => {
     updateUserVisibility("willy@gmail.com", true);
 
     const updatedUser = await User.findOne({ email: "willy@gmail.com" });
-  //  console.log(updatedUser);
     expect(updatedUser.isPrivate).toBe(true);
+  });
+
+  test("Testing updateSpotifyTokens", async () => {
+    const user = new User({
+      name: "Dominic",
+      username: "domdan",
+      givenName: "Dominic",
+      familyName: "Danborn",
+      email: "dominicdanborn@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      onboarded: false,
+      isPrivate: false,
+    });
+
+    await user.save();
+
+    await updateSpotifyTokens(
+      "dominicdanborn@gmail.com",
+      "testtoken1234",
+      new Date("2023-03-30T19:56:25.923+00:00"),
+      "test_refresh_token_1234"
+    );
+
+    const updatedUser = await User.findOne({
+      email: "dominicdanborn@gmail.com",
+    });
+
+    expect(updatedUser.spotifyToken).toBe("testtoken1234");
+    expect(updatedUser.spotifyTokenEndDate.toISOString()).toBe(
+      "2023-03-30T19:56:25.923Z"
+    );
+    expect(updatedUser.spotifyRefreshToken).toBe("test_refresh_token_1234");
+  });
+
+  test("Testing removeSpotifyTokens", async () => {
+    const user = new User({
+      name: "Dominic",
+      username: "domdan",
+      givenName: "Dominic",
+      familyName: "Danborn",
+      email: "dominicdanborn@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      spotifyToken: "testtoken1234",
+      spotifyTokenEndDate: new Date("2023-03-30T19:56:25.923+00:00"),
+      spotifyRefreshToken: "test_refresh_token_1234",
+      onboarded: false,
+      isPrivate: false,
+    });
+
+    await user.save();
+
+    await removeSpotifyTokens("dominicdanborn@gmail.com");
+
+    const updatedUser = await User.findOne({
+      email: "dominicdanborn@gmail.com",
+    });
+
+    expect(updatedUser.spotifyToken).toBe(undefined);
+    expect(updatedUser.spotifyTokenEndDate).toBe(undefined);
+    expect(updatedUser.spotifyRefreshToken).toBe(undefined);
   });
 
   // test("Testing isPrivate to false", async () => {
