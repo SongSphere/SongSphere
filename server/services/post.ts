@@ -5,6 +5,10 @@ import { TPost } from "../types/post";
 import { TComment } from "../types/comment";
 import Comment, { IComment } from "../db/comment";
 import User from "../db/user";
+import { TNotification } from "../types/notification";
+import { INotification } from "../db/notification";
+
+import Notifications from "../db/notification";
 
 export const createPost = async (
   newPost: TPost
@@ -37,6 +41,24 @@ export const fetchPostsByUsername = async (username: string) => {
     throw error;
   }
 };
+
+export const fetchNotificationByEmailAddress = async (email: string) => {
+
+  console.log(`Server/Services/${email}`);
+
+  try {
+    const notifications = await Notifications.find({userEmailReceiver: email})
+
+    notifications.sort(function (a, b) {
+      return b.get("createdAt") - a.get("createdAt");
+    });
+    
+    console.log(notifications);
+    return notifications;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const fetchPostById = async (id: string) => {
   try {
@@ -93,7 +115,7 @@ export const comment = async (
   postId: string,
   replyingTo: string
 ): Promise<mongoose.Document<unknown, any, IComment>> => {
-  console.log(newComment);
+ 
   const comment = new Comment({
     username: newComment.username,
     userEmail: newComment.userEmail,
@@ -115,6 +137,32 @@ export const comment = async (
   }
 
   return comment;
+};
+
+export const notificationForAlerts = async (
+  newNotification: TNotification,
+): Promise<mongoose.Document<unknown, any, INotification>> => {
+  const notification = new Notifications({
+      userEmailSender: newNotification.userEmailSender,
+      userEmailReceiver: newNotification.userEmailReceiver,
+      notificationType: newNotification.notificationType,
+      text: newNotification.text,
+  });
+  
+  return notification;
+ 
+};
+
+export const saveNotification = async (
+  notificationForAlerts: mongoose.Document<unknown, any, INotification>
+) => {
+
+  console.log("save called in services/post.ts");
+  try {
+    await notificationForAlerts.save();
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const saveComment = async (

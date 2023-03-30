@@ -4,6 +4,10 @@ import styled from "styled-components";
 import LikePost from "../../services/user/like-post";
 import UnlikePost from "../../services/user/unlike-post";
 import fetchLikes from "../../services/user/fetch-likes";
+import Session from "../../session";
+import { TUser } from "../../types/user";
+import { TNotification } from "../../types/notification";
+import sendNotification from "../../services/notification/send-notification";
 import { TComment } from "../../types/comment";
 
 const LikedButton = styled.button`
@@ -32,10 +36,12 @@ const NotLikedButton = styled.button`
 interface LikeButtonProps {
   id: string | undefined;
   type: string; // this can be "Post" or "Comment"
+  postUserEmail: string;
 }
 
 const LikeButton = (props: LikeButtonProps) => {
   const [liked, setLiked] = useState<boolean | null>(null);
+  const [user, setUser] = useState<TUser | null>(null);
 
   useEffect(() => {
     if (props.id) {
@@ -43,28 +49,32 @@ const LikeButton = (props: LikeButtonProps) => {
         setLiked(liked);
       });
     }
+
+    const user = Session.getUser();
+    setUser(user);
   }, []);
 
-  if (liked) {
-    return (
-      <LikedButton
-        onClick={() => {
-          if (props.id) {
-            UnlikePost(props.id);
-          }
-        }}
-      ></LikedButton>
-    );
+  if (liked && props.id) {
+    return <LikedButton onClick={async () => UnlikePost(props.id)} />;
   } else {
-    return (
-      <NotLikedButton
-        onClick={() => {
-          if (props.id) {
-            LikePost(props.id);
-          }
-        }}
-      ></NotLikedButton>
-    );
+    return <NotLikedButton onClick={async () => {
+      LikePost(props.id);
+      const user = Session.getUser();
+      if (user) {
+        const notificationForAlerts: TNotification = {
+          userEmailSender: user.email,
+          userEmailReceiver: props.postUserEmail,
+          notificationType: "Like",
+          text: `${user.username} liked your post!`,
+        };
+  
+        await sendNotification(notificationForAlerts);
+      }
+      
+    }
+      
+      
+    } />;
   }
 };
 export default LikeButton;

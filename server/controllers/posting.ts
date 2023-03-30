@@ -13,6 +13,9 @@ import {
   comment,
   saveComment,
   fetchComments,
+  notificationForAlerts,
+  saveNotification,
+  fetchNotificationByEmailAddress,
   fetchSubComments,
   fetchCommentById,
 } from "../services/post";
@@ -42,6 +45,21 @@ export const getPostsByUsername = async (req: Request, res: Response) => {
     res.json({ error: error });
   }
 };
+
+export const getNotificationsByEmail = async (req: Request, res: Response) => {
+  console.log(`Server/Controllers/${req.params.userEmailReceiver}`);
+  try {
+    const notifications = await fetchNotificationByEmailAddress(req.params.userEmailReceiver);
+
+    res.status(201);
+    res.json({ notifications: notifications });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+
 
 export const getPostById = async (req: Request, res: Response) => {
   try {
@@ -84,6 +102,21 @@ export const deletePost = async (req: Request, res: Response) => {
   try {
     await removePost(req.body.post);
 
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const sendNotification = async (req: Request, res: Response) => {
+  try {
+    const newNotification = await notificationForAlerts(
+      req.body.notificationForAlerts
+    );
+    console.log(newNotification);
+    await saveNotification(newNotification);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {

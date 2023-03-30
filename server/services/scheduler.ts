@@ -29,7 +29,7 @@ export const initScheduledJobs = async () => {
   const scheduledJobFunction = CronJob.schedule("*/1 * * * *", () => {
     let url = "https://api.spotify.com/v1/search?type=track&offset=61&limit=1&q=%25s%25";
     let random_offset = Math.floor(Math.random() * 100);
-    console.log("I'm executed on a schedule!");
+    
 
     url = `${SPOTIFY_API}/search?type=track&offset=${encodeURIComponent(
       random_offset

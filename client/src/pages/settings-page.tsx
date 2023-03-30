@@ -214,14 +214,14 @@ const SettingsPage = (props: ISettingPageProps) => {
                       });
                   } else {
                     // call to set it private
-                    console.log("Set Private");
+              
 
                     setVisibilityPrivate(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());
                         setIsPrivateStatus(true);
-                        console.log("called");
-                        console.log(isPrivateStatus);
+                   
+                      
                       })
                       .catch((error) => {
                         console.error(error);
@@ -244,11 +244,11 @@ const SettingsPage = (props: ISettingPageProps) => {
                 id="flexSwitchCheckDefault"
                 checked={isRandomStatus}
                 onChange={async () => {
-                  console.log(`The Random status is ${isRandomStatus}`);
+                 
                   if (isRandomStatus) {
                     // True (that means it is Private account) // False (that means it is Public account)
                     // It is private then call to set it public
-                    console.log("Set False");
+                
                     setFalseRandomSong(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());
@@ -259,14 +259,13 @@ const SettingsPage = (props: ISettingPageProps) => {
                       });
                   } else {
                     // call to set it private
-                    console.log("Set True");
+            
 
                     setTrueRandomSong(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());
                         setIsRandomStatus(true);
-                        console.log("called");
-                        console.log(isRandomStatus);
+                     
                       })
                       .catch((error) => {
                         console.error(error);
@@ -331,49 +330,7 @@ const SettingsPage = (props: ISettingPageProps) => {
 
           <DefaultPlatform />
 
-          <button
-            className="bg-grey"
-            onClick={async () => {
-              // await randomSongSpotify(user.spotifyToken).then(async (song) => {
-              //   console.log("In settings")
-              //   setSong(song);
-              //   if (user) {
-              //     const newPost: TPost = {
-              //       username: user.username,
-              //       userEmail: user.email,
-              //       caption: "Random Song of the Day",
-              //       music: song[0]!,
-              //       comments: [],
-              //       likes: 0,
-              //       repost: false,
-              //     };
-              //     await sendPost(newPost)
-              //       .then((res) => {
-              //         if (!res) {
-              //           setPostSuccessFail(<PostFailure />);
-              //         } else {
-              //           setPostSuccessFail(<PostSucess />);
-              //         }
-              //       })
-              //       .catch((error) => {
-              //         <PostFailure />;
-              //       });
-              //   }
-              // }).catch((error) => {
-              //   console.log("Song not there")
-              //   console.log(error);
-              // });
-
-              await randomSongSpotifyFromBackend(user.spotifyToken).then(
-                async (song) => {
-                  console.log("In settings randomSongBackend");
-                  console.log(song);
-                }
-              );
-            }}
-          >
-            Random
-          </button>
+          
         </div>
         <BlockedList
           blockedList={user.blockedUsers}

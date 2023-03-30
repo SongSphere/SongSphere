@@ -24,6 +24,7 @@ const LikeCommentButton = (props: LikeCommentButtonProps) => {
             try {
               //   await unLikeComment(props.comment);
               setLiked(false);
+              
             } catch (error) {
               console.error(error);
             }
@@ -38,6 +39,7 @@ const LikeCommentButton = (props: LikeCommentButtonProps) => {
             try {
               //   await likeComment(props.comment);
               setLiked(true);
+
             } catch (error) {
               console.error(error);
             }

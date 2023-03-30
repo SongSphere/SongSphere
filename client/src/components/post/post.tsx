@@ -142,7 +142,7 @@ const Post = (props: IPostProps) => {
           <hr className="h-0.5 border-0 bg-gray-300"></hr>
           <div className="flex justify-end mt-2">
             <div className="w-full">{props.post.caption}</div>
-            <LikeButton id={props.post._id} type="Post" />
+            <LikeButton id={props.post._id} type="Post" postUserEmail={props.post.userEmail}/>
             <div
               className="w-6 h-6 mt-1 ml-2 cursor-pointer"
               onClick={() => {
