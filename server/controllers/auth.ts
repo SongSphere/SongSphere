@@ -217,6 +217,8 @@ export const signInUp = async (
         likes: Array<String>(),
         commentLikes: Array<String>(),
         defaultPlatform: "",
+        currentlyPlayingSong: null,
+        showPlayingSong: false,
       };
     }
 

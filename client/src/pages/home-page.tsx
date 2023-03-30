@@ -6,12 +6,12 @@ import Feed from "../components/feed/feed";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import { TMusicContent } from "../types/music-content";
-import Activity from "../components/feed/activity";
 import {
   randomSongSpotify,
   randomSongSpotifyFromBackend,
 } from "../services/spotify/spotify-search";
 import RandomSongPost from "../components/feed/random-song-content";
+import FriendActivityCard from "../components/feed/friend-activity";
 
 interface IHomePageProps {
   appleMusicInstance: MusicKit.MusicKitInstance;
@@ -42,13 +42,13 @@ const HomePage = (props: IHomePageProps) => {
   return (
     <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
       <Navbar />
-          {/* <div className="flex flex-row justify-between items-center"> 
+      {/* <div className="flex flex-row justify-between items-center"> 
          <Comment />
          <LikeCommentDummy />
        </div> */}
 
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
-        <Activity />
+        <FriendActivityCard />
         <div className="col-span-2">
           {user.showRandomSong ? (
             <RandomSongPost song={randomSong} user={user} />
