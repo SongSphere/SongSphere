@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import fetchCommentById from "../../services/post/fetch-comment-by-id";
-import fetchSubComments from "../../services/post/fetch-sub-comments";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
 import { TComment } from "../../types/comment";
 import { TPopulatedComment } from "../../types/populated-comment";
@@ -11,15 +10,6 @@ interface ICommentCardProps {
   comments: TComment[];
   user: TUser;
 }
-
-// interface TPopulatedComment {
-//   _id: string;
-//   username: string;
-//   profileImgUrl: string;
-//   userEmail: string;
-//   text: string;
-//   subComments: TPopulatedComment[];
-// }
 
 const CommentLoader = (props: ICommentCardProps) => {
   const [comments, setComments] = useState<TPopulatedComment[] | null>(null);
@@ -43,13 +33,12 @@ const CommentLoader = (props: ICommentCardProps) => {
       }
     }
 
-    const profileImgUrl = (await fetchUserByUsername(comment.username))
-      .profileImgUrl;
+    const user = await fetchUserByUsername(comment.username);
 
     populatedComment = {
       _id: comment?._id!,
       username: comment.username,
-      profileImgUrl: profileImgUrl,
+      profileImgUrl: user.profileImgUrl,
       userEmail: comment.userEmail,
       text: comment.text,
       subComments: subPopulatedComments,

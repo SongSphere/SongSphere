@@ -9,6 +9,7 @@ import { TUser } from "../../types/user";
 import Session from "../../session";
 import sendComment from "../../services/post/send-comment";
 import CommentLoader from "../../components/post/comment-loader";
+import CommentCreater from "../../components/post/comment-creater";
 
 interface IPostFocusPageProps {
   post: TPost;
@@ -91,8 +92,27 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
           </div>
         </div>
         <hr className="h-0.5 bg-gray-300 border-0 "></hr>
-        <div className="p-2">
-          <form
+        <div className="p-2 overflow-auto h-96">
+          <CommentCreater user={user} id={props.post._id!} commentType="Post" />
+          <CommentLoader comments={comments} user={user} />
+        </div>
+        <div
+          className="cursor-pointer"
+          onClick={() => {
+            props.setPostFocusPage(false);
+          }}
+        >
+          return
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PostFocusPage;
+
+{
+  /* <form
             onSubmit={(e) => {
               e.preventDefault();
               if (user && props.post._id && commentContent !== "") {
@@ -103,37 +123,33 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
                   subComments: [],
                 };
 
-                console.log("sending comment");
                 sendComment(comment, props.post._id, "");
               }
             }}
           >
             <label>
-              comment:
-              <input
-                type="text"
-                name="name"
-                value={commentContent}
-                onChange={(e) => {
-                  setCommentContent(e.target.value);
-                }}
-              />
-            </label>
-            <button type="submit">Submit</button>
-          </form>
-          <CommentLoader comments={comments} user={user} />
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              props.setPostFocusPage(false);
-            }}
-          >
-            return
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default PostFocusPage;
+              <div className="flex">
+                <img
+                  className="w-12 h-12 border rounded-full"
+                  src={user.profileImgUrl}
+                ></img>
+                <input
+                  className="w-full pl-4 mx-2 border rounded-full"
+                  type="text"
+                  placeholder="Type ur comment here!"
+                  name="name"
+                  value={commentContent}
+                  onChange={(e) => {
+                    setCommentContent(e.target.value);
+                  }}
+                />
+                <input
+                  type="image"
+                  className="w-12 h-12 border-black cursor-pointer"
+                  src="img/icons/upload.svg"
+                ></input>
+                {/* <button type="submit">Submit</button> */
+}
+//     </div>
+//   </label>
+// </form> */}
