@@ -23,7 +23,6 @@ export const getSpotifyRecentlyPlayedSongs = async (
       return res.json();
     })
     .then((data) => {
-      console.log(data);
 
       const items = data.items;
 

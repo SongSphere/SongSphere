@@ -21,7 +21,6 @@ const NotificationPage = (props: INotificationPageProps) => {
   useEffect(() => {
     if (user) {
       fetchNotificationsByEmailAddress(user.email).then((notifications) => {
-        console.log(notifications);
         setNotifications(notifications);
       });
     }

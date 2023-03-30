@@ -37,7 +37,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
               notificationType: "Comment",
               text: `${props.user.username} commented on your post!`,
             };
-            console.log(notificationForAlerts);
+
       
             await sendNotification(notificationForAlerts);
           } else if (props.commentType === "Comment") {
@@ -49,7 +49,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
               notificationType: "Comment",
               text: `${props.user.username} commented on your comment!`,
             };
-            console.log(notificationForAlerts);
       
             await sendNotification(notificationForAlerts);
           }

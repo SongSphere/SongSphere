@@ -16,7 +16,6 @@ const fetchNotificationsByEmailAddress = async (emailAddress: string) => {
         return res.json();
       })
       .then((data) => {
-        console.log(`Notifications ${data}`);
         resolve(data.notifications);
       })
       .catch((error) => {

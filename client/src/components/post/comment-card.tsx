@@ -48,8 +48,7 @@ const CommentCard = (props: ICommentCardProps) => {
               notificationType: "Like",
               text: `${props.user.username} liked your Comment!`,
             };
-            console.log(notificationForAlerts);
-
+           
             await sendNotification(notificationForAlerts);
           }}
         >

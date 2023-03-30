@@ -55,11 +55,9 @@ const LikeButton = (props: LikeButtonProps) => {
   }, []);
 
   if (liked && props.id) {
-    console.log(props.id);
     return <LikedButton onClick={async () => UnlikePost(props.id)} />;
   } else {
     return <NotLikedButton onClick={async () => {
-      console.log("clicked");
       LikePost(props.id);
       const user = Session.getUser();
       if (user) {
@@ -69,7 +67,6 @@ const LikeButton = (props: LikeButtonProps) => {
           notificationType: "Like",
           text: `${user.username} liked your post!`,
         };
-        console.log(notificationForAlerts);
   
         await sendNotification(notificationForAlerts);
       }
