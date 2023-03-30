@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import fetchActiveListeningUsers from "../../services/general/fetch-active-listening";
 import Session from "../../session";
+import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 
 const FriendActivityCard = () => {
   const [activeUsers, setActiveUsers] = useState<
-    { user: TUser; song: string }[]
+    { user: TUser; song: TMusicContent }[]
   >([]);
 
   const [user, setUser] = useState<TUser | null>(null);
@@ -17,7 +18,12 @@ const FriendActivityCard = () => {
       if (user) {
         try {
           const listeningUsers = await fetchActiveListeningUsers();
-          setActiveUsers(listeningUsers);
+          if (listeningUsers == undefined || listeningUsers.length == 0) {
+            setActiveUsers([]);
+          } else {
+            setActiveUsers(listeningUsers);
+          }
+          console.log(activeUsers);
         } catch (error) {
           console.log(error);
         }
@@ -60,7 +66,7 @@ const FriendActivityCard = () => {
                               {u.username}
                             </p>
                             <p className="pl-1 leading-none text-gray-900">
-                              {s}
+                              {s.name}
                             </p>
                           </div>
                         </div>

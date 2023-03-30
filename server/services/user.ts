@@ -4,6 +4,7 @@ import User, { IUser } from "../db/user";
 import Post, { IPost } from "../db/post";
 
 import mongoose from "mongoose";
+import { TMusicContent } from "../types/music-content";
 
 export const createUser = async (
   userData: TokenPayload,
@@ -25,6 +26,9 @@ export const createUser = async (
     onboarded: false,
     isPrivate: false,
     likes: [],
+    showRandomSong: false,
+    currentlyPlayingSong: null,
+    showPlayingSong: false,
   });
 
   return user;
@@ -328,6 +332,47 @@ export const setDefaultPlatform = async (
     await User.findOneAndUpdate(
       { email: email },
       { defaultPlatform: defaultPlatform }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getFriendActivity = async (email: string) => {
+  interface IActivity {
+    user: IUser;
+    song: TMusicContent;
+  }
+
+  try {
+    let activity: IActivity[] = [];
+    const user = await User.findOne({ email: email });
+    let following = user.following;
+    for (let i = 0; i < following.length; i++) {
+      let user = await User.findOne({ username: following[i] });
+      if (user.currentlyPlayingSong != null && user.showPlayingSong == true) {
+        let song: TMusicContent = user.currentlyPlayingSong;
+        const newActivity = {
+          user: user,
+          song: song,
+        };
+        activity.push(newActivity);
+      }
+    }
+    return activity;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setPlayingSong = async (
+  email: string,
+  song: TMusicContent | null
+) => {
+  try {
+    await User.findOneAndUpdate(
+      { email: email },
+      { currentlyPlayingSong: song }
     );
   } catch (error) {
     throw error;

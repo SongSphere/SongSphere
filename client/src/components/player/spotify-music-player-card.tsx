@@ -3,6 +3,7 @@ import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 import selectService from "../../services/user/select-service";
 import Session from "../../session";
+import setActivity from "../../services/general/set-activity";
 
 interface ISpotifySong {
   name: string;
@@ -36,8 +37,14 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
     if (player) {
       if (!isPlaying) {
         player.resume();
+        if (props.selectedSong) {
+          setActivity(props.selectedSong);
+        }
       } else {
         player.pause();
+        if (props.selectedSong) {
+          setActivity(null);
+        }
       }
     } else {
       console.error("music not instantiated");

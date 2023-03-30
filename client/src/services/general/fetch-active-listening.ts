@@ -1,9 +1,10 @@
+import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 
 const fetchActiveListeningUsers = async () => {
-  return new Promise<{ user: TUser; song: string }[]>(
+  return new Promise<{ user: TUser; song: TMusicContent }[]>(
     async (resolve, reject) => {
-      await fetch(`${process.env.REACT_APP_API}/api/activelistening`, {
+      await fetch(`${process.env.REACT_APP_API}/user/activeListening`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -14,7 +15,8 @@ const fetchActiveListeningUsers = async () => {
           return res.json();
         })
         .then(async (data) => {
-          resolve(data.posts);
+          console.log(data.activity);
+          resolve(data.activity);
         })
         .catch((error) => {
           reject(error);

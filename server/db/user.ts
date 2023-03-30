@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { TMusicContent } from "../types/music-content";
 
 export interface IUser {
   name: string;
@@ -23,6 +24,8 @@ export interface IUser {
   likes: Array<String>;
   defaultPlatform: string;
   showRandomSong: Boolean;
+  currentlyPlayingSong: TMusicContent;
+  showPlayingSong: Boolean;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -114,6 +117,22 @@ const UserSchema = new Schema<IUser>(
     defaultPlatform: {
       type: String,
       required: false,
+    },
+    currentlyPlayingSong: {
+      type: {
+        name: String,
+        artist: String,
+        albumName: String,
+        id: String,
+        service: String,
+        category: String,
+        cover: String,
+      },
+      required: false,
+    },
+    showPlayingSong: {
+      type: Boolean,
+      required: true,
     },
   },
   {

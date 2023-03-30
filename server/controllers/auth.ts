@@ -23,12 +23,7 @@ const auth_token = Buffer.from(
   "utf-8"
 ).toString("base64");
 
-export const RandomSongSpotify = async (req: Request, res: Response) => {
-
-  
-}
-
-
+export const RandomSongSpotify = async (req: Request, res: Response) => {};
 
 export const spotifyAuth = async (req: Request, res: Response) => {
   const email = req.session.user.email;
@@ -52,12 +47,11 @@ export const spotifyAuth = async (req: Request, res: Response) => {
         },
       }
     );
-      
+
     if (tokenRes.status != 200) {
       throw new Error("fetch token failed with invalid data");
     }
 
-      
     const spotifyToken = tokenRes.data.access_token;
     const spotifyRefreshToken = tokenRes.data.refresh_token;
 
@@ -156,6 +150,8 @@ export const signInUp = async (
       showRandomSong: false,
       likes: Array<String>(),
       defaultPlatform: "",
+      currentlyPlayingSong: null,
+      showPlayingSong: false,
     };
 
     res.status(201);

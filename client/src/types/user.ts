@@ -1,3 +1,5 @@
+import { TMusicContent } from "./music-content";
+
 export type TUser = {
   name: string;
   username: string;
@@ -21,6 +23,8 @@ export type TUser = {
   likes: string[];
   defaultPlatform: string;
   showRandomSong: Boolean;
+  currentlyPlayingSong: TMusicContent;
+  showPlayingSong: Boolean;
 };
 
 export type TUserWrapper = {
