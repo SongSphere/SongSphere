@@ -17,6 +17,9 @@ import {
   getDefaultPlatform,
   setDefaultPlatform,
   updateShowRandomSong,
+  getFriendActivity,
+  setPlayingSong,
+  setShowSong,
 } from "../services/user";
 
 import fs from "fs";
@@ -94,6 +97,12 @@ export const changeNames = async (
       req.body.middleName,
       req.body.familyName
     );
+
+    req.session.user.username = req.body.username;
+    req.session.user.givenName = req.body.givenName;
+    req.session.user.middleName = req.body.middleName;
+    req.session.user.familyName = req.body.familyName;
+
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
@@ -296,6 +305,38 @@ export const getPlatform = async (req: Request, res: Response) => {
 export const setPlatform = async (req: Request, res: Response) => {
   try {
     await setDefaultPlatform(req.session.user.email, req.body.platform);
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getActivity = async (req: Request, res: Response) => {
+  try {
+    const activity = await getFriendActivity(req.session.user.email);
+    res.status(201);
+    res.json({ activity: activity });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const setActivity = async (req: Request, res: Response) => {
+  try {
+    await setPlayingSong(req.session.user.email, req.body.song);
+    res.status(201);
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const setDisplaySong = async (req: Request, res: Response) => {
+  try {
+    await setShowSong(req.session.user.email, req.body.set);
+    res.status(200);
+    res.json({ msg: "Success" });
   } catch (error) {
     res.status(500);
     res.json({ error: error });

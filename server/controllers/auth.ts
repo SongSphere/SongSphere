@@ -14,6 +14,7 @@ import {
   removeSpotifyTokens,
   updateAppleToken,
   removeAppleToken,
+  fetchUserByEmail,
 } from "../services/user";
 
 const client_id = process.env.SPOTIFY_CLIENT_ID;
@@ -183,39 +184,43 @@ export const signInUp = async (
     if (exist) {
       // exist == document with _id
       await updateUserToken(userData.email, token);
+      const user = await fetchUserByEmail(userData.email);
+      req.session.user = user;
     } else {
       // exist == null
       const user = await createUser(userData, token);
       existingAccount = false;
       await saveUser(user);
-    }
 
-    req.session.user = {
-      name: userData.name,
-      username: "",
-      givenName: userData.given_name,
-      middleName: "",
-      familyName: userData.family_name,
-      email: userData.email,
-      emailVerified: userData.email_verified,
-      profileImgUrl: userData.picture,
-      backgroundImgUrl: userData.picture,
-      token: token,
-      spotifyToken: "",
-      spotifyRefreshToken: "",
-      spotifyTokenEndDate: null,
-      appleToken: "",
-      followers: Array<String>(),
-      following: Array<String>(),
-      blockedUsers: Array<String>(),
-      blockedBy: Array<String>(),
-      onboarded: false,
-      isPrivate: false,
-      showRandomSong: false,
-      likes: Array<String>(),
-      commentLikes: Array<String>(),
-      defaultPlatform: "",
-    };
+      req.session.user = {
+        name: userData.name,
+        username: "",
+        givenName: userData.given_name,
+        middleName: "",
+        familyName: userData.family_name,
+        email: userData.email,
+        emailVerified: userData.email_verified,
+        profileImgUrl: userData.picture,
+        backgroundImgUrl: userData.picture,
+        token: token,
+        spotifyToken: "",
+        spotifyRefreshToken: "",
+        spotifyTokenEndDate: null,
+        appleToken: "",
+        followers: Array<String>(),
+        following: Array<String>(),
+        blockedUsers: Array<String>(),
+        blockedBy: Array<String>(),
+        onboarded: false,
+        isPrivate: false,
+        showRandomSong: false,
+        likes: Array<String>(),
+        commentLikes: Array<String>(),
+        defaultPlatform: "",
+        currentlyPlayingSong: null,
+        showPlayingSong: false,
+      };
+    }
 
     res.status(201);
     res.json({ user: req.session.user, existingAccount: existingAccount });
