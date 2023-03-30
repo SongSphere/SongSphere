@@ -9,7 +9,7 @@ const likeComment = async (id: string) => {
       "Content-Type": "application/json",
     },
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 };
 

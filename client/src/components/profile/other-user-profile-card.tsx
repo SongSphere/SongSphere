@@ -75,8 +75,6 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
         setIsFollowing(true);
       }
     }
-
-    console.log("followers: " + props.selectedUser.followers.toString());
   }, [props.selectedUser]);
 
   if (!props.selectedUser) {

@@ -1,6 +1,6 @@
-const fetchLikes = async (id: string) => {
-  return new Promise<boolean>(async (resolve, reject) => {
-    await fetch(`${process.env.REACT_APP_API}/api/post/fetchIsLiked/${id}`, {
+const fetchPostLikes = async (id: string) => {
+  return new Promise<number>(async (resolve, reject) => {
+    await fetch(`${process.env.REACT_APP_API}/api/post/fetchPostLikes/${id}`, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -11,7 +11,7 @@ const fetchLikes = async (id: string) => {
         return res.json();
       })
       .then((data) => {
-        const likes = data.likes as boolean;
+        const likes = data.likes as number;
         resolve(likes);
       })
       .catch((error) => {
@@ -19,4 +19,4 @@ const fetchLikes = async (id: string) => {
       });
   });
 };
-export default fetchLikes;
+export default fetchPostLikes;

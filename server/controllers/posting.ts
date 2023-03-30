@@ -18,20 +18,21 @@ import {
   unlikePost,
   likePost,
   unlikeComment,
-  isLiked,
+  postIsLiked,
+  commentIsLiked,
   fetchisLiked,
   likeComment,
+  fetchPostLikes,
+  fetchCommentLikes,
 } from "../services/post";
 
 export const getSeedForRandomSong = async (req: Request, res: Response) => {
   try {
     const seed = Seed.getSeed();
-    console.log(seed);
     res.status(201);
     res.json({ seed: seed });
     return seed;
   } catch (error) {
-    console.log("error");
     res.status(500);
     res.json({ error: error });
   }
@@ -110,7 +111,7 @@ export const sendComment = async (req: Request, res: Response) => {
     res.json({ msg: "success" });
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -121,7 +122,7 @@ export const getComment = async (req: Request, res: Response) => {
     res.json({ comment: c });
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -132,7 +133,7 @@ export const getComments = async (req: Request, res: Response) => {
     res.json({ comments: c });
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -143,14 +144,14 @@ export const getSubComments = async (req: Request, res: Response) => {
     res.json({ comments: c });
   } catch (error) {
     res.status(500);
-    console.log(error);
+    console.error(error);
   }
 };
 
-export const updateLikePost = (req: Request, res: Response) => {
+export const updateLikePost = async (req: Request, res: Response) => {
   try {
     const email = req.session.user.email;
-    likePost(req.body.postId, email);
+    await likePost(req.body.postId, email);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
@@ -159,10 +160,10 @@ export const updateLikePost = (req: Request, res: Response) => {
   }
 };
 
-export const updateUnlikePost = (req: Request, res: Response) => {
+export const updateUnlikePost = async (req: Request, res: Response) => {
   try {
     const email = req.session.user.email;
-    unlikePost(req.body.postId, email);
+    await unlikePost(req.body.postId, email);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
@@ -171,9 +172,9 @@ export const updateUnlikePost = (req: Request, res: Response) => {
   }
 };
 
-export const updateLikeComment = (req: Request, res: Response) => {
+export const updateLikeComment = async (req: Request, res: Response) => {
   try {
-    likeComment(req.body.id);
+    await likeComment(req.body.id, req.session.user.email);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
@@ -182,9 +183,9 @@ export const updateLikeComment = (req: Request, res: Response) => {
   }
 };
 
-export const updateUnlikeComment = (req: Request, res: Response) => {
+export const updateUnlikeComment = async (req: Request, res: Response) => {
   try {
-    unlikeComment(req.body.id);
+    await unlikeComment(req.body.id, req.session.user.email);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
@@ -193,10 +194,44 @@ export const updateUnlikeComment = (req: Request, res: Response) => {
   }
 };
 
-export const fetchIsLiked = async (req: Request, res: Response) => {
+export const getPostLiked = async (req: Request, res: Response) => {
   try {
     const email = req.session.user.email;
-    const likes = await isLiked(req.params.id, email);
+    const liked = await postIsLiked(req.params.id, email);
+    res.status(201);
+    res.json({ liked: liked });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getCommentLiked = async (req: Request, res: Response) => {
+  try {
+    const email = req.session.user.email;
+    const liked = await commentIsLiked(req.params.id, email);
+    res.status(201);
+    res.json({ liked: liked });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getPostLikes = async (req: Request, res: Response) => {
+  try {
+    const likes = await fetchPostLikes(req.params.id);
+    res.status(201);
+    res.json({ likes: likes });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getCommentLikes = async (req: Request, res: Response) => {
+  try {
+    const likes = await fetchCommentLikes(req.params.id);
     res.status(201);
     res.json({ likes: likes });
   } catch (error) {

@@ -13,7 +13,6 @@ export const getDefaultPlatform = async (): Promise<string> => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         return data;
       })
       .catch((error) => {

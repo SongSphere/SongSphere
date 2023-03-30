@@ -214,14 +214,11 @@ const SettingsPage = (props: ISettingPageProps) => {
                       });
                   } else {
                     // call to set it private
-                    console.log("Set Private");
 
                     setVisibilityPrivate(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());
                         setIsPrivateStatus(true);
-                        console.log("called");
-                        console.log(isPrivateStatus);
                       })
                       .catch((error) => {
                         console.error(error);
@@ -244,11 +241,9 @@ const SettingsPage = (props: ISettingPageProps) => {
                 id="flexSwitchCheckDefault"
                 checked={isRandomStatus}
                 onChange={async () => {
-                  console.log(`The Random status is ${isRandomStatus}`);
                   if (isRandomStatus) {
                     // True (that means it is Private account) // False (that means it is Public account)
                     // It is private then call to set it public
-                    console.log("Set False");
                     setFalseRandomSong(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());
@@ -259,14 +254,11 @@ const SettingsPage = (props: ISettingPageProps) => {
                       });
                   } else {
                     // call to set it private
-                    console.log("Set True");
 
                     setTrueRandomSong(user.email)
                       .then(async () => {
                         Session.setUser(await fetchUser());
                         setIsRandomStatus(true);
-                        console.log("called");
-                        console.log(isRandomStatus);
                       })
                       .catch((error) => {
                         console.error(error);

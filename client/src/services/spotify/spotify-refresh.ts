@@ -9,8 +9,6 @@ export const spotifyRefresh = async () => {
   });
 
   if (user && userTokenEndDate < new Date(edtCurrentTime)) {
-    console.log("need refresh");
-
     await fetch(`${process.env.REACT_APP_API}/api/auth/spotifyrefresh`, {
       method: "POST",
       credentials: "include",

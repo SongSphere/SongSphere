@@ -85,7 +85,6 @@ const RepostPage = () => {
             className="p-2 my-5 rounded-md text-lgrey bg-navy hover:bg-lblue"
             onClick={async () => {
               if (user) {
-                console.log(user.username);
                 const newPost: TPost = {
                   username: user.username,
                   userEmail: user.email,

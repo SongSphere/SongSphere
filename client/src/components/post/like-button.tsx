@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import likePost from "../../services/user/like-post";
 import unLikePost from "../../services/user/unlike-post";
-import fetchLikes from "../../services/user/fetch-likes";
+
 import likeComment from "../../services/post/like-comment";
 import unLikeComment from "../../services/post/unlike-comment";
+
+import fetchPostLiked from "../../services/user/fetch-post-liked";
+import fetchCommentLiked from "../../services/user/fetch-comment-liked";
+
+import fetchPostLikes from "../../services/post/fetch-post-likes";
+import fetchCommentLikes from "../../services/post/fetch-comment-likes";
 
 const LikedButton = styled.button`
   width: 2rem;
@@ -34,60 +41,78 @@ interface LikeButtonProps {
   type: string; // this can be "Post" or "Comment"
 }
 
-const likeHandler = async (id: string, type: string) => {
-  if (type == "Post") {
-    await likePost(id);
-  } else if (type == "Comment") {
-    await likeComment(id);
-  }
-};
-
-const unLikeHandler = async (id: string, type: string) => {
-  if (type == "Post") {
-    await unLikePost(id);
-  } else if (type == "Comment") {
-    await unLikeComment(id);
-  }
-};
-
 const LikeButton = (props: LikeButtonProps) => {
   const [liked, setLiked] = useState<boolean | null>(null);
+  const [likes, setLikes] = useState(0);
+
+  const likeHandler = async (id: string) => {
+    if (props.type == "Post") {
+      await likePost(id);
+    } else if (props.type == "Comment") {
+      await likeComment(id);
+    }
+    await updateLiking(id);
+  };
+
+  const unLikeHandler = async (id: string) => {
+    if (props.type == "Post") {
+      await unLikePost(id);
+    } else if (props.type == "Comment") {
+      await unLikeComment(id);
+    }
+    await updateLiking(id);
+  };
+
+  const updateLiking = (id: string) => {
+    if (props.type === "Post") {
+      fetchPostLiked(id).then((liked) => {
+        setLiked(liked);
+
+        fetchPostLikes(id).then((likes) => {
+          setLikes(likes);
+        });
+      });
+    } else if (props.type === "Comment") {
+      fetchCommentLiked(id).then((liked) => {
+        setLiked(liked);
+        fetchCommentLikes(id).then((likes) => {
+          setLikes(likes);
+        });
+      });
+    }
+  };
 
   useEffect(() => {
     if (props.id) {
-      fetchLikes(props.id).then((liked) => {
-        setLiked(liked);
-      });
+      updateLiking(props.id);
     }
   }, []);
 
   if (liked) {
     return (
-      <LikedButton
-        onClick={async () => {
-          if (props.id) {
-            await unLikeHandler(props.id, props.type);
-            fetchLikes(props.id).then((liked) => {
-              console.log("fetched like", liked);
-              setLiked(liked);
-            });
-          }
-        }}
-      ></LikedButton>
+      <div className="flex">
+        {likes}
+        <LikedButton
+          onClick={async () => {
+            if (props.id) {
+              await unLikeHandler(props.id);
+            }
+          }}
+        ></LikedButton>
+      </div>
     );
   } else {
     return (
-      <NotLikedButton
-        onClick={() => {
-          if (props.id) {
-            likeHandler(props.id, props.type);
-            fetchLikes(props.id).then((liked) => {
-              console.log("fetched like", liked);
-              setLiked(liked);
-            });
-          }
-        }}
-      ></NotLikedButton>
+      <div className="flex">
+        {likes}
+        <NotLikedButton
+          onClick={() => {
+            if (props.id) {
+              likeHandler(props.id);
+            }
+          }}
+        ></NotLikedButton>
+      </div>
     );
   }
 };

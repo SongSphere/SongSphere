@@ -14,10 +14,13 @@ import {
   getComment,
   updateLikePost,
   updateUnlikePost,
-  fetchIsLiked,
+  getPostLiked,
+  getCommentLiked,
   fetchLikedPosts,
   updateUnlikeComment,
   updateLikeComment,
+  getPostLikes,
+  getCommentLikes,
 } from "../controllers/posting";
 
 // import middleware
@@ -34,11 +37,17 @@ router.post("/api/post/comment", sendComment);
 router.get("/api/post/getComments/:id", getComments);
 router.get("/api/post/getComment/:id", getComment);
 router.get("/api/post/getSubComments/:id", getSubComments);
+router.get("/api/post/fetchLikedPosts/:username", auth, fetchLikedPosts);
 
 router.post("/api/post/updateLikePost", auth, updateLikePost);
 router.post("/api/post/updateUnlikePost", auth, updateUnlikePost);
-router.get("/api/post/fetchIsLiked/:id", auth, fetchIsLiked);
-router.get("/api/post/fetchLikedPosts/:username", auth, fetchLikedPosts);
+
+router.get("/api/post/fetchPostLikes/:id", auth, getPostLikes);
+router.get("/api/post/fetchCommentLikes/:id", auth, getCommentLikes);
+
+router.get("/api/post/fetchPostLiked/:id", auth, getPostLiked);
+router.get("/api/post/fetchCommentLiked/:id", auth, getCommentLiked);
+
 router.post("/api/post/updateLikeComment", auth, updateLikeComment);
 router.post("/api/post/updateUnlikeComment", auth, updateUnlikeComment);
 
