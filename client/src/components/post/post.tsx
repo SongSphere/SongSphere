@@ -105,7 +105,12 @@ const Post = (props: IPostProps) => {
         </div>
       </Popup>
 
-      <Popup open={postFocusPage}>
+      <Popup
+        open={postFocusPage}
+        onClose={() => {
+          setPostFocusPage(false);
+        }}
+      >
         <PostFocusPage
           post={props.post}
           setSong={props.setSong}

@@ -34,7 +34,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
       }}
     >
       <label>
-        <div className="flex">
+        <div className="flex px-2">
           <img
             className="w-12 h-12 border rounded-full"
             src={props.user.profileImgUrl}

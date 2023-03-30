@@ -19,7 +19,6 @@ interface IPostFocusPageProps {
 }
 
 const PostFocusPage = (props: IPostFocusPageProps) => {
-  let [commentContent, setCommentContent] = useState("");
   let [comments, setComments] = useState<TComment[] | null>(null);
   let [user, setUser] = useState<TUser | null>(null);
   let navigate = useNavigate();
@@ -38,9 +37,20 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
   }
 
   return (
-    <div className="grid w-screen h-screen grid-cols-4 gap-2 md:grid-flow-col">
-      <div className="col-span-2 col-start-2 mt-24 bg-white rounded-lg h-5/6 drop-shadow-md ">
-        <div className="flex w-full p-6 bg-white">
+    <div className="grid w-full h-screen grid-cols-4 gap-2 md:grid-flow-col">
+      <div className="relative col-span-2 col-start-2 mt-24 bg-white rounded-lg h-5/6 drop-shadow-md">
+        {/* <div className="flex justify-end p-3">
+          <img className="w-4 h-4" src="\img\icons\close.svg"></img>
+        </div> */}
+        <div
+          className="absolute cursor-pointer right-4 top-4"
+          onClick={() => {
+            props.setPostFocusPage(false);
+          }}
+        >
+          <img className="w-4 h-4" src="\img\icons\close.svg"></img>
+        </div>
+        <div className="flex w-full p-6">
           <div
             className="w-32 h-32 cursor-pointer"
             onClick={() => {
@@ -49,10 +59,9 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
           >
             <img className="rounded-sm" src={props.post.music.cover}></img>
           </div>
-
           <div className="w-full">
             <div className="w-full p-2 ml-2">
-              <div>
+              <div className="relative">
                 {props.postOwner ? (
                   <a href={`/user/${props.postOwner.username}`}>
                     <img
@@ -92,17 +101,16 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
           </div>
         </div>
         <hr className="h-0.5 bg-gray-300 border-0 "></hr>
-        <div className="p-2 overflow-auto h-96">
+        <div className="fixed w-full mt-2">
           <CommentCreater user={user} id={props.post._id!} commentType="Post" />
-          <CommentLoader comments={comments} user={user} />
         </div>
-        <div
-          className="cursor-pointer"
-          onClick={() => {
-            props.setPostFocusPage(false);
-          }}
-        >
-          return
+        <hr className="w-full mt-16 h-0.5 bg-gray-300 border-0 "></hr>
+        <div className="overflow-auto h-96">
+          <div className="overflow-auto h-88">
+            {/* <div className="pb-5"> */}
+            <CommentLoader comments={comments} user={user} />
+          </div>
+          {/* </div> */}
         </div>
       </div>
     </div>
@@ -122,7 +130,6 @@ export default PostFocusPage;
                   text: commentContent,
                   subComments: [],
                 };
-
                 sendComment(comment, props.post._id, "");
               }
             }}
