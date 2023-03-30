@@ -1,6 +1,6 @@
 const SPOTIFY_API = "https://api.spotify.com/v1";
 
-export const addToLibrary = async (id: string, token: string) => {
+export const addToSpotifyLibrary = async (id: string, token: string) => {
   return new Promise<boolean>(async (resolve, reject) => {
     await fetch(`${process.env.REACT_APP_API}/api/spotify/addtolib`, {
       method: "POST",

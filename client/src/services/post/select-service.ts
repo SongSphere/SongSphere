@@ -11,7 +11,7 @@ const selectService = async (
 ) => {
   let bestFitSongId = "-1";
 
-  if (service === song.service || service === "both") {
+  if (user.defaultPlatform === song.service || service === "both") {
     bestFitSongId = song.id;
   } else if (song.service === "spotify") {
     await appleSearch(song.name!, "songs", 1, musicInstance).then((result) => {

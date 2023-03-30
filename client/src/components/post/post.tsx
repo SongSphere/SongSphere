@@ -8,7 +8,11 @@ import Popup from "reactjs-popup";
 import { TUser } from "../../types/user";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
 import LikeButton from "./like-button";
-import { addToLibrary } from "../../services/spotify/add-to-library";
+import { addToSpotifyLibrary } from "../../services/spotify/add-to-library";
+import userEvent from "@testing-library/user-event";
+import Session from "../../session";
+import selectService from "../../services/user/select-service";
+import { addToAppleLibrary } from "../../services/apple/add-to-library";
 
 interface IPostProps {
   post: TPost;
@@ -100,10 +104,33 @@ const Post = (props: IPostProps) => {
                     <button
                       className="w-full py-2 text-xs text-white transition-colors duration-200 rounded-sm bg-lblue hover:bg-gray-800"
                       onClick={async () => {
-                        await addToLibrary(
-                          props.post.music.id,
-                          props.user.spotifyToken
-                        );
+                        let u: TUser | null = Session.getUser();
+                        if (u) {
+                          let a = Session.getAMInstance();
+                          if (a && props.post.music.service != undefined) {
+                            let id = await selectService(
+                              props.post.music,
+                              a,
+                              u,
+                              props.post.music.service
+                            );
+                            if (u.defaultPlatform == "apple") {
+                              let id = await selectService(
+                                props.post.music,
+                                a,
+                                u,
+                                props.post.music.service
+                              );
+                              await addToAppleLibrary(id, a);
+                            } else {
+                              await addToSpotifyLibrary(
+                                id,
+                                props.user.spotifyToken
+                              );
+                            }
+                          }
+                          setOpen(false);
+                        }
                         setOpen(false);
                       }}
                     >
