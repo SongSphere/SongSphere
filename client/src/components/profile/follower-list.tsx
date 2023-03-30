@@ -44,7 +44,7 @@ const FollowerList = (props: IFollowerListProps) => {
               <input
                 type="text"
                 className="flex-1 block w-full px-3 py-2 focus:outline-none"
-                placeholder="search blocked users"
+                placeholder="search followers"
                 onChange={async (event) => {
                   // searching
                   let filteredUsers: Array<string> = Array<string>();
