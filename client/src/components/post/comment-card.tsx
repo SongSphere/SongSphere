@@ -1,8 +1,10 @@
 import { useState } from "react";
+import sendNotification from "../../services/notification/send-notification";
 import likeComment from "../../services/post/like-comment";
 import sendComment from "../../services/post/send-comment";
 import unLikeComment from "../../services/post/unlike-comment";
 import { TComment } from "../../types/comment";
+import { TNotification } from "../../types/notification";
 import { TPopulatedComment } from "../../types/populated-comment";
 import { TUser } from "../../types/user";
 
@@ -37,8 +39,18 @@ const CommentCard = (props: ICommentCardProps) => {
           {nestedComments}
         </div>
         <button
-          onClick={() => {
+          onClick={async () => {
             likeComment(props.comment._id);
+            // send notification
+            const notificationForAlerts: TNotification = {
+              userEmailSender: props.user.email,
+              userEmailReceiver: props.comment.userEmail,
+              notificationType: "Like",
+              text: `${props.user.username} liked your Comment!`,
+            };
+            console.log(notificationForAlerts);
+
+            await sendNotification(notificationForAlerts);
           }}
         >
           like

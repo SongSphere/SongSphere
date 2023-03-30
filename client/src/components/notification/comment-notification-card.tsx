@@ -10,7 +10,7 @@ const NotificationCard = (props: ICommentNotificationCard) => {
   let d = "";
   let fill = "";
 
-  if (props.type == "Post") {
+  if (props.type == "Like") {
     d="M8.00059 3.01934C9.56659 1.61334 11.9866 1.66 13.4953 3.17134C15.0033 4.68334 15.0553 7.09133 13.6526 8.662L7.99926 14.3233L2.34726 8.662C0.944589 7.09133 0.997256 4.67934 2.50459 3.17134C4.01459 1.662 6.42992 1.61134 8.00059 3.01934Z"
     fill="#EF4444"
   } else if (props.type == "Comment") {
@@ -40,7 +40,7 @@ const NotificationCard = (props: ICommentNotificationCard) => {
       </div>
       <div className="pl-3">
         <p className="text-sm leading-none">
-          <span className="text-indigo-700">{props.sender}</span> {props.text} <span className="text-indigo-700">Update gone wrong</span>
+          <span className="text-indigo-700">{props.sender}</span> {props.text} <span className="text-indigo-700"></span>
         </p>
         {/* <p className="pt-1 text-xs leading-3 text-gray-500">2 hours ago</p> */}
       </div>

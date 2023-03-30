@@ -78,7 +78,7 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
               <hr className="h-0.5 border-0 bg-gray-300"></hr>
               <div className="flex justify-end mt-2">
                 <div className="w-full">{props.post.caption}</div>
-                <LikeButton id={props.post._id} type="Post" />
+                <LikeButton id={props.post._id} type="Post" postUserEmail={props.post.userEmail} />
                 <div
                   className="mt-1 ml-2 cursor-pointer w-7 h-7"
                   onClick={() => {
@@ -93,7 +93,7 @@ const PostFocusPage = (props: IPostFocusPageProps) => {
         </div>
         <hr className="h-0.5 bg-gray-300 border-0 "></hr>
         <div className="p-2 overflow-auto h-96">
-          <CommentCreater user={user} id={props.post._id!} commentType="Post" />
+          <CommentCreater user={user} id={props.post._id!} commentType="Post" creator={props.post.userEmail}/>
           <CommentLoader comments={comments} user={user} />
         </div>
         <div

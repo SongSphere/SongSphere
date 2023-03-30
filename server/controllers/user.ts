@@ -293,7 +293,7 @@ export const getProfilePhoto = (req: Request, res: Response) => {
 export const updateLikePost = (req: Request, res: Response) => {
   const email = req.session.user.email;
   try {
-    likePost(req.body.postId, email);
+    likePost(req.body.id, email);
   } catch (error) {
     res.status(500);
     res.json({ error: error });
@@ -302,8 +302,9 @@ export const updateLikePost = (req: Request, res: Response) => {
 
 export const updateUnlikePost = (req: Request, res: Response) => {
   const email = req.session.user.email;
+  console.log(req.body.id);
   try {
-    unlikePost(req.body.postId, email);
+    unlikePost(req.body.id, email);
   } catch (error) {
     res.status(500);
     res.json({ error: error });

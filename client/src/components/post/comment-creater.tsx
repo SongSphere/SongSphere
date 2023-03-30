@@ -1,12 +1,15 @@
 import { useState } from "react";
+import sendNotification from "../../services/notification/send-notification";
 import sendComment from "../../services/post/send-comment";
 import { TComment } from "../../types/comment";
+import { TNotification } from "../../types/notification";
 import { TUser } from "../../types/user";
 
 interface ICommentCreatorProp {
   user: TUser;
   id: string;
   commentType: string; // this can be "Post" or "Comment"
+  creator: string;
 }
 
 const CommentCreater = (props: ICommentCreatorProp) => {
@@ -14,7 +17,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         if (props.user && commentContent !== "") {
           const comment: TComment = {
@@ -27,8 +30,28 @@ const CommentCreater = (props: ICommentCreatorProp) => {
 
           if (props.commentType === "Post") {
             sendComment(comment, props.id, "");
+
+            const notificationForAlerts: TNotification = {
+              userEmailSender: props.user.email,
+              userEmailReceiver: props.creator,
+              notificationType: "Comment",
+              text: `${props.user.username} commented on your post!`,
+            };
+            console.log(notificationForAlerts);
+      
+            await sendNotification(notificationForAlerts);
           } else if (props.commentType === "Comment") {
             sendComment(comment, "", props.id);
+
+            const notificationForAlerts: TNotification = {
+              userEmailSender: props.user.email,
+              userEmailReceiver: props.creator,
+              notificationType: "Comment",
+              text: `${props.user.username} commented on your comment!`,
+            };
+            console.log(notificationForAlerts);
+      
+            await sendNotification(notificationForAlerts);
           }
         }
       }}
