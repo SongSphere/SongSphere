@@ -63,7 +63,7 @@ const CommentCard = (props: ICommentCardProps) => {
           commentType="Comment"
           commentChanged={props.commentChanged}
           setCommentChanged={props.setCommentChanged}
-          creator={props.comment.userEmail}
+          commentCreatorEmail={props.comment.userEmail}
         />
       ) : (
         <div></div>

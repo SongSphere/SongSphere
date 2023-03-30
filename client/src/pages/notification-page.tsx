@@ -69,10 +69,7 @@ const NotificationPage = (props: INotificationPageProps) => {
               </svg>
             </div>
 
-            {/* 
-            <NotificationCard sender="Sh" text="hi" type="post" />
-            <NotificationCard sender="Sh" text="hi" type="follow" />
-            <NotificationCard sender="Sh" text="hi" type="comment" /> */}
+  
           </div>
 
           {notifications.length > 0 ? (
