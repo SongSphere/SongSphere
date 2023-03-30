@@ -1,5 +1,7 @@
 import { useState } from "react";
+import likeComment from "../../services/post/like-comment";
 import sendComment from "../../services/post/send-comment";
+import unLikeComment from "../../services/post/unlike-comment";
 import { TComment } from "../../types/comment";
 import { TPopulatedComment } from "../../types/populated-comment";
 import { TUser } from "../../types/user";
@@ -34,7 +36,20 @@ const CommentCard = (props: ICommentCardProps) => {
           <div>{props.comment.text}</div>
           {nestedComments}
         </div>
-        <div></div>
+        <button
+          onClick={() => {
+            likeComment(props.comment._id);
+          }}
+        >
+          like
+        </button>
+        <button
+          onClick={() => {
+            unLikeComment(props.comment._id);
+          }}
+        >
+          unlike
+        </button>
       </div>
     </div>
   );
