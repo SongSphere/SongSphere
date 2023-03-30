@@ -19,11 +19,17 @@ const NotificationPage = (props: INotificationPageProps) => {
   }, [Session.getUser()]);
 
   useEffect(() => {
-    if (user) {
-      fetchNotificationsByEmailAddress(user.email).then((notifications) => {
-        setNotifications(notifications);
-      });
-    }
+    const fetchNotification = async () => {
+      if (user) {
+        fetchNotificationsByEmailAddress(user.email).then((notifications) => {
+          setNotifications(notifications);
+        });
+      }
+    };
+
+    fetchNotification();
+    const interval = setInterval(fetchNotification, 5000);
+    return () => clearInterval(interval);
   }, [user]);
 
   if (!user) {
@@ -68,8 +74,6 @@ const NotificationPage = (props: INotificationPageProps) => {
                 />
               </svg>
             </div>
-
-  
           </div>
 
           {notifications.length > 0 ? (
