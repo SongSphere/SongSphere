@@ -11,6 +11,8 @@ import {
   sendComment,
   getComments,
   sendNotification,
+  getSubComments,
+  getComment,
 } from "../controllers/posting";
 
 // import middleware
@@ -33,5 +35,7 @@ router.get("/api/randomsong/seed", getSeedForRandomSong);
 
 
 router.get("/api/post/getComments/:id", getComments);
+router.get("/api/post/getComment/:id", getComment);
+router.get("/api/post/getSubComments/:id", getSubComments);
 
 export default router;

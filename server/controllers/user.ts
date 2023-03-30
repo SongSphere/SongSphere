@@ -19,7 +19,14 @@ import {
   updateShowRandomSong,
 } from "../services/user";
 
-import { likePost, unlikePost, isLiked, fetchisLiked, likeComment, unlikeComment } from "../services/post";
+import {
+  likePost,
+  unlikePost,
+  isLiked,
+  fetchisLiked,
+  likeComment,
+  unlikeComment,
+} from "../services/post";
 import fs from "fs";
 
 export const sessionUpdate = async (
@@ -304,25 +311,22 @@ export const updateUnlikePost = (req: Request, res: Response) => {
 };
 
 export const updateLikeComment = (req: Request, res: Response) => {
-
   try {
-    likeComment(req.body.comment._id);
+    likeComment(req.body.id);
   } catch (error) {
     res.status(500);
     res.json({ error: error });
   }
-}
+};
 
 export const updateUnlikeComment = (req: Request, res: Response) => {
-  
   try {
-    unlikeComment(req.body.comment._id);
+    unlikeComment(req.body.id);
   } catch (error) {
     res.status(500);
     res.json({ error: error });
   }
-}
-
+};
 
 export const fetchIsLiked = async (req: Request, res: Response) => {
   try {

@@ -5,6 +5,7 @@ import { TComment } from "../types/comment";
 import fetchComments from "../services/post/fetch-comments";
 import sendNotification from "../services/notification/send-notification";
 import { TNotification } from "../types/notification";
+import fetchSubComments from "../services/post/fetch-sub-comments";
 
 const Comment = () => {
   return (
@@ -55,6 +56,19 @@ const Comment = () => {
         }}
       >
         Test Fetch
+      </button>
+      <button
+        className="p-2 bg-blue-400 rounded-md"
+        onClick={async () => {
+          try {
+            let comments = await fetchSubComments("64244f78a49f3fa743896a5c");
+            console.log(comments);
+          } catch (error) {
+            console.error(error);
+          }
+        }}
+      >
+        Test Fetch Subcomments
       </button>
     </div>
   );
