@@ -105,7 +105,12 @@ const Post = (props: IPostProps) => {
         </div>
       </Popup>
 
-      <Popup open={postFocusPage}>
+      <Popup
+        open={postFocusPage}
+        onClose={() => {
+          setPostFocusPage(false);
+        }}
+      >
         <PostFocusPage
           post={props.post}
           setSong={props.setSong}
@@ -135,9 +140,9 @@ const Post = (props: IPostProps) => {
             )}
           </div>
           <div className="text-2xl font-bold">{props.post.music.name}</div>
-          <div className="float-right pr-2 text-navy">
+          {/* <div className="float-right pr-2 text-navy">
             Likes: {props.post.likes}
-          </div>
+          </div> */}
           <div className="text-slate-500">{props.post.music.artist}</div>
           <hr className="h-0.5 border-0 bg-gray-300"></hr>
           <div className="flex justify-end mt-2">

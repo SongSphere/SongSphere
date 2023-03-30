@@ -1,8 +1,6 @@
-import { TPost } from "../../types/post";
-
-const UnlikePost = async (id: string | undefined) => {
+const unLikePost = async (id: string) => {
   try {
-    await fetch(`${process.env.REACT_APP_API}/api/user/updateUnlikePost`, {
+    await fetch(`${process.env.REACT_APP_API}/api/post/updateUnlikePost`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
@@ -14,4 +12,4 @@ const UnlikePost = async (id: string | undefined) => {
     });
   } catch (error) {}
 };
-export default UnlikePost;
+export default unLikePost;

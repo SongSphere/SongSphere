@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-// import { TPost } from "../../types/post";
-import LikePost from "../../services/user/like-post";
-import UnlikePost from "../../services/user/unlike-post";
-import fetchLikes from "../../services/user/fetch-likes";
+
+import likePost from "../../services/post/like-post";
+import unLikePost from "../../services/post/unlike-post";
+
+import likeComment from "../../services/post/like-comment";
+import unLikeComment from "../../services/post/unlike-comment";
+
+import fetchPostLiked from "../../services/post/fetch-post-liked";
+import fetchCommentLiked from "../../services/post/fetch-comment-liked";
+
+import fetchPostLikes from "../../services/post/fetch-post-likes";
+import fetchCommentLikes from "../../services/post/fetch-comment-likes";
 import Session from "../../session";
-import { TUser } from "../../types/user";
 import { TNotification } from "../../types/notification";
 import sendNotification from "../../services/notification/send-notification";
-import { TComment } from "../../types/comment";
 
 const LikedButton = styled.button`
   width: 2rem;
@@ -41,24 +47,11 @@ interface LikeButtonProps {
 
 const LikeButton = (props: LikeButtonProps) => {
   const [liked, setLiked] = useState<boolean | null>(null);
-  const [user, setUser] = useState<TUser | null>(null);
+  const [likes, setLikes] = useState(0);
 
-  useEffect(() => {
-    if (props.id) {
-      fetchLikes(props.id).then((liked) => {
-        setLiked(liked);
-      });
-    }
-
-    const user = Session.getUser();
-    setUser(user);
-  }, []);
-
-  if (liked && props.id) {
-    return <LikedButton onClick={async () => UnlikePost(props.id)} />;
-  } else {
-    return <NotLikedButton onClick={async () => {
-      LikePost(props.id);
+  const likeHandler = async (id: string) => {
+    if (props.type == "Post") {
+      await likePost(id);
       const user = Session.getUser();
       if (user) {
         const notificationForAlerts: TNotification = {
@@ -67,14 +60,84 @@ const LikeButton = (props: LikeButtonProps) => {
           notificationType: "Like",
           text: `${user.username} liked your post!`,
         };
-  
         await sendNotification(notificationForAlerts);
       }
-      
+    } else if (props.type == "Comment") {
+      await likeComment(id);
+      const user = Session.getUser();
+      if (user) {
+        const notificationForAlerts: TNotification = {
+          userEmailSender: user.email,
+          userEmailReceiver: props.postUserEmail,
+          notificationType: "Like",
+          text: `${user.username} liked your comment!`,
+        };
+        await sendNotification(notificationForAlerts);
+      }
     }
-      
-      
-    } />;
+    await updateLiking(id);
+  };
+
+  const unLikeHandler = async (id: string) => {
+    if (props.type == "Post") {
+      await unLikePost(id);
+    } else if (props.type == "Comment") {
+      await unLikeComment(id);
+    }
+    await updateLiking(id);
+  };
+
+  const updateLiking = (id: string) => {
+    if (props.type === "Post") {
+      fetchPostLiked(id).then((liked) => {
+        setLiked(liked);
+
+        fetchPostLikes(id).then((likes) => {
+          setLikes(likes);
+        });
+      });
+    } else if (props.type === "Comment") {
+      fetchCommentLiked(id).then((liked) => {
+        setLiked(liked);
+        fetchCommentLikes(id).then((likes) => {
+          setLikes(likes);
+        });
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (props.id) {
+      updateLiking(props.id);
+    }
+  }, []);
+
+  if (liked) {
+    return (
+      <div className="flex">
+        {likes}
+        <LikedButton
+          onClick={async () => {
+            if (props.id) {
+              await unLikeHandler(props.id);
+            }
+          }}
+        ></LikedButton>
+      </div>
+    );
+  } else {
+    return (
+      <div className="flex">
+        {likes}
+        <NotLikedButton
+          onClick={() => {
+            if (props.id) {
+              likeHandler(props.id);
+            }
+          }}
+        ></NotLikedButton>
+      </div>
+    );
   }
 };
 export default LikeButton;

@@ -16,8 +16,6 @@ interface IOtherProfileFeedProps {
 }
 
 const OtherProfileFeed = (props: IOtherProfileFeedProps) => {
- 
-
   return (
     <div className="justify-center mt-8">
       <div className="w-full">

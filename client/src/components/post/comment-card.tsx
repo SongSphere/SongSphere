@@ -1,67 +1,74 @@
 import { useState } from "react";
-import sendNotification from "../../services/notification/send-notification";
-import likeComment from "../../services/post/like-comment";
-import sendComment from "../../services/post/send-comment";
-import unLikeComment from "../../services/post/unlike-comment";
-import { TComment } from "../../types/comment";
-import { TNotification } from "../../types/notification";
 import { TPopulatedComment } from "../../types/populated-comment";
 import { TUser } from "../../types/user";
+import CommentCreater from "./comment-creater";
+import LikeButton from "./like-button";
 
 interface ICommentCardProps {
   comment: TPopulatedComment;
   user: TUser;
+  commentChanged: number;
+  setCommentChanged: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const CommentCard = (props: ICommentCardProps) => {
   const nestedComments = props.comment.subComments.map((comment) => {
     return (
       <div key={comment._id}>
-        <CommentCard comment={comment} user={props.user} />
+        <CommentCard
+          comment={comment}
+          user={props.user}
+          commentChanged={props.commentChanged}
+          setCommentChanged={props.setCommentChanged}
+        />
       </div>
     );
   });
 
+  const [subCommentCreator, setSubCommentCreator] = useState(false);
+
   return (
-    <div className="px-4 py-4 mb-2 w-fit">
+    <div className="w-full px-4 py-4 mb-2">
       <div className="flex">
-        <div className="">
-          <img
-            className="w-12 h-12 border-2 rounded-full"
-            src={props.comment.profileImgUrl}
-          ></img>
-        </div>
+        <img
+          className="w-12 h-12 border-2 rounded-full"
+          src={props.comment.profileImgUrl}
+        ></img>
         <div className="ml-2">
           <a href={`/user/${props.user.username}`}>
             <div className="font-bold">{props.comment.username}</div>
           </a>
           <div>{props.comment.text}</div>
-          {nestedComments}
+          <div className="flex">
+            <LikeButton
+              id={props.comment._id}
+              postUserEmail={props.comment.userEmail}
+              type="Comment"
+            />
+            <div
+              className="w-6 h-6 mt-1 ml-2 cursor-pointer"
+              onClick={() => {
+                setSubCommentCreator(!subCommentCreator);
+              }}
+            >
+              <img src="/img/icons/comment.svg"></img>
+            </div>
+          </div>
         </div>
-        <button
-          onClick={async () => {
-            likeComment(props.comment._id);
-            // send notification
-            const notificationForAlerts: TNotification = {
-              userEmailSender: props.user.email,
-              userEmailReceiver: props.comment.userEmail,
-              notificationType: "Like",
-              text: `${props.user.username} liked your Comment!`,
-            };
-           
-            await sendNotification(notificationForAlerts);
-          }}
-        >
-          like
-        </button>
-        <button
-          onClick={() => {
-            unLikeComment(props.comment._id);
-          }}
-        >
-          unlike
-        </button>
       </div>
+      {subCommentCreator ? (
+        <CommentCreater
+          user={props.user}
+          id={props.comment._id}
+          commentType="Comment"
+          commentChanged={props.commentChanged}
+          setCommentChanged={props.setCommentChanged}
+          creator={props.comment.userEmail}
+        />
+      ) : (
+        <div></div>
+      )}
+      {nestedComments}
     </div>
   );
 };

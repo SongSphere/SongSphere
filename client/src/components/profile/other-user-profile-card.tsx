@@ -61,7 +61,6 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
             notificationType: "Follow",
             text: `${user.username} is now following you!`,
           };
-        
 
           await sendNotification(notificationForAlerts);
         });
@@ -87,7 +86,6 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
         setIsFollowing(true);
       }
     }
-
   }, [props.selectedUser]);
 
   if (!props.selectedUser) {
