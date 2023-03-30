@@ -94,6 +94,12 @@ export const changeNames = async (
       req.body.middleName,
       req.body.familyName
     );
+
+    req.session.user.username = req.body.username;
+    req.session.user.givenName = req.body.givenName;
+    req.session.user.middleName = req.body.middleName;
+    req.session.user.familyName = req.body.familyName;
+
     res.status(200);
     res.json({ msg: "success" });
   } catch (error) {
