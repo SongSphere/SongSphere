@@ -296,7 +296,6 @@ const SettingsPage = (props: ISettingPageProps) => {
                 id="flexSwitchCheckDefault"
                 checked={shareCurrentSong}
                 onChange={async () => {
-                  console.log(`The Random status is ${shareCurrentSong}`);
                   if (shareCurrentSong) {
                     setShowSong(false)
                       .then(async () => {
