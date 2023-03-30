@@ -15,6 +15,12 @@ import {
   fetchComments,
   fetchSubComments,
   fetchCommentById,
+  unlikePost,
+  likePost,
+  unlikeComment,
+  isLiked,
+  fetchisLiked,
+  likeComment,
 } from "../services/post";
 
 export const getSeedForRandomSong = async (req: Request, res: Response) => {
@@ -138,5 +144,74 @@ export const getSubComments = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500);
     console.log(error);
+  }
+};
+
+export const updateLikePost = (req: Request, res: Response) => {
+  try {
+    const email = req.session.user.email;
+    likePost(req.body.postId, email);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const updateUnlikePost = (req: Request, res: Response) => {
+  try {
+    const email = req.session.user.email;
+    unlikePost(req.body.postId, email);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const updateLikeComment = (req: Request, res: Response) => {
+  try {
+    likeComment(req.body.id);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const updateUnlikeComment = (req: Request, res: Response) => {
+  try {
+    unlikeComment(req.body.id);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const fetchIsLiked = async (req: Request, res: Response) => {
+  try {
+    const email = req.session.user.email;
+    const likes = await isLiked(req.params.id, email);
+    res.status(201);
+    res.json({ likes: likes });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const fetchLikedPosts = async (req: Request, res: Response) => {
+  try {
+    const likes = await fetchisLiked(req.params.username);
+    res.status(200);
+    res.json({ likes: likes });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
   }
 };

@@ -34,19 +34,19 @@ interface LikeButtonProps {
   type: string; // this can be "Post" or "Comment"
 }
 
-const likeHandler = (id: string, type: string) => {
+const likeHandler = async (id: string, type: string) => {
   if (type == "Post") {
-    likePost(id);
+    await likePost(id);
   } else if (type == "Comment") {
-    likeComment(id);
+    await likeComment(id);
   }
 };
 
-const unLikeHandler = (id: string, type: string) => {
+const unLikeHandler = async (id: string, type: string) => {
   if (type == "Post") {
-    unLikePost(id);
+    await unLikePost(id);
   } else if (type == "Comment") {
-    unLikeComment(id);
+    await unLikeComment(id);
   }
 };
 
@@ -64,9 +64,13 @@ const LikeButton = (props: LikeButtonProps) => {
   if (liked) {
     return (
       <LikedButton
-        onClick={() => {
+        onClick={async () => {
           if (props.id) {
-            unLikeHandler(props.id, props.type);
+            await unLikeHandler(props.id, props.type);
+            fetchLikes(props.id).then((liked) => {
+              console.log("fetched like", liked);
+              setLiked(liked);
+            });
           }
         }}
       ></LikedButton>
@@ -77,6 +81,10 @@ const LikeButton = (props: LikeButtonProps) => {
         onClick={() => {
           if (props.id) {
             likeHandler(props.id, props.type);
+            fetchLikes(props.id).then((liked) => {
+              console.log("fetched like", liked);
+              setLiked(liked);
+            });
           }
         }}
       ></NotLikedButton>
