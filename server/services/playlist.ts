@@ -3,12 +3,8 @@ import { fetchPostsByUsername } from "./post";
 
 export const fetchPlaylist = async (username: string) => {
   try {
-    console.log("called fetch playlist service", username);
     const user = await User.findOne({ username: username });
     const followers = user.following;
-
-    // console.log("user", user);
-    console.log("followers", followers);
 
     let selectedSongCount = 0;
     const playlistLength = 20;
@@ -19,8 +15,6 @@ export const fetchPlaylist = async (username: string) => {
       const followerPosts = await fetchPostsByUsername(followers[i].toString());
       postPool.push(followerPosts);
     }
-
-    console.log("post pool", postPool);
 
     while (selectedSongCount < playlistLength) {
       let postAdded = false;
@@ -37,7 +31,6 @@ export const fetchPlaylist = async (username: string) => {
         break;
       }
     }
-    console.log("returned playlist", playlist);
     return playlist;
   } catch (error) {
     throw error;

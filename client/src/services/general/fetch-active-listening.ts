@@ -15,7 +15,6 @@ const fetchActiveListeningUsers = async () => {
           return res.json();
         })
         .then(async (data) => {
-          console.log(data.activity);
           resolve(data.activity);
         })
         .catch((error) => {
