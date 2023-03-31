@@ -250,15 +250,16 @@ const Post = (props: IPostProps) => {
               <img src="/img/icons/comment.svg"></img>
             </div>
             {postOwner?.isPrivate ?(
-               <div
-               className="mt-1 ml-2 cursor-pointer w-7 h-7"
-               onClick={() => {
-                 navigate(`/repost/${props.post._id}`);
-               }}
-             >
-               <img src="/img/icons/repost.svg"></img>
-             </div>
-            ):(<div></div>)}
+               <div>
+                </div>
+            ):(<div
+              className="mt-1 ml-2 cursor-pointer w-7 h-7"
+              onClick={() => {
+                navigate(`/repost/${props.post._id}`);
+              }}
+            >
+              <img src="/img/icons/repost.svg"></img>
+            </div>)}
            
           </div>
         </div>
