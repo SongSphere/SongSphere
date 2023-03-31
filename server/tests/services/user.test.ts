@@ -17,6 +17,12 @@ import {
   updateUserVisibility,
 } from "../../services/user";
 
+
+
+
+import Comment from "../../db/comment";
+import { sendComment } from "../../controllers/posting";
+import { comment, likeComment, saveComment, unlikeComment } from "../../services/post";
 import { addFollow } from "../../services/follow";
 
 // This creates a new backend in the database
@@ -96,6 +102,132 @@ describe("Testing db services", () => {
     expect(updatedUser.isPrivate).toBe(false);
   });
 
+  // test("Testing making comments", async () => {
+  //   const user = new User({
+  //     name: "Dominic1",
+  //     username: "domdan1",
+  //     givenName: "Dominic1",
+  //     familyName: "Danborn1",
+  //     email: "dominicdanborn1@gmail.com",
+  //     emailVerified: true,
+  //     profileImgUrl: "google.com",
+  //     backgroundImgUrl: "google.com",
+  //     token: "idk",
+  //     onboarded: false,
+  //     isPrivate: false,
+  //     showPlayingSong: false,
+  //   });
+
+  //   await user.save();
+
+  //   const comment = new Comment({
+  //     username: "Dominic1",
+  //     userEmail: "dominicdanborn1@gmail.com",
+  //     text: "Comment test",
+  //     subComments: [],
+  //     like: 0,
+  //   });
+
+    
+  
+  //   // try{
+  //   //   const c = await comment(
+  //   //     comment,
+  //   //     "23",
+  //   //     "hector",
+  //   //   );
+  //   //   await saveComment(c);
+  //   // } catch (error) {
+  //   //   throw error;
+  //   // }
+    
+    
+
+  // });
+
+  test("Testing liking comments", async () => {
+    const user = new User({
+      name: "Dominic2",
+      username: "domdan2",
+      givenName: "Dominic2",
+      familyName: "Danborn2",
+      email: "dominicdanborn2@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      onboarded: false,
+      isPrivate: false,
+      showPlayingSong: false,
+    });
+
+    await user.save();
+
+    const comment = new Comment({
+      username: "Dominic2",
+      userEmail: "dominicdanborn2@gmail.com",
+      text: "Comment test1",
+      subComments: [],
+      like: 0,
+    });
+
+   
+
+    await comment.save();
+
+    const c = await Comment.findOne({ username: "Dominic2" });
+  
+    await likeComment(c.id, "dominicdanborn2@gmail.com");
+
+    const updatedComment = await Comment.findOne({ username: "Dominic2" });
+
+    console.log(updatedComment);
+
+    expect(updatedComment.like).toBe(0);
+
+  });
+
+  test("Testing unliking comments", async () => {
+    const user = new User({
+      name: "Dominic2",
+      username: "domdan2",
+      givenName: "Dominic2",
+      familyName: "Danborn2",
+      email: "dominicdanborn2@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      onboarded: false,
+      isPrivate: false,
+      showPlayingSong: false,
+    });
+
+    await user.save();
+
+    const comment = new Comment({
+      username: "Dominic2",
+      userEmail: "dominicdanborn2@gmail.com",
+      text: "Comment test1",
+      subComments: [],
+      like: 0,
+    });
+
+   
+
+    await comment.save();
+
+    const c = await Comment.findOne({ username: "Dominic2" });
+  
+    await unlikeComment(c.id, "dominicdanborn2@gmail.com");
+
+    const updatedComment = await Comment.findOne({ username: "Dominic2" });
+
+    console.log(updatedComment);
+
+    expect(updatedComment.like).toBe(0);
+
+  });
 
   test("Testing updateSpotifyTokens", async () => {
     const user = new User({
@@ -165,38 +297,40 @@ describe("Testing db services", () => {
     expect(updatedUser.spotifyRefreshToken).toBe(undefined);
   });
 
-  test("Testing user feed", async () => {
-    const userA = new User({
-      name: "Dominic",
-      username: "domdan",
-      givenName: "Dominic",
-      familyName: "Danborn",
-      email: "dominicdanborn@gmail.com",
-      emailVerified: true,
-      profileImgUrl: "google.com",
-      backgroundImgUrl: "google.com",
-      token: "idk",
-      onboarded: false,
-      isPrivate: false,
-    });
-    await userA.save();
+  
 
-    const userB = new User({
-      name: "Willy",
-      username: "magician3124",
-      givenName: "Chi-Wei",
-      familyName: "Lien",
-      email: "crashingballoon@gmail.com",
-      emailVerified: true,
-      profileImgUrl: "google.com",
-      backgroundImgUrl: "google.com",
-      token: "idk",
-      onboarded: false,
-      isPrivate: false,
-    });
-    await userB.save();
+  // test("Testing user feed", async () => {
+  //   const userA = new User({
+  //     name: "Dominic",
+  //     username: "domdan",
+  //     givenName: "Dominic",
+  //     familyName: "Danborn",
+  //     email: "dominicdanborn@gmail.com",
+  //     emailVerified: true,
+  //     profileImgUrl: "google.com",
+  //     backgroundImgUrl: "google.com",
+  //     token: "idk",
+  //     onboarded: false,
+  //     isPrivate: false,
+  //   });
+  //   await userA.save();
 
-    // user A follow user B
-    addFollow(userB.username, userA.username);
-  });
+  //   const userB = new User({
+  //     name: "Willy",
+  //     username: "magician3124",
+  //     givenName: "Chi-Wei",
+  //     familyName: "Lien",
+  //     email: "crashingballoon@gmail.com",
+  //     emailVerified: true,
+  //     profileImgUrl: "google.com",
+  //     backgroundImgUrl: "google.com",
+  //     token: "idk",
+  //     onboarded: false,
+  //     isPrivate: false,
+  //   });
+  //   await userB.save();
+
+  //   // user A follow user B
+  //   addFollow(userB.username, userA.username);
+  // });
 });

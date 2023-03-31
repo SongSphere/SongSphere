@@ -118,7 +118,7 @@ export const comment = async (
     userEmail: newComment.userEmail,
     text: newComment.text,
     subComments: newComment.subComments,
-    likes: 0,
+    like: 0,
   });
 
   if (replyingTo.length == 0) {
@@ -175,7 +175,7 @@ export const likeComment = async (commentId: string, email: string) => {
       { email: email },
       { $push: { commentLikes: commentId } }
     );
-    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { likes: 1 } });
+    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: 1 } });
   } catch (error) {
     throw error;
   }
@@ -187,7 +187,7 @@ export const unlikeComment = async (commentId: string, email: string) => {
       { email: email },
       { $pull: { commentLikes: commentId } }
     );
-    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { likes: -1 } });
+    await Comment.findOneAndUpdate({ _id: commentId }, { $inc: { like: -1 } });
   } catch (error) {
     throw error;
   }
@@ -264,7 +264,7 @@ export const fetchPostLikes = async (postId: string) => {
 export const fetchCommentLikes = async (postId: string) => {
   try {
     const comment = await Comment.findOne({ _id: postId });
-    const likes = comment.likes;
+    const likes = comment.like;
     return likes;
   } catch (error) {
     throw error;
