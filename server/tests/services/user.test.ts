@@ -19,10 +19,12 @@ import {
   updateUserVisibility,
 } from "../../services/user";
 
-
-
-
-import { comment, likeComment, saveComment, unlikeComment } from "../../services/post";
+import {
+  comment,
+  likeComment,
+  saveComment,
+  unlikeComment,
+} from "../../services/post";
 import Seed from "../../seed";
 import { addFollow } from "../../services/follow";
 import { createPost, savePost } from "../../services/post";
@@ -30,7 +32,6 @@ import { TPost } from "../../types/post";
 import Post from "../../db/post";
 import Comment from "../../db/comment";
 import { fetchPlaylist } from "../../services/playlist";
-
 
 // This creates a new backend in the database
 
@@ -138,15 +139,13 @@ describe("Testing db services", () => {
       like: 0,
     });
 
-    await comment.save()
+    await comment.save();
 
-    const updatedComment = await Comment.findOne({ text: "Create comment test" });
-    
-  
+    const updatedComment = await Comment.findOne({
+      text: "Create comment test",
+    });
+
     expect(updatedComment.text).toBe(comment.text);
-    
-    
-
   });
 
   test("Testing liking comments", async () => {
@@ -175,22 +174,15 @@ describe("Testing db services", () => {
       like: 0,
     });
 
-   
-
     await comment.save();
 
     const c = await Comment.findOne({ username: "Dominic2" });
-  
 
     await likeComment(c._id.toString(), "dominicdanborn2@gmail.com");
 
-
     const updatedComment = await Comment.findOne({ text: "Like Comment" });
 
-
-
     expect(updatedComment.like).toBe(1);
-
   });
 
   test("Testing unliking comments", async () => {
@@ -219,23 +211,19 @@ describe("Testing db services", () => {
       like: 1,
     });
 
-   
-
     await comment.save();
 
     const c = await Comment.findOne({ text: "Unlike Comment" });
 
-    console.log(c._id.toString());
-  
-    await unlikeComment(c._id.toString(), "dominicdanborn2@gmail.com");
+    // console.log(c._id.toString());
 
+    await unlikeComment(c._id.toString(), "dominicdanborn2@gmail.com");
 
     const updatedComment = await Comment.findOne({ text: "Unlike Comment" });
 
-    console.log(updatedComment);
+    // console.log(updatedComment);
 
     expect(updatedComment.like).toBe(0);
-
   });
 
   test("Testing updateSpotifyTokens", async () => {
