@@ -17,9 +17,11 @@ const RecentsPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [service, setService] = useState<string>("");
+  const [apple, setApple] = useState<MusicKit.MusicKitInstance | null>();
   useEffect(() => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
+    setApple(Session.getAMInstance());
   }, [Session.getUser()]);
   useEffect(() => {
     if (user) {
@@ -28,15 +30,22 @@ const RecentsPage = () => {
           setPosts(posts);
         });
       } else {
-        let a = Session.getAMInstance();
-        if (a) {
-          getAppleRecentlyPlayedSongs(a).then((posts) => {
+        //let a = Session.getAMInstance();
+        console.log("H");
+        if (apple) {
+          getAppleRecentlyPlayedSongs(apple).then((posts) => {
+            console.log(posts);
+            console.log("hello");
+            if (posts.length == 0) {
+            }
             setPosts(posts);
           });
+        } else {
+          console.log("AAHAAAAA");
         }
       }
     }
-  }, [user]);
+  }, [user, apple]);
 
   if (!user) {
     return <div>fetching user</div>;
