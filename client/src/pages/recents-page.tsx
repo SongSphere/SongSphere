@@ -30,18 +30,12 @@ const RecentsPage = () => {
           setPosts(posts);
         });
       } else {
-        //let a = Session.getAMInstance();
-        console.log("H");
         if (apple) {
           getAppleRecentlyPlayedSongs(apple).then((posts) => {
-            console.log(posts);
-            console.log("hello");
             if (posts.length == 0) {
             }
             setPosts(posts);
           });
-        } else {
-          console.log("AAHAAAAA");
         }
       }
     }
