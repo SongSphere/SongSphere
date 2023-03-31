@@ -66,37 +66,41 @@ const DefaultPlatform = () => {
       <div>Current Service: {currService}</div>
       Select Service
       {service.map((s) => {
-        s == currService ? (
-          <button
-            className="w-11/12 text-black bg-blue border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
-            key={s}
-            onClick={() => {
-              Session.setMusicService(s);
-              setDefaultPlatform(s);
-              setCurrService(s);
-              if (user) {
-                user.defaultPlatform = s;
-              }
-            }}
-          >
-            {s}
-          </button>
-        ) : (
-          <button
-            className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
-            key={s}
-            onClick={() => {
-              Session.setMusicService(s);
-              setDefaultPlatform(s);
-              setCurrService(s);
-              if (user) {
-                user.defaultPlatform = s;
-              }
-            }}
-          >
-            {s}
-          </button>
-        );
+        if (s == currService) {
+          return (
+            <button
+              className="w-11/12 text-black bg-red-300 border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+              key={s}
+              onClick={() => {
+                Session.setMusicService(s);
+                setDefaultPlatform(s);
+                setCurrService(s);
+                if (user) {
+                  user.defaultPlatform = s;
+                }
+              }}
+            >
+              {s}
+            </button>
+          );
+        } else {
+          return (
+            <button
+              className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+              key={s}
+              onClick={() => {
+                Session.setMusicService(s);
+                setDefaultPlatform(s);
+                setCurrService(s);
+                if (user) {
+                  user.defaultPlatform = s;
+                }
+              }}
+            >
+              {s}
+            </button>
+          );
+        }
       })}
     </div>
   );
