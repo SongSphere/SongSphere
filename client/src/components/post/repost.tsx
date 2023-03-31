@@ -175,7 +175,7 @@ const Repost = (props: IPostProps) => {
 
       <div className="absolute bottom-5 right-5">
         <div className="float-left mt-1.5 mr-2 text-navy">
-          {props.post.likes}
+          
         </div>
         <LikeButton id={props.post._id} type="Post" postUserEmail={props.post.userEmail} />
       </div>
