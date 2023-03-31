@@ -28,9 +28,12 @@ const RecentsPage = () => {
           setPosts(posts);
         });
       } else {
-        getAppleRecentlyPlayedSongs(props.appleMusicInstance).then((posts) => {
-          setPosts(posts);
-        });
+        let a = Session.getAMInstance();
+        if (a) {
+          getAppleRecentlyPlayedSongs(a).then((posts) => {
+            setPosts(posts);
+          });
+        }
       }
     }
   }, [user]);
