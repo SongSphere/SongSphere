@@ -105,19 +105,23 @@ const Post = (props: IPostProps) => {
                           let a = Session.getAMInstance();
                           if (a && props.post.music.service != undefined) {
                             if (u.defaultPlatform == "apple") {
-                              let id = await selectService(
+                              selectService(
                                 props.post.music,
                                 a,
                                 u,
-                                props.post.music.service
-                              );
-                              await addToAppleLibrary(id, a);
+                                u.defaultPlatform
+                              ).then(async (id) => {
+                                if (a) {
+                                  await addToAppleLibrary(id, a);
+                                }
+                              });
                             } else {
+                              console.log("spotify account");
                               let id = await selectService(
                                 props.post.music,
                                 a,
                                 u,
-                                props.post.music.service
+                                u.defaultPlatform
                               );
                               await addToSpotifyLibrary(
                                 id,
