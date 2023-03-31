@@ -17,6 +17,7 @@ import {
   removeFollow,
   unBlockAccount,
 } from "../../services/follow";
+import { doesNotMatch } from "assert";
 
 // This creates a new backend in the database
 
@@ -87,6 +88,7 @@ describe("Testing db services", () => {
       email: "crashingballoon@gmail.com",
     });
 
+   
     expect(updatedUser1.following[0]).toBe("magician1234");
     expect(updatedUser2.followers[0]).toBe("domdan");
   });

@@ -249,13 +249,13 @@ export const fetchFeed = async (email: string, num: number) => {
       return b.get("createdAt") - a.get("createdAt");
     });
 
-    if (num * 3 > posts.length) {
+    if (num * 20 > posts.length) {
       return [];
     }
-    if (num * 3 + 3 > posts.length) {
-      return posts.slice(num * 3, posts.length);
+    if (num * 20 + 20 > posts.length) {
+      return posts.slice(num * 20, posts.length);
     }
-    return posts.slice(num * 3, num * 3 + 3);
+    return posts.slice(num * 20, num * 20 + 20);
   } catch (error) {
     console.error(error);
     throw error;
