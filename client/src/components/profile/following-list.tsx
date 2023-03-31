@@ -8,6 +8,7 @@ interface IFollowingListProps {
 
 const FollowingList = (props: IFollowingListProps) => {
   const [following, setFollowing] = useState(props.following);
+  const [filteredUsers, setFilteredUsers] = useState(props.following);
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
@@ -15,8 +16,15 @@ const FollowingList = (props: IFollowingListProps) => {
     }
   };
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = event.target.value;
+    const filtered = following.filter((u) => u.startsWith(searchTerm));
+    setFilteredUsers(filtered);
+  };
+
   useEffect(() => {
     setFollowing(props.following);
+    setFilteredUsers(props.following);
   }, [props.following]);
 
   if (!props.isVisible) {
@@ -45,24 +53,13 @@ const FollowingList = (props: IFollowingListProps) => {
                 type="text"
                 className="flex-1 block w-full px-3 py-2 focus:outline-none"
                 placeholder="search following"
-                onChange={async (event) => {
-                  // searching
-                  let filteredUsers: Array<string> = Array<string>();
-
-                  props.following.forEach((u) => {
-                    if (u.startsWith(event.target.value as string)) {
-                      filteredUsers.push(u);
-                    }
-                  });
-
-                  setFollowing(filteredUsers);
-                }}
+                onChange={handleSearch}
               />
             </div>
 
             <div className="justify-center py-2 text-center">
               <div className="overflow-y-auto max-h-[45vh]">
-                {following.map((user) => {
+                {filteredUsers.map((user) => {
                   return (
                     <div className="flex">
                       <div className="flex-1 inline-block text-left">

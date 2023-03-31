@@ -36,6 +36,7 @@ const ProfilePage = (props: IProfileProps) => {
   const handleFollowingOpen = () => {
     setShowFollowingModal(true);
   };
+
   const handleFollowingClose = () => {
     setShowFollowingModal(false);
   };
@@ -50,7 +51,7 @@ const ProfilePage = (props: IProfileProps) => {
   useEffect(() => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
-  }, [Session.getUser()]);
+  }, []);
 
   useEffect(() => {
     if (user) {

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Session from "../../session";
+import { TUser } from "../../types/user";
 
 interface IProfileCardProps {
   openFollowingModal: Function;
@@ -63,7 +64,6 @@ const ProfileCard = (props: IProfileCardProps) => {
             >
               edit
             </button>
-            
           </div>
           <div className="text-center">
             <button
