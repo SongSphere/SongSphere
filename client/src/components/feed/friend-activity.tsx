@@ -23,7 +23,6 @@ const FriendActivityCard = () => {
           } else {
             setActiveUsers(listeningUsers);
           }
-          console.log(activeUsers);
         } catch (error) {
           console.log(error);
         }
@@ -62,10 +61,10 @@ const FriendActivityCard = () => {
                             alt="Avatar of Jonathan Reinink"
                           ></img>
                           <div className="text-sm">
-                            <div className="text-1l font-bold">
+                            <div className="font-bold text-1l">
                               {u.username}
                             </div>
-                            <div className="text-2l font-bold">{s.name}</div>
+                            <div className="font-bold text-2l">{s.name}</div>
                             <div className="text-slate-500">{s.artist}</div>
                           </div>
                         </div>

@@ -34,7 +34,6 @@ const RecentsPage = (props: IRecentProps) => {
       } else {
         getAppleRecentlyPlayedSongs(props.appleMusicInstance).then((posts) => {
           setPosts(posts);
-          console.log(posts);
         });
       }
     }
