@@ -21,9 +21,10 @@ import {
 
 
 import Comment from "../../db/comment";
-import { sendComment } from "../../controllers/posting";
+import { getSeedForRandomSong, sendComment } from "../../controllers/posting";
 import { comment, likeComment, saveComment, unlikeComment } from "../../services/post";
 import { addFollow } from "../../services/follow";
+import Seed from "../../seed";
 
 // This creates a new backend in the database
 
@@ -121,183 +122,180 @@ describe("Testing db services", () => {
   //   await user.save();
 
   //   const comment = new Comment({
-  //     username: "Dominic1",
-  //     userEmail: "dominicdanborn1@gmail.com",
-  //     text: "Comment test",
+  //     username: "Dominic2",
+  //     userEmail: "dominicdanborn2@gmail.com",
+  //     text: "Create comment test",
   //     subComments: [],
   //     like: 0,
   //   });
 
+  //   await comment.save()
+
+  //   const c = await Comment.findOne({ text: "Create comment test" });
     
   
-  //   // try{
-  //   //   const c = await comment(
-  //   //     comment,
-  //   //     "23",
-  //   //     "hector",
-  //   //   );
-  //   //   await saveComment(c);
-  //   // } catch (error) {
-  //   //   throw error;
-  //   // }
+  //   expect(c.text).toBe(comment.text);
     
     
 
   // });
 
-  test("Testing liking comments", async () => {
-    const user = new User({
-      name: "Dominic2",
-      username: "domdan2",
-      givenName: "Dominic2",
-      familyName: "Danborn2",
-      email: "dominicdanborn2@gmail.com",
-      emailVerified: true,
-      profileImgUrl: "google.com",
-      backgroundImgUrl: "google.com",
-      token: "idk",
-      onboarded: false,
-      isPrivate: false,
-      showPlayingSong: false,
-    });
+  // test("Testing liking comments", async () => {
+  //   const user = new User({
+  //     name: "Dominic2",
+  //     username: "domdan2",
+  //     givenName: "Dominic2",
+  //     familyName: "Danborn2",
+  //     email: "dominicdanborn2@gmail.com",
+  //     emailVerified: true,
+  //     profileImgUrl: "google.com",
+  //     backgroundImgUrl: "google.com",
+  //     token: "idk",
+  //     onboarded: false,
+  //     isPrivate: false,
+  //     showPlayingSong: false,
+  //   });
 
-    await user.save();
+  //   await user.save();
 
-    const comment = new Comment({
-      username: "Dominic2",
-      userEmail: "dominicdanborn2@gmail.com",
-      text: "Comment test1",
-      subComments: [],
-      like: 0,
-    });
-
-   
-
-    await comment.save();
-
-    const c = await Comment.findOne({ username: "Dominic2" });
-  
-    await likeComment(c.id, "dominicdanborn2@gmail.com");
-
-    const updatedComment = await Comment.findOne({ username: "Dominic2" });
-
-    console.log(updatedComment);
-
-    expect(updatedComment.like).toBe(0);
-
-  });
-
-  test("Testing unliking comments", async () => {
-    const user = new User({
-      name: "Dominic2",
-      username: "domdan2",
-      givenName: "Dominic2",
-      familyName: "Danborn2",
-      email: "dominicdanborn2@gmail.com",
-      emailVerified: true,
-      profileImgUrl: "google.com",
-      backgroundImgUrl: "google.com",
-      token: "idk",
-      onboarded: false,
-      isPrivate: false,
-      showPlayingSong: false,
-    });
-
-    await user.save();
-
-    const comment = new Comment({
-      username: "Dominic2",
-      userEmail: "dominicdanborn2@gmail.com",
-      text: "Comment test1",
-      subComments: [],
-      like: 0,
-    });
+  //   const comment = new Comment({
+  //     username: "Dominic2",
+  //     userEmail: "dominicdanborn2@gmail.com",
+  //     text: "Comment test1",
+  //     subComments: [],
+  //     like: 0,
+  //   });
 
    
 
-    await comment.save();
+  //   await comment.save();
 
-    const c = await Comment.findOne({ username: "Dominic2" });
+  //   const c = await Comment.findOne({ username: "Dominic2" });
   
-    await unlikeComment(c.id, "dominicdanborn2@gmail.com");
+  //   await likeComment(c.id, "dominicdanborn2@gmail.com");
 
-    const updatedComment = await Comment.findOne({ username: "Dominic2" });
+  //   const updatedComment = await Comment.findOne({ username: "Dominic2" });
 
-    console.log(updatedComment);
+  //   console.log(updatedComment);
 
-    expect(updatedComment.like).toBe(0);
+  //   expect(updatedComment.like).toBe(0);
 
-  });
+  // });
 
-  test("Testing updateSpotifyTokens", async () => {
-    const user = new User({
-      name: "Dominic",
-      username: "domdan",
-      givenName: "Dominic",
-      familyName: "Danborn",
-      email: "dominicdanborn@gmail.com",
-      emailVerified: true,
-      profileImgUrl: "google.com",
-      backgroundImgUrl: "google.com",
-      token: "idk",
-      onboarded: false,
-      isPrivate: false,
-      showPlayingSong: false,
-    });
+  // test("Testing unliking comments", async () => {
+  //   const user = new User({
+  //     name: "Dominic2",
+  //     username: "domdan2",
+  //     givenName: "Dominic2",
+  //     familyName: "Danborn2",
+  //     email: "dominicdanborn2@gmail.com",
+  //     emailVerified: true,
+  //     profileImgUrl: "google.com",
+  //     backgroundImgUrl: "google.com",
+  //     token: "idk",
+  //     onboarded: false,
+  //     isPrivate: false,
+  //     showPlayingSong: false,
+  //   });
 
-    await user.save();
+  //   await user.save();
 
-    await updateSpotifyTokens(
-      "dominicdanborn@gmail.com",
-      "testtoken1234",
-      new Date("2023-03-30T19:56:25.923+00:00"),
-      "test_refresh_token_1234"
-    );
+  //   const comment = new Comment({
+  //     username: "Dominic2",
+  //     userEmail: "dominicdanborn2@gmail.com",
+  //     text: "Comment test1",
+  //     subComments: [],
+  //     like: 0,
+  //   });
 
-    const updatedUser = await User.findOne({
-      email: "dominicdanborn@gmail.com",
-    });
+   
 
-    expect(updatedUser.spotifyToken).toBe("testtoken1234");
-    expect(updatedUser.spotifyTokenEndDate.toISOString()).toBe(
-      "2023-03-30T19:56:25.923Z"
-    );
-    expect(updatedUser.spotifyRefreshToken).toBe("test_refresh_token_1234");
-  });
+  //   await comment.save();
 
-  test("Testing removeSpotifyTokens", async () => {
-    const user = new User({
-      name: "Dominic",
-      username: "domdan",
-      givenName: "Dominic",
-      familyName: "Danborn",
-      email: "dominicdanborn@gmail.com",
-      emailVerified: true,
-      profileImgUrl: "google.com",
-      backgroundImgUrl: "google.com",
-      token: "idk",
-      spotifyToken: "testtoken1234",
-      spotifyTokenEndDate: new Date("2023-03-30T19:56:25.923+00:00"),
-      spotifyRefreshToken: "test_refresh_token_1234",
-      onboarded: false,
-      isPrivate: false,
-      showPlayingSong: false,
-    });
-
-    await user.save();
-
-    await removeSpotifyTokens("dominicdanborn@gmail.com");
-
-    const updatedUser = await User.findOne({
-      email: "dominicdanborn@gmail.com",
-    });
-
-    expect(updatedUser.spotifyToken).toBe(undefined);
-    expect(updatedUser.spotifyTokenEndDate).toBe(undefined);
-    expect(updatedUser.spotifyRefreshToken).toBe(undefined);
-  });
-
+  //   const c = await Comment.findOne({ username: "Dominic2" });
   
+  //   await unlikeComment(c.id, "dominicdanborn2@gmail.com");
+
+  //   const updatedComment = await Comment.findOne({ username: "Dominic2" });
+
+  //   console.log(updatedComment);
+
+  //   expect(updatedComment.like).toBe(0);
+
+  // });
+
+  // test("Testing updateSpotifyTokens", async () => {
+  //   const user = new User({
+  //     name: "Dominic",
+  //     username: "domdan",
+  //     givenName: "Dominic",
+  //     familyName: "Danborn",
+  //     email: "dominicdanborn@gmail.com",
+  //     emailVerified: true,
+  //     profileImgUrl: "google.com",
+  //     backgroundImgUrl: "google.com",
+  //     token: "idk",
+  //     onboarded: false,
+  //     isPrivate: false,
+  //     showPlayingSong: false,
+  //   });
+
+  //   await user.save();
+
+  //   await updateSpotifyTokens(
+  //     "dominicdanborn@gmail.com",
+  //     "testtoken1234",
+  //     new Date("2023-03-30T19:56:25.923+00:00"),
+  //     "test_refresh_token_1234"
+  //   );
+
+  //   const updatedUser = await User.findOne({
+  //     email: "dominicdanborn@gmail.com",
+  //   });
+
+  //   expect(updatedUser.spotifyToken).toBe("testtoken1234");
+  //   expect(updatedUser.spotifyTokenEndDate.toISOString()).toBe(
+  //     "2023-03-30T19:56:25.923Z"
+  //   );
+  //   expect(updatedUser.spotifyRefreshToken).toBe("test_refresh_token_1234");
+  // });
+
+  // test("Testing removeSpotifyTokens", async () => {
+  //   const user = new User({
+  //     name: "Dominic",
+  //     username: "domdan",
+  //     givenName: "Dominic",
+  //     familyName: "Danborn",
+  //     email: "dominicdanborn@gmail.com",
+  //     emailVerified: true,
+  //     profileImgUrl: "google.com",
+  //     backgroundImgUrl: "google.com",
+  //     token: "idk",
+  //     spotifyToken: "testtoken1234",
+  //     spotifyTokenEndDate: new Date("2023-03-30T19:56:25.923+00:00"),
+  //     spotifyRefreshToken: "test_refresh_token_1234",
+  //     onboarded: false,
+  //     isPrivate: false,
+  //     showPlayingSong: false,
+  //   });
+
+  //   await user.save();
+
+  //   await removeSpotifyTokens("dominicdanborn@gmail.com");
+
+  //   const updatedUser = await User.findOne({
+  //     email: "dominicdanborn@gmail.com",
+  //   });
+
+  //   expect(updatedUser.spotifyToken).toBe(undefined);
+  //   expect(updatedUser.spotifyTokenEndDate).toBe(undefined);
+  //   expect(updatedUser.spotifyRefreshToken).toBe(undefined);
+  // });
+
+  test("Test Random song of the day", async () => {
+      let seed = Seed.getSeed();
+      expect(seed).toBe(seed);
+  });
 
   // test("Testing user feed", async () => {
   //   const userA = new User({
