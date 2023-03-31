@@ -37,6 +37,7 @@ describe("Testing db services", () => {
 
   afterEach(async () => {
     await User.deleteMany();
+    await Comment.deleteMany();
   });
 
   afterAll(async () => {
@@ -161,7 +162,7 @@ describe("Testing db services", () => {
     const comment = new Comment({
       username: "Dominic2",
       userEmail: "dominicdanborn2@gmail.com",
-      text: "Comment test1",
+      text: "Like Comment",
       subComments: [],
       like: 0,
     });
@@ -172,13 +173,15 @@ describe("Testing db services", () => {
 
     const c = await Comment.findOne({ username: "Dominic2" });
   
-    await likeComment(c.id, "dominicdanborn2@gmail.com");
 
-    const updatedComment = await Comment.findOne({ username: "Dominic2" });
+    await likeComment(c._id.toString(), "dominicdanborn2@gmail.com");
 
-    console.log(updatedComment);
 
-    expect(updatedComment.like).toBe(0);
+    const updatedComment = await Comment.findOne({ text: "Like Comment" });
+
+
+
+    expect(updatedComment.like).toBe(1);
 
   });
 
@@ -203,20 +206,23 @@ describe("Testing db services", () => {
     const comment = new Comment({
       username: "Dominic2",
       userEmail: "dominicdanborn2@gmail.com",
-      text: "Comment test1",
+      text: "Unlike Comment",
       subComments: [],
-      like: 0,
+      like: 1,
     });
 
    
 
     await comment.save();
 
-    const c = await Comment.findOne({ username: "Dominic2" });
-  
-    await unlikeComment(c.id, "dominicdanborn2@gmail.com");
+    const c = await Comment.findOne({ text: "Unlike Comment" });
 
-    const updatedComment = await Comment.findOne({ username: "Dominic2" });
+    console.log(c._id.toString());
+  
+    await unlikeComment(c._id.toString(), "dominicdanborn2@gmail.com");
+
+
+    const updatedComment = await Comment.findOne({ text: "Unlike Comment" });
 
     console.log(updatedComment);
 
