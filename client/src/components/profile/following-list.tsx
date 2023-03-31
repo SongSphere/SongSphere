@@ -11,6 +11,7 @@ const FollowingList = (props: IFollowingListProps) => {
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
+      setFollowing(props.following);
       props.onClose();
     }
   };
