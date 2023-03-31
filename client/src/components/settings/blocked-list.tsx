@@ -15,6 +15,7 @@ const BlockedList = (props: IListBlockedUsers) => {
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
+      setBlockedUsers(props.blockedList);
       props.onClose();
     }
   };
@@ -26,7 +27,11 @@ const BlockedList = (props: IListBlockedUsers) => {
     if (user) {
       unblock(user.username, selectedUser.username, selectedUser.email).then(
         async () => {
-          Session.setUser(await fetchUser());
+          const updatedUser = await fetchUser();
+          if (updatedUser) {
+            Session.setUser(updatedUser);
+            setBlockedUsers(updatedUser.blockedUsers);
+          }
         }
       );
     }
@@ -53,7 +58,11 @@ const BlockedList = (props: IListBlockedUsers) => {
           Blocked Users
         </h1>
 
-        <form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <div className="py-2">
             <div className="flex justify-between bg-white rounded-md shadow shadow-black/20">
               <input
