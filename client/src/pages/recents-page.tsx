@@ -10,6 +10,7 @@ import RecentFeed from "../components/profile/recents-feed";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import { getSpotifyRecentlyPlayedSongs } from "../services/spotify/spotify-recently-played";
+import { getAppleRecentlyPlayedSongs } from "../services/apple/apple-recently-played";
 
 const RecentsPage = () => {
   const [posts, setPosts] = useState<TMusicContent[]>([]);
@@ -27,6 +28,9 @@ const RecentsPage = () => {
           setPosts(posts);
         });
       } else {
+        getAppleRecentlyPlayedSongs(props.appleMusicInstance).then((posts) => {
+          setPosts(posts);
+        });
       }
     }
   }, [user]);

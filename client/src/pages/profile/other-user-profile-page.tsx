@@ -28,6 +28,8 @@ const OtherUserProfilePage = () => {
   const [service, setService] = useState("");
   const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
+  const [isPrivate, setIsPrivate] = useState<Boolean>();
+
   let { username } = useParams();
 
   const handleFollowingOpen = () => {
@@ -52,6 +54,8 @@ const OtherUserProfilePage = () => {
     }
     setService(Session.getMusicService());
     setUser(Session.getUser());
+
+   
   }, []);
 
   useEffect(() => {
@@ -59,6 +63,8 @@ const OtherUserProfilePage = () => {
       fetchPostsByUsername(selectedUser.username).then((posts) => {
         setPosts(posts);
       });
+
+      selectedUser.isPrivate ? setIsPrivate(true) : setIsPrivate(false);
     }
 
     // Test if this works
@@ -103,9 +109,8 @@ const OtherUserProfilePage = () => {
         </div>
         <div className="col-span-2">
           {/* Means it should be T && T */}
-          {!(isFollowing && posts.length > 0) ? (
-            <NoPosts />
-          ) : (
+          {((!isPrivate || isFollowing) && (posts.length > 0)) ? (
+            // True
             <OtherProfileFeed
               posts={posts}
               setSong={setSong}
@@ -114,6 +119,10 @@ const OtherUserProfilePage = () => {
               blur={!isFollowing}
               user={user}
             />
+          ) : (
+            // False
+            <NoPosts />
+
           )}
         </div>
         {service === "apple" ? (
