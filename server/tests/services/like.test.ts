@@ -2,7 +2,9 @@
 
 import User, { IUser } from "../../db/user";
 import Post, {IPost} from "../../db/post"
-import { savePost } from "../../services/post";
+import { savePost,
+        likePost,
+} from "../../services/post";
 
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -22,11 +24,11 @@ import { type } from "os";
 
 // This creates a new backend in the database
 
-const app = createApp("testRepost");
+const app = createApp("testLike");
 
-describe("Testing repost", () => {
+describe("Testing liking a post", () => {
     beforeAll(async () => {
-        await connect("testRepost");
+        await connect("testLike");
       });
     afterEach(async () => {
     await User.deleteMany();
@@ -36,7 +38,7 @@ describe("Testing repost", () => {
     await mongoose.connection.close();
     });
 
-    test("Testing repost", async () => {
+    test("Testing liking a post", async () => {
         const user = new User({
             name: "Willy",
             username: "Magician",
@@ -58,8 +60,8 @@ describe("Testing repost", () => {
         });
         const savedUser = await user.save();
         const post = new Post({
-            username: "ekane",
-            userEmail: "lkane0705@gmail.com",
+            username: "Magician",
+            userEmail: "willy@gmail.com",
             caption:"nice",
             music:  {
 
@@ -68,6 +70,7 @@ describe("Testing repost", () => {
             likes: 0,
             repost: false,
         });
+        savePost(post);
         
 
     });
