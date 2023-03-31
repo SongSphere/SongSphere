@@ -53,17 +53,20 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
   useEffect(() => {
     if (username) {
       fetchUserByUsername(username).then((user) => {
+        // console.log("selected User", user);
         setSelectedUser(user);
       });
     }
     setService(Session.getMusicService());
     setUser(Session.getUser());
-
-   
   }, []);
 
   useEffect(() => {
     if (selectedUser) {
+      // console.log("followers", selectedUser.following);
+      // console.log("followering", selectedUser.followers);
+      setFollowers(selectedUser.followers);
+      setFollowing(selectedUser.following);
       fetchPostsByUsername(selectedUser.username).then((posts) => {
         setPosts(posts);
       });
@@ -72,22 +75,15 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
     }
 
     // Test if this works
-    if (selectedUser && user) {
-      for (let i = 0; i < selectedUser.followers.length; i++) {
-        if (user.username == selectedUser.followers[i]) {
-          setIsFollowing(true);
-          break;
-        }
-      }
-    }
+    // if (selectedUser && user) {
+    //   for (let i = 0; i < selectedUser.followers.length; i++) {
+    //     if (user.username == selectedUser.followers[i]) {
+    //       setIsFollowing(true);
+    //       break;
+    //     }
+    //   }
+    // }
   }, [selectedUser, user]);
-
-  useEffect(() => {
-    if (selectedUser) {
-      setFollowers(selectedUser.followers);
-      setFollowing(selectedUser.following);
-    }
-  }, [selectedUser]);
 
   if (!selectedUser && service) {
     return <div>fetching user</div>;
@@ -113,7 +109,7 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
         </div>
         <div className="col-span-2">
           {/* Means it should be T && T */}
-          {((!isPrivate || isFollowing) && (posts.length > 0)) ? (
+          {(!isPrivate || isFollowing) && posts.length > 0 ? (
             // True
             <OtherProfileFeed
               posts={posts}
@@ -126,7 +122,6 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
           ) : (
             // False
             <NoPosts />
-
           )}
         </div>
         {service === "apple" ? (

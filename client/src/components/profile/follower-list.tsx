@@ -11,11 +11,13 @@ const FollowerList = (props: IFollowerListProps) => {
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
+      setFollowers(props.followers);
       props.onClose();
     }
   };
 
   useEffect(() => {
+    console.log("test follower", props.followers);
     setFollowers(props.followers);
   }, [props.followers]);
 
