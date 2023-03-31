@@ -13,14 +13,9 @@ import {
 import RandomSongPost from "../components/feed/random-song-content";
 import FriendActivityCard from "../components/feed/friend-activity";
 
-interface IHomePageProps {
-  appleMusicInstance: MusicKit.MusicKitInstance;
-}
-
-const HomePage = (props: IHomePageProps) => {
+const HomePage = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
-  const [randomSongToggle, setRandomSongToggle] = useState<boolean>(false);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [randomSong, setRandomSong] = useState<TMusicContent | null>(null);
 
@@ -54,15 +49,9 @@ const HomePage = (props: IHomePageProps) => {
           <Feed setSong={setSong} user={user} />
         </div>
         {service === "apple" ? (
-          <AppleMusicPlayerCard
-            musicInstance={props.appleMusicInstance}
-            selectedSong={song}
-          />
+          <AppleMusicPlayerCard selectedSong={song} />
         ) : (
-          <SpotifyPlayerCard
-            selectedSong={song}
-            appleMusicInstance={props.appleMusicInstance}
-          />
+          <SpotifyPlayerCard selectedSong={song} />
         )}
       </div>
     </div>

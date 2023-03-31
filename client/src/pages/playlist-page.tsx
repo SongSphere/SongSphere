@@ -12,11 +12,7 @@ import { TPost } from "../types/post";
 import fetchPostsByUsername from "../services/post/fetch-user-posts";
 import { fetchPlaylist } from "../services/user/fetch-playlist";
 
-interface IPlaylistProps {
-  appleMusicInstance: MusicKit.MusicKitInstance;
-}
-
-const PlaylistPage = (props: IPlaylistProps) => {
+const PlaylistPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [posts, setPosts] = useState<TPost[]>([]);
   const [followers, setFollowers] = React.useState(false);
@@ -72,15 +68,9 @@ const PlaylistPage = (props: IPlaylistProps) => {
         </div>
         <div className="">
           {service === "apple" ? (
-            <AppleMusicPlayerCard
-              musicInstance={props.appleMusicInstance}
-              selectedSong={song}
-            />
+            <AppleMusicPlayerCard selectedSong={song} />
           ) : (
-            <SpotifyPlayerCard
-              selectedSong={song}
-              appleMusicInstance={props.appleMusicInstance}
-            />
+            <SpotifyPlayerCard selectedSong={song} />
           )}
         </div>
       </div>

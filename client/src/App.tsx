@@ -5,15 +5,13 @@ import fetchUser from "./services/user/fetch-user";
 import AuthPage from "./pages/auth-page";
 import OnBoardPage from "./pages/onboard-page";
 import { TUser } from "./types/user";
-import { TPost } from "./types/post";
 import Session from "./session";
-import React from "react";
 
 const App = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [sessionUpdated, setSessionUpdated] = useState<boolean>(false);
 
-  const [appleMusicInstance, setAppleMusicInstance] =
+  const [AMInstance, setAMInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
 
   useEffect(() => {
@@ -54,7 +52,8 @@ const App = () => {
           build: "1978.4.1",
         },
       });
-      setAppleMusicInstance(MusicKit.getInstance());
+      Session.setAMInstance(MusicKit.getInstance());
+      setAMInstance(MusicKit.getInstance());
     };
 
     updateSession();
@@ -64,16 +63,16 @@ const App = () => {
     };
   }, []);
 
-  if (!appleMusicInstance) {
+  if (!AMInstance) {
     return <div>rendering apple music instance</div>;
   }
 
   if (sessionUpdated) {
     if (user && Session.getIsLoggedIn()) {
       if (!user.onboarded) {
-        return <OnBoardPage appleMusicInstance={appleMusicInstance} />;
+        return <OnBoardPage />;
       } else {
-        return <Router appleMusicInstance={appleMusicInstance} />;
+        return <Router />;
       }
     } else {
       return <AuthPage />;

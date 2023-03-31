@@ -9,6 +9,7 @@ export const addFollow = async (
     const user = await User.findOne({
       username: usernameOfUserGettingFollowed,
     });
+    // console.error("user", user);
     if (user.isPrivate) {
       const followRequest = new FollowRequest({
         username: usernameOfUserGettingFollowed,

@@ -29,9 +29,8 @@ const SpotifySearch = async (
   return spotifySearch(term, category, token, limit);
 };
 
-
 interface ISearchSongProps {
-  musicInstance: MusicKit.MusicKitInstance;
+  // musicInstance: MusicKit.MusicKitInstance;
   song?: string;
 }
 
@@ -44,43 +43,41 @@ const SearchSong = (props: ISearchSongProps) => {
   let [category, setCategory] = useState<string>("songs");
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
-
+  const [AMInstance, setAMInstance] =
+    useState<MusicKit.MusicKitInstance | null>(null);
   const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
-
   const [caption, setCaption] = useState<string>("");
   const isRepost = false;
 
   useEffect(() => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
-    
+    setAMInstance(Session.getAMInstance());
   }, [Session.getUser()]);
 
   useEffect(() => {
-    if(user) {
-      if(props.song && user) {
-        selectService(props.song, "songs", 1).then((result) =>{
+    if (user) {
+      if (props.song && user) {
+        selectService(props.song, "songs", 1).then((result) => {
           setCategory("songs");
-          songs=result!;
+          songs = result!;
           setSongs(result!);
-          if(result) {
+          if (result) {
             setSelected(result[0]);
           }
-        })
+        });
       }
     }
-  }, [user])
-  
-  
+  }, [user]);
 
   const selectService = async (
     term: string,
     category: string,
     limit: number
   ) => {
-    if (user) {
+    if (user && AMInstance) {
       if (service === "apple") {
-        return AppleSearch(term, category, limit, props.musicInstance);
+        return AppleSearch(term, category, limit, AMInstance);
       } else if (service === "spotify") {
         return SpotifySearch(term, category, user.spotifyToken, limit);
       } else {
@@ -88,7 +85,6 @@ const SearchSong = (props: ISearchSongProps) => {
       }
     }
   };
-  
 
   const closeModal = () => setOpen2(false);
 
@@ -98,57 +94,58 @@ const SearchSong = (props: ISearchSongProps) => {
   const handleOpen2 = () => {
     setOpen2(!open2);
   };
+
   return (
     <div className="grid h-full grid-cols-4 max-w-[95%]">
-    <div className="col-span-2 mt-5 ml-5 bg-lgrey rounded-2xl h-[90%]">
-    <h1 className="text-4xl text-center text-navy">Search For</h1>
+      <div className="col-span-2 mt-5 ml-5 bg-lgrey rounded-2xl h-[90%]">
+        <h1 className="text-4xl text-center text-navy">Search For</h1>
         <div className="grid w-full grid-flow-col">
           <button
-                className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
-                onClick={async () =>
-                  await selectService(song as string, "songs", 8).then(
-                    (result) => {
-                      setCategory("songs");
-                      songs = result!;
-                      setSongs(result!);
-                    }
-                  )
+            className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
+            onClick={async () =>
+              await selectService(song as string, "songs", 8).then((result) => {
+                setCategory("songs");
+                songs = result!;
+                setSongs(result!);
+              })
+            }
+          >
+            {" "}
+            Songs{" "}
+          </button>
+          <button
+            className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl visited:border-b-yellow-100"
+            onClick={async () =>
+              await selectService(song as string, "albums", 8).then(
+                (result) => {
+                  setCategory("albums");
+                  songs = result!;
+                  setSongs(result!);
                 }
-              >
-                {" "}
-                Songs{" "}
-           </button>
-           <button
-                className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl visited:border-b-yellow-100"
-                onClick={async () =>
-                  await selectService(song as string, "albums", 8).then((result) => {
-                    setCategory("albums");
-                    songs = result!;
-                    setSongs(result!);
-                  })
+              )
+            }
+          >
+            {" "}
+            Albums{" "}
+          </button>
+          <button
+            className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
+            onClick={async () =>
+              await selectService(song as string, "artists", 8).then(
+                (result) => {
+                  setCategory("artists");
+                  songs = result!;
+                  setSongs(result!);
                 }
-              >
-                {" "}
-                Albums{" "}
-              </button>
-              <button
-                className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
-                onClick={async () =>
-                   await selectService(song as string, "artists", 8).then(
-                    (result) => {
-                      setCategory("artists");
-                      songs = result!;
-                      setSongs(result!);
-                    }
-                  )
-                }
-              >
-                {" "}
-                Artists{" "}
-              </button>
+              )
+            }
+          >
+            {" "}
+            Artists{" "}
+          </button>
         </div>
-      <div className="grid justify-center w-full grid-flow-col mt-5">
-        <input
+        <div className="grid justify-center w-full grid-flow-col mt-5">
+          <input
             className=""
             placeholder="Enter Post Title"
             onChange={(event) =>
@@ -161,39 +158,35 @@ const SearchSong = (props: ISearchSongProps) => {
               )
             }
           />
-      </div>
-      <div className="w-[90%] mt-3 mx-auto">
-        {songs.map((s) => (
-          <div className="grid w-full grid-flow-col">
-            <button
-              className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
-              key={s.id}
-              onClick={() => setSelected(s)}
-            > 
-              <div className="flex text-center w-[100%]">
-                <div className="w-20 h-20 ">
-                  <img src={s.cover} />
+        </div>
+        <div className="w-[90%] mt-3 mx-auto">
+          {songs.map((s) => (
+            <div className="grid w-full grid-flow-col">
+              <button
+                className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
+                key={s.id}
+                onClick={() => setSelected(s)}
+              >
+                <div className="flex text-center w-[100%]">
+                  <div className="w-20 h-20 ">
+                    <img src={s.cover} />
+                  </div>
+                  {s.name}
+                  <br />
+                  {s.artist}
                 </div>
-                {s.name} 
-                <br />
-                {s.artist}
-              </div>
-            </button>
-          </div>
-        ))}
-      </div>
-      {/* This will be edited once merged to incoroporate username userSessionContext */}
-      
-      
+              </button>
+            </div>
+          ))}
+        </div>
+        {/* This will be edited once merged to incoroporate username userSessionContext */}
       </div>
 
       <div className="w-full col-span-2 pt-5 m-5 h-5/6 rounded-xl bg-lgrey">
         <div className="flex justify-center">
-          {
-            selected ? (
-              <img className="max-w-[75%]" src={selected.cover}/>
-            ) :null
-          }
+          {selected ? (
+            <img className="max-w-[75%]" src={selected.cover} />
+          ) : null}
         </div>
         <div className="grid-flow-col mt-5 text-center">
           <h1 className="text-2xl text-navy">{selected?.name}</h1>
@@ -212,30 +205,30 @@ const SearchSong = (props: ISearchSongProps) => {
           </form>
         </div>
         <button
-        className="float-right p-2 mb-2 mr-10 rounded-md text-lgrey bg-navy hover:bg-lblue"
-        onClick={async () => {
-          setOpen2(true);
-          if (user) {
-            const newPost: TPost = {
-              username: user.username,
-              userEmail: user.email,
-              caption: caption,
-              music: selected!,
-              comments: [],
-              likes: 0,
-              repost: isRepost,
-            };
-            await sendPost(newPost)
-              .then((res) => {
-                if (!res) {
-                  setPostSuccessFail(<PostFailure />);
-                } else {
-                  setPostSuccessFail(<PostSucess />);
-                }
-              })
-              .catch((error) => {
-                <PostFailure />;
-              });
+          className="float-right p-2 mb-2 mr-10 rounded-md text-lgrey bg-navy hover:bg-lblue"
+          onClick={async () => {
+            setOpen2(true);
+            if (user) {
+              const newPost: TPost = {
+                username: user.username,
+                userEmail: user.email,
+                caption: caption,
+                music: selected!,
+                comments: [],
+                likes: 0,
+                repost: isRepost,
+              };
+              await sendPost(newPost)
+                .then((res) => {
+                  if (!res) {
+                    setPostSuccessFail(<PostFailure />);
+                  } else {
+                    setPostSuccessFail(<PostSucess />);
+                  }
+                })
+                .catch((error) => {
+                  <PostFailure />;
+                });
             }
           }}
         >
@@ -250,7 +243,6 @@ const SearchSong = (props: ISearchSongProps) => {
           </div>
         </Popup>
       </div>
-
     </div>
   );
 };

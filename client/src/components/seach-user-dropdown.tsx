@@ -4,11 +4,7 @@ import { TUser } from "../types/user";
 import { useNavigate } from "react-router-dom";
 import Session from "../session";
 
-interface ISearchUserDropDownProps {
-  appleMusicInstance: MusicKit.MusicKitInstance;
-}
-
-const SearchUserDropDown = (props: ISearchUserDropDownProps) => {
+const SearchUserDropDown = () => {
   let currentUser = Session.getUser();
   let [users, setUsers] = useState<TUser[]>([]);
   const navigate = useNavigate();
