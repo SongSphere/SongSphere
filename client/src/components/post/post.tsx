@@ -23,6 +23,7 @@ interface IPostProps {
 const Post = (props: IPostProps) => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
   const [postFocusPage, setPostFocusPage] = useState(false);
   const [deleteSuccessText, setDeleteSuccessText] = useState<string>("");
   const [postOwner, setPostOwner] = useState<TUser | null>(null);
@@ -112,7 +113,14 @@ const Post = (props: IPostProps) => {
                                 u.defaultPlatform
                               ).then(async (id) => {
                                 if (a) {
-                                  await addToAppleLibrary(id, a);
+                                  try {
+                                    await addToAppleLibrary(id, a);
+                                    setDeleteSuccessText("Success");
+                                    setOpen3(true);
+                                  } catch (error) {
+                                    setDeleteSuccessText("Fail");
+                                    setOpen3(true);
+                                  }
                                 }
                               });
                             } else {
@@ -123,10 +131,17 @@ const Post = (props: IPostProps) => {
                                 u,
                                 u.defaultPlatform
                               );
-                              await addToSpotifyLibrary(
-                                id,
-                                props.user.spotifyToken
-                              );
+                              try {
+                                await addToSpotifyLibrary(
+                                  id,
+                                  props.user.spotifyToken
+                                );
+                                setDeleteSuccessText("Success");
+                                setOpen3(true);
+                              } catch (error) {
+                                setDeleteSuccessText("Fail");
+                                setOpen3(true);
+                              }
                             }
                           }
                           setOpen(false);
@@ -162,7 +177,20 @@ const Post = (props: IPostProps) => {
           <a className="close" onClick={closeDeleteSuccess}>
             &times;
           </a>
-          {deleteSuccessText}
+          <div className="px-4 py-2 border-2 rounded-lg bg-slate-200">
+            {deleteSuccessText}
+          </div>
+        </div>
+      </Popup>
+
+      <Popup open={open3} closeOnDocumentClick onClose={closeDeleteSuccess}>
+        <div className="modal">
+          <a className="close" onClick={closeDeleteSuccess}>
+            &times;
+          </a>
+          <div className="px-4 py-2 border-2 rounded-lg bg-slate-200">
+            {deleteSuccessText}
+          </div>
         </div>
       </Popup>
 

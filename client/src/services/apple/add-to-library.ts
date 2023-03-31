@@ -7,12 +7,14 @@ export const addToAppleLibrary = async (
   id: string,
   musicInstance: MusicKit.MusicKitInstance
 ) => {
-  try {
-    // Example for albums
-    // await musicInstance.api.addToLibrary({ albums: [id] });
-
-    await musicInstance.api.addToLibrary({ songs: [id] });
-  } catch (error) {
-    console.log(error);
-  }
+  return new Promise(async (resolve, reject) => {
+    await musicInstance.api
+      .addToLibrary({ songs: [id] })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 };
