@@ -24,7 +24,7 @@ const FriendActivityCard = () => {
             setActiveUsers(listeningUsers);
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
     };

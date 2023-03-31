@@ -17,7 +17,6 @@ const FollowerList = (props: IFollowerListProps) => {
   };
 
   useEffect(() => {
-    console.log("test follower", props.followers);
     setFollowers(props.followers);
   }, [props.followers]);
 
