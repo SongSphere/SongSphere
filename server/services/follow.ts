@@ -68,7 +68,7 @@ export const modifyFollowRequest = async (
     if (action) {
       await acceptFollowRequest(username, requester);
     } else {
-      await denyFollowRequest(username, requester);
+      // await denyFollowRequest(username, requester);
     }
     await removeFollowRequest(id);
   } catch (error) {
