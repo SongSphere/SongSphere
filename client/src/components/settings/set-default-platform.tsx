@@ -69,7 +69,7 @@ const DefaultPlatform = () => {
         if (s == currService) {
           return (
             <button
-              className="w-11/12 text-black bg-red-300 border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+              className="w-11/12 text-black bg-red-300 border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey"
               key={s}
               onClick={() => {
                 Session.setMusicService(s);
@@ -86,7 +86,7 @@ const DefaultPlatform = () => {
         } else {
           return (
             <button
-              className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey focus:bg-navy focus:text-lgrey"
+              className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey"
               key={s}
               onClick={() => {
                 Session.setMusicService(s);
