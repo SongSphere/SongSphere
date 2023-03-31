@@ -15,7 +15,6 @@ interface ISpotifySong {
 
 interface ISpotifyPlayerCardProps {
   selectedSong: TMusicContent | null;
-  appleMusicInstance: MusicKit.MusicKitInstance;
 }
 
 const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
@@ -26,10 +25,13 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
+  const [AMInstance, setAMInstance] =
+    useState<MusicKit.MusicKitInstance | null>(null);
 
   useEffect(() => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
+    setAMInstance(Session.getAMInstance());
   }, [Session.getUser()]);
 
   const playMusicHandler = () => {
@@ -98,10 +100,10 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
       );
     };
 
-    if (user && props.selectedSong) {
+    if (user && props.selectedSong && AMInstance) {
       selectServiceHandler(
         props.selectedSong,
-        props.appleMusicInstance,
+        AMInstance,
         user,
         service,
         user.spotifyToken

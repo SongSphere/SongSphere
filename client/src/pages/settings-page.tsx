@@ -38,10 +38,6 @@ import styled from "styled-components";
 import setShowSong from "../services/settings/set-show-song";
 import { getSpotifyRecentlyPlayedSongs } from "../services/spotify/spotify-recently-played";
 
-interface ISettingPageProps {
-  appleMusicInstance: MusicKit.MusicKitInstance;
-}
-
 const Button = styled.button`
   background-color: red
   color: red;
@@ -62,7 +58,7 @@ const Button = styled.button`
   }
 `;
 
-const SettingsPage = (props: ISettingPageProps) => {
+const SettingsPage = () => {
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
@@ -191,7 +187,6 @@ const SettingsPage = (props: ISettingPageProps) => {
             </div>
           </div>
           <AdjustNamesLink
-            appleMusicInstance={props.appleMusicInstance}
             username={username}
             givenName={givenName}
             middleName={middleName}
@@ -335,7 +330,7 @@ const SettingsPage = (props: ISettingPageProps) => {
           <h3 className="mb-5 text-3xl font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
             Music Settings
           </h3>
-          <AppleLink appleMusicInstance={props.appleMusicInstance} />
+          <AppleLink />
           <button
             className="p-2 rounded-md bg-amber-300"
             onClick={async () => {

@@ -10,6 +10,7 @@ import {
   getSeedForRandomSong,
   sendComment,
   getComments,
+  addToSpotifyLibrary,
   sendNotification,
   getSubComments,
   getComment,
@@ -30,18 +31,15 @@ import auth from "../middleware/auth";
 const router = express.Router();
 
 router.post("/api/makepost", storePost);
+router.post("/api/spotify/addtolib", addToSpotifyLibrary);
 router.post("/api/editpost", editPost);
 router.post("/api/removepost", deletePost);
 router.post("/api/post/comment", sendComment);
 
 router.post("/api/post/notification", sendNotification);
 
-
 router.get("/api/post/:id", getPostById);
 router.get("/api/randomsong/seed", getSeedForRandomSong);
-
-
-
 
 router.get("/api/post/getComments/:id", getComments);
 router.get("/api/post/getComment/:id", getComment);

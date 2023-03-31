@@ -21,11 +21,7 @@ import fetchPostsByUsername from "../../services/post/fetch-user-posts";
 import FollowingList from "../../components/profile/following-list";
 import FollowerList from "../../components/profile/follower-list";
 
-interface IProfileProps {
-  appleMusicInstance: MusicKit.MusicKitInstance;
-}
-
-const ProfilePage = (props: IProfileProps) => {
+const ProfilePage = () => {
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [showFollowerModal, setShowFollowerModal] = useState(false);
   const [posts, setPosts] = useState<TPost[]>([]);
@@ -82,15 +78,9 @@ const ProfilePage = (props: IProfileProps) => {
           )}
         </div>
         {service === "apple" ? (
-          <AppleMusicPlayerCard
-            musicInstance={props.appleMusicInstance}
-            selectedSong={song}
-          />
+          <AppleMusicPlayerCard selectedSong={song} />
         ) : (
-          <SpotifyPlayerCard
-            selectedSong={song}
-            appleMusicInstance={props.appleMusicInstance}
-          />
+          <SpotifyPlayerCard selectedSong={song} />
         )}
         <FollowingList
           following={user.following}

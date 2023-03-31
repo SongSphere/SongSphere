@@ -4,6 +4,7 @@ const Session = (function () {
   let user: TUser | null = null;
   let musicService: string = "";
   let isLoggedIn: Boolean = false;
+  let AMInstance: MusicKit.MusicKitInstance | null = null; // AM stands for Apple Music
 
   const getUser = () => {
     return user;
@@ -15,6 +16,14 @@ const Session = (function () {
 
   const getMusicService = () => {
     return musicService;
+  };
+
+  const getAMInstance = () => {
+    return AMInstance;
+  };
+
+  const setAMInstance = (am: MusicKit.MusicKitInstance) => {
+    AMInstance = am;
   };
 
   const setMusicService = (m: string) => {
@@ -36,6 +45,8 @@ const Session = (function () {
     setMusicService: setMusicService,
     getIsLoggedIn: getIsLoggedIn,
     setIsLoggedIn: setIsLoggedIn,
+    getAMInstance: getAMInstance,
+    setAMInstance: setAMInstance,
   };
 })();
 

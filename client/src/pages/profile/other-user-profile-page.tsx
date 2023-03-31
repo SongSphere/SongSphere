@@ -15,11 +15,7 @@ import { TMusicContent } from "../../types/music-content";
 import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
 
-interface IOtherUserProfileProps {
-  appleMusicInstance: MusicKit.MusicKitInstance;
-}
-
-const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
+const OtherUserProfilePage = () => {
   const [following, setFollowing] = useState<string[]>([]);
   const [followers, setFollowers] = useState<string[]>([]);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
@@ -125,15 +121,9 @@ const OtherUserProfilePage = (props: IOtherUserProfileProps) => {
           )}
         </div>
         {service === "apple" ? (
-          <AppleMusicPlayerCard
-            musicInstance={props.appleMusicInstance}
-            selectedSong={song}
-          />
+          <AppleMusicPlayerCard selectedSong={song} />
         ) : (
-          <SpotifyPlayerCard
-            selectedSong={song}
-            appleMusicInstance={props.appleMusicInstance}
-          />
+          <SpotifyPlayerCard selectedSong={song} />
         )}
         <FollowingList
           following={following}

@@ -1,19 +1,27 @@
 import fetchUser from "../../services/user/fetch-user";
 import { appleAuth } from "../../services/user/apple-music-link";
 import Session from "../../session";
+import { useEffect, useState } from "react";
 
-interface IAppleLinkProps {
-  appleMusicInstance: MusicKit.MusicKitInstance;
-}
+const AppleLink = () => {
+  const [AMInstance, setAMInstance] =
+    useState<MusicKit.MusicKitInstance | null>(null);
 
-const AppleLink = (props: IAppleLinkProps) => {
+  useEffect(() => {
+    setAMInstance(Session.getAMInstance());
+  }, []);
+
+  if (!AMInstance) {
+    return <div>fetching Apple Music Instance</div>;
+  }
+
   return (
     <div>
       <button
         className="p-2 bg-red-400 rounded-md"
         onClick={async () => {
           try {
-            await appleAuth(props.appleMusicInstance);
+            await appleAuth(AMInstance);
           } catch (error) {
             console.error(error);
           }

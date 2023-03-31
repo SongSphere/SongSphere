@@ -6,7 +6,6 @@ import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 
 interface IMusicPlayerCardProps {
-  musicInstance: MusicKit.MusicKitInstance;
   selectedSong: TMusicContent | null;
 }
 
@@ -16,21 +15,27 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [song, setSong] = useState<MusicKit.Resource | null>(null);
   const [service, setService] = useState<string>("");
-
-  const musicInstance = props.musicInstance;
-  musicInstance.addEventListener("playbackTimeDidChange", () => {
-    setProgress(musicInstance.player.currentPlaybackProgress * 100);
-  });
+  const [AMInstance, setAMInstance] =
+    useState<MusicKit.MusicKitInstance | null>(null);
 
   useEffect(() => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
+    setAMInstance(Session.getAMInstance());
   }, [Session.getUser()]);
 
   useEffect(() => {
+    if (AMInstance) {
+      AMInstance.addEventListener("playbackTimeDidChange", () => {
+        setProgress(AMInstance.player.currentPlaybackProgress * 100);
+      });
+    }
+  }, [AMInstance]);
+
+  useEffect(() => {
     const fetchSong = async (songId: string) => {
-      if (musicInstance) {
-        const song = await musicInstance.api.song(songId.toString());
+      if (AMInstance) {
+        const song = await AMInstance.api.song(songId.toString());
         setSong(song);
 
         const mediaItemOptions: MusicKit.MediaItemOptions = {
@@ -41,7 +46,7 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
 
         const mediaItem = new MusicKit.MediaItem(mediaItemOptions);
 
-        musicInstance.setQueue({
+        AMInstance.setQueue({
           items: [mediaItem],
         });
       } else {
@@ -64,31 +69,26 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
       );
     };
 
-    if (props.selectedSong && user) {
-      selectServiceHandler(
-        props.selectedSong,
-        props.musicInstance,
-        user,
-        service
-      );
+    if (props.selectedSong && user && AMInstance) {
+      selectServiceHandler(props.selectedSong, AMInstance, user, service);
     }
 
     if (props.selectedSong) {
       fetchSong(props.selectedSong.id);
     }
-  }, [props.selectedSong, user]);
+  }, [props.selectedSong, user, AMInstance]);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
 
-    if (musicInstance != null) {
+    if (AMInstance != null) {
       if (!isPlaying) {
-        musicInstance.play();
+        AMInstance.play();
         if (props.selectedSong) {
           setActivity(props.selectedSong);
         }
       } else {
-        musicInstance.pause();
+        AMInstance.pause();
         if (props.selectedSong) {
           setActivity(null);
         }

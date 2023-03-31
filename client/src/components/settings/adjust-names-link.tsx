@@ -31,7 +31,6 @@ const Button = styled.button`
 `;
 
 interface IAdjustNamesLinkProps {
-  appleMusicInstance: MusicKit.MusicKitInstance | null;
   username: string;
   givenName: string;
   middleName: string;

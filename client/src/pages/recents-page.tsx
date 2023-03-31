@@ -12,18 +12,16 @@ import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import { getSpotifyRecentlyPlayedSongs } from "../services/spotify/spotify-recently-played";
 import { getAppleRecentlyPlayedSongs } from "../services/apple/apple-recently-played";
 
-interface IRecentProps {
-  appleMusicInstance: MusicKit.MusicKitInstance;
-}
-
-const RecentsPage = (props: IRecentProps) => {
+const RecentsPage = () => {
   const [posts, setPosts] = useState<TMusicContent[]>([]);
   const [user, setUser] = useState<TUser | null>(null);
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [service, setService] = useState<string>("");
+  const [apple, setApple] = useState<MusicKit.MusicKitInstance | null>();
   useEffect(() => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
+    setApple(Session.getAMInstance());
   }, [Session.getUser()]);
   useEffect(() => {
     if (user) {
@@ -32,12 +30,22 @@ const RecentsPage = (props: IRecentProps) => {
           setPosts(posts);
         });
       } else {
-        getAppleRecentlyPlayedSongs(props.appleMusicInstance).then((posts) => {
-          setPosts(posts);
-        });
+        //let a = Session.getAMInstance();
+        console.log("H");
+        if (apple) {
+          getAppleRecentlyPlayedSongs(apple).then((posts) => {
+            console.log(posts);
+            console.log("hello");
+            if (posts.length == 0) {
+            }
+            setPosts(posts);
+          });
+        } else {
+          console.log("AAHAAAAA");
+        }
       }
     }
-  }, [user]);
+  }, [user, apple]);
 
   if (!user) {
     return <div>fetching user</div>;
@@ -57,15 +65,9 @@ const RecentsPage = (props: IRecentProps) => {
         </div>
         <div className="mt-5">
           {service === "apple" ? (
-            <AppleMusicPlayerCard
-              musicInstance={props.appleMusicInstance}
-              selectedSong={song}
-            />
+            <AppleMusicPlayerCard selectedSong={song} />
           ) : (
-            <SpotifyPlayerCard
-              selectedSong={song}
-              appleMusicInstance={props.appleMusicInstance}
-            />
+            <SpotifyPlayerCard selectedSong={song} />
           )}
         </div>
       </div>
