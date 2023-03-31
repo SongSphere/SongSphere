@@ -12,12 +12,17 @@ export const addToSpotifyLibrary = async (id: string, token: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then(async (res) => {
-      if (res.status != 201) {
-        console.error(res);
+    })
+      .then(async (res) => {
+        resolve(true);
+        // if (res.status != 201) {
+        //   console.error(res);
+        //   reject(false);
+        // }
+        // resolve(true);
+      })
+      .catch((error) => {
         reject(false);
-      }
-      resolve(true);
-    });
+      });
   });
 };
