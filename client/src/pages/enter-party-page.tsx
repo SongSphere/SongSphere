@@ -4,8 +4,12 @@ import { useEffect } from "react";
 import Session from "../session";
 import { TPartyRoom } from "../types/party-room";
 import CreateRoom from "../services/party/createRoom";
+import { useNavigate } from "react-router-dom";
+import fetchRoomByOwner from "../services/party/fetch-room-by-owner";
 
 const EnterPartyPage = () => {
+    let navigate = useNavigate();
+
     const [user, setUser] = useState<TUser | null>(null);
     const [description, setDescription] = useState<string>("");
     const [name, setName] = useState<string>("");
@@ -66,7 +70,10 @@ const EnterPartyPage = () => {
                                 if (!res) {
                                  
                                 } else {
-                                  
+                                    fetchRoomByOwner(newRoom.ownerUsername).then((room) => {
+                                        navigate(`/party/${room._id}`);
+                                        window.location.reload();
+                                    })
                                 }
                               })
                               .catch((error) => {

@@ -26,3 +26,29 @@ export const saveRoom = async (
         throw error;
     }
 };
+
+export const fetchRoomByOwner = async (username: string) => {
+    try {
+        const room = await PartyRoom.findOne({ownerUsername: username});
+        return room;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const fetchRoomById = async (id: string) => {
+    try {
+        const room = await PartyRoom.findOne({_id: id});
+        return room;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deleteRoom = async (room: TPartyRoom) => {
+    try {
+        await PartyRoom.findByIdAndDelete(room._id);
+    } catch (error) {
+        throw error;
+    }
+}
