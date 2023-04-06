@@ -17,6 +17,7 @@ import FollowRequestPage from "../pages/follow-request-page";
 import LikesPage from "../pages/likes-page";
 import RecentsPage from "../pages/recents-page";
 import PlaylistPage from "../pages/playlist-page";
+import EnterPartyPage from "../pages/enter-party-page";
 
 const Router = () => {
   let element = useRoutes([
@@ -79,6 +80,10 @@ const Router = () => {
     {
       path: "/playlist",
       element: <PlaylistPage />,
+    },
+    {
+      path: "/enterParty",
+      element: <EnterPartyPage />
     },
   ]);
   return element;

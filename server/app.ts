@@ -20,6 +20,7 @@ import userRouter from "./routes/user";
 import postRouter from "./routes/posting";
 import followRouter from "./routes/follow";
 import playlistRouter from "./routes/playlist";
+import partyRouter from "./routes/party-room"
 import { initScheduledJobs } from "./services/scheduler";
 
 // import middleware
@@ -87,6 +88,7 @@ const createApp = (dbname: string) => {
   app.use(postRouter);
   app.use(followRouter);
   app.use(playlistRouter);
+  app.use(partyRouter);
 
   // Attached below is how to generate a MusicKit Developer Token for this project
   // I would recommend using the apple-music-token-generator repo though
