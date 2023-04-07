@@ -9,6 +9,7 @@ import {
     fetchRoomByOwner,
     fetchRoomById,
     deleteRoom,
+    addListener,
 } from "../services/party-room"
 
 
@@ -53,6 +54,18 @@ export const getRoomById = async (req: Request, res: Response) => {
 export const removeRoom = async (req: Request, res: Response) => {
     try {
         await deleteRoom(req.body.room);
+        res.status(201);
+        res.json({ msg: "success" });
+    }
+    catch(error) {
+        res.status(500);
+        res.json({error: error});
+    }
+}
+
+export const addMember = async (req: Request, res: Response) => {
+    try {
+        await addListener(req.body.id, req.body.username);
         res.status(201);
         res.json({ msg: "success" });
     }

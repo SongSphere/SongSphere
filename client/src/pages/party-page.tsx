@@ -33,7 +33,7 @@ const PartyPage = () => {
     if(!room) {
         return(
             <div>
-                fetching room
+                Invalid Room Id
             </div>
         )
     }

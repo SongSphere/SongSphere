@@ -51,4 +51,12 @@ export const deleteRoom = async (room: TPartyRoom) => {
     } catch (error) {
         throw error;
     }
-}
+};
+
+export const addListener = async (id: string, username: string) => {
+    try {
+        await PartyRoom.findOneAndUpdate({_id: id}, {$push:{members: username}});
+    } catch (error) {
+        throw error;
+    }
+};

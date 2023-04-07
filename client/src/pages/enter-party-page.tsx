@@ -6,6 +6,8 @@ import { TPartyRoom } from "../types/party-room";
 import CreateRoom from "../services/party/createRoom";
 import { useNavigate } from "react-router-dom";
 import fetchRoomByOwner from "../services/party/fetch-room-by-owner";
+import fetchRoomById from "../services/party/fetch-room-by-id";
+import AddMember from "../services/party/add-member";
 
 const EnterPartyPage = () => {
     let navigate = useNavigate();
@@ -18,6 +20,13 @@ const EnterPartyPage = () => {
     useEffect(() => {
         setUser(Session.getUser());
     }, [Session.getUser()])
+    if(!user) {
+        return(
+            <div>
+                fetching user
+            </div>
+        )
+    }
     return(
         <div className="w-full h-full min-h-screen bg-lblue">
             <div className="grid grid-cols-2">
@@ -103,7 +112,18 @@ const EnterPartyPage = () => {
                             </label>
                         </form>
                     </div>
-                    <button className="p-3 text-white rounded-xl bg-navy">
+                    <button className="p-3 text-white rounded-xl bg-navy"
+                    onClick={() => {
+                        fetchRoomById(id)
+                        .then((res) => {
+                            if(res) {
+                                AddMember(res, user.username);
+                                navigate(`/party/${res._id}`);
+                                window.location.reload();
+                            }
+                        })
+                    }}
+                    >
                         Enter
                     </button>
                 </div>
