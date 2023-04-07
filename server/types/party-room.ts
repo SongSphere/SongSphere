@@ -1,5 +1,5 @@
 export type TPartyRoom = {
-    id?: string;
+    _id?: string;
     ownerUsername: string;
     ownerEmail: string;
     partyName: string;

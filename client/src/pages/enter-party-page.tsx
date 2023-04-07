@@ -4,8 +4,15 @@ import { useEffect } from "react";
 import Session from "../session";
 import { TPartyRoom } from "../types/party-room";
 import CreateRoom from "../services/party/createRoom";
+import { useNavigate } from "react-router-dom";
+import fetchRoomByOwner from "../services/party/fetch-room-by-owner";
+import fetchRoomById from "../services/party/fetch-room-by-id";
+import AddMember from "../services/party/add-member";
 
 const EnterPartyPage = () => {
+    let navigate = useNavigate();
+
+    let room;
     const [user, setUser] = useState<TUser | null>(null);
     const [description, setDescription] = useState<string>("");
     const [name, setName] = useState<string>("");
@@ -14,6 +21,13 @@ const EnterPartyPage = () => {
     useEffect(() => {
         setUser(Session.getUser());
     }, [Session.getUser()])
+    if(!user) {
+        return(
+            <div>
+                fetching user
+            </div>
+        )
+    }
     return(
         <div className="w-full h-full min-h-screen bg-lblue">
             <div className="grid grid-cols-2">
@@ -66,7 +80,10 @@ const EnterPartyPage = () => {
                                 if (!res) {
                                  
                                 } else {
-                                  
+                                    fetchRoomByOwner(newRoom.ownerUsername).then((room) => {
+                                        navigate(`/party/${room._id}`);
+                                        window.location.reload();
+                                    })
                                 }
                               })
                               .catch((error) => {
@@ -96,7 +113,19 @@ const EnterPartyPage = () => {
                             </label>
                         </form>
                     </div>
-                    <button className="p-3 text-white rounded-xl bg-navy">
+                    <button className="p-3 text-white rounded-xl bg-navy"
+                    onClick={() => {
+                        fetchRoomById(id)
+                        .then((res) => {
+                            if(res) {
+                                navigate(`/party/${res._id}`);
+                                window.location.reload();
+                            } else {
+                                
+                            }
+                        })
+                    }}
+                    >
                         Enter
                     </button>
                 </div>
