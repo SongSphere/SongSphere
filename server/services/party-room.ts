@@ -60,3 +60,21 @@ export const addListener = async (id: string, username: string) => {
         throw error;
     }
 };
+
+export const deleteListener = async (id: string, username: string) => {
+    try {
+        await PartyRoom.findOneAndUpdate({_id: id}, {$pull:{members: username}});
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const transferOwner = async (room: TPartyRoom, username: string) => {
+    try {
+        await PartyRoom.findByIdAndUpdate(room._id,{
+            ownerUsername: room.ownerUsername,
+        });
+    } catch (error) {
+        throw error;
+    }
+};

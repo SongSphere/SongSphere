@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import fetchRoomById from "../services/party/fetch-room-by-id";
 import Session from "../session";
 import DeleteRoom from "../services/party/delete-room";
+import DeleteMember from "../services/party/delete-member";
+import TransferOwner from "../services/party/trasnfer-owner";
 
 const PartyPage = () => {
     const {id} = useParams();
@@ -49,12 +51,32 @@ const PartyPage = () => {
                     await DeleteRoom(room).then(() => {
                         navigate(`/`);
                         window.location.reload();
-                       })
+                       });
+                }
+                else {
+                    await DeleteMember(room, user.username).then(() => {
+                        navigate(`/`);
+                        window.location.reload();
+                    });
                 }
             }}
             >
-                Exit 
+                Exit
             </button>
+            {
+                user.username === room.ownerUsername ? (
+                    <button className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
+                    onClick={() => {
+                        
+                    }}
+                    >
+                    Transfer
+                    </button>
+                ):(
+                    <div>
+                    </div>
+                )
+            }
         </div>
     );
 };

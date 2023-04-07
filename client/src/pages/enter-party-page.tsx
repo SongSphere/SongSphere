@@ -12,6 +12,7 @@ import AddMember from "../services/party/add-member";
 const EnterPartyPage = () => {
     let navigate = useNavigate();
 
+    let room;
     const [user, setUser] = useState<TUser | null>(null);
     const [description, setDescription] = useState<string>("");
     const [name, setName] = useState<string>("");
@@ -117,9 +118,10 @@ const EnterPartyPage = () => {
                         fetchRoomById(id)
                         .then((res) => {
                             if(res) {
-                                AddMember(res, user.username);
                                 navigate(`/party/${res._id}`);
                                 window.location.reload();
+                            } else {
+                                
                             }
                         })
                     }}
