@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 interface IFollowingListProps {
   following: string[];
   isVisible: boolean;
- onClose: Function;
+  onClose: Function;
 }
 
-const FollowingList = (props: IFollowingListProps) => {
+const FollowingListForInvite = (props: IFollowingListProps) => {
   const [following, setFollowing] = useState(props.following);
+  const [isInvited, setIsInvited] = useState(false);
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
@@ -23,6 +24,13 @@ const FollowingList = (props: IFollowingListProps) => {
   if (!props.isVisible) {
     return null;
   }
+  const handleInviteClick = async () => {
+    if (isInvited) {
+      setIsInvited(false);
+    } else {
+      setIsInvited(true);
+    }
+  };
 
   return (
     <div
@@ -32,7 +40,7 @@ const FollowingList = (props: IFollowingListProps) => {
     >
       <div className="w-1/4 p-5 bg-white rounded max-h-[60vh] min-h-[60vh]">
         <h1 className="py-3 font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
-          Following
+          Search Invitation
         </h1>
 
         <form
@@ -45,7 +53,7 @@ const FollowingList = (props: IFollowingListProps) => {
               <input
                 type="text"
                 className="flex-1 block w-full px-3 py-2 focus:outline-none"
-                placeholder="search following"
+                placeholder="Search Username"
                 onChange={async (event) => {
                   // searching
                   let filteredUsers: Array<string> = Array<string>();
@@ -67,7 +75,34 @@ const FollowingList = (props: IFollowingListProps) => {
                   return (
                     <div className="flex">
                       <div className="flex-1 inline-block text-left">
-                        {user}
+                        <div>
+                          <a className="flex items-center p-2 text-base font-normal ">
+                            <svg
+                              className="flex-shrink-0 w-6 h-6"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                            ></svg>
+                            <span className="flex-1 inline-block text-left">
+                              {user}
+                            </span>
+
+                            {isInvited ? (
+                              <button
+                                className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
+                                onClick={() => handleInviteClick()}
+                              >
+                                Invite
+                              </button>
+                            ) : (
+                              <button
+                                className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
+                                onClick={() => handleInviteClick()}
+                              >
+                                Invited
+                              </button>
+                            )}
+                          </a>
+                        </div>
                       </div>
                     </div>
                   );
@@ -81,4 +116,4 @@ const FollowingList = (props: IFollowingListProps) => {
   );
 };
 
-export default FollowingList;
+export default FollowingListForInvite;
