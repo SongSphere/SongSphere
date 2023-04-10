@@ -1,4 +1,5 @@
 import { TMusicContent } from "./music-content";
+
 export type TPartyRoom = {
   _id?: string;
   ownerUsername: string;

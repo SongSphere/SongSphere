@@ -1,6 +1,33 @@
 import { useState } from "react";
 import { TMusicContent } from "../../types/music-content";
 
+const songsList = [
+  {
+    name: "Mo Bamba",
+    artist: "Sheck Wes",
+    albumName: "MUDBOY",
+    id: "1xzBco0xcoJEDXktl7Jxrr",
+    service: "spotify",
+    cover: "https://i.scdn.co/image/ab67616d0000b27359cd47039c5b10ed919fbaa8",
+  },
+  {
+    name: "monster",
+    artist: "21 Savage",
+    albumName: "i am > i was",
+    id: "2FUNBaa5DwItJtYEBgAblU",
+    service: "spotify",
+    cover: "https://i.scdn.co/image/ab67616d0000b273280689ecc5e4b2038bb5e4bd",
+  },
+  {
+    name: "Money Trees",
+    artist: "Kendrick Lamar",
+    albumName: "good kid, m.A.A.d city",
+    id: "2HbKqm4o0w5wEeEFXm2sD4",
+    service: "spotify",
+    cover: "https://i.scdn.co/image/ab67616d0000b273d28d2ebdedb220e479743797",
+  },
+];
+
 const PartyRoomQueue = () => {
   let [songs, setSongs] = useState<TMusicContent[]>([]);
 
@@ -13,7 +40,7 @@ const PartyRoomQueue = () => {
           </div>
           <div className="w-[95%] mx-auto border-b-2 border-gray-300"></div>
           <div className="pt-3 w-[90%] mx-auto overflow-y-auto h-[calc(75vh-8rem)]">
-            {songs.map((s) => (
+            {songsList.map((s) => (
               <div className="grid w-full grid-flow-col">
                 <button
                   className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:bg-gray-200"
