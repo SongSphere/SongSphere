@@ -34,12 +34,15 @@ const PartyPage = () => {
       });
     }
   }, []);
+
   if (!user) {
     return <div>fetching user</div>;
   }
+
   if (!room) {
     return <div>Invalid Room Id</div>;
   }
+
   return (
     <div className="w-full h-full min-h-screen bg-lblue">
       <Navbar />
