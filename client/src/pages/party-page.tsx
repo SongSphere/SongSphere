@@ -13,6 +13,33 @@ import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import PartyRoomQueue from "../components/party-room/queue";
 
+const songsList = [
+  {
+    name: "Mo Bamba",
+    artist: "Sheck Wes",
+    albumName: "MUDBOY",
+    id: "1xzBco0xcoJEDXktl7Jxrr",
+    service: "spotify",
+    cover: "https://i.scdn.co/image/ab67616d0000b27359cd47039c5b10ed919fbaa8",
+  },
+  {
+    name: "monster",
+    artist: "21 Savage",
+    albumName: "i am > i was",
+    id: "2FUNBaa5DwItJtYEBgAblU",
+    service: "spotify",
+    cover: "https://i.scdn.co/image/ab67616d0000b273280689ecc5e4b2038bb5e4bd",
+  },
+  {
+    name: "Money Trees",
+    artist: "Kendrick Lamar",
+    albumName: "good kid, m.A.A.d city",
+    id: "2HbKqm4o0w5wEeEFXm2sD4",
+    service: "spotify",
+    cover: "https://i.scdn.co/image/ab67616d0000b273d28d2ebdedb220e479743797",
+  },
+];
+
 const PartyPage = () => {
   const { id } = useParams();
   let navigate = useNavigate();
@@ -20,7 +47,8 @@ const PartyPage = () => {
   const [room, setRoom] = useState<TPartyRoom | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
-  const [song, setSong] = useState<TMusicContent | null>(null);
+  const [currentlyPlayingSong, setCurrentlyPlayingSong] =
+    useState<TMusicContent | null>(null);
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -94,12 +122,23 @@ const PartyPage = () => {
         </div>
 
         <div className="col-span-2">
-          <PartyRoomQueue />
+          {songsList.length > 0 ? (
+            <PartyRoomQueue
+              songsList={songsList}
+              setCurrentlyPlayingSong={setCurrentlyPlayingSong}
+            />
+          ) : (
+            <div className="justify-center p-20 mt-20 text-center border-t-8 border-solid h-inherit w-inherit">
+              <h1 className="text-xl text-white">
+                No songs currently in the Queue.
+              </h1>
+            </div>
+          )}
         </div>
         {service === "apple" ? (
-          <AppleMusicPlayerCard selectedSong={song} />
+          <AppleMusicPlayerCard selectedSong={currentlyPlayingSong} />
         ) : (
-          <SpotifyPlayerCard selectedSong={song} />
+          <SpotifyPlayerCard selectedSong={currentlyPlayingSong} />
         )}
       </div>
     </div>
