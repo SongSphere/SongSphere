@@ -12,6 +12,8 @@ import { TMusicContent } from "../types/music-content";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import PartyRoomQueue from "../components/party-room/queue";
+import AppleMusicPartyRoomPlayerCard from "../components/party-room/apple-music-party-player";
+import SpotifyPartyRoomPlayerCard from "../components/party-room/spotify-music-party-player";
 
 const PartyPage = () => {
   const { id } = useParams();
@@ -97,9 +99,9 @@ const PartyPage = () => {
           <PartyRoomQueue />
         </div>
         {service === "apple" ? (
-          <AppleMusicPlayerCard selectedSong={song} />
+          <AppleMusicPartyRoomPlayerCard selectedSong={song} />
         ) : (
-          <SpotifyPlayerCard selectedSong={song} />
+          <SpotifyPartyRoomPlayerCard selectedSong={song} />
         )}
       </div>
     </div>
