@@ -17,7 +17,7 @@ import FollowRequestPage from "../pages/follow-request-page";
 import LikesPage from "../pages/likes-page";
 import RecentsPage from "../pages/recents-page";
 import PlaylistPage from "../pages/playlist-page";
-import CreateRoomPage from "../pages/party/create-room-page";
+import CreateRoomPage from "../pages/party/enter-room-page";
 import PartyPage from "../pages/party-page";
 
 const Router = () => {

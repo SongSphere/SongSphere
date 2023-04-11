@@ -38,6 +38,11 @@ const CreateRoomPage = () => {
     return <div>fethcing user</div>;
   }
 
+  if (user.partyRoom) {
+    navigate(`/party/${user.partyRoom}`);
+    window.location.reload();
+  }
+
   return (
     <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
       <SucessFailPopUp sucessFailText={failText} />
