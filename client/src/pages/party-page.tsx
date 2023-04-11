@@ -14,6 +14,7 @@ import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import PartyRoomQueue from "../components/party-room/queue";
 import ListenerList from "../components/party-room/listener-list";
 import AddMember from "../services/party/add-member";
+import MemberList from "../components/party-room/members-list";
 
 
 const PartyPage = () => {
@@ -25,6 +26,7 @@ const PartyPage = () => {
   const [service, setService] = useState<string>("");
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [showListenersModal, setShowListenersModal] = useState(false);
+  const [added, setAdded] = useState(false);
 
   const handleOpenListen = () => {
     setShowListenersModal(true);
@@ -47,9 +49,10 @@ const PartyPage = () => {
   }, []);
   useEffect (() => {
     if(user && room) {
-      if(!user.partyRoom) {
+      if(!room.members.includes(user.username)) {
         AddMember(room, user.username);
       }
+     
       
     }
   })
@@ -113,6 +116,7 @@ const PartyPage = () => {
                 ) : (
                   <div></div>
                 )}
+              <MemberList listeners={room.members} room={room}/>
               </div>
             </div>
           </div>

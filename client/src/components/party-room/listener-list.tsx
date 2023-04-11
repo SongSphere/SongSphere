@@ -46,7 +46,23 @@ const ListenerList = (props: IListernerListProps) => {
           >
             <div className="py-2">
               <div className="flex justify-between bg-white rounded-md shadow shadow-black/20">
-                
+              <input
+                type="text"
+                className="flex-1 block w-full px-3 py-2 focus:outline-none"
+                placeholder="search listeners"
+                onChange={async (event) => {
+                  // searching
+                  let filteredUsers: Array<string> = Array<string>();
+
+                  props.listeners.forEach((u) => {
+                    if (u.startsWith(event.target.value as string)) {
+                      filteredUsers.push(u);
+                    }
+                  });
+
+                  setFollowers(filteredUsers);
+                }}
+              />
               </div>
   
               <div className="justify-center py-2 text-center">

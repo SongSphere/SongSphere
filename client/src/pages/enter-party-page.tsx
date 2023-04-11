@@ -85,6 +85,7 @@ const EnterPartyPage = () => {
                     if (!res) {
                     } else {
                       fetchRoomByOwner(newRoom.ownerUsername).then((room) => {
+                        
                         navigate(`/party/${room._id}`);
                         window.location.reload();
                       });
