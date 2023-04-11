@@ -97,16 +97,7 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
               <div className="overflow-y-auto max-h-[45vh]">
                 {following.length > 0 ? (
                   following.map((userName) => {
-                    // if (props.room) {
-                    //   props.room.invitedMembers.forEach((invitedUser) => {
-                    //     if (invitedUser === userName) {
-                    //       setIsInvited(true);
-                    //     }
-                    //   });
-                    // } else {
-
-                    //   console.log("props.room is null");
-                    // }
+                    // inefficient, will find a better way
                     fetchRoomById(props.roomId).then((res) => {
                       setIsInvited(false);
                       if (res) {
