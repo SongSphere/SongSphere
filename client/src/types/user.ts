@@ -26,6 +26,7 @@ export type TUser = {
   showRandomSong: Boolean;
   currentlyPlayingSong: TMusicContent;
   showPlayingSong: Boolean;
+  partyRoom: string;
 };
 
 export type TUserWrapper = {
