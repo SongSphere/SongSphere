@@ -5,4 +5,5 @@ export type TPartyRoom = {
     partyName: string;
     description: string;
     members: Array<String>;
+    invitedMembers: Array<String>;
 };

@@ -1,7 +1,18 @@
 import { useEffect, useState } from "react";
+import AddInvitation from "../../services/party/add-invitation";
+import { TUser } from "../../types/user";
+import Session from "../../session";
+import sendNotification from "../../services/notification/send-notification";
+import fetchRoomById from "../../services/party/fetch-room-by-id";
+import removeInvitation from "../../services/party/remove-invitation";
+import { TPartyRoom } from "../../types/party-room";
+import { TNotification } from "../../types/notification";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
 
 interface IFollowingListProps {
   following: string[];
+  roomId: string;
+  room: TPartyRoom | null;
   isVisible: boolean;
   onClose: Function;
 }
@@ -9,6 +20,9 @@ interface IFollowingListProps {
 const FollowingListForInvite = (props: IFollowingListProps) => {
   const [following, setFollowing] = useState(props.following);
   const [isInvited, setIsInvited] = useState(false);
+  const [room, setRoom] = useState<TPartyRoom | null>(null);
+  const [user, setUser] = useState<TUser | null>(null);
+
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
@@ -16,6 +30,11 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
       props.onClose();
     }
   };
+
+  useEffect(() => {
+    setUser(Session.getUser());
+  }, [Session.getUser()]);
+
 
   useEffect(() => {
     setFollowing([]);
@@ -77,7 +96,31 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
             <div className="justify-center py-2 text-center">
               <div className="overflow-y-auto max-h-[45vh]">
                 {following.length > 0 ? (
-                  following.map((user) => {
+                  following.map((userName) => {
+                    // if (props.room) {
+                    //   props.room.invitedMembers.forEach((invitedUser) => {
+                    //     if (invitedUser === userName) {
+                    //       setIsInvited(true);
+                    //     }
+                    //   });
+                    // } else {
+
+                    //   console.log("props.room is null");
+                    // }
+                    fetchRoomById(props.roomId).then((res) => {
+                      setIsInvited(false);
+                      if (res) {
+                        setRoom(res);
+                        res.invitedMembers.forEach((invitedUser) => {
+                          if (invitedUser === userName) {
+                            setIsInvited(true);
+                          }
+                        });
+                      } else {
+                        alert("Room does not exist");
+                      }
+                    });
+
                     return (
                       <div className="flex">
                         <div className="flex-1 inline-block text-left">
@@ -89,20 +132,47 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                                 xmlns="http://www.w3.org/2000/svg"
                               ></svg>
                               <span className="flex-1 inline-block text-left">
-                                {user}
+                                {userName}
                                 {isInvited ? (
                                   <button
                                     className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
-                                    onClick={() => handleInviteClick()}
+                                    onClick={async () => {
+                                      if (room) {
+                                        await removeInvitation(room, userName);
+                                        handleInviteClick();
+                                      } else {
+                                        console.log("The room does not exist");
+                                      }
+
+                      
+                                      handleInviteClick();
+                                    }}
                                   >
-                                    Invite
+                                    Invited
                                   </button>
                                 ) : (
                                   <button
                                     className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
-                                    onClick={() => handleInviteClick()}
+                                    onClick={async () => {
+                                      await AddInvitation(
+                                        props.roomId,
+                                        userName
+                                      );
+                                      if (user) {
+                                        const notificationForAlerts: TNotification = {
+                                          userEmailSender: user.email,
+                                          userEmailReceiver: (await fetchUserByUsername(userName)).email,
+                                          notificationType: "Comment",
+                                          text: `${user.username} invited you to a party!`,
+                                        };
+                                        await sendNotification(notificationForAlerts);
+                                      }
+                                      
+                                      handleInviteClick();
+                                      
+                                    }}
                                   >
-                                    Invited
+                                    Invite
                                   </button>
                                 )}
                               </span>

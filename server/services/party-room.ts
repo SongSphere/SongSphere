@@ -11,7 +11,8 @@ export const createPartyRoom = async (
         ownerEmail: newRoom.ownerEmail,
         description: newRoom.description,
         partyName: newRoom.partyName,
-        members: newRoom.members
+        members: newRoom.members,
+        invitedMembers: newRoom.invitedMembers,
     });
     return party;
 };
@@ -61,9 +62,27 @@ export const addListener = async (id: string, username: string) => {
     }
 };
 
+
 export const deleteListener = async (id: string, username: string) => {
     try {
         await PartyRoom.findOneAndUpdate({_id: id}, {$pull:{members: username}});
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addInvitation = async (id: string, username: string) => {
+    try {
+        await PartyRoom.findOneAndUpdate({_id: id}, {$push:{invitedMembers: username}});
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+export const deleteInvitation = async (id: string, username: string) => {
+    try {
+        await PartyRoom.findOneAndUpdate({_id: id}, {$pull:{invitedMembers: username}});
     } catch (error) {
         throw error;
     }

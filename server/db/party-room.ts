@@ -8,6 +8,7 @@ export interface IPartyRoom {
     partyName: string;
     description: string;
     members: Array<String>;
+    invitedMembers: Array<String>;
 }
 
 const PartyRoomSchema = new Schema<IPartyRoom> (
@@ -33,6 +34,10 @@ const PartyRoomSchema = new Schema<IPartyRoom> (
             required: true,
         },
         members: {
+            type: Array<String>(),
+            required: true,
+        },
+        invitedMembers: {
             type: Array<String>(),
             required: true,
         },

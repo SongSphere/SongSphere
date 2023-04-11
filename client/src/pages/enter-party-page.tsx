@@ -13,6 +13,7 @@ import SearchUserDropDown from "../components/seach-user-dropdown";
 import SearchForInvite from "../components/invitations/search-user-for-invite";
 import FollowingList from "../components/profile/following-list";
 import FollowingListForInvite from "../components/invitations/search-user-for-invite";
+import addMember from "../services/party/add-member";
 
 const EnterPartyPage = () => {
   let navigate = useNavigate();
@@ -22,8 +23,9 @@ const EnterPartyPage = () => {
   const [description, setDescription] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>("");
+  const [idForinvite, setIdForInvite] = useState<string>("");
   const [showFollowingModal, setShowFollowingModal] = useState(false);
-  
+  const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
 
   const handleFollowingClose = () => {
     setShowFollowingModal(false);
@@ -38,9 +40,11 @@ const EnterPartyPage = () => {
   if (!user) {
     return <div>fetching user</div>;
   }
+  
+
   return (
     <div>
-        <Navbar />
+      <Navbar />
       <div className="w-full h-full min-h-screen bg-lblue">
         <div className="grid grid-cols-2">
           <div className="w-11/12 p-3 m-5 bg-white rounded-xl">
@@ -89,6 +93,7 @@ const EnterPartyPage = () => {
                     partyName: name,
                     description: description,
                     members: [],
+                    invitedMembers: [],
                   };
                   await CreateRoom(newRoom)
                     .then((res) => {
@@ -134,7 +139,12 @@ const EnterPartyPage = () => {
                   if (res) {
                     navigate(`/party/${res._id}`);
                     window.location.reload();
+                    if (res._id) {
+                      // Add member through join button
+                      addMember(res._id, user.username);
+                    }
                   } else {
+                    alert("Room does not exist");
                   }
                 });
               }}
@@ -142,46 +152,78 @@ const EnterPartyPage = () => {
               Enter
             </button>
           </div>
-          
+
           <div className="w-11/12 p-3 m-5 bg-white rounded-xl">
             <h1 className="text-3xl text-center text-navy">
               Invite A Friend To Your Party
             </h1>
             <div className="flex">
               <h1 className="text-xl text-navy">Invitation</h1>
+            </div>
+            <div></div>
+            <div className="flex">
+              <h1 className="text-xl text-navy">Room Id:</h1>
               <form className="mt-1 ml-2">
-                {/* <label>
+                <label>
                   <input
                     className="e-input"
                     type="text"
-                    value={id}
-                    placeholder={"Enter Party Room Id"}
+                    value={idForinvite}
+                    placeholder={"Enter Party Room Id For Invite"}
                     onChange={(e) => {
-                      setId(e.target.value);
+                      setIdForInvite(e.target.value);
                     }}
                   />
-                </label> */}
+                </label>
               </form>
             </div>
-            
-            <FollowingListForInvite following={user.following} isVisible={showFollowingModal} onClose={handleFollowingClose}/>
-
+            <div></div>
+           
+            <FollowingListForInvite
+              following={user.following}
+              isVisible={showFollowingModal}
+              onClose={handleFollowingClose}
+              roomId={idForinvite}
+              room={partyRoom}
+            />
 
             <button
               className="p-3 text-white rounded-xl bg-navy"
               onClick={() => {
-                handleFollowingOpen();
-                // fetchRoomById(id).then((res) => {
-                //   if (res) {
-                //     navigate(`/party/${res._id}`);
-                //     window.location.reload();
-                //   } else {
-                //   }
-                // });
+                if (idForinvite !== "") {
+                  fetchRoomById(idForinvite).then((res) => {
+                    if (res) {
+                      if (res.ownerUsername === user.username) {
+                        handleFollowingOpen();
+                        setPartyRoom(res);
+                      } else {
+                        console.log("You are not the owner of this party");
+                      }
+                    } else {
+                      alert("Room does not exist");
+                    }
+                  });
+                }  
+                
               }}
             >
               Find User To Invite
             </button>
+
+            {/* <button
+              className="p-3 text-white rounded-xl bg-navy"
+              onClick={() => {
+                fetchRoomById(id).then((res) => {
+                  if (res) {
+                    navigate(`/party/${res._id}`);
+                    window.location.reload();
+                  } else {
+                  }
+                });
+              }}
+            >
+              Send
+            </button> */}
           </div>
         </div>
       </div>
