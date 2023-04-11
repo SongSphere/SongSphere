@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import TransferOwner from "../../services/party/trasnfer-owner";
 import Session from "../../session";
 import DeleteMember from "../../services/party/delete-member";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
 interface IListernerListProps {
     listeners: string[];
     room: TPartyRoom;
@@ -44,7 +45,7 @@ const MemberList = (props: IListernerListProps) => {
                       <div className="flex border-2 border-solid border-navy border-b-1" key={users}>
                        {users}
                        {user?.username === props.room.ownerUsername ?(<button className="pl-10 text-lblue"
-                       onClick={() => DeleteMember(props.room, users)}
+                       onClick={() => DeleteMember(props.room, users).then(()=>fetchUserByUsername(users)).then((removed) =>{removed.partyRoom=""} )}
                        >
                         remove
                        </button>): (<div></div>)}
