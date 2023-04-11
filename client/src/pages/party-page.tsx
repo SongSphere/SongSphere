@@ -14,7 +14,7 @@ import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import PartyRoomQueue from "../components/party-room/queue";
 import ListenerList from "../components/party-room/listener-list";
 import AddMember from "../services/party/add-member";
-import MemberList from "../components/party-room/members-list";
+
 
 
 const PartyPage = () => {
