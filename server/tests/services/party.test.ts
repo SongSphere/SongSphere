@@ -76,6 +76,8 @@ describe("Testing db services", () => {
             description: "Test Room",
             members: [],
             invitedMembers: [],
+            queue: [],
+            musicIndex: 0,
           });
 
           await userA.save();
@@ -84,9 +86,11 @@ describe("Testing db services", () => {
           await newRoom.save();
           
 
-          addInvitation(newRoom._id.toString(), userB.username);
+          await addInvitation(newRoom._id.toString(), userB.username);
           
-          const changedRoom = await PartyRoom.findOne({ _id: newRoom._id });
+          
+          const changedRoom = await PartyRoom.findOne({ _id: newRoom._id.toString() });
+
           expect(changedRoom.invitedMembers).toContain(userB.username);
     });
 
@@ -130,6 +134,8 @@ describe("Testing db services", () => {
             description: "Test Room",
             members: [],
             invitedMembers: ["magician3124"],
+            queue: [],
+            musicIndex: 0,
           });
 
           await userA.save();
@@ -138,13 +144,13 @@ describe("Testing db services", () => {
           await newRoom.save();
           
 
-          console.log(newRoom._id.toString());
+         // console.log(newRoom._id.toString());
 
-          deleteInvitation(newRoom._id.toString(), userB.username);
+          await deleteInvitation(newRoom._id.toString(), userB.username);
           
-          const changedRoom = await PartyRoom.findOne({ _id: newRoom._id });
+          const changedRoom = await PartyRoom.findOne({ _id: newRoom._id.toString() });
 
-          console.log(changedRoom.invitedMembers);
+         // console.log(changedRoom.invitedMembers);
 
           expect(changedRoom.invitedMembers).not.toContain(userB.username);
     });

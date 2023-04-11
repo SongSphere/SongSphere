@@ -8,7 +8,7 @@ const RemoveInvitation = async (room: TPartyRoom, username: string) => {
           method: "POST",
           credentials: "include",
           body: JSON.stringify({
-            room: room,
+            roomId: room._id,
             username: username,
           }),
           headers: {

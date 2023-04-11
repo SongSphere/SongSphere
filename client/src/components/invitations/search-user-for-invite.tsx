@@ -11,7 +11,7 @@ import fetchUserByUsername from "../../services/user/fetch-user-username";
 
 interface IFollowingListProps {
   following: string[];
-  roomId: string;
+  roomId: string | undefined;
   room: TPartyRoom | null;
   isVisible: boolean;
   onClose: Function;
@@ -57,7 +57,7 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
       onClick={handleOnClose}
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
     >
-      <div className="w-1/4 p-5 bg-white rounded max-h-[60vh] min-h-[60vh]">
+      <div className="w-3/4 p-5 bg-white rounded max-h-[60vh] min-h-[60vh]">
         <h1 className="py-3 font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
           Search Invitation
         </h1>
@@ -98,19 +98,22 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                 {following.length > 0 ? (
                   following.map((userName) => {
                     // inefficient, will find a better way
-                    fetchRoomById(props.roomId).then((res) => {
-                      setIsInvited(false);
-                      if (res) {
-                        setRoom(res);
-                        res.invitedMembers.forEach((invitedUser) => {
-                          if (invitedUser === userName) {
-                            setIsInvited(true);
-                          }
-                        });
-                      } else {
-                        alert("Room does not exist");
-                      }
-                    });
+                    if (props.roomId) {
+                      fetchRoomById(props.roomId).then((res) => {
+                        setIsInvited(false);
+                        if (res) {
+                          setRoom(res);
+                          res.invitedMembers.forEach((invitedUser) => {
+                            if (invitedUser === userName) {
+                              setIsInvited(true);
+                            }
+                          });
+                        } else {
+                          alert("Room does not exist");
+                        }
+                      });
+                    }
+                    
 
                     return (
                       <div className="flex">
@@ -145,10 +148,13 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                                   <button
                                     className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
                                     onClick={async () => {
-                                      await AddInvitation(
-                                        props.roomId,
-                                        userName
-                                      );
+                                      if (props.roomId) {
+                                        await AddInvitation(
+                                          props.roomId,
+                                          userName
+                                        );
+                                      }
+                      
                                       if (user) {
                                         const notificationForAlerts: TNotification = {
                                           userEmailSender: user.email,

@@ -1,4 +1,4 @@
-const AddInvitation = async (roomId: string, username: string) => {
+const AddInvitation = async (roomId: string , username: string) => {
   return new Promise<boolean>(async (resolve, reject) => {
     try {
       await fetch(`${process.env.REACT_APP_API}/api/inviteMember`, {
