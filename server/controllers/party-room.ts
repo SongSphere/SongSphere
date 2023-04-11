@@ -107,8 +107,10 @@ export const addInvitedMember = async (req: Request, res: Response) => {
 }
 
 export const removeInvitedMember = async (req: Request, res: Response) => {
+    console.log("Controllers/server");
+    console.log(`${req.body.roomId} and ${req.body.username}}`);
     try {
-        await deleteInvitation(req.body.room, req.body.username);
+        await deleteInvitation(req.body.roomId, req.body.username);
         res.status(201);
         res.json({ msg: "success" });
     }
@@ -121,7 +123,7 @@ export const removeInvitedMember = async (req: Request, res: Response) => {
 
 export const transferO = async (req: Request, res: Response) => {
     try {
-        await transferO(req.body.room, req.body.username);
+        await transferOwner(req.body.room, req.body.username);
         res.status(201);
         res.json({ msg: "success" });
     }
