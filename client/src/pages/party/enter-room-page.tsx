@@ -14,6 +14,7 @@ import fetchRoomByOwner from "../../services/party/fetch-room-by-owner";
 import { useNavigate } from "react-router-dom";
 import fetchRoomById from "../../services/party/fetch-room-by-id";
 import SucessFailPopUp from "../../components/popup/sucess-fail-popup";
+import FollowingListForInvite from "../../components/invitations/search-user-for-invite";
 
 const CreateRoomPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
@@ -22,6 +23,9 @@ const CreateRoomPage = () => {
   const [description, setDescription] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>("");
+  const [idForinvite, setIdForInvite] = useState<string>("");
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+  const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
 
   const ERROR_MSG = "Oh no! An error occurs when creating the party room";
 
@@ -33,6 +37,13 @@ const CreateRoomPage = () => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
   }, [user]);
+
+  const handleFollowingClose = () => {
+    setShowFollowingModal(false);
+  };
+  const handleFollowingOpen = () => {
+    setShowFollowingModal(true);
+  };
 
   if (!user) {
     return <div>fethcing user</div>;
@@ -97,6 +108,7 @@ const CreateRoomPage = () => {
                       partyName: name,
                       description: description,
                       members: [],
+                      invitedMembers: [],
                       queue: [],
                       musicIndex: 0,
                     };
@@ -158,6 +170,8 @@ const CreateRoomPage = () => {
                 Enter
               </button>
             </div>
+
+            
           </div>
         </div>
         {service === "apple" ? (

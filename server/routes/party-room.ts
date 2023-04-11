@@ -10,6 +10,8 @@ import {
     addMember,
     removeMember,
     transferO,
+    addInvitedMember,
+    removeInvitedMember,
 } from "../controllers/party-room"
 
 // import middleware
@@ -21,6 +23,10 @@ router.post("/api/makeroom", newRoom);
 router.post("/api/deleteroom", removeRoom);
 router.post("/api/addmember", addMember);
 router.post("/api/removemember", removeMember);
+
+router.post("/api/inviteMember", addInvitedMember);
+router.post("/api/uninviteMember", removeInvitedMember);
+
 router.post("/api/transferOwner", transferO)
 
 router.get("/api/room/find/:username", getRoomByOwner);
