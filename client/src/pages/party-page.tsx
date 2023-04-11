@@ -111,12 +111,11 @@ const PartyPage = () => {
                     className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
                     onClick={() => handleOpenListen()}
                   >
-                    Transfer
+                    View Listeners
                   </button>
                 ) : (
                   <div></div>
                 )}
-              <MemberList listeners={room.members} room={room}/>
               </div>
             </div>
           </div>

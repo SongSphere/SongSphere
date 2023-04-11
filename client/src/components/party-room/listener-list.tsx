@@ -2,6 +2,8 @@ import { TUser } from "../../types/user";
 import { TPartyRoom } from "../../types/party-room";
 import { useEffect, useState } from "react";
 import TransferOwner from "../../services/party/trasnfer-owner";
+import DeleteMember from "../../services/party/delete-member";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
 
 interface IListernerListProps {
     listeners: string[];
@@ -69,16 +71,22 @@ const ListenerList = (props: IListernerListProps) => {
                 <div className="overflow-y-auto max-h-[45vh]">
                   {followers.map((user) => {
                     return (
-                      <div className="flex" key={user}>
-                        <button className="flex-1 inline-block text-left"
+                      <div className="" key={user}>
+                        <h1 className="float-left">{user}</h1>
+                        <button className="float-right text-lblue"
                         onClick={async() => 
                             await TransferOwner(props.room, user).then(() => {
                                 window.location.reload();
                             })
                         }
                         >
-                          {user}
+                          transfer
                         </button>
+                        <button className="pl-10 text-lblue"
+                       onClick={() => DeleteMember(props.room, user).then(()=>fetchUserByUsername(user)).then((removed) =>{removed.partyRoom=""} )}
+                       >
+                        remove
+                       </button>
                       </div>
                     );
                   })}
