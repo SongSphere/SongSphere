@@ -52,76 +52,79 @@ const CreateRoomPage = () => {
         <div className="col-span-2">
           <div className="w-full h-full min-h-screen bg-lblue ">
             <div className="grid p-5 m-5 bg-white h-80 rounded-xl place-content-center">
-              <h1 className="text-3xl text-center text-navy">
-                Create A Party Room
-              </h1>
-              <div className="flex mt-4">
-                <h1 className="text-xl text-navy">Name:</h1>
-                <form className="mt-1 ml-2">
-                  <label>
-                    <input
-                      className="e-input"
-                      type="text"
-                      value={name}
-                      placeholder={"Enter Party Room Name"}
-                      onChange={(e) => {
-                        setName(e.target.value);
-                      }}
-                    />
-                  </label>
-                </form>
-              </div>
-              <div className="flex">
-                <h1 className="text-xl text-navy">Description:</h1>
-                <form className="mt-1 ml-2">
-                  <label>
-                    <input
-                      className="e-input"
-                      type="text"
-                      value={description}
-                      placeholder={"Enter Description"}
-                      onChange={(e) => {
-                        setDescription(e.target.value);
-                      }}
-                    />
-                  </label>
-                </form>
-              </div>
-              <button
-                className="p-5 mt-4 text-white rounded-xl bg-navy"
-                onClick={async () => {
-                  if (user) {
-                    const newRoom: TPartyRoom = {
-                      ownerUsername: user.username,
-                      ownerEmail: user.email,
-                      partyName: name,
-                      description: description,
-                      members: [],
-                      queue: [],
-                      musicIndex: 0,
-                    };
-                    await CreateRoom(newRoom)
-                      .then((res) => {
-                        if (!res) {
-                          setFailText(ERROR_MSG);
-                        } else {
-                          setFailText("");
-                          fetchRoomByOwner(newRoom.ownerUsername).then(
-                            (room) => {
-                              navigate(`/party/${room._id}`);
-                              window.location.reload();
-                            }
-                          );
-                        }
-                      })
-                      .catch((error) => {
-                        setFailText(ERROR_MSG);
-                      });
-                  }
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
                 }}
               >
-                Create
-              </button>
+                <h1 className="text-3xl text-center text-navy">
+                  Create A Party Room
+                </h1>
+                <div className="flex mt-4">
+                  <label className="text-xl text-navy">Name: </label>
+                  <input
+                    className="e-input"
+                    type="text"
+                    value={name}
+                    placeholder={"Enter Party Room Name"}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                    required
+                  />
+                </div>
+                <div className="flex">
+                  <label className="text-xl text-navy">Description: </label>
+                  <input
+                    className="e-input"
+                    type="text"
+                    value={description}
+                    placeholder={"Enter Description"}
+                    onChange={(e) => {
+                      setDescription(e.target.value);
+                    }}
+                    required
+                  />
+                </div>
+                <div className="flex justify-center w-full">
+                  <button
+                    type="submit"
+                    className="p-3 mt-4 text-white rounded-xl bg-navy"
+                    onClick={async () => {
+                      if (user) {
+                        const newRoom: TPartyRoom = {
+                          ownerUsername: user.username,
+                          ownerEmail: user.email,
+                          partyName: name,
+                          description: description,
+                          members: [],
+                          queue: [],
+                          musicIndex: 0,
+                        };
+                        await CreateRoom(newRoom)
+                          .then((res) => {
+                            if (!res) {
+                              setFailText(ERROR_MSG);
+                            } else {
+                              setFailText("");
+                              fetchRoomByOwner(newRoom.ownerUsername).then(
+                                (room) => {
+                                  navigate(`/party/${room._id}`);
+                                  window.location.reload();
+                                }
+                              );
+                            }
+                          })
+                          .catch((error) => {
+                            setFailText(ERROR_MSG);
+                          });
+                      }
+                    }}
+                  >
+                    Create
+                  </button>
+                </div>
+              </form>
             </div>
             <div className="grid h-64 p-5 m-5 bg-white rounded-xl place-content-center">
               <h1 className="text-3xl text-center text-navy">
