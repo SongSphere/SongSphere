@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 
 interface ISucessFailPopUpProps {
-  successFailText: string;
+  sucessFailText: string;
 }
 
 const SucessFailPopUp = (props: ISucessFailPopUpProps) => {
@@ -13,19 +13,20 @@ const SucessFailPopUp = (props: ISucessFailPopUpProps) => {
   };
 
   useEffect(() => {
-    if (props.successFailText == "Error") {
+    if (props.sucessFailText != "") {
       setOpen(true);
+    } else {
+      setOpen(false);
     }
-  }, [props.successFailText]);
+  }, [props.sucessFailText]);
 
   return (
     <Popup open={open} closeOnDocumentClick onClose={close}>
-      <div className="modal">
-        <a className="close" onClick={close}>
-          &times;
-        </a>
-        <div className="px-4 py-2 border-2 rounded-lg bg-slate-200">
-          {props.successFailText}
+      <div className="h-screen bg-blue">
+        <div className="w-full mt-96 modal">
+          <div className="px-4 py-2 text-white border-2 rounded-full w-fit bg-slate-900/70">
+            {props.sucessFailText}
+          </div>
         </div>
       </div>
     </Popup>

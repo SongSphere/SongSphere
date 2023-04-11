@@ -23,7 +23,9 @@ const CreateRoomPage = () => {
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>("");
 
-  const [text, setText] = useState<string>("");
+  const ERROR_MSG = "Oh no! An error occurs when creating the party room";
+
+  const [failText, setFailText] = useState<string>("");
 
   let navigate = useNavigate();
 
@@ -38,7 +40,7 @@ const CreateRoomPage = () => {
 
   return (
     <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
-      <SucessFailPopUp successFailText={text} />
+      <SucessFailPopUp sucessFailText={failText} />
       <Navbar />
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
         <FriendActivityCard />
@@ -96,8 +98,9 @@ const CreateRoomPage = () => {
                     await CreateRoom(newRoom)
                       .then((res) => {
                         if (!res) {
-                          setText("Error");
+                          setFailText(ERROR_MSG);
                         } else {
+                          setFailText("");
                           fetchRoomByOwner(newRoom.ownerUsername).then(
                             (room) => {
                               navigate(`/party/${room._id}`);
@@ -107,7 +110,7 @@ const CreateRoomPage = () => {
                         }
                       })
                       .catch((error) => {
-                        setText("Error");
+                        setFailText(ERROR_MSG);
                       });
                   }
                 }}

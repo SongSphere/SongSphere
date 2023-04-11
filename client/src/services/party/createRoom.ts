@@ -14,13 +14,11 @@ const CreateRoom = async (room: TPartyRoom) => {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        if (res.status == 201) {
-          resolve(true);
-        } else reject(false);
+        resolve(true);
       });
     } catch (err) {
       console.error(err);
-      reject(err);
+      reject(false);
     }
   });
 };
