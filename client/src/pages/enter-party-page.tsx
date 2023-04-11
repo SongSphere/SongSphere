@@ -94,6 +94,8 @@ const EnterPartyPage = () => {
                     description: description,
                     members: [],
                     invitedMembers: [],
+                    queue: [],
+                    musicIndex: 0,
                   };
                   await CreateRoom(newRoom)
                     .then((res) => {
