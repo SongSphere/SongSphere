@@ -5,6 +5,7 @@ import selectService from "../../services/user/select-service";
 import Session from "../../session";
 import setActivity from "../../services/general/set-activity";
 import { spotifyRefresh } from "../../services/spotify/spotify-refresh";
+import { spotifyAddToPlayerQueue } from "../../services/party/spotify-add-to-queue";
 
 interface ISpotifySong {
   name: string;
@@ -13,11 +14,12 @@ interface ISpotifySong {
   uri: string;
 }
 
-interface ISpotifyPlayerCardProps {
+interface ISpotifyPartyRoomPlayerCard {
+  songsList: TMusicContent[];
   selectedSong: TMusicContent | null;
 }
 
-const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
+const SpotifyPartyRoomPlayerCard = (props: ISpotifyPartyRoomPlayerCard) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [song, setSong] = useState<ISpotifySong | null>(null);
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
@@ -219,6 +221,20 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    // after device / player is set  up
+    console.log("hello");
+    if (user && deviceId) {
+      console.log("setting up queue");
+
+      props.songsList.forEach((song) => {
+        spotifyAddToPlayerQueue(song.id, deviceId, user?.spotifyToken);
+      });
+
+      playMusicHandler();
+    }
+  }, [deviceId]);
+
   return (
     <div className="relative flex justify-center ">
       <div className="fixed flex h-[95%] mt-8">
@@ -260,4 +276,4 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
     </div>
   );
 };
-export default SpotifyPlayerCard;
+export default SpotifyPartyRoomPlayerCard;

@@ -22,9 +22,6 @@ const PartyRoomQueue = (props: IQueue) => {
                 <button
                   className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:bg-gray-200"
                   key={s.id}
-                  onClick={() => {
-                    props.setCurrentlyPlayingSong(s);
-                  }}
                 >
                   <div className="flex text-left w-[100%] p-1">
                     <div className="w-20 h-20">

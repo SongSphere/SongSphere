@@ -106,6 +106,7 @@ const SearchSong = (props: ISearchSongProps) => {
               await selectService(song as string, "songs", 8).then((result) => {
                 setCategory("songs");
                 songs = result!;
+                console.log(result);
                 setSongs(result!);
               })
             }

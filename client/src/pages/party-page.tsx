@@ -12,31 +12,35 @@ import { TMusicContent } from "../types/music-content";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import PartyRoomQueue from "../components/party-room/queue";
+import SpotifyPartyRoomPlayerCard from "../components/player/spotify-party-player";
 
 const songsList = [
   {
-    name: "Mo Bamba",
-    artist: "Sheck Wes",
-    albumName: "MUDBOY",
-    id: "1xzBco0xcoJEDXktl7Jxrr",
+    albumName: "Clutter, Vol. 1",
+    artist: "a balladeer",
+    category: "song",
+    cover: "https://i.scdn.co/image/ab67616d0000b2735dcb1476842b5d6e92cfc7f0",
+    id: "3kep7ZWLCMAsSDhEOI6eeu",
+    name: "As Far As The Compliments Went",
     service: "spotify",
-    cover: "https://i.scdn.co/image/ab67616d0000b27359cd47039c5b10ed919fbaa8",
   },
   {
-    name: "monster",
-    artist: "21 Savage",
-    albumName: "i am > i was",
-    id: "2FUNBaa5DwItJtYEBgAblU",
+    albumName: "From A To Beginning",
+    artist: "Gregor McEwan",
+    category: "song",
+    cover: "https://i.scdn.co/image/ab67616d0000b273e6644fc549c9a75e2be428cf",
+    id: "6RnZWkTSsTE0Npaj0reK4k",
+    name: "(Hope You Stay) Here For Tonight",
     service: "spotify",
-    cover: "https://i.scdn.co/image/ab67616d0000b273280689ecc5e4b2038bb5e4bd",
   },
   {
-    name: "Money Trees",
-    artist: "Kendrick Lamar",
-    albumName: "good kid, m.A.A.d city",
-    id: "2HbKqm4o0w5wEeEFXm2sD4",
+    albumName: "Abbey Road (Remastered)",
+    artist: "The Beatles",
+    category: "song",
+    cover: "https://i.scdn.co/image/ab67616d0000b273dc30583ba717007b00cceb25",
+    id: "6UCFZ9ZOFRxK8oak7MdPZu",
+    name: "Her Majesty - Remastered 2009",
     service: "spotify",
-    cover: "https://i.scdn.co/image/ab67616d0000b273d28d2ebdedb220e479743797",
   },
 ];
 
@@ -61,6 +65,8 @@ const PartyPage = () => {
         setRoom(res);
       });
     }
+
+    setCurrentlyPlayingSong(songsList[0]);
   }, []);
 
   if (!user) {
@@ -138,7 +144,10 @@ const PartyPage = () => {
         {service === "apple" ? (
           <AppleMusicPlayerCard selectedSong={currentlyPlayingSong} />
         ) : (
-          <SpotifyPlayerCard selectedSong={currentlyPlayingSong} />
+          <SpotifyPartyRoomPlayerCard
+            songsList={songsList}
+            selectedSong={currentlyPlayingSong}
+          />
         )}
       </div>
     </div>
