@@ -18,6 +18,8 @@ import LikesPage from "../pages/likes-page";
 import RecentsPage from "../pages/recents-page";
 import PlaylistPage from "../pages/playlist-page";
 import CreateRoomPage from "../pages/party/create-room-page";
+import EnterPartyPage from "../pages/enter-party-page";
+import PartyPage from "../pages/party-page";
 
 const Router = () => {
   let element = useRoutes([
@@ -84,6 +86,14 @@ const Router = () => {
     {
       path: "/createRoom",
       element: <CreateRoomPage />,
+    },
+    {
+      path: "/enterParty",
+      element: <EnterPartyPage />,
+    },
+    {
+      path: "/party/:id",
+      element: <PartyPage />,
     },
   ]);
   return element;
