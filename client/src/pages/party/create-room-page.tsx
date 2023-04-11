@@ -13,15 +13,17 @@ import CreateRoom from "../../services/party/createRoom";
 import fetchRoomByOwner from "../../services/party/fetch-room-by-owner";
 import { useNavigate } from "react-router-dom";
 import fetchRoomById from "../../services/party/fetch-room-by-id";
+import SucessFailPopUp from "../../components/popup/sucess-fail-popup";
 
 const CreateRoomPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
   const [song, setSong] = useState<TMusicContent | null>(null);
-  const [randomSong, setRandomSong] = useState<TMusicContent | null>(null);
   const [description, setDescription] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>("");
+
+  const [text, setText] = useState<string>("");
 
   let navigate = useNavigate();
 
@@ -36,6 +38,7 @@ const CreateRoomPage = () => {
 
   return (
     <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
+      <SucessFailPopUp successFailText={text} />
       <Navbar />
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
         <FriendActivityCard />
@@ -93,6 +96,7 @@ const CreateRoomPage = () => {
                     await CreateRoom(newRoom)
                       .then((res) => {
                         if (!res) {
+                          setText("Error");
                         } else {
                           fetchRoomByOwner(newRoom.ownerUsername).then(
                             (room) => {
@@ -102,7 +106,9 @@ const CreateRoomPage = () => {
                           );
                         }
                       })
-                      .catch((error) => {});
+                      .catch((error) => {
+                        setText("Error");
+                      });
                   }
                 }}
               >
