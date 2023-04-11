@@ -144,13 +144,10 @@ describe("Testing db services", () => {
           await newRoom.save();
           
 
-         // console.log(newRoom._id.toString());
-
           await deleteInvitation(newRoom._id.toString(), userB.username);
           
           const changedRoom = await PartyRoom.findOne({ _id: newRoom._id.toString() });
 
-         // console.log(changedRoom.invitedMembers);
 
           expect(changedRoom.invitedMembers).not.toContain(userB.username);
     });

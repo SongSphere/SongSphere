@@ -81,8 +81,7 @@ export const deleteListener = async (id: string, username: string) => {
 };
 
 export const addInvitation = async (id: string, username: string) => {
-    console.log("Services/server");
-    console.log(`${id} and ${username}}`);
+
     try {
         await PartyRoom.findOneAndUpdate({_id: id}, {$push:{invitedMembers: username}});
     } catch (error) {
@@ -104,7 +103,6 @@ export const transferOwner = async (room: TPartyRoom, username: string) => {
     await PartyRoom.findOneAndUpdate({_id: room._id}, {
       ownerUsername: username,
     });
-    console.log(room);
   } catch (error) {
     throw error;
   }
