@@ -8,12 +8,22 @@ import { randomSongSpotifyFromBackend } from "../../services/spotify/spotify-sea
 import FriendActivityCard from "../../components/feed/friend-activity";
 import Navbar from "../../components/navbar";
 import RandomSongPost from "../../components/feed/random-song-content";
+import { TPartyRoom } from "../../types/party-room";
+import CreateRoom from "../../services/party/createRoom";
+import fetchRoomByOwner from "../../services/party/fetch-room-by-owner";
+import { useNavigate } from "react-router-dom";
+import fetchRoomById from "../../services/party/fetch-room-by-id";
 
 const CreateRoomPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [randomSong, setRandomSong] = useState<TMusicContent | null>(null);
+  const [description, setDescription] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [id, setId] = useState<string>("");
+
+  let navigate = useNavigate();
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -30,22 +40,110 @@ const CreateRoomPage = () => {
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
         <FriendActivityCard />
         <div className="col-span-2">
-          {user.showRandomSong ? (
-            <RandomSongPost song={randomSong} user={user} />
-          ) : (
-            <div></div>
-          )}
-          <div className="w-full p-4 mt-8 bg-white rounded-lg h-4/5">
-            <div className="mt-4 text-xl font-bold text-center">
-              Create Party Room
+          <div className="w-full h-full min-h-screen bg-lblue ">
+            <div className="grid p-5 m-5 bg-white h-80 rounded-xl place-content-center">
+              <h1 className="text-3xl text-center text-navy">
+                Create A Party Room
+              </h1>
+              <div className="flex mt-4">
+                <h1 className="text-xl text-navy">Name:</h1>
+                <form className="mt-1 ml-2">
+                  <label>
+                    <input
+                      className="e-input"
+                      type="text"
+                      value={name}
+                      placeholder={"Enter Party Room Name"}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                    />
+                  </label>
+                </form>
+              </div>
+              <div className="flex">
+                <h1 className="text-xl text-navy">Description:</h1>
+                <form className="mt-1 ml-2">
+                  <label>
+                    <input
+                      className="e-input"
+                      type="text"
+                      value={description}
+                      placeholder={"Enter Description"}
+                      onChange={(e) => {
+                        setDescription(e.target.value);
+                      }}
+                    />
+                  </label>
+                </form>
+              </div>
+              <button
+                className="p-5 mt-4 text-white rounded-xl bg-navy"
+                onClick={async () => {
+                  if (user) {
+                    const newRoom: TPartyRoom = {
+                      ownerUsername: user.username,
+                      ownerEmail: user.email,
+                      partyName: name,
+                      description: description,
+                      members: [],
+                      queue: [],
+                      musicIndex: 0,
+                    };
+                    await CreateRoom(newRoom)
+                      .then((res) => {
+                        if (!res) {
+                        } else {
+                          fetchRoomByOwner(newRoom.ownerUsername).then(
+                            (room) => {
+                              navigate(`/party/${room._id}`);
+                              window.location.reload();
+                            }
+                          );
+                        }
+                      })
+                      .catch((error) => {});
+                  }
+                }}
+              >
+                Create
+              </button>
             </div>
-            <form>
-              <label>
-                Party Room Name:
-                <input type="text" name="name" />
-              </label>
-              <input type="submit" value="Submit" />
-            </form>
+            <div className="grid h-64 p-5 m-5 bg-white rounded-xl place-content-center">
+              <h1 className="text-3xl text-center text-navy">
+                Enter An Existing Party Room
+              </h1>
+              <div className="flex mt-4">
+                <h1 className="text-xl text-navy">Room Id:</h1>
+                <form className="mt-1 ml-2">
+                  <label>
+                    <input
+                      className="e-input"
+                      type="text"
+                      value={id}
+                      placeholder={"Enter Party Room Id"}
+                      onChange={(e) => {
+                        setId(e.target.value);
+                      }}
+                    />
+                  </label>
+                </form>
+              </div>
+              <button
+                className="p-3 mt-4 text-white rounded-xl bg-navy"
+                onClick={() => {
+                  fetchRoomById(id).then((res) => {
+                    if (res) {
+                      navigate(`/party/${res._id}`);
+                      window.location.reload();
+                    } else {
+                    }
+                  });
+                }}
+              >
+                Enter
+              </button>
+            </div>
           </div>
         </div>
         {service === "apple" ? (
