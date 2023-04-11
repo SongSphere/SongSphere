@@ -24,6 +24,10 @@ const EnterPartyPage = () => {
   if (!user) {
     return <div>fetching user</div>;
   }
+  if(user.partyRoom) {
+    navigate(`/party/${user.partyRoom}`);
+    window.location.reload();
+  }
   return (
     <div className="w-full h-full min-h-screen bg-lblue">
       <div className="grid grid-cols-2">
@@ -118,6 +122,7 @@ const EnterPartyPage = () => {
             onClick={() => {
               fetchRoomById(id).then((res) => {
                 if (res) {
+                  user.partyRoom = id;
                   navigate(`/party/${res._id}`);
                   window.location.reload();
                 } else {

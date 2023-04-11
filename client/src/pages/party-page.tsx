@@ -12,6 +12,9 @@ import { TMusicContent } from "../types/music-content";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import PartyRoomQueue from "../components/party-room/queue";
+import ListenerList from "../components/party-room/listener-list";
+import AddMember from "../services/party/add-member";
+
 
 const PartyPage = () => {
   const { id } = useParams();
@@ -21,6 +24,14 @@ const PartyPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
   const [song, setSong] = useState<TMusicContent | null>(null);
+  const [showListenersModal, setShowListenersModal] = useState(false);
+
+  const handleOpenListen = () => {
+    setShowListenersModal(true);
+  }
+  const handleCloseListen = () => {
+    setShowListenersModal(false);
+  }
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -34,6 +45,17 @@ const PartyPage = () => {
       });
     }
   }, []);
+  useEffect (() => {
+    if(user && room) {
+      AddMember(room, user.username);
+      
+    }
+  })
+  useEffect (() => {
+    if (user && id) {
+      user.partyRoom = id;
+    }
+  })
 
   if (!user) {
     return <div>fetching user</div>;
@@ -42,7 +64,6 @@ const PartyPage = () => {
   if (!room) {
     return <div>Invalid Room Id</div>;
   }
-
   return (
     <div className="w-full h-full min-h-screen bg-lblue">
       <Navbar />
@@ -65,11 +86,13 @@ const PartyPage = () => {
                   onClick={async () => {
                     if (user.username === room.ownerUsername) {
                       await DeleteRoom(room).then(() => {
+                        user.partyRoom = "";
                         navigate(`/`);
                         window.location.reload();
                       });
                     } else {
                       await DeleteMember(room, user.username).then(() => {
+                        user.partyRoom = "";
                         navigate(`/`);
                         window.location.reload();
                       });
@@ -81,7 +104,7 @@ const PartyPage = () => {
                 {user.username === room.ownerUsername ? (
                   <button
                     className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
-                    onClick={() => {}}
+                    onClick={() => handleOpenListen()}
                   >
                     Transfer
                   </button>
@@ -101,6 +124,11 @@ const PartyPage = () => {
         ) : (
           <SpotifyPlayerCard selectedSong={song} />
         )}
+        <ListenerList 
+          listeners={room.members}
+          isVisible={showListenersModal}
+          onClose={handleCloseListen}
+        />
       </div>
     </div>
   );
