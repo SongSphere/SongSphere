@@ -47,7 +47,9 @@ const PartyPage = () => {
   }, []);
   useEffect (() => {
     if(user && room) {
-      AddMember(room, user.username);
+      if(!user.partyRoom) {
+        AddMember(room, user.username);
+      }
       
     }
   })
@@ -128,6 +130,7 @@ const PartyPage = () => {
           listeners={room.members}
           isVisible={showListenersModal}
           onClose={handleCloseListen}
+          room={room}
         />
       </div>
     </div>

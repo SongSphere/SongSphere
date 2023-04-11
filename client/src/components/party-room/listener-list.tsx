@@ -1,11 +1,13 @@
 import { TUser } from "../../types/user";
 import { TPartyRoom } from "../../types/party-room";
 import { useEffect, useState } from "react";
+import TransferOwner from "../../services/party/trasnfer-owner";
 
 interface IListernerListProps {
     listeners: string[];
     isVisible: boolean;
     onClose: Function;
+    room: TPartyRoom;
 }
 
 const ListenerList = (props: IListernerListProps) => {
@@ -52,9 +54,15 @@ const ListenerList = (props: IListernerListProps) => {
                   {followers.map((user) => {
                     return (
                       <div className="flex" key={user}>
-                        <div className="flex-1 inline-block text-left">
+                        <button className="flex-1 inline-block text-left"
+                        onClick={async() => 
+                            await TransferOwner(props.room, user).then(() => {
+                                window.location.reload();
+                            })
+                        }
+                        >
                           {user}
-                        </div>
+                        </button>
                       </div>
                     );
                   })}
