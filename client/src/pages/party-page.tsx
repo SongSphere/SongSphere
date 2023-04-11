@@ -12,6 +12,11 @@ import { TMusicContent } from "../types/music-content";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import PartyRoomQueue from "../components/party-room/queue";
+import {
+  getSpotifyPlaylists,
+  getSpotifyTracksFromPlaylist,
+} from "../services/spotify/spotify-get-playlists";
+import { TPlaylist } from "../types/playlist";
 
 const PartyPage = () => {
   const { id } = useParams();
