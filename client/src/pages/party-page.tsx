@@ -49,9 +49,9 @@ const PartyPage = () => {
     <div className="w-full h-full min-h-screen bg-lblue">
       <Navbar />
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
-        <div className="relative flex justify-center col-span-1">
-          <div className="fixed flex h-[95%] mt-8">
-            <div className="bg-white rounded-lg w-80 h-5/6 drop-shadow-md">
+        <div className="relative flex justify-center col-span-1 px-2">
+          <div className="absolute flex h-[95%] mt-8 w-[90%]">
+            <div className="w-full bg-white rounded-lg h-5/6 drop-shadow-md">
               <div>
                 <h1 className="text-3xl text-center text-navy">
                   Name:{room?.partyName}
