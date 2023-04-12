@@ -21,7 +21,9 @@ const CreateRoomPage = () => {
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>("");
   const [enterFailOpen, setEnterFailOpen] = useState(false);
-  const [enterFailText, setEnterFailText] = useState<string>("");
+  const [idForinvite, setIdForInvite] = useState<string>("");
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+  const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
 
   const ERROR_MSG = "Oh no! An error occurs when creating the party room";
   let navigate = useNavigate();
@@ -30,6 +32,13 @@ const CreateRoomPage = () => {
     setUser(Session.getUser());
     setService(Session.getMusicService());
   }, [user]);
+
+  const handleFollowingClose = () => {
+    setShowFollowingModal(false);
+  };
+  const handleFollowingOpen = () => {
+    setShowFollowingModal(true);
+  };
 
   if (!user) {
     return <div>fethcing user</div>;
@@ -45,7 +54,7 @@ const CreateRoomPage = () => {
       <FailPopUp
         open={enterFailOpen}
         setOpen={setEnterFailOpen}
-        failText={enterFailText}
+        failText={ERROR_MSG}
       />
       <Navbar />
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
@@ -99,20 +108,24 @@ const CreateRoomPage = () => {
                           partyName: name,
                           description: description,
                           members: [],
+                          invitedMembers: [],
                           queue: [],
                           musicIndex: 0,
                         };
                         await CreateRoom(newRoom)
                           .then((res) => {
-                            fetchRoomByOwner(newRoom.ownerUsername).then(
-                              (room) => {
-                                navigate(`/party/${room._id}`);
-                                window.location.reload();
-                              }
-                            );
+                            if (!res) {
+                              setEnterFailOpen(true);
+                            } else {
+                              fetchRoomByOwner(newRoom.ownerUsername).then(
+                                (room) => {
+                                  navigate(`/party/${room._id}`);
+                                  window.location.reload();
+                                }
+                              );
+                            }
                           })
                           .catch((error) => {
-                            setEnterFailText(ERROR_MSG);
                             setEnterFailOpen(true);
                           });
                       }

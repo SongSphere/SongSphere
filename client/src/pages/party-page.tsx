@@ -15,6 +15,7 @@ import PartyRoomQueue from "../components/party-room/queue";
 import ListenerList from "../components/party-room/listener-list";
 import AddMember from "../services/party/add-member";
 import MemberList from "../components/party-room/members-list";
+import FollowingListForInvite from "../components/invitations/search-user-for-invite";
 
 
 const PartyPage = () => {
@@ -27,6 +28,16 @@ const PartyPage = () => {
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [showListenersModal, setShowListenersModal] = useState(false);
   const [added, setAdded] = useState(false);
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+  const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
+
+  const handleFollowingClose = () => {
+    setShowFollowingModal(false);
+  };
+  const handleFollowingOpen = () => {
+    setShowFollowingModal(true);
+  };
+
 
   const handleOpenListen = () => {
     setShowListenersModal(true);
@@ -48,9 +59,9 @@ const PartyPage = () => {
     }
   }, []);
   useEffect (() => {
-    if(user && room) {
+    if(user && room?._id) {
       if(!room.members.includes(user.username)) {
-        AddMember(room, user.username);
+        AddMember(room._id.toString(), user.username);
       }
      
       
@@ -113,9 +124,45 @@ const PartyPage = () => {
                   >
                     Transfer
                   </button>
+
+                  
+
+                  
+
                 ) : (
                   <div></div>
                 )}
+
+            <FollowingListForInvite
+              following={user.following}
+              isVisible={showFollowingModal}
+              onClose={handleFollowingClose}
+              roomId={id}
+              room={partyRoom}
+            />
+
+            <button
+              className="p-3 text-white rounded-xl bg-navy"
+              onClick={() => {
+                if (room && id) {
+                  fetchRoomById(id).then((res) => {
+                    if (res) {
+                      if (res.ownerUsername === user.username) {
+                        handleFollowingOpen();
+                        setPartyRoom(res);
+                      } else {
+                        console.log("You are not the owner of this party");
+                      }
+                    } else {
+                      alert("Room does not exist");
+                    }
+                  });
+                }  
+                
+              }}
+            >
+              Find User To Invite
+            </button>
               <MemberList listeners={room.members} room={room}/>
               </div>
             </div>
