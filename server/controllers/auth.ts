@@ -219,6 +219,7 @@ export const signInUp = async (
         defaultPlatform: "",
         currentlyPlayingSong: null,
         showPlayingSong: false,
+        partyRoom: "",
       };
     }
 

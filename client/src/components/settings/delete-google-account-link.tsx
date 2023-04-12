@@ -1,41 +1,22 @@
-import styled from "styled-components";
 import { useEffect, useState } from "react";
-import Popup from "reactjs-popup";
 import { useNavigate } from "react-router-dom";
 import DeleteGoogleAccount from "../../services/user/delete-google-account";
 import Session from "../../session";
+import FailPopUp from "../popup/fail-popup";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name
  * Author: David Kim
  */
 
-const Button = styled.button`
-  background-color: red
-  color: red;
-  padding: 5px 15px;
-  border-radius: 5px;
-  outline: 0;
-  text-transform: uppercase;
-  margin: 10px 0px;
-  cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
-  transition: ease background-color 250ms;
-  &:hover {
-    background-color: red
-  }
-  &:disabled {
-    cursor: default;
-    opacity: 0.7;
-  }
-`;
-
 interface IDeleteGoogleAcountLinkProps {}
 
 const DeleteGoogleAcountLink = (props: IDeleteGoogleAcountLinkProps) => {
-  const [open, setOpen] = useState(false);
-  const closeModal = () => setOpen(false);
-  const [email, setEmail] = useState<string>("");
+  const [deleteFailOpen, setDeleteFailOpen] = useState(false);
+  const DELETE_ACC_ERR_MSG =
+    "Oops! An error occurs when you try to delete your account. Try again later!";
+
+  const [email, setEmail] = useState<string | null>(null);
 
   let navigate = useNavigate();
 
@@ -46,35 +27,39 @@ const DeleteGoogleAcountLink = (props: IDeleteGoogleAcountLinkProps) => {
     }
   }, [Session.getUser()]);
 
+  if (!email) {
+    return <div>fetching user</div>;
+  }
+
   return (
     <div>
-      <Button
+      <button
+        className="p-2 rounded-lg bg-slate-300"
         onClick={async () => {
-          // Open Modal that prints Success
-          setOpen(true);
-          DeleteGoogleAccount(email);
-
-          // Update the user fields with the updated fields
-          try {
-            Session.setUser(null);
-            Session.setIsLoggedIn(false);
-            navigate("/auth");
-          } catch (error) {
-            console.error(error);
+          const confirmDelete = window.confirm(
+            "Are you sure you want to delete your account? This operation cannot be redone."
+          );
+          if (confirmDelete) {
+            DeleteGoogleAccount(email)
+              .then((res) => {
+                Session.setUser(null);
+                Session.setIsLoggedIn(false);
+                navigate("/auth");
+              })
+              .catch((err) => {
+                setDeleteFailOpen(true);
+              });
           }
         }}
       >
         Delete account
-      </Button>
+      </button>
 
-      <Popup open={open} closeOnDocumentClick onClose={closeModal}>
-        <div className="modal">
-          <a className="close" onClick={closeModal}>
-            &times;
-          </a>
-          Success
-        </div>
-      </Popup>
+      <FailPopUp
+        open={deleteFailOpen}
+        setOpen={setDeleteFailOpen}
+        failText={DELETE_ACC_ERR_MSG}
+      />
     </div>
   );
 };
