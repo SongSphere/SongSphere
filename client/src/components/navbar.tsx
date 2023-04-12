@@ -10,7 +10,7 @@ const Navbar = (props: INavbarProps) => {
       <div className="fixed w-screen bg-white drop-shadow-md">
         <div className="flex flex-row justify-end">
           <Link className="p-5" to="/followRequest">
-            Follow Request (Temp)
+            Follow Request
           </Link>
           <Link className="p-5" to="/">
             Home

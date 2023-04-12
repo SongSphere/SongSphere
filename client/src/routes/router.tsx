@@ -20,8 +20,15 @@ import PlaylistPage from "../pages/playlist-page";
 import CreateRoomPage from "../pages/party/enter-room-page";
 import PartyPage from "../pages/party-page";
 
+// testing layout
+import MainLayout from "../layouts/main-layout";
+
 const Router = () => {
   let element = useRoutes([
+    {
+      path: "/main",
+      element: <MainLayout />,
+    },
     {
       path: "/auth",
       element: <AuthPage />,
