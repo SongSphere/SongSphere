@@ -127,12 +127,16 @@ const CreateRoomPage = () => {
               </form>
             </div>
             <div className="grid h-64 p-5 m-5 bg-white rounded-xl place-content-center">
-              <h1 className="text-3xl text-center text-navy">
-                Enter An Existing Party Room
-              </h1>
-              <div className="flex mt-4">
-                <h1 className="text-xl text-navy">Room Id:</h1>
-                <form className="mt-1 ml-2">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                <h1 className="text-3xl text-center text-navy">
+                  Enter An Existing Party Room
+                </h1>
+                <div className="flex mt-4">
+                  <h1 className="text-xl text-navy">Room Id:</h1>
                   <label>
                     <input
                       className="e-input"
@@ -142,24 +146,28 @@ const CreateRoomPage = () => {
                       onChange={(e) => {
                         setId(e.target.value);
                       }}
+                      required
                     />
                   </label>
-                </form>
-              </div>
-              <button
-                className="p-3 mt-4 text-white rounded-xl bg-navy"
-                onClick={() => {
-                  fetchRoomById(id).then((res) => {
-                    if (res) {
-                      navigate(`/party/${res._id}`);
-                      window.location.reload();
-                    } else {
-                    }
-                  });
-                }}
-              >
-                Enter
-              </button>
+                </div>
+                <div className="flex justify-center w-full">
+                  <button
+                    type="submit"
+                    className="p-3 mt-4 text-white rounded-xl bg-navy"
+                    onClick={() => {
+                      fetchRoomById(id).then((res) => {
+                        if (res) {
+                          navigate(`/party/${res._id}`);
+                          window.location.reload();
+                        } else {
+                        }
+                      });
+                    }}
+                  >
+                    Enter
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
