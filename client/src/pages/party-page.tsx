@@ -14,6 +14,7 @@ import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import PartyRoomQueue from "../components/party-room/queue";
 import AppleMusicPartyRoomPlayerCard from "../components/party-room/apple-music-party-player";
 import SpotifyPartyRoomPlayerCard from "../components/party-room/spotify-music-party-player";
+import PartyRoomChat from "../components/party-room/party-chat";
 
 const PartyPage = () => {
   const { id } = useParams();
@@ -98,11 +99,14 @@ const PartyPage = () => {
         <div className="col-span-2">
           <PartyRoomQueue />
         </div>
-        {service === "apple" ? (
-          <AppleMusicPartyRoomPlayerCard selectedSong={song} />
-        ) : (
-          <SpotifyPartyRoomPlayerCard selectedSong={song} />
-        )}
+        <div className="relative flex-col justify-center ">
+          {service === "apple" ? (
+            <AppleMusicPartyRoomPlayerCard selectedSong={song} />
+          ) : (
+            <SpotifyPartyRoomPlayerCard selectedSong={song} />
+          )}
+          <PartyRoomChat />
+        </div>
       </div>
     </div>
   );

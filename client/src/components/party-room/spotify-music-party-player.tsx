@@ -234,80 +234,38 @@ const SpotifyPartyRoomPlayerCard = (props: ISpotifyPlayerCardProps) => {
   }, [user]);
 
   return (
-    <div className="relative flex-col justify-center ">
-      <div className="flex h-[45%] mt-8 justify-center">
-        <div className="bg-white rounded-lg w-80 h-5/6 drop-shadow-md">
-          <div className="flex justify-center">
-            <div className="w-4/5 mt-5">
-              <img src={song?.img}></img>
-            </div>
-          </div>
-          <div className="px-6 mt-2 text-2xl text-center">{song?.name}</div>
-          <div className="flex justify-center mt-2">
-            <div
-              className="w-5 h-5 cursor-pointer"
-              onClick={() => {
-                playMusicHandler();
-              }}
-            >
-              <img
-                src={
-                  isPlaying
-                    ? "/img/icons/pause-icon.png"
-                    : "/img/icons/play-icon.png"
-                }
-              ></img>
-            </div>
-          </div>
-          <div className="flex justify-center mt-4">
-            <div className="w-5/6 h-1 bg-neutral-200 dark:bg-neutral-600">
-              <div
-                className={`h-1 bg-red-400`}
-                style={{
-                  width: `${progress}%`,
-                }}
-              ></div>
-            </div>
+    <div className="flex h-[45%] mt-8 justify-center">
+      <div className="bg-white rounded-lg w-80 h-5/6 drop-shadow-md">
+        <div className="flex justify-center">
+          <div className="w-4/5 mt-5">
+            <img src={song?.img}></img>
           </div>
         </div>
-      </div>
-      <div className="relative flex h-[65%] justify-center ">
-        <div className="absolute bg-white rounded-lg w-[90%] h-5/6 drop-shadow-md">
-          <div className="pt-3 mb-2 text-2xl font-bold text-gray-700 pl-7">
-            Chat
+        <div className="px-6 mt-2 text-2xl text-center">{song?.name}</div>
+        <div className="flex justify-center mt-2">
+          <div
+            className="w-5 h-5 cursor-pointer"
+            onClick={() => {
+              playMusicHandler();
+            }}
+          >
+            <img
+              src={
+                isPlaying
+                  ? "/img/icons/pause-icon.png"
+                  : "/img/icons/play-icon.png"
+              }
+            ></img>
           </div>
-          <div className="w-[95%] mx-auto border-b-2 border-gray-300"></div>
-          <div className="flex flex-col h-[calc(100%-3rem)] p-2 pb-4">
-            <div className="flex-grow p-2 overflow-y-auto">
-              {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`mb-1 rounded-md pl-3 py-1 ${
-                    message.sender === "user"
-                      ? "bg-sky-800 text-white"
-                      : "bg-gray-300 text-gray-700"
-                  }`}
-                >
-                  <div className="text-sm font-semibold">{message.sender}</div>
-                  <div className="pl-2 text-sm">{message.content}</div>
-                </div>
-              ))}
-            </div>
-            <div className="flex items-center p-2">
-              <input
-                type="text"
-                value={messageInput}
-                onChange={(e) => setMessageInput(e.target.value)}
-                className="flex-grow p-1 mr-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                placeholder="Type your message here"
-              />
-              <button
-                onClick={sendMessage}
-                className="px-4 py-1 font-bold text-white bg-blue-500 rounded-lg focus:outline-none focus:bg-blue-600"
-              >
-                Send
-              </button>
-            </div>
+        </div>
+        <div className="flex justify-center mt-4">
+          <div className="w-5/6 h-1 bg-neutral-200 dark:bg-neutral-600">
+            <div
+              className={`h-1 bg-red-400`}
+              style={{
+                width: `${progress}%`,
+              }}
+            ></div>
           </div>
         </div>
       </div>
