@@ -13,16 +13,14 @@ export const addToSpotifyLibrary = async (id: string, token: string) => {
         "Content-Type": "application/json",
       },
     })
-      .then(async (res) => {
+      .then((res) => {
+        if (res.status != 201) {
+          reject();
+        }
         resolve(true);
-        // if (res.status != 201) {
-        //   console.error(res);
-        //   reject(false);
-        // }
-        // resolve(true);
       })
       .catch((error) => {
-        reject(false);
+        reject(error);
       });
   });
 };

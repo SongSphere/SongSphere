@@ -16,7 +16,7 @@ const deletePost = async (post: TPost) => {
         resolve(true);
       })
       .catch((error) => {
-        resolve(false);
+        reject(error);
       });
   });
 };

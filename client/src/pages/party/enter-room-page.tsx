@@ -22,11 +22,10 @@ const CreateRoomPage = () => {
   const [description, setDescription] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>("");
+  const [enterFailOpen, setEnterFailOpen] = useState(false);
+  const [enterFailText, setEnterFailText] = useState<string>("");
 
   const ERROR_MSG = "Oh no! An error occurs when creating the party room";
-
-  const [failText, setFailText] = useState<string>("");
-
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -45,7 +44,11 @@ const CreateRoomPage = () => {
 
   return (
     <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
-      <SucessFailPopUp sucessFailText={failText} />
+      <SucessFailPopUp
+        open={enterFailOpen}
+        setOpen={setEnterFailOpen}
+        failText={enterFailText}
+      />
       <Navbar />
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
         <FriendActivityCard />
@@ -103,20 +106,16 @@ const CreateRoomPage = () => {
                         };
                         await CreateRoom(newRoom)
                           .then((res) => {
-                            if (!res) {
-                              setFailText(ERROR_MSG);
-                            } else {
-                              setFailText("");
-                              fetchRoomByOwner(newRoom.ownerUsername).then(
-                                (room) => {
-                                  navigate(`/party/${room._id}`);
-                                  window.location.reload();
-                                }
-                              );
-                            }
+                            fetchRoomByOwner(newRoom.ownerUsername).then(
+                              (room) => {
+                                navigate(`/party/${room._id}`);
+                                window.location.reload();
+                              }
+                            );
                           })
                           .catch((error) => {
-                            setFailText(ERROR_MSG);
+                            setEnterFailText(ERROR_MSG);
+                            setEnterFailOpen(true);
                           });
                       }
                     }}

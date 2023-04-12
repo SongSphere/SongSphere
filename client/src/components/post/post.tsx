@@ -13,6 +13,7 @@ import userEvent from "@testing-library/user-event";
 import Session from "../../session";
 import selectService from "../../services/user/select-service";
 import { addToAppleLibrary } from "../../services/apple/add-to-library";
+import SucessFailPopUp from "../popup/sucess-fail-popup";
 
 interface IPostProps {
   post: TPost;
@@ -21,23 +22,29 @@ interface IPostProps {
 }
 
 const Post = (props: IPostProps) => {
-  const [open, setOpen] = useState(false);
-  const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [postFocusPage, setPostFocusPage] = useState(false);
-  const [deleteSuccessText, setDeleteSuccessText] = useState<string>("");
   const [postOwner, setPostOwner] = useState<TUser | null>(null);
+
+  // state that notify the sucess-fail-popup when to open
+  const [deleteFailOpen, setDeleteFailOpen] = useState(false);
+  const [deleteFailText, setDeleteFailText] = useState("");
+  const [libraryFailOpen, setlibraryFailOpen] = useState(false);
+  const [libraryFailText, setLibraryFailText] = useState("");
+
+  const DELETE_ERR_MSG =
+    "Oops! An error occurs when deleting the post. Try again later!";
+  const LIBRARY_ERR_MSG =
+    "Oops! An error occurs when adding to your library. Try again later!";
 
   const closeModal = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "modal-container") {
-      setOpen(false);
+      setEditOpen(false);
     }
   };
 
-  const closeDeleteSuccess = () => setOpen2(false);
-
   const handleOpen = () => {
-    setOpen(!open);
+    setEditOpen(!editOpen);
   };
 
   let navigate = useNavigate();
@@ -56,7 +63,7 @@ const Post = (props: IPostProps) => {
           <button onClick={handleOpen} className="absolute top-5 right-5 ">
             <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
           </button>
-          {open ? (
+          {editOpen ? (
             <div
               id="modal-container"
               onClick={closeModal}
@@ -79,19 +86,16 @@ const Post = (props: IPostProps) => {
                     <button
                       className="w-full py-2 text-xs text-white transition-colors duration-200 rounded-sm bg-lblue hover:bg-gray-800"
                       onClick={async () => {
-                        await deletePost(props.post).then((res) => {
-                          setOpen2(true);
-                          // temp solution
-                          if (res) {
-                            setDeleteSuccessText("Success");
-                          } else {
-                            setDeleteSuccessText("Fail");
-                          }
-
-                          setTimeout(() => {
-                            window.location.reload();
-                          }, 1500);
-                        });
+                        await deletePost(props.post)
+                          .then((res) => {
+                            setTimeout(() => {
+                              window.location.reload();
+                            }, 1500);
+                          })
+                          .catch((err) => {
+                            setDeleteFailText(DELETE_ERR_MSG);
+                            setDeleteFailOpen(true);
+                          });
                       }}
                     >
                       Delete
@@ -111,42 +115,39 @@ const Post = (props: IPostProps) => {
                                 a,
                                 u,
                                 u.defaultPlatform
-                              ).then(async (id) => {
-                                if (a) {
-                                  try {
+                              )
+                                .then(async (id) => {
+                                  if (a) {
                                     await addToAppleLibrary(id, a);
-                                    setDeleteSuccessText("Success");
-                                    setOpen3(true);
-                                  } catch (error) {
-                                    setDeleteSuccessText("Fail");
-                                    setOpen3(true);
                                   }
-                                }
-                              });
+                                })
+                                .catch((error) => {
+                                  setLibraryFailText(LIBRARY_ERR_MSG);
+                                  setlibraryFailOpen(true);
+                                });
                             } else {
-                              console.log("spotify account");
-                              let id = await selectService(
+                              await selectService(
                                 props.post.music,
                                 a,
                                 u,
                                 u.defaultPlatform
-                              );
-                              try {
-                                await addToSpotifyLibrary(
-                                  id,
-                                  props.user.spotifyToken
-                                );
-                                setDeleteSuccessText("Success");
-                                setOpen3(true);
-                              } catch (error) {
-                                setDeleteSuccessText("Fail");
-                                setOpen3(true);
-                              }
+                              )
+                                .then(async (id) => {
+                                  await addToSpotifyLibrary(
+                                    id,
+                                    props.user.spotifyToken
+                                  );
+                                  setLibraryFailText("");
+                                })
+                                .catch((error) => {
+                                  setLibraryFailText(LIBRARY_ERR_MSG);
+                                  setlibraryFailOpen(true);
+                                });
                             }
                           }
-                          setOpen(false);
+                          setEditOpen(false);
                         }
-                        setOpen(false);
+                        setEditOpen(false);
                       }}
                     >
                       Add to my library
@@ -172,27 +173,16 @@ const Post = (props: IPostProps) => {
         <img className="rounded-sm" src={props.post.music.cover}></img>
       </div>
 
-      <Popup open={open2} closeOnDocumentClick onClose={closeDeleteSuccess}>
-        <div className="modal">
-          <a className="close" onClick={closeDeleteSuccess}>
-            &times;
-          </a>
-          <div className="px-4 py-2 border-2 rounded-lg bg-slate-200">
-            {deleteSuccessText}
-          </div>
-        </div>
-      </Popup>
-
-      <Popup open={open3} closeOnDocumentClick onClose={closeDeleteSuccess}>
-        <div className="modal">
-          <a className="close" onClick={closeDeleteSuccess}>
-            &times;
-          </a>
-          <div className="px-4 py-2 border-2 rounded-lg bg-slate-200">
-            {deleteSuccessText}
-          </div>
-        </div>
-      </Popup>
+      <SucessFailPopUp
+        open={deleteFailOpen}
+        setOpen={setDeleteFailOpen}
+        failText={deleteFailText}
+      />
+      <SucessFailPopUp
+        open={libraryFailOpen}
+        setOpen={setlibraryFailOpen}
+        failText={libraryFailText}
+      />
 
       <Popup
         open={postFocusPage}
@@ -229,9 +219,6 @@ const Post = (props: IPostProps) => {
             )}
           </div>
           <div className="text-2xl font-bold">{props.post.music.name}</div>
-          {/* <div className="float-right pr-2 text-navy">
-            Likes: {props.post.likes}
-          </div> */}
           <div className="text-slate-500">{props.post.music.artist}</div>
           <hr className="h-0.5 border-0 bg-gray-300"></hr>
           <div className="flex justify-end mt-2">
@@ -249,18 +236,18 @@ const Post = (props: IPostProps) => {
             >
               <img src="/img/icons/comment.svg"></img>
             </div>
-            {postOwner?.isPrivate ?(
-               <div>
-                </div>
-            ):(<div
-              className="mt-1 ml-2 cursor-pointer w-7 h-7"
-              onClick={() => {
-                navigate(`/repost/${props.post._id}`);
-              }}
-            >
-              <img src="/img/icons/repost.svg"></img>
-            </div>)}
-           
+            {postOwner?.isPrivate ? (
+              <div></div>
+            ) : (
+              <div
+                className="mt-1 ml-2 cursor-pointer w-7 h-7"
+                onClick={() => {
+                  navigate(`/repost/${props.post._id}`);
+                }}
+              >
+                <img src="/img/icons/repost.svg"></img>
+              </div>
+            )}
           </div>
         </div>
       </div>
