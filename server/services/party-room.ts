@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { TMusicContent } from "../types/music-content";
 
 import PartyRoom, { IPartyRoom } from "../db/party-room";
 import { TPartyRoom } from "../types/party-room";
@@ -81,6 +82,23 @@ export const transferOwner = async (room: TPartyRoom, username: string) => {
   try {
     await PartyRoom.findByIdAndUpdate(room._id, {
       ownerUsername: room.ownerUsername,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addToQueue = async (song: TMusicContent, username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $elemMatch: { username: username },
+      },
+    });
+    const q = room.queue;
+    q.push(song);
+    await PartyRoom.findByIdAndUpdate(room._id, {
+      queue: q,
     });
   } catch (error) {
     throw error;

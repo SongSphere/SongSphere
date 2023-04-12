@@ -1,16 +1,17 @@
 // import packages
 import express from "express";
 
-//import controllers 
+//import controllers
 import {
-    newRoom,
-    getRoomByOwner,
-    getRoomById,
-    removeRoom,
-    addMember,
-    removeMember,
-    transferO,
-} from "../controllers/party-room"
+  newRoom,
+  getRoomByOwner,
+  getRoomById,
+  removeRoom,
+  addMember,
+  removeMember,
+  transferO,
+  addQueue,
+} from "../controllers/party-room";
 
 // import middleware
 import auth from "../middleware/auth";
@@ -21,10 +22,10 @@ router.post("/api/makeroom", newRoom);
 router.post("/api/deleteroom", removeRoom);
 router.post("/api/addmember", addMember);
 router.post("/api/removemember", removeMember);
-router.post("/api/transferOwner", transferO)
+router.post("/api/transferOwner", transferO);
+router.post("/api/addqueue", addQueue);
 
 router.get("/api/room/find/:username", getRoomByOwner);
 router.get("/api/room/:id", getRoomById);
-
 
 export default router;
