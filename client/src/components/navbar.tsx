@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import handleSignout from "../services/user/handle-sign-out";
 import Session from "../session";
 
 interface INavbarProps {}
 
+// Navbar deeply inspired from: https://www.section.io/engineering-education/creating-a-responsive-navigation-bar-using-tailwind-css-and-javascript/
+
 const Navbar = (props: INavbarProps) => {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   return (
     <nav className="shadow-lg bg-slate-800">
       <div className="w-screen px-4 mx-auto">
@@ -18,7 +22,8 @@ const Navbar = (props: INavbarProps) => {
                 </span>
               </a>
             </div>
-            <div className="items-center hidden space-x-1 md:flex">
+            {/* primary navbar items */}
+            <div className="items-center hidden space-x-1 lg:flex">
               <Link to="/">
                 <div className="px-2 py-4 font-semibold border-b-4 border-sky-300 text-sky-300">
                   Home
@@ -61,22 +66,87 @@ const Navbar = (props: INavbarProps) => {
                   Settings
                 </div>
               </Link>
-              <div
-                className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300"
-                onClick={async () => {
-                  const logoutSuccesss = await handleSignout();
-                  if (logoutSuccesss) {
-                    Session.setUser(null);
-                    window.location.reload();
-                  }
-                }}
-              >
-                Logout
-              </div>
             </div>
+          </div>
+          <div className="items-center hidden space-x-3 lg:flex ">
+            <div
+              className="px-2 py-4 font-semibold cursor-pointer text-slate-200 border-sky-300 hover:text-sky-300"
+              onClick={async () => {
+                const logoutSuccesss = await handleSignout();
+                if (logoutSuccesss) {
+                  Session.setUser(null);
+                  window.location.reload();
+                }
+              }}
+            >
+              Logout
+            </div>
+          </div>
+          <div className="flex items-center lg:hidden">
+            <button
+              className="outline-none mobile-menu-button"
+              onClick={() => {
+                setMobileNavOpen(!mobileNavOpen);
+              }}
+            >
+              <img
+                className="w-8 h-8 mr-4"
+                src="/img/icons/three-lines.svg"
+              ></img>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Navbar expanded */}
+      {mobileNavOpen ? (
+        <div className="items-center space-x-1 lg:hidden">
+          <Link to="/">
+            <div className="px-2 py-4 font-semibold border-b-4 border-sky-300 text-sky-300">
+              Home
+            </div>
+          </Link>
+          <Link to="/followRequest">
+            <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+              Follow Request
+            </div>
+          </Link>
+
+          <Link to="/profile">
+            <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+              Profile
+            </div>
+          </Link>
+          <Link to="/searchUsers">
+            <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+              Search
+            </div>
+          </Link>
+
+          <Link to="/posts">
+            <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+              Post
+            </div>
+          </Link>
+          <Link to="/notificationsPage">
+            <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+              Notification
+            </div>
+          </Link>
+          <Link to="/createRoom">
+            <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+              Party Room
+            </div>
+          </Link>
+          <Link to="/settings">
+            <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+              Settings
+            </div>
+          </Link>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </nav>
   );
 };
