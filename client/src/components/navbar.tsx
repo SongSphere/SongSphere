@@ -6,51 +6,78 @@ interface INavbarProps {}
 
 const Navbar = (props: INavbarProps) => {
   return (
-    <div className="relative z-10 h-16">
-      <div className="fixed w-screen bg-white drop-shadow-md">
-        <div className="flex flex-row justify-end">
-          <Link className="p-5" to="/followRequest">
-            Follow Request
-          </Link>
-          <Link className="p-5" to="/">
-            Home
-          </Link>
-          <Link className="p-5" to="/profile">
-            Profile
-          </Link>
-          <Link className="p-5" to="/searchUsers">
-            Search
-          </Link>
+    <nav className="shadow-lg bg-slate-800">
+      <div className="w-screen px-4 mx-auto">
+        <div className="flex justify-between">
+          <div className="flex space-x-7">
+            <div>
+              <a href="#" className="flex items-center px-2 py-4">
+                {/* <img src="logo.png" alt="Logo" className="w-8 h-8 mr-2" /> */}
+                <span className="text-lg font-semibold text-slate-200">
+                  SongSphere
+                </span>
+              </a>
+            </div>
+            <div className="items-center hidden space-x-1 md:flex">
+              <Link to="/">
+                <div className="px-2 py-4 font-semibold border-b-4 border-sky-300 text-sky-300">
+                  Home
+                </div>
+              </Link>
+              <Link to="/followRequest">
+                <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+                  Follow Request
+                </div>
+              </Link>
 
-          <Link className="p-5" to="/posts">
-            Post
-          </Link>
-          <Link className="p-5" to="/notificationsPage">
-            Notification
-          </Link>
-          <Link className="p-5" to="/createRoom">
-            Party Room
-          </Link>
-          <Link className="p-5" to="/settings">
-            Setting
-          </Link>
-          <button
-            className="p-5"
-            onClick={async () => {
-              // If sign out success then set loggedin to false
-              // Redirect to the authentication page
-              const logoutSuccesss = await handleSignout();
-              if (logoutSuccesss) {
-                Session.setUser(null);
-                window.location.reload();
-              }
-            }}
-          >
-            logout
-          </button>
+              <Link to="/profile">
+                <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+                  Profile
+                </div>
+              </Link>
+              <Link to="/searchUsers">
+                <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+                  Search
+                </div>
+              </Link>
+
+              <Link to="/posts">
+                <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+                  Post
+                </div>
+              </Link>
+              <Link to="/notificationsPage">
+                <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+                  Notification
+                </div>
+              </Link>
+              <Link to="/createRoom">
+                <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+                  Party Room
+                </div>
+              </Link>
+              <Link to="/settings">
+                <div className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300">
+                  Settings
+                </div>
+              </Link>
+              <div
+                className="px-2 py-4 font-semibold text-slate-200 border-sky-300 hover:text-sky-300"
+                onClick={async () => {
+                  const logoutSuccesss = await handleSignout();
+                  if (logoutSuccesss) {
+                    Session.setUser(null);
+                    window.location.reload();
+                  }
+                }}
+              >
+                Logout
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
