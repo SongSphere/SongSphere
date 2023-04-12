@@ -4,31 +4,12 @@ import { useState } from "react";
 import AdjustName from "../../services/user/adjust-name";
 import Popup from "reactjs-popup";
 import Session from "../../session";
+import FailPopUp from "../popup/fail-popup";
 
 /*
  * This is used in the settings page to modify username, givenName, middleName, and Family_name
  * Author: David Kim
  */
-
-const Button = styled.button`
-  background-color: red
-  color: red;
-  padding: 5px 15px;
-  border-radius: 5px;
-  outline: 0;
-  text-transform: uppercase;
-  margin: 10px 0px;
-  cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
-  transition: ease background-color 250ms;
-  &:hover {
-    background-color: red
-  }
-  &:disabled {
-    cursor: default;
-    opacity: 0.7;
-  }
-`;
 
 interface IAdjustNamesLinkProps {
   username: string;
@@ -38,16 +19,15 @@ interface IAdjustNamesLinkProps {
 }
 
 const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
-  const [open, setOpen] = useState(false);
-  const closeModal = () => setOpen(false);
-  const [successFailText, setSuccessFailText] = useState("");
+  const [nameFailOpen, setNameFailOpen] = useState(false);
+  const SET_NAME_ERR_MSG =
+    "Oops! Your name is not sucessfully updated. Try again later";
 
   return (
     <div>
-      <Button
+      <button
+        className="p-2 rounded-lg bg-slate-300"
         onClick={async () => {
-          setOpen(true);
-
           await AdjustName(
             props.username,
             props.givenName,
@@ -55,29 +35,25 @@ const AdjustNamesLink = (props: IAdjustNamesLinkProps) => {
             props.familyName
           )
             .then(async (res) => {
-              if (res) {
-                setSuccessFailText("Success");
-              } else {
-                setSuccessFailText("Fail");
+              if (!res) {
+                setNameFailOpen(true);
               }
               await Session.setUser(await fetchUser());
             })
-            .catch((error) => {
-              console.error(error);
+            .catch((err) => {
+              setNameFailOpen(true);
+              console.error(err);
             });
         }}
       >
         Update Names
-      </Button>
+      </button>
 
-      <Popup open={open} closeOnDocumentClick onClose={closeModal}>
-        <div className="modal">
-          <a className="close" onClick={closeModal}>
-            &times;
-          </a>
-          {successFailText}
-        </div>
-      </Popup>
+      <FailPopUp
+        open={nameFailOpen}
+        setOpen={setNameFailOpen}
+        failText={SET_NAME_ERR_MSG}
+      />
     </div>
   );
 };
