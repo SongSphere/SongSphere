@@ -23,8 +23,8 @@ const PartyRoomChat = () => {
   }, [messages]);
 
   return (
-    <div className="relative flex h-[65%] justify-center ">
-      <div className="absolute bg-white rounded-lg w-[90%] h-5/6 drop-shadow-md">
+    <div className="relative flex h-[60%] justify-center ">
+      <div className="absolute bg-white rounded-lg w-[90%] h-full drop-shadow-md">
         <div className="pt-3 mb-2 text-2xl font-bold text-gray-700 pl-7">
           Chat
         </div>

@@ -6,21 +6,26 @@ import Repost from "../post/repost";
 import { useEffect } from "react";
 
 interface IProfileFeedProps {
-    posts: TPost[];
-    user: TUser;
-    setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  }
-  
-  const LikeFeed = (props: IProfileFeedProps) => {
-    return (
-      <div className="justify-center mt-8">
-        <div className="w-full">
+  posts: TPost[];
+  user: TUser;
+  setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
+}
+
+const LikeFeed = (props: IProfileFeedProps) => {
+  return (
+    <div className="justify-center mt-8">
+      <div className="w-full">
         {props.posts.map((post) => {
           const repost = post.repost;
 
           if (repost) {
             return (
-              <Repost post={post} key={post._id} setSong={props.setSong} />
+              <Repost
+                user={props.user}
+                post={post}
+                key={post._id}
+                setSong={props.setSong}
+              />
             );
           } else {
             return (
@@ -33,9 +38,9 @@ interface IProfileFeedProps {
             );
           }
         })}
-        </div>
       </div>
-    );
-  };
-  
-  export default LikeFeed;
+    </div>
+  );
+};
+
+export default LikeFeed;

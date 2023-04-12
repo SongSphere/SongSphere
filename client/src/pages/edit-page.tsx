@@ -8,17 +8,17 @@ import { useParams } from "react-router-dom";
 import fetchPostById from "../services/post/fetch-post-by-id";
 import { TPost } from "../types/post";
 import Session from "../session";
+import FailPopUp from "../components/popup/fail-popup";
 
-interface IEditPageProps {}
-
-const EditPage = (props: IEditPageProps) => {
-  const [open, setOpen] = useState(false);
+const EditPage = () => {
+  const [editFailOpen, setEditFailOpen] = useState(false);
   const [post, setPost] = useState<TPost | null>(null);
-  const closeModal = () => setOpen(false);
-  const [successFailText, setSuccessFailText] = useState("");
   const [caption, setCaption] = useState<string>("");
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const EDIT_ERR_MSG =
+    "Oops! An error occurs when you are editing the post. Try again later!";
 
   useEffect(() => {
     if (id) {
@@ -61,34 +61,27 @@ const EditPage = (props: IEditPageProps) => {
                 repost: post.repost,
               })
                 .then(async (res) => {
-                  if (res) {
-                    setSuccessFailText("Success");
-                  } else {
-                    setSuccessFailText("Fail");
+                  if (!res) {
+                    setEditFailOpen(true);
                   }
-                  setOpen(true);
                   setTimeout(() => {
                     navigate("/profile");
                   }, 1500);
 
                   Session.setUser(await fetchUser());
                 })
-                .catch((error) => {
-                  setSuccessFailText("Fail");
-                  setOpen(true);
+                .catch((err) => {
+                  setEditFailOpen(true);
                 });
             }}
           >
             Submit
           </button>
-          <Popup open={open} closeOnDocumentClick onClose={closeModal}>
-            <div className="modal">
-              <a className="close" onClick={closeModal}>
-                &times;
-              </a>
-              {successFailText}
-            </div>
-          </Popup>
+          <FailPopUp
+            open={editFailOpen}
+            setOpen={setEditFailOpen}
+            failText={EDIT_ERR_MSG}
+          />
         </div>
       </div>
     </div>

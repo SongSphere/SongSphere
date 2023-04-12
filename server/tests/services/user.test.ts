@@ -215,13 +215,12 @@ describe("Testing db services", () => {
 
     const c = await Comment.findOne({ text: "Unlike Comment" });
 
-    // console.log(c._id.toString());
+
 
     await unlikeComment(c._id.toString(), "dominicdanborn2@gmail.com");
 
     const updatedComment = await Comment.findOne({ text: "Unlike Comment" });
 
-    // console.log(updatedComment);
 
     expect(updatedComment.like).toBe(0);
   });

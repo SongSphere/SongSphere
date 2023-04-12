@@ -28,8 +28,8 @@ const Navbar = (props: INavbarProps) => {
           <Link className="p-5" to="/notificationsPage">
             Notification
           </Link>
-          <Link className="p-5" to="/enterParty">
-            Party Room 
+          <Link className="p-5" to="/createRoom">
+            Party Room
           </Link>
           <Link className="p-5" to="/settings">
             Setting

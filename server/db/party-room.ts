@@ -9,6 +9,7 @@ export interface IPartyRoom {
   partyName: string;
   description: string;
   members: Array<String>;
+  invitedMembers: Array<String>;
   queue: Array<TMusicContent>;
   musicIndex: Number;
 }
@@ -36,6 +37,10 @@ const PartyRoomSchema = new Schema<IPartyRoom>(
       required: true,
     },
     members: {
+      type: Array<String>(),
+      required: true,
+    },
+    invitedMembers: {
       type: Array<String>(),
       required: true,
     },

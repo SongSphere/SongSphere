@@ -234,8 +234,8 @@ const SpotifyPartyRoomPlayerCard = (props: ISpotifyPlayerCardProps) => {
   }, [user]);
 
   return (
-    <div className="flex h-[45%] mt-8 justify-center">
-      <div className="bg-white rounded-lg w-80 h-5/6 drop-shadow-md">
+    <div className="flex h-[50%] mt-8 justify-center pb-5">
+      <div className="bg-white rounded-lg w-[90%] h-full drop-shadow-md">
         <div className="flex justify-center">
           <div className="w-4/5 mt-5">
             <img src={song?.img}></img>

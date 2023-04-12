@@ -306,6 +306,6 @@ export const addToSpotifyLibrary = async (req: Request, res: Response) => {
     res.json({ msg: "success" });
   } catch (error) {
     res.status(500);
-    console.log(error);
+    res.json({ msg: error });
   }
 };

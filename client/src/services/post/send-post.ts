@@ -19,7 +19,7 @@ const sendPost = async (post: TPost) => {
       });
     } catch (err) {
       console.error(err);
-      reject(false);
+      reject(err);
     }
   });
 };
