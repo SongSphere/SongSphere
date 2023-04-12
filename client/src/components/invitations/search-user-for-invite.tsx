@@ -153,17 +153,19 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                                           props.roomId,
                                           userName
                                         );
+                                        
+                                        if (user) {
+                                          const notificationForAlerts: TNotification = {
+                                            userEmailSender: user.email,
+                                            userEmailReceiver: (await fetchUserByUsername(userName)).email,
+                                            notificationType: "Party",
+                                            text: props.roomId,
+                                          };
+                                          await sendNotification(notificationForAlerts);
+                                        }
                                       }
                       
-                                      if (user) {
-                                        const notificationForAlerts: TNotification = {
-                                          userEmailSender: user.email,
-                                          userEmailReceiver: (await fetchUserByUsername(userName)).email,
-                                          notificationType: "Comment",
-                                          text: `${user.username} invited you to a party!`,
-                                        };
-                                        await sendNotification(notificationForAlerts);
-                                      }
+                                      
                                       
                                       handleInviteClick();
                                       

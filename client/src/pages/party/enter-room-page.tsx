@@ -25,6 +25,8 @@ const CreateRoomPage = () => {
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
 
+  const [partyFailOpen, setPartyFailOpen] = useState(false);
+
   const ERROR_MSG = "Oh no! An error occurs when creating the party room";
   let navigate = useNavigate();
 
@@ -160,18 +162,31 @@ const CreateRoomPage = () => {
                     />
                   </label>
                 </div>
+
                 <div className="flex justify-center w-full">
+                  <FailPopUp
+                    open={partyFailOpen}
+                    setOpen={setPartyFailOpen}
+                    failText={"Room does not exist"}
+                  />
                   <button
                     type="submit"
                     className="p-3 mt-4 text-white rounded-xl bg-navy"
                     onClick={() => {
-                      fetchRoomById(id).then((res) => {
-                        if (res) {
-                          navigate(`/party/${res._id}`);
-                          window.location.reload();
-                        } else {
-                        }
-                      });
+                      fetchRoomById(id)
+                        .then((res) => {
+                          if (res) {
+                            navigate(`/party/${res._id}`);
+                            window.location.reload();
+                          } else {
+                         
+                          }
+                        })
+                        .then((error) => {
+                          setPartyFailOpen(true);
+
+                          
+                        });
                     }}
                   >
                     Enter
