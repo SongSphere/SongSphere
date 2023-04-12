@@ -22,21 +22,12 @@ import fetchUser from "../services/user/fetch-user";
 import Session from "../session";
 import setVisibilityPublic from "../services/settings/set-visibility-public";
 import setVisibilityPrivate from "../services/settings/set-visibility-private";
-import {
-  randomSongSpotify,
-  randomSongSpotifyFromBackend,
-} from "../services/spotify/spotify-search";
 import setFalseRandomSong from "../services/settings/set-false-random-song";
 import setTrueRandomSong from "../services/settings/set-true-random-song";
 import { TMusicContent } from "../types/music-content";
-import { TPost } from "../types/post";
-import sendPost from "../services/post/send-post";
-import PostFailure from "../components/popup/post-failure";
-import PostSucess from "../components/popup/post-sucess";
 import BlockedList from "../components/settings/blocked-list";
 import styled from "styled-components";
 import setShowSong from "../services/settings/set-show-song";
-import { getSpotifyRecentlyPlayedSongs } from "../services/spotify/spotify-recently-played";
 
 const Button = styled.button`
   background-color: red

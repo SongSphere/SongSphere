@@ -4,16 +4,14 @@ import SpotifyPlayerCard from "../../components/player/spotify-music-player-card
 import { TUser } from "../../types/user";
 import { TMusicContent } from "../../types/music-content";
 import Session from "../../session";
-import { randomSongSpotifyFromBackend } from "../../services/spotify/spotify-search";
 import FriendActivityCard from "../../components/feed/friend-activity";
 import Navbar from "../../components/navbar";
-import RandomSongPost from "../../components/feed/random-song-content";
 import { TPartyRoom } from "../../types/party-room";
 import CreateRoom from "../../services/party/createRoom";
 import fetchRoomByOwner from "../../services/party/fetch-room-by-owner";
 import { useNavigate } from "react-router-dom";
 import fetchRoomById from "../../services/party/fetch-room-by-id";
-import SucessFailPopUp from "../../components/popup/sucess-fail-popup";
+import FailPopUp from "../../components/popup/fail-popup";
 
 const CreateRoomPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
@@ -44,7 +42,7 @@ const CreateRoomPage = () => {
 
   return (
     <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
-      <SucessFailPopUp
+      <FailPopUp
         open={enterFailOpen}
         setOpen={setEnterFailOpen}
         failText={enterFailText}

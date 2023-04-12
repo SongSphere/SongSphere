@@ -12,7 +12,7 @@ import { addToSpotifyLibrary } from "../../services/spotify/add-to-library";
 import Session from "../../session";
 import selectService from "../../services/user/select-service";
 import { addToAppleLibrary } from "../../services/apple/add-to-library";
-import SucessFailPopUp from "../popup/sucess-fail-popup";
+import FailPopUp from "../popup/fail-popup";
 
 interface IPostProps {
   post: TPost;
@@ -181,12 +181,12 @@ const Post = (props: IPostProps) => {
         <img className="rounded-sm" src={props.post.music.cover}></img>
       </div>
 
-      <SucessFailPopUp
+      <FailPopUp
         open={deleteFailOpen}
         setOpen={setDeleteFailOpen}
         failText={deleteFailText}
       />
-      <SucessFailPopUp
+      <FailPopUp
         open={libraryFailOpen}
         setOpen={setlibraryFailOpen}
         failText={libraryFailText}

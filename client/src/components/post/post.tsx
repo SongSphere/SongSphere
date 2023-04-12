@@ -12,7 +12,7 @@ import { addToSpotifyLibrary } from "../../services/spotify/add-to-library";
 import Session from "../../session";
 import selectService from "../../services/user/select-service";
 import { addToAppleLibrary } from "../../services/apple/add-to-library";
-import SucessFailPopUp from "../popup/sucess-fail-popup";
+import FailPopUp from "../popup/fail-popup";
 
 interface IPostProps {
   post: TPost;
@@ -27,9 +27,7 @@ const Post = (props: IPostProps) => {
 
   // state that notify the sucess-fail-popup when to open
   const [deleteFailOpen, setDeleteFailOpen] = useState(false);
-  const [deleteFailText, setDeleteFailText] = useState("");
   const [libraryFailOpen, setlibraryFailOpen] = useState(false);
-  const [libraryFailText, setLibraryFailText] = useState("");
 
   const DELETE_ERR_MSG =
     "Oops! An error occurs when deleting the post. Try again later!";
@@ -92,7 +90,6 @@ const Post = (props: IPostProps) => {
                             }, 1500);
                           })
                           .catch((err) => {
-                            setDeleteFailText(DELETE_ERR_MSG);
                             setDeleteFailOpen(true);
                           });
                       }}
@@ -121,7 +118,6 @@ const Post = (props: IPostProps) => {
                                   }
                                 })
                                 .catch((error) => {
-                                  setLibraryFailText(LIBRARY_ERR_MSG);
                                   setlibraryFailOpen(true);
                                 });
                             } else {
@@ -136,10 +132,8 @@ const Post = (props: IPostProps) => {
                                     id,
                                     props.user.spotifyToken
                                   );
-                                  setLibraryFailText("");
                                 })
                                 .catch((error) => {
-                                  setLibraryFailText(LIBRARY_ERR_MSG);
                                   setlibraryFailOpen(true);
                                 });
                             }
@@ -172,15 +166,15 @@ const Post = (props: IPostProps) => {
         <img className="rounded-sm" src={props.post.music.cover}></img>
       </div>
 
-      <SucessFailPopUp
+      <FailPopUp
         open={deleteFailOpen}
         setOpen={setDeleteFailOpen}
-        failText={deleteFailText}
+        failText={DELETE_ERR_MSG}
       />
-      <SucessFailPopUp
+      <FailPopUp
         open={libraryFailOpen}
         setOpen={setlibraryFailOpen}
-        failText={libraryFailText}
+        failText={LIBRARY_ERR_MSG}
       />
 
       <Popup

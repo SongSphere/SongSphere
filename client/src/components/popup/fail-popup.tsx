@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 
 interface ISucessFailPopUpProps {
@@ -7,7 +6,7 @@ interface ISucessFailPopUpProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SucessFailPopUp = (props: ISucessFailPopUpProps) => {
+const FailPopUp = (props: ISucessFailPopUpProps) => {
   return (
     <Popup
       open={props.open}
@@ -27,4 +26,4 @@ const SucessFailPopUp = (props: ISucessFailPopUpProps) => {
   );
 };
 
-export default SucessFailPopUp;
+export default FailPopUp;
