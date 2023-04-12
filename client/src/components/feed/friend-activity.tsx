@@ -40,8 +40,8 @@ const FriendActivityCard = () => {
   }
 
   return (
-    <div className="relative flex justify-center h-screen">
-      <div className="fixed flex h-full mt-8">
+    <div className="flex justify-center h-full">
+      <div className="">
         <div className="bg-white rounded-md w-80 h-5/6 drop-shadow-md">
           <h1 className="pt-5 pb-2 text-center text-gray-900 ">
             Friend Listening Activity

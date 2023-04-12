@@ -32,7 +32,6 @@ const Feed = (props: IFeedProps) => {
 
   return (
     <div>
-      <div className="mt-8"></div>
       {posts.map((post) => {
         const repost = post.repost;
 

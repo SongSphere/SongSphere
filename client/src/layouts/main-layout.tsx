@@ -1,24 +1,27 @@
 import Navbar from "../components/navbar";
 
-const MainLayout = () => {
-  const left = <div className="">left</div>;
-  const middle = <div className="">middle</div>;
-  const right = <div className="">right</div>;
+interface IMainLayoutProps {
+  left: JSX.Element;
+  middle: JSX.Element;
+  right: JSX.Element;
+}
+
+const MainLayout = (props: IMainLayoutProps) => {
   return (
-    <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
-      <div className="absolute">
+    <div className="w-full h-full min-h-screen bg-slate-900 min-w-screen">
+      <div className="absolute z-10">
         <Navbar />
       </div>
 
       <div className="grid h-screen grid-rows-4 gap-2 lg:grid-cols-4">
-        <div className="h-screen mt-24 lg:mt-0">
-          <div className="bg-red-200 lg:h-full lg:pt-16">{left}</div>
+        <div className="pt-16 lg:pt-24 lg:h-screen">
+          <div className=" lg:h-full">{props.left}</div>
         </div>
-        <div className="h-screen row-span-2 mt-24 lg:mt-0 lg:col-span-2">
-          <div className="bg-blue-200 lg:h-full lg:pt-16">{middle}</div>
+        <div className="row-span-2 overflow-y-auto no-scrollbar lg:pt-24 lg:h-screen lg:col-span-2">
+          <div className=" lg:h-full">{props.middle}</div>
         </div>
-        <div className="h-screen mt-24 lg:mt-0">
-          <div className="bg-green-200 lg:h-full lg:pt-16">{right}</div>
+        <div className="lg:pt-24 lg:h-screen">
+          <div className="lg:h-full">{props.right}</div>
         </div>
       </div>
     </div>
