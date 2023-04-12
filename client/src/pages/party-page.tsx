@@ -15,6 +15,10 @@ import PartyRoomQueue from "../components/party-room/queue";
 import Search from "../components/post/search-song";
 import SearchSongPartyRoom from "../components/post/search-song-party-room";
 import SearchSong from "../components/post/search-song";
+import ListenerList from "../components/party-room/listener-list";
+import AddMember from "../services/party/add-member";
+import MemberList from "../components/party-room/members-list";
+import FollowingListForInvite from "../components/invitations/search-user-for-invite";
 
 const PartyPage = () => {
   const { id } = useParams();
@@ -24,6 +28,24 @@ const PartyPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
   const [song, setSong] = useState<TMusicContent | null>(null);
+  const [showListenersModal, setShowListenersModal] = useState(false);
+  const [added, setAdded] = useState(false);
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+  const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
+
+  const handleFollowingClose = () => {
+    setShowFollowingModal(false);
+  };
+  const handleFollowingOpen = () => {
+    setShowFollowingModal(true);
+  };
+
+  const handleOpenListen = () => {
+    setShowListenersModal(true);
+  };
+  const handleCloseListen = () => {
+    setShowListenersModal(false);
+  };
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -37,6 +59,18 @@ const PartyPage = () => {
       });
     }
   }, []);
+  useEffect(() => {
+    if (user && room?._id) {
+      if (!room.members.includes(user.username)) {
+        AddMember(room._id.toString(), user.username);
+      }
+    }
+  });
+  useEffect(() => {
+    if (user && id) {
+      user.partyRoom = id;
+    }
+  });
 
   if (!user) {
     return <div>fetching user</div>;
@@ -45,7 +79,6 @@ const PartyPage = () => {
   if (!room) {
     return <div>Invalid Room Id</div>;
   }
-
   return (
     <div className="w-full h-full min-h-screen bg-lblue">
       <Navbar />
@@ -75,11 +108,13 @@ const PartyPage = () => {
                   onClick={async () => {
                     if (user.username === room.ownerUsername) {
                       await DeleteRoom(room).then(() => {
+                        user.partyRoom = "";
                         navigate(`/`);
                         window.location.reload();
                       });
                     } else {
                       await DeleteMember(room, user.username).then(() => {
+                        user.partyRoom = "";
                         navigate(`/`);
                         window.location.reload();
                       });
@@ -90,14 +125,45 @@ const PartyPage = () => {
                 </button>
                 {user.username === room.ownerUsername ? (
                   <button
-                    className="p-3 text-white bg-navy rounded-xl top-13 right-20"
-                    onClick={() => {}}
+                    className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
+                    onClick={() => handleOpenListen()}
                   >
                     Transfer
                   </button>
                 ) : (
                   <div></div>
                 )}
+
+                <FollowingListForInvite
+                  following={user.following}
+                  isVisible={showFollowingModal}
+                  onClose={handleFollowingClose}
+                  roomId={id}
+                  room={partyRoom}
+                />
+
+                <button
+                  className="p-3 text-white rounded-xl bg-navy"
+                  onClick={() => {
+                    if (room && id) {
+                      fetchRoomById(id).then((res) => {
+                        if (res) {
+                          if (res.ownerUsername === user.username) {
+                            handleFollowingOpen();
+                            setPartyRoom(res);
+                          } else {
+                            console.log("You are not the owner of this party");
+                          }
+                        } else {
+                          alert("Room does not exist");
+                        }
+                      });
+                    }
+                  }}
+                >
+                  Find User To Invite
+                </button>
+                <MemberList listeners={room.members} room={room} />
               </div>
 
               {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
@@ -119,6 +185,12 @@ const PartyPage = () => {
         ) : (
           <SpotifyPlayerCard selectedSong={song} />
         )}
+        <ListenerList
+          listeners={room.members}
+          isVisible={showListenersModal}
+          onClose={handleCloseListen}
+          room={room}
+        />
       </div>
     </div>
   );

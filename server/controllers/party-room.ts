@@ -13,6 +13,8 @@ import {
   deleteListener,
   transferOwner,
   addToQueue,
+  addInvitation,
+  deleteInvitation,
 } from "../services/party-room";
 
 export const newRoom = async (req: Request, res: Response) => {
@@ -63,7 +65,7 @@ export const removeRoom = async (req: Request, res: Response) => {
 
 export const addMember = async (req: Request, res: Response) => {
   try {
-    await addListener(req.body.id, req.body.username);
+    await addListener(req.body.roomId, req.body.username);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
@@ -83,9 +85,31 @@ export const removeMember = async (req: Request, res: Response) => {
   }
 };
 
+export const addInvitedMember = async (req: Request, res: Response) => {
+  try {
+    await addInvitation(req.body.roomId, req.body.username);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const removeInvitedMember = async (req: Request, res: Response) => {
+  try {
+    await deleteInvitation(req.body.roomId, req.body.username);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
 export const transferO = async (req: Request, res: Response) => {
   try {
-    await transferO(req.body.room, req.body.username);
+    await transferOwner(req.body.room, req.body.username);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {

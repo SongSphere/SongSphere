@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 interface IFollowingListProps {
   following: string[];
   isVisible: boolean;
-  onClose: Function;
+ onClose: Function;
 }
 
 const FollowingList = (props: IFollowingListProps) => {
