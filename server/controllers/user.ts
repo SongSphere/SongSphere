@@ -273,6 +273,7 @@ export const updateBackgroundURL = (req: Request, res: Response) => {
     res.json({ msg: "success" });
   } catch (error) {
     console.error(error);
+    res.status(500);
     res.json({ msg: "failed" });
   }
 };
