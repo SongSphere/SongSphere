@@ -8,20 +8,6 @@ interface ISucessFailPopUpProps {
 }
 
 const SucessFailPopUp = (props: ISucessFailPopUpProps) => {
-  // const [open, setOpen] = useState(false);
-
-  // const close = () => {
-  //   setOpen(false);
-  // };
-
-  // useEffect(() => {
-  //   if (props.failText != "") {
-  //     setOpen(true);
-  //   } else {
-  //     setOpen(false);
-  //   }
-  // }, [props.failText]);
-
   return (
     <Popup
       open={props.open}

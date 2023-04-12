@@ -9,7 +9,6 @@ import { TUser } from "../../types/user";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
 import LikeButton from "./like-button";
 import { addToSpotifyLibrary } from "../../services/spotify/add-to-library";
-import userEvent from "@testing-library/user-event";
 import Session from "../../session";
 import selectService from "../../services/user/select-service";
 import { addToAppleLibrary } from "../../services/apple/add-to-library";
