@@ -10,14 +10,9 @@ import { TPost } from "../types/post";
 import Session from "../session";
 import FailPopUp from "../components/popup/fail-popup";
 
-interface IEditPageProps {}
-
-const EditPage = (props: IEditPageProps) => {
-  // const [open, setOpen] = useState(false);
+const EditPage = () => {
   const [editFailOpen, setEditFailOpen] = useState(false);
   const [post, setPost] = useState<TPost | null>(null);
-  // const closeModal = () => setOpen(false);
-  // const [successFailText, setSuccessFailText] = useState("");
   const [caption, setCaption] = useState<string>("");
   const navigate = useNavigate();
   const { id } = useParams();
@@ -69,7 +64,6 @@ const EditPage = (props: IEditPageProps) => {
                   if (!res) {
                     setEditFailOpen(true);
                   }
-                  // setOpen(true);
                   setTimeout(() => {
                     navigate("/profile");
                   }, 1500);
@@ -88,14 +82,6 @@ const EditPage = (props: IEditPageProps) => {
             setOpen={setEditFailOpen}
             failText={EDIT_ERR_MSG}
           />
-          {/* <Popup open={open} closeOnDocumentClick onClose={closeModal}>
-            <div className="modal">
-              <a className="close" onClick={closeModal}>
-                &times;
-              </a>
-              {successFailText}
-            </div>
-          </Popup> */}
         </div>
       </div>
     </div>
