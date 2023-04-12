@@ -53,6 +53,11 @@ const PartyPage = () => {
   const [service, setService] = useState<string>("");
   const [currentlyPlayingSong, setCurrentlyPlayingSong] =
     useState<TMusicContent | null>(null);
+  const [queueIndex, setQueueIndex] = useState(0);
+
+  const incrementQueueIndex = () => {
+    setQueueIndex(queueIndex + 1);
+  };
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -66,8 +71,14 @@ const PartyPage = () => {
       });
     }
 
-    setCurrentlyPlayingSong(songsList[0]);
+    setQueueIndex(0);
+    setCurrentlyPlayingSong(songsList[queueIndex]);
   }, []);
+
+  useEffect(() => {
+    console.log("index changed");
+    setCurrentlyPlayingSong(songsList[queueIndex]);
+  }, [queueIndex]);
 
   if (!user) {
     return <div>fetching user</div>;
@@ -145,7 +156,7 @@ const PartyPage = () => {
           <AppleMusicPlayerCard selectedSong={currentlyPlayingSong} />
         ) : (
           <SpotifyPartyRoomPlayerCard
-            songsList={songsList}
+            incrementQueue={incrementQueueIndex}
             selectedSong={currentlyPlayingSong}
           />
         )}

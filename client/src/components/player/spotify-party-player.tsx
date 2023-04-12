@@ -5,7 +5,6 @@ import selectService from "../../services/user/select-service";
 import Session from "../../session";
 import setActivity from "../../services/general/set-activity";
 import { spotifyRefresh } from "../../services/spotify/spotify-refresh";
-import { spotifyAddToPlayerQueue } from "../../services/party/spotify-add-to-queue";
 
 interface ISpotifySong {
   name: string;
@@ -15,7 +14,7 @@ interface ISpotifySong {
 }
 
 interface ISpotifyPartyRoomPlayerCard {
-  songsList: TMusicContent[];
+  incrementQueue: Function;
   selectedSong: TMusicContent | null;
 }
 
@@ -214,26 +213,17 @@ const SpotifyPartyRoomPlayerCard = (props: ISpotifyPartyRoomPlayerCard) => {
         const interval = setInterval(() => {
           const position = getStatePosition();
           setProgress(position);
-        }, 1000);
+
+          if (position > 99) {
+            console.log("song finished");
+            props.incrementQueue();
+          }
+        }, 300);
 
         return () => clearInterval(interval);
       };
     }
   }, [user]);
-
-  useEffect(() => {
-    // after device / player is set  up
-    console.log("hello");
-    if (user && deviceId) {
-      console.log("setting up queue");
-
-      props.songsList.forEach((song) => {
-        spotifyAddToPlayerQueue(song.id, deviceId, user?.spotifyToken);
-      });
-
-      playMusicHandler();
-    }
-  }, [deviceId]);
 
   return (
     <div className="relative flex justify-center ">
