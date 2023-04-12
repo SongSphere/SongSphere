@@ -6,18 +6,17 @@ import { TPartyRoom } from "../types/party-room";
 export const createPartyRoom = async (
   newRoom: TPartyRoom
 ): Promise<mongoose.Document<unknown, any, IPartyRoom>> => {
-
-    const party = new PartyRoom({
-        ownerUsername: newRoom.ownerUsername,
-        ownerEmail: newRoom.ownerEmail,
-        description: newRoom.description,
-        partyName: newRoom.partyName,
-        members: newRoom.members,
-        invitedMembers: newRoom.invitedMembers,
-        queue: newRoom.queue,
-        musicIndex: newRoom.musicIndex,
-    });
-    return party;
+  const party = new PartyRoom({
+    ownerUsername: newRoom.ownerUsername,
+    ownerEmail: newRoom.ownerEmail,
+    description: newRoom.description,
+    partyName: newRoom.partyName,
+    members: newRoom.members,
+    invitedMembers: newRoom.invitedMembers,
+    queue: newRoom.queue,
+    musicIndex: newRoom.musicIndex,
+  });
+  return party;
 };
 
 export const saveRoom = async (
@@ -68,7 +67,6 @@ export const addListener = async (room: TPartyRoom, username: string) => {
   }
 };
 
-
 export const deleteListener = async (id: string, username: string) => {
   try {
     await PartyRoom.findOneAndUpdate(
@@ -81,29 +79,54 @@ export const deleteListener = async (id: string, username: string) => {
 };
 
 export const addInvitation = async (id: string, username: string) => {
-
-    try {
-        await PartyRoom.findOneAndUpdate({_id: id}, {$push:{invitedMembers: username}});
-    } catch (error) {
-        throw error;
-    }
+  try {
+    await PartyRoom.findOneAndUpdate(
+      { _id: id },
+      { $push: { invitedMembers: username } }
+    );
+  } catch (error) {
+    throw error;
+  }
 };
 
-
 export const deleteInvitation = async (id: string, username: string) => {
-    try {
-        await PartyRoom.findOneAndUpdate({_id: id}, {$pull:{invitedMembers: username}});
-    } catch (error) {
-        throw error;
-    }
+  try {
+    await PartyRoom.findOneAndUpdate(
+      { _id: id },
+      { $pull: { invitedMembers: username } }
+    );
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const transferOwner = async (room: TPartyRoom, username: string) => {
   try {
-    await PartyRoom.findOneAndUpdate({_id: room._id}, {
-      ownerUsername: username,
-    });
+    await PartyRoom.findOneAndUpdate(
+      { _id: room._id },
+      {
+        ownerUsername: username,
+      }
+    );
   } catch (error) {
     throw error;
   }
+};
+
+// Require
+var postmark = require("postmark");
+
+// const nodemailer = require('nodemailer');
+export const sendInvitationEmail = async () => {
+  // Example request
+  var client = new postmark.ServerClient(
+    "ace1f28f-730e-465c-9a53-1a53f73177ba"
+  );
+
+  client.sendEmail({
+    From: "khkim@purdue.edu",
+    To: "khkim@purdue.edu",
+    Subject: "Test",
+    TextBody: "Hello from Postmark!",
+  });
 };
