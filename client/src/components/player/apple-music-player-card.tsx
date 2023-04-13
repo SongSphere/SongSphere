@@ -99,9 +99,9 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
   };
 
   return (
-    <div className="flex justify-center h-full">
+    <div className="flex justify-center h-full text-white">
       <div className="flex h-full">
-        <div className="bg-white rounded-lg w-80 h-5/6 drop-shadow-md">
+        <div className="rounded-lg w-80 h-5/6 drop-shadow-md">
           <div className="flex justify-center">
             <div className="w-4/5 mt-5">
               <img
@@ -115,7 +115,7 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
               ></img>
             </div>
           </div>
-          <div className="px-6 mt-2 text-2xl text-center">
+          <div className="px-6 mt-2 text-2xl font-semibold text-center">
             {song?.attributes.name}
           </div>
           <div className="flex justify-center mt-2">
@@ -128,8 +128,8 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
               <img
                 src={
                   isPlaying
-                    ? "/img/icons/pause-icon.png"
-                    : "/img/icons/play-icon.png"
+                    ? "/img/icons/pause-icon.svg"
+                    : "/img/icons/play-icon.svg"
                 }
               ></img>
             </div>
