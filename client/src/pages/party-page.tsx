@@ -195,7 +195,7 @@ const PartyPage = () => {
                 >
                   Find User To Invite
                 </button>
-                <MemberList listeners={room.members} room={room} />
+                
               </div>
             </div>
           </div>
