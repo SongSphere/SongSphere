@@ -1,10 +1,9 @@
-import { resolve } from "path"
-import { TPartyRoom } from "../../types/party-room"
+import { TPartyRoom } from "../../types/party-room";
 
-const AddMember = async (room: TPartyRoom, username: string) => {
+const BlockMember = async (room: TPartyRoom, username: string) => {
     return new Promise<boolean>(async (resolve, reject) => {
       try {
-        await fetch(`${process.env.REACT_APP_API}/api/addmember`, {
+        await fetch(`${process.env.REACT_APP_API}/api/roomBlock`, {
           method: "POST",
           credentials: "include",
           body: JSON.stringify({
@@ -16,10 +15,8 @@ const AddMember = async (room: TPartyRoom, username: string) => {
           },
         }).then((res) => {
             if (res.status == 201) {
-              console.log("Member added");
               resolve(true);
             } else {
-              console.log("Member not added");
               reject(false);
             }
         });
@@ -30,4 +27,4 @@ const AddMember = async (room: TPartyRoom, username: string) => {
     });
   };
   
-  export default AddMember;
+  export default BlockMember;

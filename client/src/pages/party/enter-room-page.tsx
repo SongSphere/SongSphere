@@ -115,6 +115,7 @@ const CreateRoomPage = () => {
                           invitedMembers: [],
                           queue: [],
                           musicIndex: 0,
+                          blocked:[],
                         };
                         await CreateRoom(newRoom)
                           .then((res) => {
@@ -124,8 +125,6 @@ const CreateRoomPage = () => {
                               fetchRoomByOwner(newRoom.ownerUsername).then(
                                 (room) => {
                                   if (room._id) {
-                                    AddMember(room._id.toString(), user.username);
-                                    console.log(`${user.username} added to room}`);
                                     navigate(`/party/${room._id}`);
                                     window.location.reload();
                                   }
@@ -187,8 +186,8 @@ const CreateRoomPage = () => {
                               res._id.toString(),
                               user.username
                             );
-                            AddMember(res._id.toString(), user.username);
-                            console.log(`${user.username} added to room}`);
+                            
+                            
                             window.location.reload();
                           } else {
                           }

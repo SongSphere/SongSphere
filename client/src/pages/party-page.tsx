@@ -65,19 +65,18 @@ const PartyPage = () => {
     }
   }, []);
   useEffect(() => {
-    if (user && room?._id) {
-       if (!room.members.includes(user.username)) {
-         AddMember(room._id.toString(), user.username);
-         console.log(`${user.username} added to room}`);
-       } 
-     }
-   });
-  useEffect(() => {
     if (user && id) {
       user.partyRoom = id;
+      
     }
-  });
-
+  }, []);
+  useEffect(() => {
+    if(room && user) {
+      if (!room.members.includes(user.username)) {
+        AddMember(room, user.username);
+      } 
+    }
+  }, [room])
   if (!user) {
     return <div>fetching user</div>;
   }

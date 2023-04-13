@@ -8,6 +8,7 @@ import NotificationCard from "../notification/comment-notification-card";
 import sendNotification from "../../services/notification/send-notification";
 import Session from "../../session";
 import { TNotification } from "../../types/notification";
+import BlockMember from "../../services/party/block-member";
 
 interface IListernerListProps {
     listeners: string[];
@@ -40,7 +41,8 @@ const ListenerList = (props: IListernerListProps) => {
     }
     if(!user) {
         return null;
-      }
+    }
+   
     return (
         
         <div
@@ -98,7 +100,14 @@ const ListenerList = (props: IListernerListProps) => {
                                 transfer
                                 </button>
                                 <button className=" text-lblue"
-                                onClick={() => DeleteMember(props.room, users).then(()=>fetchUserByUsername(users)).then((removed) =>{removed.partyRoom=""} )}
+                                onClick={() => DeleteMember(props.room, users)
+                                  .then(()=>fetchUserByUsername(users))
+                                  .then((removed) =>{removed.partyRoom=""; 
+                                  if(props.room._id) {
+                                    BlockMember(props.room, users);
+                                  }
+                                })
+                                }
                                 >
                                 remove
                             </button>
