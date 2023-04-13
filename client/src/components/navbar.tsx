@@ -19,9 +19,9 @@ const Navbar = (props: INavbarProps) => {
             <div>
               <a href="#" className="flex items-center px-2 py-4">
                 {/* <img src="logo.png" alt="Logo" className="w-8 h-8 mr-2" /> */}
-                <span className="text-lg font-semibold text-slate-200">
+                <a className="text-lg font-semibold text-slate-200" href="/">
                   SongSphere
-                </span>
+                </a>
               </a>
             </div>
             {/* primary navbar items */}

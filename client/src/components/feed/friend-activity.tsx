@@ -42,8 +42,8 @@ const FriendActivityCard = () => {
   return (
     <div className="flex justify-center h-full">
       <div className="">
-        <div className="bg-white rounded-md w-80 h-5/6 drop-shadow-md">
-          <h1 className="pt-5 pb-2 text-center text-gray-900 ">
+        <div className="rounded-md w-80 h-5/6 drop-shadow-md">
+          <h1 className="pt-16 pb-2 font-semibold text-center text-white lg:pt-0 ">
             Friend Listening Activity
           </h1>
           <div className="w-5/6 mx-auto border-b-2 border-gray-300"></div>
@@ -53,10 +53,10 @@ const FriendActivityCard = () => {
                 {activeUsers.map(({ user: u, song: s }) => {
                   return (
                     <div>
-                      <div className="flex-1 block w-full px-3 py-2 mt-2 overflow-hidden rounded-md bg-lgrey ">
+                      <div className="flex-1 block w-full px-3 py-2 mt-2 overflow-hidden text-white rounded-md hover:bg-gray-800">
                         <div className="inline-flex items-center">
                           <img
-                            className="w-10 h-10 mr-4 rounded-full"
+                            className="w-10 h-10 mr-4 border-2 rounded-full border-sky-300"
                             src={u.profileImgUrl}
                             alt="Avatar of Jonathan Reinink"
                           ></img>
@@ -65,7 +65,7 @@ const FriendActivityCard = () => {
                               {u.username}
                             </div>
                             <div className="font-bold text-2l">{s.name}</div>
-                            <div className="text-slate-500">{s.artist}</div>
+                            <div className="">{s.artist}</div>
                           </div>
                         </div>
                       </div>

@@ -31,7 +31,7 @@ const Feed = (props: IFeedProps) => {
   }
 
   return (
-    <div>
+    <div className="p-4 bg-slate-900">
       {posts.map((post) => {
         const repost = post.repost;
 
