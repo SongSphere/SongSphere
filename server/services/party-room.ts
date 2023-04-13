@@ -57,10 +57,10 @@ export const deleteRoom = async (room: TPartyRoom) => {
   }
 };
 
-export const addListener = async (room: TPartyRoom, username: string) => {
+export const addListener = async (roomId: string, username: string) => {
   try {
     await PartyRoom.findOneAndUpdate(
-      { _id: room._id },
+      { _id: roomId },
       { $push: { members: username } }
     );
   } catch (error) {
@@ -84,30 +84,6 @@ export const addInvitation = async (id: string, username: string) => {
     await PartyRoom.findOneAndUpdate(
       { _id: id },
       { $push: { invitedMembers: username } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const deleteInvitation = async (id: string, username: string) => {
-  try {
-    await PartyRoom.findOneAndUpdate(
-      { _id: id },
-      { $pull: { invitedMembers: username } }
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const transferOwner = async (room: TPartyRoom, username: string) => {
-  try {
-    await PartyRoom.findOneAndUpdate(
-      { _id: room._id },
-      {
-        ownerUsername: username,
-      }
     );
   } catch (error) {
     throw error;
@@ -178,4 +154,76 @@ export const moveDownQueue = async (index: number, username: string) => {
   } catch (error) {
     throw error;
   }
+};
+
+export const deleteInvitation = async (id: string, username: string) => {
+  console.log(`${id} ${username}}`);
+  try {
+    await PartyRoom.findOneAndUpdate(
+      { _id: id },
+      { $pull: { invitedMembers: username } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const transferOwner = async (room: TPartyRoom, username: string) => {
+  try {
+    await PartyRoom.findOneAndUpdate(
+      { _id: room._id },
+      {
+        ownerUsername: username,
+      }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Require
+var postmark = require("postmark");
+
+// const nodemailer = require('nodemailer');
+// export const sendInvitationEmail = async () => {
+//   // Example request
+//   var client = new postmark.ServerClient(
+//     "ace1f28f-730e-465c-9a53-1a53f73177ba"
+//   );
+
+//   client.sendEmail({
+//     From: "khkim@purdue.edu",
+//     To: "khkim@purdue.edu",
+//     Subject: "Test",
+//     TextBody: "Hello from Postmark!",
+//   });
+// };
+
+import { CourierClient } from "@trycourier/courier";
+export const sendInvitationEmail = async (
+  roomId: string,
+  senderUsername: string,
+  receiverEmail: string
+) => {
+  console.log("sendInvitationEmail in server/services");
+  console.log(roomId, senderUsername, receiverEmail);
+
+  const courier = CourierClient({
+    authorizationToken: "pk_prod_YMG62BBWAWMTNQPR5E9ZK64RTJSS",
+  });
+
+  const { requestId } = await courier.send({
+    message: {
+      content: {
+        title: `${senderUsername} Invited you to a party!`,
+        body: "Here is the party Link? {{joke}}",
+      },
+      data: {
+        joke: `http://localhost:3000/party/${roomId}`,
+      },
+      to: {
+        email: `${receiverEmail}`,
+      },
+    },
+  });
 };
