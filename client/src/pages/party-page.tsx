@@ -17,6 +17,7 @@ import SearchSongPartyRoom from "../components/post/search-song-party-room";
 import SearchSong from "../components/post/search-song";
 import ListenerList from "../components/party-room/listener-list";
 import AddMember from "../services/party/add-member";
+import FailPopUp from "../components/popup/fail-popup";
 
 import SearchUserForInvite from "../components/invitations/search-user-for-invite";
 
@@ -28,12 +29,16 @@ import RemoveInvitation from "../services/party/remove-invitation";
 const PartyPage = () => {
   const { id } = useParams();
   let navigate = useNavigate();
+  
+
+  const ERROR_MSG = "Oh no! An error occurs when deleting the party room";
 
   const [room, setRoom] = useState<TPartyRoom | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [showListenersModal, setShowListenersModal] = useState(false);
+  const [partyFailOpen, setPartyFailOpen] = useState(false);
   const [added, setAdded] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
@@ -65,24 +70,27 @@ const PartyPage = () => {
     }
   }, []);
   useEffect(() => {
-    if (user && room?._id) {
-       if (!room.members.includes(user.username)) {
-         AddMember(room._id.toString(), user.username);
-         console.log(`${user.username} added to room}`);
-       } 
-     }
-   });
-  useEffect(() => {
     if (user && id) {
       user.partyRoom = id;
+      
     }
-  });
-
+  }, []);
+  useEffect(() => {
+    if(room && user) {
+      if (!room.members.includes(user.username)) {
+        AddMember(room, user.username).then(() => {
+          window.location.reload()
+        }
+         
+        );
+      } 
+    }
+  }, [room])
   if (!user) {
     return <div>fetching user</div>;
   }
 
-  if (!room) {
+  if (!room || room.blocked.includes(user.username)) {
     return (
       <div className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
         <h1 className="font-extrabold tracking-widest text-white text-9xl">
@@ -150,15 +158,23 @@ const PartyPage = () => {
                   onClick={async () => {
                     if (user.username === room.ownerUsername) {
                       await DeleteRoom(room).then(() => {
-                        user.partyRoom = "";
+                        
                         navigate(`/`);
                         window.location.reload();
                       });
                     } else {
-                      await DeleteMember(room, user.username).then(() => {
-                        user.partyRoom = "";
-                        navigate(`/`);
-                        window.location.reload();
+                      await DeleteMember(room, user.username).then((res) => {
+                        
+                        if(res) {
+                          navigate(`/`);
+                          window.location.reload();
+                        } else {
+                          <FailPopUp
+                            open={partyFailOpen}
+                            setOpen={setPartyFailOpen}
+                            failText={ERROR_MSG}
+                          />
+                        }
                       });
                     }
                   }}

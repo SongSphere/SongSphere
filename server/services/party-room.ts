@@ -17,6 +17,7 @@ export const createPartyRoom = async (
     queue: newRoom.queue,
     musicIndex: newRoom.musicIndex,
   });
+  await User.findOneAndUpdate({username: newRoom.ownerUsername}, {partyRoom: party._id});
   return party;
 };
 
@@ -51,29 +52,44 @@ export const fetchRoomById = async (id: string) => {
 
 export const deleteRoom = async (room: TPartyRoom) => {
   try {
-    await PartyRoom.findByIdAndDelete(room._id);
+    await PartyRoom.findByIdAndDelete(room._id).then(async () => {
+      await User.findOneAndUpdate(
+        {username: room.ownerUsername}, 
+        {partyRoom: ""}
+      )
+    });
   } catch (error) {
     throw error;
   }
 };
 
-export const addListener = async (roomId: string, username: string) => {
+export const addListener = async (room: TPartyRoom, username: string) => {
   try {
     await PartyRoom.findOneAndUpdate(
-      { _id: roomId },
+      { _id: room._id },
       { $push: { members: username } }
-    );
+    ).then(async () => {
+      await User.findOneAndUpdate(
+        {username: username}, 
+        {partyRoom: room._id}
+      )
+    });
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteListener = async (id: string, username: string) => {
+export const deleteListener = async (room: TPartyRoom, username: string) => {
   try {
     await PartyRoom.findOneAndUpdate(
-      { _id: id },
+      { _id: room._id },
       { $pull: { members: username } }
-    );
+    ).then(async () => {
+      await User.findOneAndUpdate(
+        {username: username}, 
+        {partyRoom: ""}
+      )
+    });
   } catch (error) {
     throw error;
   }
@@ -181,6 +197,24 @@ export const transferOwner = async (room: TPartyRoom, username: string) => {
   }
 };
 
+export const blockUser = async (room: TPartyRoom, username: string) => {
+  try {
+    await PartyRoom.findOneAndUpdate(
+      { _id: room._id },
+      {
+        $push: { blocked: username } 
+      }
+    ).then(async () => {
+      await User.findOneAndUpdate(
+        {username: username}, 
+        {partyRoom: ""}
+      )
+    });
+  } catch (error) {
+    throw error
+  }
+}
+
 // Require
 var postmark = require("postmark");
 
@@ -200,6 +234,7 @@ var postmark = require("postmark");
 // };
 
 import { CourierClient } from "@trycourier/courier";
+import User from "../db/user";
 export const sendInvitationEmail = async (
   roomId: string,
   senderUsername: string,

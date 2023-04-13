@@ -16,6 +16,7 @@ import {
   removeQueue,
   reorderQueue,
   sendEmail,
+  block,
 } from "../controllers/party-room";
 
 // import middleware
@@ -28,6 +29,7 @@ router.post("/api/deleteroom", removeRoom);
 router.post("/api/addmember", addMember);
 router.post("/api/removemember", removeMember);
 router.post("/api/transferOwner", transferO);
+router.post("/api/roomBlock", block);
 router.post("/api/addqueue", addQueue);
 router.post("/api/removequeue", removeQueue);
 router.post("/api/reorderqueue", reorderQueue);
