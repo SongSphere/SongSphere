@@ -70,7 +70,7 @@ export const removeRoom = async (req: Request, res: Response) => {
 
 export const addMember = async (req: Request, res: Response) => {
   try {
-    await addListener(req.body.room, req.body.username);
+    await addListener(req.body.roomId, req.body.username);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {

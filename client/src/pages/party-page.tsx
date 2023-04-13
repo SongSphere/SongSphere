@@ -62,33 +62,52 @@ const PartyPage = () => {
     setService(Session.getMusicService());
   }, [user]);
 
+
   useEffect(() => {
     if (id) {
       fetchRoomById(id).then((res) => {
-        setRoom(res);
-      });
-    }
-  }, []);
-  useEffect(() => {
-    if (user && id) {
-      user.partyRoom = id;
+        if (res == null) {
+          console.log("It is null");
+          navigate('/404');
+        } 
+
+        setRoom(res);  
+      })
+      
       
     }
   }, []);
+
+  
   useEffect(() => {
-    if(room && user) {
+    if (user && room?._id) {
       if (!room.members.includes(user.username)) {
-        AddMember(room, user.username).then(() => {
-          window.location.reload()
-        }
-         
-        );
-      } 
+        AddMember(room._id, user.username);
+        window.location.reload()
+        //console.log(`${user.username} added to room}`);
+      }
     }
-  }, [room])
+  });
+  useEffect(() => {
+    if (user && id) {
+      user.partyRoom = id;
+     // console.log("Party room set to: " + user.partyRoom);
+    }
+  });
+
   if (!user) {
     return <div>fetching user</div>;
   }
+
+  if (!room) {
+    return (
+      <div>
+        <div></div>
+
+      </div>
+    );
+  }
+
 
   if (!room || room.blocked.includes(user.username)) {
     return (

@@ -81,7 +81,7 @@ const NotificationCard = (props: ICommentNotificationCard) => {
                 .then((res) => {
                   if (res && res._id && user) {
                     RemoveInvitation(res._id?.toString(), user.username);
-                    AddMember(res, user.username);
+                    AddMember(res._id, user.username);
                     console.log(`${user.username} added to room}`);
                     navigate(`/party/${res._id}`);
                     window.location.reload();
