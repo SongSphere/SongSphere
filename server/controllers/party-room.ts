@@ -135,7 +135,7 @@ export const transferO = async (req: Request, res: Response) => {
 
 export const sendEmail = async (req: Request, res: Response) => {
     try {
-        await sendInvitationEmail(req.body.roomId, req.body.senderUsername, req.body.receiverUsername);
+        await sendInvitationEmail(req.body.roomId, req.body.senderUsername, req.body.receiverEmail);
         res.status(201);
         res.json({ msg: "success" });
     }

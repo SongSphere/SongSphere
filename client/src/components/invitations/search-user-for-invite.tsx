@@ -8,6 +8,7 @@ import removeInvitation from "../../services/party/remove-invitation";
 import { TPartyRoom } from "../../types/party-room";
 import { TNotification } from "../../types/notification";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
+import SendInvitationEmail from "../../services/party/send-invitation-email";
 
 interface IFollowingListProps {
   following: string[];
@@ -23,7 +24,6 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
   const [room, setRoom] = useState<TPartyRoom | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
 
-
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
       setFollowing(props.following);
@@ -34,7 +34,6 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
   useEffect(() => {
     setUser(Session.getUser());
   }, [Session.getUser()]);
-
 
   useEffect(() => {
     setFollowing([]);
@@ -98,22 +97,21 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                 {following.length > 0 ? (
                   following.map((userName) => {
                     // inefficient, will find a better way
-                    if (props.roomId) {
-                      fetchRoomById(props.roomId).then((res) => {
-                        setIsInvited(false);
-                        if (res) {
-                          setRoom(res);
-                          res.invitedMembers.forEach((invitedUser) => {
-                            if (invitedUser === userName) {
-                              setIsInvited(true);
-                            }
-                          });
-                        } else {
-                          alert("Room does not exist");
-                        }
-                      });
-                    }
-                    
+                    // if (props.roomId) {
+                    //   // fetchRoomById(props.roomId).then((res) => {
+                    //   setIsInvited(false);
+                    //   if (props.room) {
+                    //     setRoom(props.room);
+                    //     props.room.invitedMembers.forEach((invitedUser) => {
+                    //       if (invitedUser === userName) {
+                    //         setIsInvited(true);
+                    //       }
+                    //     });
+                    //   } else {
+                    //     alert("Room does not exist");
+                    //   }
+                    //   //   });
+                    // }
 
                     return (
                       <div className="flex">
@@ -138,7 +136,6 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                                         console.log("The room does not exist");
                                       }
 
-                      
                                       handleInviteClick();
                                     }}
                                   >
@@ -153,22 +150,52 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                                           props.roomId,
                                           userName
                                         );
-                                        
+
+                                        await fetchRoomById(props.roomId).then(
+                                          (res) => {
+                                            setIsInvited(false);
+                                            setRoom(res);
+                                            res.invitedMembers.forEach(
+                                              (invitedUser) => {
+                                                if (invitedUser === userName) {
+                                                  setIsInvited(true);
+                                                }
+                                              }
+                                            );
+                                          }
+                                        );
+
                                         if (user) {
-                                          const notificationForAlerts: TNotification = {
-                                            userEmailSender: user.email,
-                                            userEmailReceiver: (await fetchUserByUsername(userName)).email,
-                                            notificationType: "Party",
-                                            text: props.roomId,
-                                          };
-                                          await sendNotification(notificationForAlerts);
+                                          const receiverEmail = (
+                                            await fetchUserByUsername(userName)
+                                          ).email;
+                                          if (receiverEmail) {
+                                            const notificationForAlerts: TNotification =
+                                              {
+                                                userEmailSender: user.email,
+                                                userEmailReceiver:
+                                                  receiverEmail,
+                                                notificationType: "Party",
+                                                text: props.roomId,
+                                              };
+
+                                            await sendNotification(
+                                              notificationForAlerts
+                                            );
+                                            await SendInvitationEmail(
+                                              props.roomId,
+                                              user.username,
+                                              receiverEmail
+                                            );
+                                          } else {
+                                            console.log(
+                                              "Error: the user does not have an email"
+                                            );
+                                          }
                                         }
                                       }
-                      
-                                      
-                                      
+
                                       handleInviteClick();
-                                      
                                     }}
                                   >
                                     Invite

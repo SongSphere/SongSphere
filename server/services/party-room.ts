@@ -146,7 +146,7 @@ export const sendInvitationEmail = async (roomId: string, senderUsername: string
             body: "Here is the party Link? {{joke}}"
           },
           data: {
-            joke: `http://localhost:3000/party-room/${roomId}`
+            joke: `http://localhost:3000/party/${roomId}`
           },
           to: {
             email: `${receiverEmail}`
