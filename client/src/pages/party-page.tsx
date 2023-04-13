@@ -15,11 +15,12 @@ import PartyRoomQueue from "../components/party-room/queue";
 import ListenerList from "../components/party-room/listener-list";
 import AddMember from "../services/party/add-member";
 import MemberList from "../components/party-room/members-list";
-import FollowingListForInvite from "../components/invitations/search-user-for-invite";
+import SearchUserForInvite from "../components/invitations/search-user-for-invite";
 
 import AppleMusicPartyRoomPlayerCard from "../components/party-room/apple-music-party-player";
 import SpotifyPartyRoomPlayerCard from "../components/party-room/spotify-music-party-player";
 import PartyRoomChat from "../components/party-room/party-chat";
+import RemoveInvitation from "../services/party/remove-invitation";
 
 const PartyPage = () => {
   const { id } = useParams();
@@ -60,13 +61,14 @@ const PartyPage = () => {
       });
     }
   }, []);
-  useEffect(() => {
-    if (user && room?._id) {
-      if (!room.members.includes(user.username)) {
-        AddMember(room._id.toString(), user.username);
-      }
-    }
-  });
+  // useEffect(() => {
+  //   if (user && room?._id) {
+  //     if (!room.members.includes(user.username)) {
+        // AddMember(room._id.toString(), user.username);
+        // console.log(`${user.username} added to room}`);
+  //     } 
+  //   }
+  // });
   useEffect(() => {
     if (user && id) {
       user.partyRoom = id;
@@ -78,7 +80,43 @@ const PartyPage = () => {
   }
 
   if (!room) {
-    return <div>Invalid Room Id</div>;
+    return (
+      <div className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
+        <h1 className="text-9xl font-extrabold text-white tracking-widest">
+          404
+        </h1>
+        <div className="bg-[#FF6A3D] px-2 text-sm rounded rotate-12 absolute">
+          Page Not Found
+        </div>
+        <button className="mt-5">
+          <a className="relative inline-block text-sm font-medium text-[#FF6A3D] group active:text-orange-500 focus:outline-none focus:ring">
+            <span className="absolute inset-0 transition-transform translate-x-0.5 translate-y-0.5 bg-[#FF6A3D] group-hover:translate-y-0 group-hover:translate-x-0"></span>
+
+            <span
+              onClick={() => {
+                navigate(`/`);
+                user.partyRoom = "";
+              }}
+              className="relative block px-8 py-3 bg-[#1A2238] border border-current"
+            >
+              Go Home
+            </span>
+          </a>
+        </button>
+      </div>
+
+      // <div>
+      //   <div>Invalid Room Id</div>
+      // <button
+      //   onClick={() => {
+      //     navigate(`/`);
+      //     user.partyRoom = "";
+      //   }}
+      // >
+      //   Go Back
+      // </button>
+      // </div>
+    );
   }
   return (
     <div className="w-full h-full min-h-screen bg-lblue">
@@ -128,7 +166,7 @@ const PartyPage = () => {
                   <div></div>
                 )}
 
-                <FollowingListForInvite
+                <SearchUserForInvite
                   following={user.following}
                   isVisible={showFollowingModal}
                   onClose={handleFollowingClose}
