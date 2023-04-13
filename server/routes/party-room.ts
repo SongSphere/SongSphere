@@ -12,6 +12,7 @@ import {
     transferO,
     addInvitedMember,
     removeInvitedMember,
+    sendEmail,
 } from "../controllers/party-room"
 
 // import middleware
@@ -31,6 +32,8 @@ router.post("/api/transferOwner", transferO)
 
 router.get("/api/room/find/:username", getRoomByOwner);
 router.get("/api/room/:id", getRoomById);
+
+router.post("/api/sendInvitationEmail", sendEmail);
 
 
 export default router;

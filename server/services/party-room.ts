@@ -117,16 +117,40 @@ export const transferOwner = async (room: TPartyRoom, username: string) => {
 var postmark = require("postmark");
 
 // const nodemailer = require('nodemailer');
-export const sendInvitationEmail = async () => {
-  // Example request
-  var client = new postmark.ServerClient(
-    "ace1f28f-730e-465c-9a53-1a53f73177ba"
-  );
+// export const sendInvitationEmail = async () => {
+//   // Example request
+//   var client = new postmark.ServerClient(
+//     "ace1f28f-730e-465c-9a53-1a53f73177ba"
+//   );
 
-  client.sendEmail({
-    From: "khkim@purdue.edu",
-    To: "khkim@purdue.edu",
-    Subject: "Test",
-    TextBody: "Hello from Postmark!",
-  });
+//   client.sendEmail({
+//     From: "khkim@purdue.edu",
+//     To: "khkim@purdue.edu",
+//     Subject: "Test",
+//     TextBody: "Hello from Postmark!",
+//   });
+// };
+
+import { CourierClient } from "@trycourier/courier";
+export const sendInvitationEmail = async (roomId: string, senderUsername: string, receiverEmail: string) => {
+      console.log("sendInvitationEmail in server/services");
+      console.log(roomId, senderUsername, receiverEmail);
+
+      const courier = CourierClient(
+        { authorizationToken: "pk_prod_YMG62BBWAWMTNQPR5E9ZK64RTJSS"});
+
+      const { requestId } = await courier.send({
+        message: {
+          content: {
+            title: `${senderUsername} Invited you to a party!`,
+            body: "Here is the party Link? {{joke}}"
+          },
+          data: {
+            joke: `http://localhost:3000/party-room/${roomId}`
+          },
+          to: {
+            email: `${receiverEmail}`
+          }
+        }
+      });
 };
