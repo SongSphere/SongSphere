@@ -1,11 +1,5 @@
-/*
-    Author: David Kim
-    This is a service for Deleting a document associated with google email
-    @returns Promise<Boolean>
-*/
-
 const DeleteGoogleAccount = async (email: string) => {
-  try {
+  return new Promise<boolean>(async (resolve, reject) => {
     await fetch(`${process.env.REACT_APP_API}/api/user/deleteAccount`, {
       method: "POST",
       credentials: "include",
@@ -15,13 +9,14 @@ const DeleteGoogleAccount = async (email: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-    });
-
-    return true;
-  } catch (err) {
-    console.error(err);
-    return false;
-  }
+    })
+      .then(() => {
+        resolve(true);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 };
 
 export default DeleteGoogleAccount;

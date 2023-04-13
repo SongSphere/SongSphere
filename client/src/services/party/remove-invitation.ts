@@ -1,10 +1,10 @@
-import { resolve } from "path"
 import { TPartyRoom } from "../../types/party-room"
 
-const AddMember = async (roomId: string, username: string) => {
+
+const RemoveInvitation = async (roomId: string, username: string) => {
     return new Promise<boolean>(async (resolve, reject) => {
       try {
-        await fetch(`${process.env.REACT_APP_API}/api/addmember`, {
+        await fetch(`${process.env.REACT_APP_API}/api/uninviteMember`, {
           method: "POST",
           credentials: "include",
           body: JSON.stringify({
@@ -16,18 +16,14 @@ const AddMember = async (roomId: string, username: string) => {
           },
         }).then((res) => {
             if (res.status == 201) {
-              console.log("Member added");
               resolve(true);
-            } else {
-              console.log("Member not added");
-              reject(false);
-            }
+            } else reject(false);
         });
       } catch (err) {
         console.error(err);
         reject(err);
       }
     });
-  };
-  
-  export default AddMember;
+}
+
+export default RemoveInvitation;

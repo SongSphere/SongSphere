@@ -41,7 +41,7 @@ const HomePage = () => {
         <FriendActivityCard />
         <div className="col-span-2">
           {user.showRandomSong ? (
-            <RandomSongPost song={randomSong} user={user} />
+            <RandomSongPost song={randomSong} user={user} setSong={setSong} />
           ) : (
             <div></div>
           )}

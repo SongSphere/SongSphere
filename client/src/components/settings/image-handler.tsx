@@ -15,6 +15,7 @@ import {
 import { getCroppedImg } from "../../utils/crop-image";
 import fetchUser from "../../services/user/fetch-user";
 import Session from "../../session";
+import FailPopUp from "../popup/fail-popup";
 
 export interface ReactImageCropperProps {
   onCropComplete: (formData: FormData) => void;
@@ -27,7 +28,9 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<
     Area | undefined
   >();
-
+  const [profileFailOpen, setProfileFailOpen] = useState(false);
+  const PROFILE_ERR_MSG =
+    "Oops! An error occurs when you try to update your profile image. Try again later!";
   const [image, setImage] = useState("");
   const [ImgUrl, setImgUrl] = useState<string>("");
 
@@ -65,10 +68,15 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
       //setCroppedImage(URL.createObjectURL(b) as string);
       setPreviewImage(undefined);
 
-      updateProfile(formData).then(() => {
-        setImage(URL.createObjectURL(b) as string);
-      });
+      updateProfile(formData)
+        .then(() => {
+          setImage(URL.createObjectURL(b) as string);
+        })
+        .catch((err) => {
+          setProfileFailOpen(true);
+        });
     } catch (error) {
+      setProfileFailOpen(true);
       console.error("Error cropping image " + error);
     }
   };
@@ -141,13 +149,22 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
       />
       <button
         onClick={async () => {
-          await updateProfileURL(ImgUrl).then(async () => {
-            await Session.setUser(await fetchUser());
-          });
+          await updateProfileURL(ImgUrl)
+            .then(async () => {
+              await Session.setUser(await fetchUser());
+            })
+            .catch((err) => {
+              setProfileFailOpen(true);
+            });
         }}
       >
         Update Profile URL
       </button>
+      <FailPopUp
+        open={profileFailOpen}
+        setOpen={setProfileFailOpen}
+        failText={PROFILE_ERR_MSG}
+      />
     </>
   );
 };
@@ -163,7 +180,9 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<
     Area | undefined
   >();
-
+  const [bgFailOpen, setBgFailOpen] = useState(false);
+  const BG_ERR_MSG =
+    "Oops! An error occurs when you try to update your background image. Try again later!";
   const [image, setImage] = useState("");
 
   const [ImgUrl, setImgUrl] = useState<string>("");
@@ -195,10 +214,15 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
       //setCroppedImage(URL.createObjectURL(b) as string);
       setPreviewImage(undefined);
 
-      updateBackground(formData).then(() => {
-        setImage(URL.createObjectURL(b) as string);
-      });
+      updateBackground(formData)
+        .then(() => {
+          setImage(URL.createObjectURL(b) as string);
+        })
+        .catch((err) => {
+          setBgFailOpen(true);
+        });
     } catch (error) {
+      setBgFailOpen(true);
       console.error("Error cropping image " + error);
     }
   };
@@ -284,13 +308,18 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
               await Session.setUser(await fetchUser());
             })
             .catch((error) => {
+              setBgFailOpen(true);
               console.error(error);
             });
         }}
       >
         Update Background URL
       </button>
-      {/*)}*/}
+      <FailPopUp
+        open={bgFailOpen}
+        setOpen={setBgFailOpen}
+        failText={BG_ERR_MSG}
+      />
     </>
   );
 };
