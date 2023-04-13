@@ -52,7 +52,12 @@ export const fetchRoomById = async (id: string) => {
 
 export const deleteRoom = async (room: TPartyRoom) => {
   try {
-    await PartyRoom.findByIdAndDelete(room._id);
+    await PartyRoom.findByIdAndDelete(room._id).then(async () => {
+      await User.findOneAndUpdate(
+        {username: room.ownerUsername}, 
+        {partyRoom: ""}
+      )
+    });
   } catch (error) {
     throw error;
   }
@@ -66,7 +71,7 @@ export const addListener = async (room: TPartyRoom, username: string) => {
     ).then(async () => {
       await User.findOneAndUpdate(
         {username: username}, 
-        {partyRoom: room._id.toString()}
+        {partyRoom: room._id}
       )
     });
   } catch (error) {
@@ -84,7 +89,7 @@ export const deleteListener = async (id: string, username: string) => {
         {username: username}, 
         {partyRoom: ""}
       )
-    })
+    });
   } catch (error) {
     throw error;
   }

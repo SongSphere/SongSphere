@@ -149,13 +149,13 @@ const PartyPage = () => {
                   onClick={async () => {
                     if (user.username === room.ownerUsername) {
                       await DeleteRoom(room).then(() => {
-                        user.partyRoom = "";
+                        
                         navigate(`/`);
                         window.location.reload();
                       });
                     } else {
                       await DeleteMember(room, user.username).then(() => {
-                        user.partyRoom = "";
+                        
                         navigate(`/`);
                         window.location.reload();
                       });
