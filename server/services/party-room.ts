@@ -56,10 +56,10 @@ export const deleteRoom = async (room: TPartyRoom) => {
   }
 };
 
-export const addListener = async (room: TPartyRoom, username: string) => {
+export const addListener = async (roomId: string, username: string) => {
   try {
     await PartyRoom.findOneAndUpdate(
-      { _id: room._id },
+      { _id: roomId },
       { $push: { members: username } }
     );
   } catch (error) {
