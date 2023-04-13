@@ -21,6 +21,8 @@ import fetchPostsByUsername from "../../services/post/fetch-user-posts";
 import FollowingList from "../../components/profile/following-list";
 import FollowerList from "../../components/profile/follower-list";
 
+import MainLayout from "../../layouts/main-layout";
+
 const ProfilePage = () => {
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [showFollowerModal, setShowFollowerModal] = useState(false);
@@ -60,39 +62,46 @@ const ProfilePage = () => {
     return <div>fetching user</div>;
   }
 
+  const left = (
+    <ProfileCard
+      openFollowingModal={handleFollowingOpen}
+      openFollowersModal={handleFollowerOpen}
+    />
+  );
+
+  const middle = (
+    <div>
+      {posts.length > 0 ? (
+        <ProfileFeed posts={posts} setSong={setSong} user={user} />
+      ) : (
+        <NoPosts />
+      )}
+    </div>
+  );
+
+  const right = (
+    <div>
+      {service === "apple" ? (
+        <AppleMusicPlayerCard selectedSong={song} />
+      ) : (
+        <SpotifyPlayerCard selectedSong={song} />
+      )}
+    </div>
+  );
+
   return (
-    <div className="w-full h-full min-h-screen min-w-screen bg-lblue">
-      <Navbar />
-      <div className="grid grid-cols-4 gap-8 md:grid-flow-col">
-        <div className="">
-          <ProfileCard
-            openFollowingModal={handleFollowingOpen}
-            openFollowersModal={handleFollowerOpen}
-          />
-        </div>
-        <div className="col-span-2">
-          {posts.length > 0 ? (
-            <ProfileFeed posts={posts} setSong={setSong} user={user} />
-          ) : (
-            <NoPosts />
-          )}
-        </div>
-        {service === "apple" ? (
-          <AppleMusicPlayerCard selectedSong={song} />
-        ) : (
-          <SpotifyPlayerCard selectedSong={song} />
-        )}
-        <FollowingList
-          following={user.following}
-          isVisible={showFollowingModal}
-          onClose={handleFollowingClose}
-        />
-        <FollowerList
-          followers={user.followers}
-          isVisible={showFollowerModal}
-          onClose={handleFollowerClose}
-        />
-      </div>
+    <div>
+      <MainLayout left={left} middle={middle} right={right} />
+      <FollowingList
+        following={user.following}
+        isVisible={showFollowingModal}
+        onClose={handleFollowingClose}
+      />
+      <FollowerList
+        followers={user.followers}
+        isVisible={showFollowerModal}
+        onClose={handleFollowerClose}
+      />
     </div>
   );
 };
