@@ -28,6 +28,7 @@ export interface IUser {
   showRandomSong: Boolean;
   currentlyPlayingSong: TMusicContent;
   showPlayingSong: Boolean;
+  partyRoom: string;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -143,6 +144,10 @@ const UserSchema = new Schema<IUser>(
     showPlayingSong: {
       type: Boolean,
       required: true,
+    },
+    partyRoom: {
+      type: String,
+      required: false,
     },
   },
   {

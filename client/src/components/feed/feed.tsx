@@ -31,13 +31,19 @@ const Feed = (props: IFeedProps) => {
   }
 
   return (
-    <div>
-      <div className="mt-8"></div>
+    <div className="p-4 bg-slate-900">
       {posts.map((post) => {
         const repost = post.repost;
 
         if (repost) {
-          return <Repost post={post} key={post._id} setSong={props.setSong} />;
+          return (
+            <Repost
+              user={props.user}
+              post={post}
+              key={post._id}
+              setSong={props.setSong}
+            />
+          );
         } else {
           return (
             <Post
