@@ -67,9 +67,9 @@ const PartyPage = () => {
   // useEffect(() => {
   //   if (user && room?._id) {
   //     if (!room.members.includes(user.username)) {
-        // AddMember(room._id.toString(), user.username);
-        // console.log(`${user.username} added to room}`);
-  //     } 
+  // AddMember(room._id.toString(), user.username);
+  // console.log(`${user.username} added to room}`);
+  //     }
   //   }
   // });
   useEffect(() => {
