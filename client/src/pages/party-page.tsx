@@ -17,7 +17,7 @@ import SearchSongPartyRoom from "../components/post/search-song-party-room";
 import SearchSong from "../components/post/search-song";
 import ListenerList from "../components/party-room/listener-list";
 import AddMember from "../services/party/add-member";
-import MemberList from "../components/party-room/members-list";
+
 import SearchUserForInvite from "../components/invitations/search-user-for-invite";
 
 import AppleMusicPartyRoomPlayerCard from "../components/party-room/apple-music-party-player";
@@ -64,14 +64,14 @@ const PartyPage = () => {
       });
     }
   }, []);
-  // useEffect(() => {
-  //   if (user && room?._id) {
-  //     if (!room.members.includes(user.username)) {
-        // AddMember(room._id.toString(), user.username);
-        // console.log(`${user.username} added to room}`);
-  //     } 
-  //   }
-  // });
+  useEffect(() => {
+    if (user && room?._id) {
+       if (!room.members.includes(user.username)) {
+         AddMember(room._id.toString(), user.username);
+         console.log(`${user.username} added to room}`);
+       } 
+     }
+   });
   useEffect(() => {
     if (user && id) {
       user.partyRoom = id;
@@ -85,7 +85,7 @@ const PartyPage = () => {
   if (!room) {
     return (
       <div className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
-        <h1 className="text-9xl font-extrabold text-white tracking-widest">
+        <h1 className="font-extrabold tracking-widest text-white text-9xl">
           404
         </h1>
         <div className="bg-[#FF6A3D] px-2 text-sm rounded rotate-12 absolute">
@@ -165,17 +165,20 @@ const PartyPage = () => {
                 >
                   Exit
                 </button>
-                {user.username === room.ownerUsername ? (
-                  <button
-                    className="p-3 text-white bg-navy rounded-xl top-13 right-20"
-                    onClick={() => handleOpenListen()}
-                  >
-                    Transfer
-                  </button>
-                ) : (
-                  <div></div>
-                )}
-
+                
+                <button
+                  className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
+                  onClick={() => handleOpenListen()}
+                >
+                  View Listeners
+                </button>
+               
+                <ListenerList 
+                listeners={room.members}
+                isVisible={showListenersModal}
+                onClose={handleCloseListen}
+                room={room}
+                />
                 <SearchUserForInvite
                   following={user.following}
                   isVisible={showFollowingModal}
@@ -205,7 +208,16 @@ const PartyPage = () => {
                 >
                   Find User To Invite
                 </button>
-                <MemberList listeners={room.members} room={room} />
+                
+              </div>
+
+              {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
+              <div className="w-full h-96">
+                {song ? (
+                  <SearchSongPartyRoom song={song.name} />
+                ) : (
+                  <SearchSongPartyRoom />
+                )}
               </div>
 
               {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
