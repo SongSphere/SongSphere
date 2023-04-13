@@ -98,51 +98,49 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
     }
   };
 
+  if (!song) {
+    return <div>fetching</div>;
+  }
+
   return (
-    <div className="relative flex justify-center">
-      <div className="fixed flex h-[95%] mt-8">
-        <div className="bg-white rounded-lg w-80 h-5/6 drop-shadow-md">
-          <div className="flex justify-center">
-            <div className="w-4/5 mt-5">
-              <img
-                src={
-                  song
-                    ? song.attributes.artwork.url
-                        .replace("{w}", 1000)
-                        .replace("{h}", 1000)
-                    : ""
-                }
-              ></img>
-            </div>
+    <div className="flex flex-row justify-center h-full text-white lg:flex-col">
+      <div className="flex w-1/2 p-4 lg:w-full">
+        <img
+          className="w-24 h-24"
+          src={song.attributes.artwork.url
+            .replace("{w}", 1000)
+            .replace("{h}", 1000)}
+        ></img>
+        <div className="pl-2">
+          <div className="text-2xl font-semibold ">{song.attributes.name}</div>
+          {/* {song.artists.map((artist) => {
+            return <p className="text-white">{artist}</p>;
+          })} */}
+        </div>
+      </div>
+      <div className="w-1/2 p-4 lg:w-full">
+        <div className="flex flex-col mt-4 place-items-center">
+          <div
+            className="w-5 h-5 cursor-pointer"
+            onClick={() => {
+              playMusicHandler();
+            }}
+          >
+            <img
+              src={
+                isPlaying
+                  ? "/img/icons/pause-icon.svg"
+                  : "/img/icons/play-icon.svg"
+              }
+            ></img>
           </div>
-          <div className="px-6 mt-2 text-2xl text-center">
-            {song?.attributes.name}
-          </div>
-          <div className="flex justify-center mt-2">
+          <div className="w-4/5 h-1 mt-5 bg-neutral-200 dark:bg-neutral-600">
             <div
-              className="w-5 h-5 cursor-pointer"
-              onClick={() => {
-                playMusicHandler();
+              className={`h-1 bg-red-400`}
+              style={{
+                width: `${progress}%`,
               }}
-            >
-              <img
-                src={
-                  isPlaying
-                    ? "/img/icons/pause-icon.png"
-                    : "/img/icons/play-icon.png"
-                }
-              ></img>
-            </div>
-          </div>
-          <div className="flex justify-center mt-4">
-            <div className="w-5/6 h-1 bg-neutral-200 dark:bg-neutral-600">
-              <div
-                className={`h-1 bg-red-400`}
-                style={{
-                  width: `${progress}%`,
-                }}
-              ></div>
-            </div>
+            ></div>
           </div>
         </div>
       </div>

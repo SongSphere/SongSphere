@@ -53,7 +53,7 @@ const Post = (props: IPostProps) => {
   }, []);
 
   return (
-    <div className="flex w-full p-6 mb-8 bg-white rounded-lg drop-shadow-md">
+    <div className="flex w-full p-6 mb-8 transition ease-in-out rounded-lg delay-50 drop-shadow-md hover:bg-slate-800">
       {/* Only display edit function if this post belongs to the user */}
       {props.post.username == props.user.username ? (
         <div className="dropdown">
@@ -192,7 +192,7 @@ const Post = (props: IPostProps) => {
       </Popup>
 
       <div className="w-full">
-        <div className="w-full p-2 ml-2">
+        <div className="w-full p-2 ml-2 text-white">
           <div>
             {postOwner ? (
               <a href={`/user/${postOwner.username}`}>
@@ -211,11 +211,11 @@ const Post = (props: IPostProps) => {
               ></img>
             )}
           </div>
-          <div className="text-2xl font-bold">{props.post.music.name}</div>
-          <div className="text-slate-500">{props.post.music.artist}</div>
-          <hr className="h-0.5 border-0 bg-gray-300"></hr>
+          <div className="text-2xl font-bold ">{props.post.music.name}</div>
+          <div className="">{props.post.music.artist}</div>
+          <hr className="h-0.5 border-0 bg-slate-300"></hr>
           <div className="flex justify-end mt-2">
-            <div className="w-full">{props.post.caption}</div>
+            <div className="w-full ">{props.post.caption}</div>
             <LikeButton
               id={props.post._id}
               type="Post"
