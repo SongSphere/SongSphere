@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { TUser } from "../types/user";
 import Navbar from "../components/navbar";
 import { TPartyRoom } from "../types/party-room";
@@ -12,9 +12,12 @@ import { TMusicContent } from "../types/music-content";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import PartyRoomQueue from "../components/party-room/queue";
+import Search from "../components/post/search-song";
+import SearchSongPartyRoom from "../components/post/search-song-party-room";
+import SearchSong from "../components/post/search-song";
 import ListenerList from "../components/party-room/listener-list";
 import AddMember from "../services/party/add-member";
-import MemberList from "../components/party-room/members-list";
+
 import SearchUserForInvite from "../components/invitations/search-user-for-invite";
 
 import AppleMusicPartyRoomPlayerCard from "../components/party-room/apple-music-party-player";
@@ -61,14 +64,14 @@ const PartyPage = () => {
       });
     }
   }, []);
-  // useEffect(() => {
-  //   if (user && room?._id) {
-  //     if (!room.members.includes(user.username)) {
-        // AddMember(room._id.toString(), user.username);
-        // console.log(`${user.username} added to room}`);
-  //     } 
-  //   }
-  // });
+  useEffect(() => {
+    if (user && room?._id) {
+       if (!room.members.includes(user.username)) {
+         AddMember(room._id.toString(), user.username);
+         console.log(`${user.username} added to room}`);
+       } 
+     }
+   });
   useEffect(() => {
     if (user && id) {
       user.partyRoom = id;
@@ -82,7 +85,7 @@ const PartyPage = () => {
   if (!room) {
     return (
       <div className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
-        <h1 className="text-9xl font-extrabold text-white tracking-widest">
+        <h1 className="font-extrabold tracking-widest text-white text-9xl">
           404
         </h1>
         <div className="bg-[#FF6A3D] px-2 text-sm rounded rotate-12 absolute">
@@ -121,11 +124,18 @@ const PartyPage = () => {
   return (
     <div className="w-full h-full min-h-screen bg-lblue">
       <Navbar />
+      {/* <div className="w-screen  max-w-[100%] h-screen bg-lblue">
+        {song ? (
+          <SearchSongPartyRoom song={song.name} />
+        ) : (
+          <SearchSongPartyRoom />
+        )}
+      </div> */}
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
         <div className="relative flex justify-center col-span-1 px-2">
           <div className="absolute flex h-[95%] mt-8 w-[90%]">
             <div className="w-full bg-white rounded-lg h-5/6 drop-shadow-md">
-              <div>
+              <div className=""> 
                 <h1 className="text-3xl text-center text-navy">
                   Name:{room?.partyName}
                 </h1>
@@ -136,7 +146,7 @@ const PartyPage = () => {
                   Owner: {room?.ownerUsername}
                 </h1>
                 <button
-                  className="absolute p-3 text-white bg-navy rounded-xl top-13 right-5"
+                  className="p-3 ml-3 text-white bg-navy rounded-xl top-13"
                   onClick={async () => {
                     if (user.username === room.ownerUsername) {
                       await DeleteRoom(room).then(() => {
@@ -155,17 +165,20 @@ const PartyPage = () => {
                 >
                   Exit
                 </button>
-                {user.username === room.ownerUsername ? (
-                  <button
-                    className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
-                    onClick={() => handleOpenListen()}
-                  >
-                    Transfer
-                  </button>
-                ) : (
-                  <div></div>
-                )}
-
+                
+                <button
+                  className="p-3 ml-3 text-white bg-navy rounded-xl top-13 "
+                  onClick={() => handleOpenListen()}
+                >
+                  View Listeners
+                </button>
+               
+                <ListenerList 
+                listeners={room.members}
+                isVisible={showListenersModal}
+                onClose={handleCloseListen}
+                room={room}
+                />
                 <SearchUserForInvite
                   following={user.following}
                   isVisible={showFollowingModal}
@@ -175,7 +188,7 @@ const PartyPage = () => {
                 />
 
                 <button
-                  className="p-3 text-white rounded-xl bg-navy"
+                  className="p-3 ml-3 text-white rounded-xl bg-navy"
                   onClick={() => {
                     if (room && id) {
                       fetchRoomById(id).then((res) => {
@@ -195,12 +208,21 @@ const PartyPage = () => {
                 >
                   Find User To Invite
                 </button>
-                <MemberList listeners={room.members} room={room} />
+                
+              </div>
+
+
+              {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
+              <div className="w-full h-96">
+                {song ? (
+                  <SearchSongPartyRoom song={song.name} />
+                ) : (
+                  <SearchSongPartyRoom />
+                )}
               </div>
             </div>
           </div>
         </div>
-
         <div className="col-span-2">
           <PartyRoomQueue />
         </div>

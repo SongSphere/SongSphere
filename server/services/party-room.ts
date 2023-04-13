@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { TMusicContent } from "../types/music-content";
 
 import PartyRoom, { IPartyRoom } from "../db/party-room";
 import { TPartyRoom } from "../types/party-room";
@@ -89,8 +90,74 @@ export const addInvitation = async (id: string, username: string) => {
   }
 };
 
+export const addToQueue = async (song: TMusicContent, username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
+    });
+    await PartyRoom.findOneAndUpdate(
+      { _id: room._id },
+      { $push: { queue: song } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const removeFromQueue = async (index: number, username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
+    });
+    room.queue.splice(index, 1);
+    room.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const moveUpQueue = async (index: number, username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
+    });
+    if (index == 0) return;
+    const temp = room.queue[index - 1];
+    room.queue[index - 1] = room.queue[index];
+    room.queue[index] = temp;
+
+    room.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const moveDownQueue = async (index: number, username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
+    });
+    if (index == room.queue.length - 1) return;
+    const temp = room.queue[index + 1];
+    room.queue[index + 1] = room.queue[index];
+    room.queue[index] = temp;
+
+    room.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const deleteInvitation = async (id: string, username: string) => {
-  console.log(`${id} ${username}}`)
+  console.log(`${id} ${username}}`);
   try {
     await PartyRoom.findOneAndUpdate(
       { _id: id },
@@ -133,25 +200,30 @@ var postmark = require("postmark");
 // };
 
 import { CourierClient } from "@trycourier/courier";
-export const sendInvitationEmail = async (roomId: string, senderUsername: string, receiverEmail: string) => {
-      console.log("sendInvitationEmail in server/services");
-      console.log(roomId, senderUsername, receiverEmail);
+export const sendInvitationEmail = async (
+  roomId: string,
+  senderUsername: string,
+  receiverEmail: string
+) => {
+  console.log("sendInvitationEmail in server/services");
+  console.log(roomId, senderUsername, receiverEmail);
 
-      const courier = CourierClient(
-        { authorizationToken: "pk_prod_YMG62BBWAWMTNQPR5E9ZK64RTJSS"});
+  const courier = CourierClient({
+    authorizationToken: "pk_prod_YMG62BBWAWMTNQPR5E9ZK64RTJSS",
+  });
 
-      const { requestId } = await courier.send({
-        message: {
-          content: {
-            title: `${senderUsername} Invited you to a party!`,
-            body: "Here is the party Link? {{joke}}"
-          },
-          data: {
-            joke: `http://localhost:3000/party/${roomId}`
-          },
-          to: {
-            email: `${receiverEmail}`
-          }
-        }
-      });
+  const { requestId } = await courier.send({
+    message: {
+      content: {
+        title: `${senderUsername} Invited you to a party!`,
+        body: "Here is the party Link? {{joke}}",
+      },
+      data: {
+        joke: `http://localhost:3000/party/${roomId}`,
+      },
+      to: {
+        email: `${receiverEmail}`,
+      },
+    },
+  });
 };
