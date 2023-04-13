@@ -130,6 +130,19 @@ export const addToQueue = async (song: TMusicContent, username: string) => {
   }
 };
 
+export const getQueue = async (username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
+    });
+    return room.queue;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const removeFromQueue = async (index: number, username: string) => {
   try {
     const room = await PartyRoom.findOne({
