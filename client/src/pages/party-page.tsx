@@ -61,14 +61,14 @@ const PartyPage = () => {
       });
     }
   }, []);
-  // useEffect(() => {
-  //   if (user && room?._id) {
-  //     if (!room.members.includes(user.username)) {
-        // AddMember(room._id.toString(), user.username);
-        // console.log(`${user.username} added to room}`);
-  //     } 
-  //   }
-  // });
+  useEffect(() => {
+    if (user && room?._id) {
+       if (!room.members.includes(user.username)) {
+         AddMember(room._id.toString(), user.username);
+         console.log(`${user.username} added to room}`);
+       } 
+     }
+   });
   useEffect(() => {
     if (user && id) {
       user.partyRoom = id;
@@ -155,17 +155,20 @@ const PartyPage = () => {
                 >
                   Exit
                 </button>
-                {user.username === room.ownerUsername ? (
-                  <button
-                    className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
-                    onClick={() => handleOpenListen()}
-                  >
-                    View Listeners
-                  </button>
-                ) : (
-                  <div></div>
-                )}
-
+                
+                <button
+                  className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
+                  onClick={() => handleOpenListen()}
+                >
+                  View Listeners
+                </button>
+               
+                <ListenerList 
+                listeners={room.members}
+                isVisible={showListenersModal}
+                onClose={handleCloseListen}
+                room={room}
+                />
                 <SearchUserForInvite
                   following={user.following}
                   isVisible={showFollowingModal}

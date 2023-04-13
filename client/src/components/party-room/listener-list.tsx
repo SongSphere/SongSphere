@@ -48,7 +48,7 @@ const ListenerList = (props: IListernerListProps) => {
         onClick={handleOnClose}
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
       >
-        <div className="w-1/4 p-5 bg-white rounded max-h-[60vh] min-h-[60vh]">
+        <div className=" p-5 bg-white rounded max-h-[60vh] min-h-[60vh]">
           <h1 className="py-3 font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
             Room Listeners
           </h1>
@@ -83,23 +83,30 @@ const ListenerList = (props: IListernerListProps) => {
                 <div className="overflow-y-auto max-h-[45vh]">
                   {followers.map((users) => {
                     return (
-                      <div className="" key={users}>
+                      <div className="grid grid-flow-col" key={users}>
                         <h1 className="float-left">{users}</h1>
-                        <button className="float-right text-lblue"
-                        onClick={async() => 
-                            await TransferOwner(props.room, users).then(() => {
-                                
-                                
-                            })
-                        }
-                        >
-                          transfer
-                        </button>
-                        <button className="pl-10 text-lblue"
-                       onClick={() => DeleteMember(props.room, users).then(()=>fetchUserByUsername(users)).then((removed) =>{removed.partyRoom=""} )}
-                       >
-                        remove
-                       </button>
+                        {user.username === props.room.ownerUsername ? (
+                            <div>
+                                <button className="float-right text-lblue"
+                                onClick={async() => 
+                                    await TransferOwner(props.room, users).then(() => {
+                                        
+                                        window.location.reload();
+                                    })
+                                }
+                                >
+                                transfer
+                                </button>
+                                <button className=" text-lblue"
+                                onClick={() => DeleteMember(props.room, users).then(()=>fetchUserByUsername(users)).then((removed) =>{removed.partyRoom=""} )}
+                                >
+                                remove
+                            </button>
+                            </div>
+                        ) : (
+                            <div></div>
+                        )}
+                        
                       </div>
                     );
                   })}
