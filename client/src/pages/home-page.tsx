@@ -1,4 +1,3 @@
-import Navbar from "../components/navbar";
 import { TUser } from "../types/user";
 import Session from "../session";
 import { useEffect, useState } from "react";
