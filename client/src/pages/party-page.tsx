@@ -135,7 +135,7 @@ const PartyPage = () => {
         <div className="relative flex justify-center col-span-1 px-2">
           <div className="absolute flex h-[95%] mt-8 w-[90%]">
             <div className="w-full bg-white rounded-lg h-5/6 drop-shadow-md">
-              <div>
+              <div className=""> 
                 <h1 className="text-3xl text-center text-navy">
                   Name:{room?.partyName}
                 </h1>
@@ -146,7 +146,7 @@ const PartyPage = () => {
                   Owner: {room?.ownerUsername}
                 </h1>
                 <button
-                  className="p-3 text-white bg-navy rounded-xl top-13 right-5"
+                  className="p-3 ml-3 text-white bg-navy rounded-xl top-13"
                   onClick={async () => {
                     if (user.username === room.ownerUsername) {
                       await DeleteRoom(room).then(() => {
@@ -167,7 +167,7 @@ const PartyPage = () => {
                 </button>
                 
                 <button
-                  className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
+                  className="p-3 ml-3 text-white bg-navy rounded-xl top-13"
                   onClick={() => handleOpenListen()}
                 >
                   View Listeners
@@ -188,7 +188,7 @@ const PartyPage = () => {
                 />
 
                 <button
-                  className="p-3 text-white rounded-xl bg-navy"
+                  className="p-3 ml-3 text-white rounded-xl bg-navy"
                   onClick={() => {
                     if (room && id) {
                       fetchRoomById(id).then((res) => {
@@ -209,15 +209,6 @@ const PartyPage = () => {
                   Find User To Invite
                 </button>
                 
-              </div>
-
-              {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
-              <div className="w-full h-96">
-                {song ? (
-                  <SearchSongPartyRoom song={song.name} />
-                ) : (
-                  <SearchSongPartyRoom />
-                )}
               </div>
 
               {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
