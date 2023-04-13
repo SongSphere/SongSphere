@@ -15,6 +15,9 @@ import {
   addToQueue,
   addInvitation,
   deleteInvitation,
+  removeFromQueue,
+  moveUpQueue,
+  moveDownQueue,
 } from "../services/party-room";
 
 export const newRoom = async (req: Request, res: Response) => {
@@ -121,6 +124,32 @@ export const transferO = async (req: Request, res: Response) => {
 export const addQueue = async (req: Request, res: Response) => {
   try {
     await addToQueue(req.body.song, req.session.user.username);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const removeQueue = async (req: Request, res: Response) => {
+  try {
+    await removeFromQueue(req.body.index, req.session.user.username);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const reorderQueue = async (req: Request, res: Response) => {
+  try {
+    if (req.body.dir == "up") {
+      await moveUpQueue(req.body.index, req.session.user.username);
+    } else {
+      await moveDownQueue(req.body.index, req.session.user.username);
+    }
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {

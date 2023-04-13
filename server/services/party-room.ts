@@ -7,18 +7,17 @@ import { TPartyRoom } from "../types/party-room";
 export const createPartyRoom = async (
   newRoom: TPartyRoom
 ): Promise<mongoose.Document<unknown, any, IPartyRoom>> => {
-
-    const party = new PartyRoom({
-        ownerUsername: newRoom.ownerUsername,
-        ownerEmail: newRoom.ownerEmail,
-        description: newRoom.description,
-        partyName: newRoom.partyName,
-        members: newRoom.members,
-        invitedMembers: newRoom.invitedMembers,
-        queue: newRoom.queue,
-        musicIndex: newRoom.musicIndex,
-    });
-    return party;
+  const party = new PartyRoom({
+    ownerUsername: newRoom.ownerUsername,
+    ownerEmail: newRoom.ownerEmail,
+    description: newRoom.description,
+    partyName: newRoom.partyName,
+    members: newRoom.members,
+    invitedMembers: newRoom.invitedMembers,
+    queue: newRoom.queue,
+    musicIndex: newRoom.musicIndex,
+  });
+  return party;
 };
 
 export const saveRoom = async (
@@ -69,7 +68,6 @@ export const addListener = async (room: TPartyRoom, username: string) => {
   }
 };
 
-
 export const deleteListener = async (id: string, username: string) => {
   try {
     await PartyRoom.findOneAndUpdate(
@@ -82,28 +80,35 @@ export const deleteListener = async (id: string, username: string) => {
 };
 
 export const addInvitation = async (id: string, username: string) => {
-
-    try {
-        await PartyRoom.findOneAndUpdate({_id: id}, {$push:{invitedMembers: username}});
-    } catch (error) {
-        throw error;
-    }
+  try {
+    await PartyRoom.findOneAndUpdate(
+      { _id: id },
+      { $push: { invitedMembers: username } }
+    );
+  } catch (error) {
+    throw error;
+  }
 };
 
-
 export const deleteInvitation = async (id: string, username: string) => {
-    try {
-        await PartyRoom.findOneAndUpdate({_id: id}, {$pull:{invitedMembers: username}});
-    } catch (error) {
-        throw error;
-    }
+  try {
+    await PartyRoom.findOneAndUpdate(
+      { _id: id },
+      { $pull: { invitedMembers: username } }
+    );
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const transferOwner = async (room: TPartyRoom, username: string) => {
   try {
-    await PartyRoom.findOneAndUpdate({_id: room._id}, {
-      ownerUsername: username,
-    });
+    await PartyRoom.findOneAndUpdate(
+      { _id: room._id },
+      {
+        ownerUsername: username,
+      }
+    );
   } catch (error) {
     throw error;
   }
@@ -113,14 +118,63 @@ export const addToQueue = async (song: TMusicContent, username: string) => {
   try {
     const room = await PartyRoom.findOne({
       members: {
-        $elemMatch: { username: username },
+        $in: [username],
       },
     });
-    const q = room.queue;
-    q.push(song);
-    await PartyRoom.findByIdAndUpdate(room._id, {
-      queue: q,
+    await PartyRoom.findOneAndUpdate(
+      { _id: room._id },
+      { $push: { queue: song } }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const removeFromQueue = async (index: number, username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
     });
+    room.queue.splice(index, 1);
+    room.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const moveUpQueue = async (index: number, username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
+    });
+    if (index == 0) return;
+    const temp = room.queue[index - 1];
+    room.queue[index - 1] = room.queue[index];
+    room.queue[index] = temp;
+
+    room.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const moveDownQueue = async (index: number, username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
+    });
+    if (index == room.queue.length - 1) return;
+    const temp = room.queue[index + 1];
+    room.queue[index + 1] = room.queue[index];
+    room.queue[index] = temp;
+
+    room.save();
   } catch (error) {
     throw error;
   }

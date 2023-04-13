@@ -125,7 +125,7 @@ const PartyPage = () => {
                 </button>
                 {user.username === room.ownerUsername ? (
                   <button
-                    className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
+                    className="p-3 text-white bg-navy rounded-xl top-13 right-20"
                     onClick={() => handleOpenListen()}
                   >
                     Transfer

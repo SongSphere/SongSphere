@@ -100,51 +100,6 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
     <div className="h-full max-w-[95%]">
       <div className="col-span-2 mt-5 ml-5 bg-lgrey rounded-2xl h-[90%] overflow-scroll">
         <h1 className="text-4xl text-center text-navy">Search For</h1>
-        {/* <div className="grid w-full grid-flow-col">
-          <button
-            className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
-            onClick={async () =>
-              await selectService(song as string, "songs", 8).then((result) => {
-                setCategory("songs");
-                songs = result!;
-                setSongs(result!);
-              })
-            }
-          >
-            {" "}
-            Songs{" "}
-          </button>
-          <button
-            className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl visited:border-b-yellow-100"
-            onClick={async () =>
-              await selectService(song as string, "albums", 8).then(
-                (result) => {
-                  setCategory("albums");
-                  songs = result!;
-                  setSongs(result!);
-                }
-              )
-            }
-          >
-            {" "}
-            Albums{" "}
-          </button>
-          <button
-            className="m-5 border-b-2 text-navy border-b-solid border-lblue hover:border-b-yellow-100 hover:text-xl focus:border-b-yellow-100"
-            onClick={async () =>
-              await selectService(song as string, "artists", 8).then(
-                (result) => {
-                  setCategory("artists");
-                  songs = result!;
-                  setSongs(result!);
-                }
-              )
-            }
-          >
-            {" "}
-            Artists{" "}
-          </button>
-        </div> */}
         <div className="grid justify-center w-full grid-flow-col mt-5">
           <input
             className=""
@@ -181,41 +136,15 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
             </div>
           ))}
         </div>
-        {/* <div className="flex justify-center">
-          {selected ? (
-            <img className="max-w-[75%]" src={selected.cover} />
-          ) : null}
-        </div> */}
         <div className="grid-flow-col mt-5 text-center">
           <h1 className="text-2xl text-navy">{selected?.name}</h1>
           <h1 className="text-xl text-navy">{selected?.artist}</h1>
-          {/* <form className="mt-5">
-            <label>
-              <input
-                type="text"
-                value={caption}
-                placeholder={"Enter a caption"}
-                onChange={(e) => {
-                  setCaption(e.target.value);
-                }}
-              />
-            </label>
-          </form> */}
         </div>
         <button
           className="float-right p-2 mb-2 mr-10 rounded-md text-lgrey bg-navy hover:bg-lblue"
           onClick={async () => {
             setOpen2(true);
             if (user) {
-              // const newPost: TPost = {
-              //   username: user.username,
-              //   userEmail: user.email,
-              //   caption: caption,
-              //   music: selected!,
-              //   comments: [],
-              //   likes: 0,
-              //   repost: isRepost,
-              // };
               await addQueue(selected!)
                 .then((res) => {
                   if (!res) {
@@ -232,70 +161,7 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
         >
           Add Song
         </button>
-        {/* This will be edited once merged to incoroporate username userSessionContext */}
       </div>
-
-      {/* <div className="w-full col-span-2 pt-5 m-5 h-5/6 rounded-xl bg-lgrey">
-        <div className="flex justify-center">
-          {selected ? (
-            <img className="max-w-[75%]" src={selected.cover} />
-          ) : null}
-        </div>
-        <div className="grid-flow-col mt-5 text-center">
-          <h1 className="text-2xl text-navy">{selected?.name}</h1>
-          <h1 className="text-xl text-navy">{selected?.artist}</h1>
-          <form className="mt-5">
-            <label>
-              <input
-                type="text"
-                value={caption}
-                placeholder={"Enter a caption"}
-                onChange={(e) => {
-                  setCaption(e.target.value);
-                }}
-              />
-            </label>
-          </form>
-        </div>
-        <button
-          className="float-right p-2 mb-2 mr-10 rounded-md text-lgrey bg-navy hover:bg-lblue"
-          onClick={async () => {
-            setOpen2(true);
-            if (user) {
-              const newPost: TPost = {
-                username: user.username,
-                userEmail: user.email,
-                caption: caption,
-                music: selected!,
-                comments: [],
-                likes: 0,
-                repost: isRepost,
-              };
-              await sendPost(newPost)
-                .then((res) => {
-                  if (!res) {
-                    setPostSuccessFail(<PostFailure />);
-                  } else {
-                    setPostSuccessFail(<PostSucess />);
-                  }
-                })
-                .catch((error) => {
-                  <PostFailure />;
-                });
-            }
-          }}
-        >
-          Submit
-        </button>
-        <Popup open={open2} closeOnDocumentClick onClose={closeModal}>
-          <div className="modal">
-            <a className="close" onClick={closeModal}>
-              &times;
-              {postSuccessFail}
-            </a>
-          </div>
-        </Popup>
-      </div> */}
     </div>
   );
 };
