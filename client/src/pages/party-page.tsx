@@ -20,6 +20,7 @@ import SearchUserForInvite from "../components/invitations/search-user-for-invit
 import AppleMusicPartyRoomPlayerCard from "../components/party-room/apple-music-party-player";
 import SpotifyPartyRoomPlayerCard from "../components/party-room/spotify-music-party-player";
 import PartyRoomChat from "../components/party-room/party-chat";
+import RemoveInvitation from "../services/party/remove-invitation";
 
 const PartyPage = () => {
   const { id } = useParams();
@@ -60,14 +61,14 @@ const PartyPage = () => {
       });
     }
   }, []);
-  useEffect(() => {
-    if (user && room?._id) {
-      if (!room.members.includes(user.username)) {
-        AddMember(room._id.toString(), user.username);
-        console.log(`${user.username} added to room}`);
-      }
-    }
-  });
+  // useEffect(() => {
+  //   if (user && room?._id) {
+  //     if (!room.members.includes(user.username)) {
+        // AddMember(room._id.toString(), user.username);
+        // console.log(`${user.username} added to room}`);
+  //     } 
+  //   }
+  // });
   useEffect(() => {
     if (user && id) {
       user.partyRoom = id;

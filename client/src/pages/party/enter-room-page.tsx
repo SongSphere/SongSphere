@@ -12,6 +12,8 @@ import fetchRoomByOwner from "../../services/party/fetch-room-by-owner";
 import { useNavigate } from "react-router-dom";
 import fetchRoomById from "../../services/party/fetch-room-by-id";
 import FailPopUp from "../../components/popup/fail-popup";
+import RemoveInvitation from "../../services/party/remove-invitation";
+import AddMember from "../../services/party/add-member";
 
 const CreateRoomPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
@@ -121,8 +123,12 @@ const CreateRoomPage = () => {
                             } else {
                               fetchRoomByOwner(newRoom.ownerUsername).then(
                                 (room) => {
-                                  navigate(`/party/${room._id}`);
-                                  window.location.reload();
+                                  if (room._id) {
+                                    AddMember(room._id.toString(), user.username);
+                                    console.log(`${user.username} added to room}`);
+                                    navigate(`/party/${room._id}`);
+                                    window.location.reload();
+                                  }
                                 }
                               );
                             }
@@ -175,17 +181,20 @@ const CreateRoomPage = () => {
                     onClick={() => {
                       fetchRoomById(id)
                         .then((res) => {
-                          if (res) {
+                          if (res && res._id) {
                             navigate(`/party/${res._id}`);
+                            RemoveInvitation(
+                              res._id.toString(),
+                              user.username
+                            );
+                            AddMember(res._id.toString(), user.username);
+                            console.log(`${user.username} added to room}`);
                             window.location.reload();
                           } else {
-                         
                           }
                         })
                         .then((error) => {
                           setPartyFailOpen(true);
-
-                          
                         });
                     }}
                   >
