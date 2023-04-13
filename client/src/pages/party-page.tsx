@@ -73,7 +73,11 @@ const PartyPage = () => {
   useEffect(() => {
     if(room && user) {
       if (!room.members.includes(user.username)) {
-        AddMember(room, user.username);
+        AddMember(room, user.username).then(() => {
+          window.location.reload()
+        }
+         
+        );
       } 
     }
   }, [room])
@@ -81,7 +85,7 @@ const PartyPage = () => {
     return <div>fetching user</div>;
   }
 
-  if (!room) {
+  if (!room || room.blocked.includes(user.username)) {
     return (
       <div className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
         <h1 className="font-extrabold tracking-widest text-white text-9xl">

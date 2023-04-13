@@ -17,7 +17,7 @@ export const createPartyRoom = async (
     queue: newRoom.queue,
     musicIndex: newRoom.musicIndex,
   });
-  await User.findOneAndUpdate({username: newRoom.ownerUsername}, {partyRoom: party._id.toString()});
+  await User.findOneAndUpdate({username: newRoom.ownerUsername}, {partyRoom: party._id});
   return party;
 };
 
@@ -204,7 +204,12 @@ export const blockUser = async (room: TPartyRoom, username: string) => {
       {
         $push: { blocked: username } 
       }
-    );
+    ).then(async () => {
+      await User.findOneAndUpdate(
+        {username: username}, 
+        {partyRoom: ""}
+      )
+    });
   } catch (error) {
     throw error
   }

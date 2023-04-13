@@ -106,6 +106,8 @@ const ListenerList = (props: IListernerListProps) => {
                                   if(props.room._id) {
                                     BlockMember(props.room, users);
                                   }
+                                }).then(() =>{
+                                  window.location.reload();
                                 })
                                 }
                                 >
