@@ -15,7 +15,7 @@ import PartyRoomQueue from "../components/party-room/queue";
 import ListenerList from "../components/party-room/listener-list";
 import AddMember from "../services/party/add-member";
 import MemberList from "../components/party-room/members-list";
-import FollowingListForInvite from "../components/invitations/search-user-for-invite";
+import SearchUserForInvite from "../components/invitations/search-user-for-invite";
 
 import AppleMusicPartyRoomPlayerCard from "../components/party-room/apple-music-party-player";
 import SpotifyPartyRoomPlayerCard from "../components/party-room/spotify-music-party-player";
@@ -64,6 +64,7 @@ const PartyPage = () => {
     if (user && room?._id) {
       if (!room.members.includes(user.username)) {
         AddMember(room._id.toString(), user.username);
+        console.log(`${user.username} added to room}`);
       }
     }
   });
@@ -128,7 +129,7 @@ const PartyPage = () => {
                   <div></div>
                 )}
 
-                <FollowingListForInvite
+                <SearchUserForInvite
                   following={user.following}
                   isVisible={showFollowingModal}
                   onClose={handleFollowingClose}

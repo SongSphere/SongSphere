@@ -9,8 +9,9 @@ import { TPartyRoom } from "../../types/party-room";
 import { TNotification } from "../../types/notification";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
 import SendInvitationEmail from "../../services/party/send-invitation-email";
+import { TUserInvite } from "../../types/user-invite";
 
-interface IFollowingListProps {
+interface ISearchUserForInviteProps {
   following: string[];
   roomId: string | undefined;
   room: TPartyRoom | null;
@@ -18,15 +19,16 @@ interface IFollowingListProps {
   onClose: Function;
 }
 
-const FollowingListForInvite = (props: IFollowingListProps) => {
+const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
   const [following, setFollowing] = useState(props.following);
-  const [isInvited, setIsInvited] = useState(false);
+  const [isInvited, setIsInvited] = useState<Boolean>(false);
   const [room, setRoom] = useState<TPartyRoom | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
-      setFollowing(props.following);
+      setFollowing([]);
+      handleInviteClick();
       props.onClose();
     }
   };
@@ -45,8 +47,10 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
   const handleInviteClick = async () => {
     if (isInvited) {
       setIsInvited(false);
+      console.log("removing invitation");
     } else {
       setIsInvited(true);
+      console.log("adding invitation");
     }
   };
 
@@ -79,14 +83,31 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                     setFollowing([]);
                   } else if ((event.target.value as string) !== "") {
                     let filteredUsers: Array<string> = Array<string>();
+                    let filteredUsersStatus: Array<Boolean> = Array<Boolean>();
+
+                  //  let fusers: Array<TUserInvite> = Array<TUserInvite>();
 
                     props.following.forEach((u) => {
                       if (u.startsWith(event.target.value as string)) {
                         filteredUsers.push(u);
+                        filteredUsersStatus.push(false);
+                        if (props.room?.invitedMembers) {
+                          console.log(props.room.invitedMembers);
+                          console.log(u);
+                          props.room.invitedMembers.forEach((invitedUser) => {
+                            if (invitedUser == u) {
+                          
+                              setIsInvited(true);
+                            //  filteredUsersStatus.push(true);
+                            }
+                          });
+                        }
                       }
                     });
 
                     setFollowing(filteredUsers);
+                 //   setIsInvited(filteredUsersStatus[0]);
+                    console.log(isInvited);
                   }
                 }}
               />
@@ -96,23 +117,7 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
               <div className="overflow-y-auto max-h-[45vh]">
                 {following.length > 0 ? (
                   following.map((userName) => {
-                    // inefficient, will find a better way
-                    // if (props.roomId) {
-                    //   // fetchRoomById(props.roomId).then((res) => {
-                    //   setIsInvited(false);
-                    //   if (props.room) {
-                    //     setRoom(props.room);
-                    //     props.room.invitedMembers.forEach((invitedUser) => {
-                    //       if (invitedUser === userName) {
-                    //         setIsInvited(true);
-                    //       }
-                    //     });
-                    //   } else {
-                    //     alert("Room does not exist");
-                    //   }
-                    //   //   });
-                    // }
-
+               
                     return (
                       <div className="flex">
                         <div className="flex-1 inline-block text-left">
@@ -129,14 +134,14 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                                   <button
                                     className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
                                     onClick={async () => {
-                                      if (room) {
-                                        await removeInvitation(room, userName);
+                                      if (props.roomId) {
+                                        await removeInvitation(props.roomId, userName);
                                         handleInviteClick();
                                       } else {
                                         console.log("The room does not exist");
                                       }
 
-                                      handleInviteClick();
+                                     
                                     }}
                                   >
                                     Invited
@@ -151,19 +156,7 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                                           userName
                                         );
 
-                                        await fetchRoomById(props.roomId).then(
-                                          (res) => {
-                                            setIsInvited(false);
-                                            setRoom(res);
-                                            res.invitedMembers.forEach(
-                                              (invitedUser) => {
-                                                if (invitedUser === userName) {
-                                                  setIsInvited(true);
-                                                }
-                                              }
-                                            );
-                                          }
-                                        );
+                                    
 
                                         if (user) {
                                           const receiverEmail = (
@@ -182,20 +175,22 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
                                             await sendNotification(
                                               notificationForAlerts
                                             );
-                                            await SendInvitationEmail(
-                                              props.roomId,
-                                              user.username,
-                                              receiverEmail
-                                            );
+                                            // await SendInvitationEmail(
+                                            //   props.roomId,
+                                            //   user.username,
+                                            //   receiverEmail
+                                            // );
                                           } else {
                                             console.log(
                                               "Error: the user does not have an email"
                                             );
                                           }
                                         }
+
+                                        handleInviteClick();
                                       }
 
-                                      handleInviteClick();
+                                      
                                     }}
                                   >
                                     Invite
@@ -222,4 +217,4 @@ const FollowingListForInvite = (props: IFollowingListProps) => {
   );
 };
 
-export default FollowingListForInvite;
+export default SearchUserForInvite;

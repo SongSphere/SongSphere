@@ -1,14 +1,14 @@
 import { TPartyRoom } from "../../types/party-room"
 
 
-const RemoveInvitation = async (room: TPartyRoom, username: string) => {
+const RemoveInvitation = async (roomId: string, username: string) => {
     return new Promise<boolean>(async (resolve, reject) => {
       try {
         await fetch(`${process.env.REACT_APP_API}/api/uninviteMember`, {
           method: "POST",
           credentials: "include",
           body: JSON.stringify({
-            roomId: room._id,
+            roomId: roomId,
             username: username,
           }),
           headers: {

@@ -90,6 +90,7 @@ export const addInvitation = async (id: string, username: string) => {
 };
 
 export const deleteInvitation = async (id: string, username: string) => {
+  console.log(`${id} ${username}}`)
   try {
     await PartyRoom.findOneAndUpdate(
       { _id: id },
