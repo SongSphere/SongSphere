@@ -9,6 +9,7 @@ import sendNotification from "../../services/notification/send-notification";
 import Session from "../../session";
 import { TNotification } from "../../types/notification";
 import BlockMember from "../../services/party/block-member";
+import FailPopUp from "../popup/fail-popup";
 
 interface IListernerListProps {
     listeners: string[];
@@ -20,7 +21,8 @@ interface IListernerListProps {
 const ListenerList = (props: IListernerListProps) => {
     const [followers, setFollowers] = useState(props.listeners);
     const [user, setUser] = useState<TUser | null>(null);
-
+    const [enterFailOpen, setEnterFailOpen] = useState(false);
+    const ERROR_MSG = "Oh no! An error occurs when removing a user";
     useEffect(() => {
         setUser(Session.getUser());
       }, [user]);
@@ -42,7 +44,7 @@ const ListenerList = (props: IListernerListProps) => {
     if(!user) {
         return null;
     }
-   
+  
     return (
         
         <div
@@ -50,6 +52,11 @@ const ListenerList = (props: IListernerListProps) => {
         onClick={handleOnClose}
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
       >
+        <FailPopUp
+        open={enterFailOpen}
+        setOpen={setEnterFailOpen}
+        failText={ERROR_MSG}
+      />
         <div className=" p-5 bg-white rounded max-h-[60vh] min-h-[60vh]">
           <h1 className="py-3 font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
             Room Listeners
@@ -100,15 +107,14 @@ const ListenerList = (props: IListernerListProps) => {
                                 transfer
                                 </button>
                                 <button className=" text-lblue"
-                                onClick={() => DeleteMember(props.room, users)
-                                  .then(()=>fetchUserByUsername(users))
-                                  .then((removed) =>{removed.partyRoom=""; 
-                                  if(props.room._id) {
-                                    BlockMember(props.room, users);
-                                  }
-                                }).then(() =>{
-                                  window.location.reload();
-                                })
+                                onClick={() => BlockMember(props.room, users)
+                                  .then((res)=> {
+                                    if(res) {
+                                      window.location.reload();
+                                    } else {
+                                      setEnterFailOpen(true);
+                                    }
+                                  }  )
                                 }
                                 >
                                 remove
