@@ -14,6 +14,7 @@ import {
     transferOwner,
     addInvitation,
     deleteInvitation,
+    sendInvitationEmail,
 
 } from "../services/party-room"
 
@@ -107,7 +108,7 @@ export const addInvitedMember = async (req: Request, res: Response) => {
 }
 
 export const removeInvitedMember = async (req: Request, res: Response) => {
-
+    console.log(`${req.body.roomId} ${req.body.username}}`)
     try {
         await deleteInvitation(req.body.roomId, req.body.username);
         res.status(201);
@@ -132,3 +133,15 @@ export const transferO = async (req: Request, res: Response) => {
     }
 }
 
+export const sendEmail = async (req: Request, res: Response) => {
+    try {
+        await sendInvitationEmail(req.body.roomId, req.body.senderUsername, req.body.receiverEmail);
+        res.status(201);
+        res.json({ msg: "success" });
+    }
+    catch(error) {
+        res.status(500);
+        res.json({error: error});
+    }
+    
+}
