@@ -126,7 +126,9 @@ export const transferO = async (req: Request, res: Response) => {
 
 export const block = async (req: Request, res: Response) => {
   try {
-    await blockUser(req.body.room, req.body.username);
+    await blockUser(req.body.room, req.body.username).then(() => {
+      deleteListener(req.body.room, req.body.username)
+    });
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {

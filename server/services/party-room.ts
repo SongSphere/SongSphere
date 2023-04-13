@@ -79,10 +79,10 @@ export const addListener = async (room: TPartyRoom, username: string) => {
   }
 };
 
-export const deleteListener = async (id: string, username: string) => {
+export const deleteListener = async (room: TPartyRoom, username: string) => {
   try {
     await PartyRoom.findOneAndUpdate(
-      { _id: id },
+      { _id: room._id },
       { $pull: { members: username } }
     ).then(async () => {
       await User.findOneAndUpdate(

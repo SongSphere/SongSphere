@@ -17,6 +17,7 @@ import SearchSongPartyRoom from "../components/post/search-song-party-room";
 import SearchSong from "../components/post/search-song";
 import ListenerList from "../components/party-room/listener-list";
 import AddMember from "../services/party/add-member";
+import FailPopUp from "../components/popup/fail-popup";
 
 import SearchUserForInvite from "../components/invitations/search-user-for-invite";
 
@@ -28,12 +29,16 @@ import RemoveInvitation from "../services/party/remove-invitation";
 const PartyPage = () => {
   const { id } = useParams();
   let navigate = useNavigate();
+  
+
+  const ERROR_MSG = "Oh no! An error occurs when deleting the party room";
 
   const [room, setRoom] = useState<TPartyRoom | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
   const [song, setSong] = useState<TMusicContent | null>(null);
   const [showListenersModal, setShowListenersModal] = useState(false);
+  const [partyFailOpen, setPartyFailOpen] = useState(false);
   const [added, setAdded] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
@@ -158,10 +163,18 @@ const PartyPage = () => {
                         window.location.reload();
                       });
                     } else {
-                      await DeleteMember(room, user.username).then(() => {
+                      await DeleteMember(room, user.username).then((res) => {
                         
-                        navigate(`/`);
-                        window.location.reload();
+                        if(res) {
+                          navigate(`/`);
+                          window.location.reload();
+                        } else {
+                          <FailPopUp
+                            open={partyFailOpen}
+                            setOpen={setPartyFailOpen}
+                            failText={ERROR_MSG}
+                          />
+                        }
                       });
                     }
                   }}
