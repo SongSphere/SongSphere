@@ -5,8 +5,6 @@ import { TMusicContent } from "../../types/music-content";
 import { spotifySearch } from "../../services/spotify/spotify-search";
 import sendPost from "../../services/post/send-post";
 import { TUser } from "../../types/user";
-import PostFailure from "../popup/post-failure";
-import PostSucess from "../popup/post-sucess";
 import Popup from "reactjs-popup";
 import Session from "../../session";
 import { TPost } from "../../types/post";
@@ -145,17 +143,7 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
           onClick={async () => {
             setOpen2(true);
             if (user) {
-              await addQueue(selected!)
-                .then((res) => {
-                  if (!res) {
-                    setPostSuccessFail(<PostFailure />);
-                  } else {
-                    setPostSuccessFail(<PostSucess />);
-                  }
-                })
-                .catch((error) => {
-                  <PostFailure />;
-                });
+              await addQueue(selected!);
             }
           }}
         >
