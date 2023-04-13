@@ -24,7 +24,12 @@ const OtherProfileFeed = (props: IOtherProfileFeedProps) => {
 
           if (repost) {
             return (
-              <Repost post={post} key={post._id} setSong={props.setSong} />
+              <Repost
+                user={props.user}
+                post={post}
+                key={post._id}
+                setSong={props.setSong}
+              />
             );
           } else {
             return (

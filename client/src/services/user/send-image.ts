@@ -1,22 +1,24 @@
 import axios from "axios";
+import { resolve } from "path";
 
 export const updateProfile = async (formData: FormData) => {
-  try {
-    await axios.post(
-      `${process.env.REACT_APP_API}/user/updateProfile`,
-      formData,
-      {
+  return new Promise<boolean>(async (resolve, reject) => {
+    await axios
+      .post(`${process.env.REACT_APP_API}/user/updateProfile`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
-      }
-    );
-  } catch (err) {
-    console.error(err);
-  }
+      })
+      .then((res) => {
+        resolve(true);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 };
 
 export const updateProfileURL = async (url: string) => {
-  try {
+  return new Promise<boolean>(async (resolve, reject) => {
     await fetch(`${process.env.REACT_APP_API}/user/updateProfileURL`, {
       method: "POST",
       credentials: "include",
@@ -26,30 +28,35 @@ export const updateProfileURL = async (url: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-    });
-  } catch (err) {
-    console.error(err);
-  }
+    })
+      .then((res) => {
+        resolve(true);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 };
 
 export const updateBackground = async (formData: FormData) => {
-  try {
-    await axios.post(
-      `${process.env.REACT_APP_API}/user/updateBackground`,
-      formData,
-      {
+  return new Promise<boolean>(async (resolve, reject) => {
+    await axios
+      .post(`${process.env.REACT_APP_API}/user/updateBackground`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
-      }
-    );
-  } catch (err) {
-    console.error(err);
-  }
+      })
+      .then((res) => {
+        resolve(true);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 };
 
 export const updateBackgroundURL = async (url: string) => {
-  try {
-    await fetch(`${process.env.REACT_APP_API}/user/updateBackgroundURL`, {
+  return new Promise<boolean>((resolve, reject) => {
+    fetch(`${process.env.REACT_APP_API}/user/updateBackgroundURL`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
@@ -58,8 +65,12 @@ export const updateBackgroundURL = async (url: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-    });
-  } catch (err) {
-    console.error(err);
-  }
+    })
+      .then((res) => {
+        resolve(true);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 };

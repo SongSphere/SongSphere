@@ -20,6 +20,10 @@ import AddMember from "../services/party/add-member";
 import MemberList from "../components/party-room/members-list";
 import FollowingListForInvite from "../components/invitations/search-user-for-invite";
 
+import AppleMusicPartyRoomPlayerCard from "../components/party-room/apple-music-party-player";
+import SpotifyPartyRoomPlayerCard from "../components/party-room/spotify-music-party-player";
+import PartyRoomChat from "../components/party-room/party-chat";
+
 const PartyPage = () => {
   const { id } = useParams();
   let navigate = useNavigate();
@@ -90,9 +94,9 @@ const PartyPage = () => {
         )}
       </div> */}
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
-        <div className="relative flex justify-center col-span-1">
-          <div className="fixed flex h-[95%] mt-8">
-            <div className="bg-white rounded-lg w-80 h-5/6 drop-shadow-md">
+        <div className="relative flex justify-center col-span-1 px-2">
+          <div className="absolute flex h-[95%] mt-8 w-[90%]">
+            <div className="w-full bg-white rounded-lg h-5/6 drop-shadow-md">
               <div>
                 <h1 className="text-3xl text-center text-navy">
                   Name:{room?.partyName}
@@ -180,17 +184,14 @@ const PartyPage = () => {
         <div className="col-span-2">
           <PartyRoomQueue />
         </div>
-        {service === "apple" ? (
-          <AppleMusicPlayerCard selectedSong={song} />
-        ) : (
-          <SpotifyPlayerCard selectedSong={song} />
-        )}
-        <ListenerList
-          listeners={room.members}
-          isVisible={showListenersModal}
-          onClose={handleCloseListen}
-          room={room}
-        />
+        <div className="relative flex-col justify-center ">
+          {service === "apple" ? (
+            <AppleMusicPartyRoomPlayerCard selectedSong={song} />
+          ) : (
+            <SpotifyPartyRoomPlayerCard selectedSong={song} />
+          )}
+          <PartyRoomChat />
+        </div>
       </div>
     </div>
   );

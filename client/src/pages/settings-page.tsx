@@ -5,7 +5,7 @@
   Contains modal, Calls Adjust Names Link to update toward DB
 */
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AdjustNamesLink from "../components/settings/adjust-names-link";
 import DeleteGoogleAcountLink from "../components/settings/delete-google-account-link";
 import { TUser } from "../types/user";
@@ -22,46 +22,13 @@ import fetchUser from "../services/user/fetch-user";
 import Session from "../session";
 import setVisibilityPublic from "../services/settings/set-visibility-public";
 import setVisibilityPrivate from "../services/settings/set-visibility-private";
-import {
-  randomSongSpotify,
-  randomSongSpotifyFromBackend,
-} from "../services/spotify/spotify-search";
 import setFalseRandomSong from "../services/settings/set-false-random-song";
 import setTrueRandomSong from "../services/settings/set-true-random-song";
-import { TMusicContent } from "../types/music-content";
-import { TPost } from "../types/post";
-import sendPost from "../services/post/send-post";
-import PostFailure from "../components/popup/post-failure";
-import PostSucess from "../components/popup/post-sucess";
 import BlockedList from "../components/settings/blocked-list";
-import styled from "styled-components";
 import setShowSong from "../services/settings/set-show-song";
-import { getSpotifyRecentlyPlayedSongs } from "../services/spotify/spotify-recently-played";
-
-const Button = styled.button`
-  background-color: red
-  color: red;
-  padding: 5px 15px;
-  border-radius: 5px;
-  outline: 0;
-  text-transform: uppercase;
-  margin: 10px 0px;
-  cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
-  transition: ease background-color 250ms;
-  &:hover {
-    background-color: red
-  }
-  &:disabled {
-    cursor: default;
-    opacity: 0.7;
-  }
-`;
 
 const SettingsPage = () => {
   const [showBlockModal, setShowBlockModal] = useState(false);
-  const [open, setOpen] = useState(false);
-  const closeModal = () => setOpen(false);
   const [user, setUser] = useState<TUser | null>(null);
   const [username, setUsername] = useState<string>("");
   const [givenName, setGivenName] = useState<string>("");
@@ -80,7 +47,6 @@ const SettingsPage = () => {
     useState<boolean>(false);
   const [defaultPlatform, setDefaultPlatform] = useState<string>("");
 
-  let [song, setSong] = useState<TMusicContent[]>([]);
   const handleBlockOpen = () => {
     setShowBlockModal(true);
   };
@@ -306,7 +272,12 @@ const SettingsPage = () => {
               <label className="inline-block pl-[0.15rem] hover:cursor-pointer"></label>
             </div>
           </div>
-          <Button onClick={handleBlockOpen}>View blocked accounts</Button>
+          <button
+            className="p-2 rounded-lg bg-slate-300"
+            onClick={handleBlockOpen}
+          >
+            View blocked accounts
+          </button>
         </div>
 
         <div className="justify-center w-full p-10 mt-5 ml-5 bg-white rounded-md h-5/6 sm:w-3/4 sm:px-6 drop-shadow-md">
