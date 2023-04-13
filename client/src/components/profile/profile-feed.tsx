@@ -12,7 +12,7 @@ interface IProfileFeedProps {
 
 const ProfileFeed = (props: IProfileFeedProps) => {
   return (
-    <div className="justify-center mt-8">
+    <div className="justify-center bg-slate-900">
       <div className="w-full">
         {props.posts.map((post) => {
           const repost = post.repost;

@@ -183,7 +183,7 @@ const PartyPage = () => {
                 </button>
                 
                 <button
-                  className="p-3 ml-3 text-white bg-navy rounded-xl top-13"
+                  className="p-3 ml-3 text-white bg-navy rounded-xl top-13 "
                   onClick={() => handleOpenListen()}
                 >
                   View Listeners
@@ -226,6 +226,7 @@ const PartyPage = () => {
                 </button>
                 
               </div>
+
 
               {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
               <div className="w-full h-96">
