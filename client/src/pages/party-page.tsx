@@ -146,7 +146,7 @@ const PartyPage = () => {
                   Owner: {room?.ownerUsername}
                 </h1>
                 <button
-                  className="p-3 text-white bg-navy rounded-xl top-13 right-5"
+                  className="p-3 ml-3 text-white bg-navy rounded-xl top-13"
                   onClick={async () => {
                     if (user.username === room.ownerUsername) {
                       await DeleteRoom(room).then(() => {
@@ -188,7 +188,7 @@ const PartyPage = () => {
                 />
 
                 <button
-                  className="p-3 text-white rounded-xl bg-navy"
+                  className="p-3 ml-3 text-white rounded-xl bg-navy"
                   onClick={() => {
                     if (room && id) {
                       fetchRoomById(id).then((res) => {
