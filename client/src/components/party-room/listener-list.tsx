@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import TransferOwner from "../../services/party/trasnfer-owner";
 import DeleteMember from "../../services/party/delete-member";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
+import NotificationCard from "../notification/comment-notification-card";
+import sendNotification from "../../services/notification/send-notification";
+import Session from "../../session";
+import { TNotification } from "../../types/notification";
 
 interface IListernerListProps {
     listeners: string[];
@@ -14,6 +18,11 @@ interface IListernerListProps {
 
 const ListenerList = (props: IListernerListProps) => {
     const [followers, setFollowers] = useState(props.listeners);
+    const [user, setUser] = useState<TUser | null>(null);
+
+    useEffect(() => {
+        setUser(Session.getUser());
+      }, [user]);
 
     const handleOnClose = (e: React.ChangeEvent<any>) => {
       if (e.target.id === "container") {
@@ -29,6 +38,9 @@ const ListenerList = (props: IListernerListProps) => {
     if (!props.isVisible) {
       return null;
     }
+    if(!user) {
+        return null;
+      }
     return (
         
         <div
@@ -69,21 +81,22 @@ const ListenerList = (props: IListernerListProps) => {
   
               <div className="justify-center py-2 text-center">
                 <div className="overflow-y-auto max-h-[45vh]">
-                  {followers.map((user) => {
+                  {followers.map((users) => {
                     return (
-                      <div className="" key={user}>
-                        <h1 className="float-left">{user}</h1>
+                      <div className="" key={users}>
+                        <h1 className="float-left">{users}</h1>
                         <button className="float-right text-lblue"
                         onClick={async() => 
-                            await TransferOwner(props.room, user).then(() => {
-                                window.location.reload();
+                            await TransferOwner(props.room, users).then(() => {
+                                
+                                
                             })
                         }
                         >
                           transfer
                         </button>
                         <button className="pl-10 text-lblue"
-                       onClick={() => DeleteMember(props.room, user).then(()=>fetchUserByUsername(user)).then((removed) =>{removed.partyRoom=""} )}
+                       onClick={() => DeleteMember(props.room, users).then(()=>fetchUserByUsername(users)).then((removed) =>{removed.partyRoom=""} )}
                        >
                         remove
                        </button>
