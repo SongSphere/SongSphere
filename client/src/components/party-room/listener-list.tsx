@@ -93,8 +93,8 @@ const ListenerList = (props: IListernerListProps) => {
                   {followers.map((users) => {
                     return (
                       <div className="grid grid-flow-col" key={users}>
-                        <h1 className="float-left">{users}</h1>
-                        {user.username === props.room.ownerUsername ? (
+                        <h1 className="ml-5">{users}</h1>
+                        {user.username === props.room.ownerUsername && user.username != users? (
                             <div>
                                 <button className="float-right text-lblue"
                                 onClick={async() => 

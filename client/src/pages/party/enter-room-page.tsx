@@ -50,7 +50,7 @@ const CreateRoomPage = () => {
 
   if (user.partyRoom) {
     navigate(`/party/${user.partyRoom}`);
-    window.location.reload();
+    
   }
 
   return (
@@ -126,7 +126,7 @@ const CreateRoomPage = () => {
                                 (room) => {
                                   if (room._id) {
                                     navigate(`/party/${room._id}`);
-                                    window.location.reload();
+                                    
                                   }
                                 }
                               );
@@ -188,7 +188,7 @@ const CreateRoomPage = () => {
                             );
                             
                             
-                            window.location.reload();
+                            
                           } else {
                           }
                         })
