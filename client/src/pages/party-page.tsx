@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { TUser } from "../types/user";
 import Navbar from "../components/navbar";
 import { TPartyRoom } from "../types/party-room";
@@ -12,6 +12,9 @@ import { TMusicContent } from "../types/music-content";
 import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
 import PartyRoomQueue from "../components/party-room/queue";
+import Search from "../components/post/search-song";
+import SearchSongPartyRoom from "../components/post/search-song-party-room";
+import SearchSong from "../components/post/search-song";
 import ListenerList from "../components/party-room/listener-list";
 import AddMember from "../services/party/add-member";
 import MemberList from "../components/party-room/members-list";
@@ -121,6 +124,13 @@ const PartyPage = () => {
   return (
     <div className="w-full h-full min-h-screen bg-lblue">
       <Navbar />
+      {/* <div className="w-screen  max-w-[100%] h-screen bg-lblue">
+        {song ? (
+          <SearchSongPartyRoom song={song.name} />
+        ) : (
+          <SearchSongPartyRoom />
+        )}
+      </div> */}
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
         <div className="relative flex justify-center col-span-1 px-2">
           <div className="absolute flex h-[95%] mt-8 w-[90%]">
@@ -136,7 +146,7 @@ const PartyPage = () => {
                   Owner: {room?.ownerUsername}
                 </h1>
                 <button
-                  className="absolute p-3 text-white bg-navy rounded-xl top-13 right-5"
+                  className="p-3 text-white bg-navy rounded-xl top-13 right-5"
                   onClick={async () => {
                     if (user.username === room.ownerUsername) {
                       await DeleteRoom(room).then(() => {
@@ -157,7 +167,7 @@ const PartyPage = () => {
                 </button>
                 {user.username === room.ownerUsername ? (
                   <button
-                    className="absolute p-3 text-white bg-navy rounded-xl top-13 right-20"
+                    className="p-3 text-white bg-navy rounded-xl top-13 right-20"
                     onClick={() => handleOpenListen()}
                   >
                     Transfer
@@ -197,10 +207,18 @@ const PartyPage = () => {
                 </button>
                 <MemberList listeners={room.members} room={room} />
               </div>
+
+              {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
+              <div className="w-full h-96">
+                {song ? (
+                  <SearchSongPartyRoom song={song.name} />
+                ) : (
+                  <SearchSongPartyRoom />
+                )}
+              </div>
             </div>
           </div>
         </div>
-
         <div className="col-span-2">
           <PartyRoomQueue />
         </div>
