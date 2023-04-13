@@ -44,6 +44,10 @@ export const fetchRoomByOwner = async (username: string) => {
 export const fetchRoomById = async (id: string) => {
   try {
     const room = await PartyRoom.findOne({ _id: id });
+    if (!room) { 
+      throw Error;
+    }
+    
     return room;
   } catch (error) {
     throw error;
@@ -63,15 +67,15 @@ export const deleteRoom = async (room: TPartyRoom) => {
   }
 };
 
-export const addListener = async (room: TPartyRoom, username: string) => {
+export const addListener = async (roomId: string, username: string) => {
   try {
     await PartyRoom.findOneAndUpdate(
-      { _id: room._id },
+      { _id: roomId },
       { $push: { members: username } }
     ).then(async () => {
       await User.findOneAndUpdate(
         {username: username}, 
-        {partyRoom: room._id}
+        {partyRoom: roomId}
       )
     });
   } catch (error) {
