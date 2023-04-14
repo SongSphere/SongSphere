@@ -12,6 +12,7 @@ export interface IPartyRoom {
   invitedMembers: Array<String>;
   queue: Array<TMusicContent>;
   musicIndex: Number;
+  blocked: Array<String>;
 }
 
 const PartyRoomSchema = new Schema<IPartyRoom>(
@@ -50,6 +51,10 @@ const PartyRoomSchema = new Schema<IPartyRoom>(
     },
     musicIndex: {
       type: Number,
+      required: true,
+    },
+    blocked: {
+      type: Array<String>(),
       required: true,
     },
   },

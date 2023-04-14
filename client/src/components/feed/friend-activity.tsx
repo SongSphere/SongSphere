@@ -39,8 +39,8 @@ const FriendActivityCard = () => {
   }
 
   return (
-    <div className="flex justify-center h-full">
-      <div className="w-full rounded-md h-5/6 drop-shadow-md">
+    <div className="flex justify-center w-full h-full p-4">
+      <div className="rounded-md h-5/6 drop-shadow-md">
         <h1 className="pt-16 pb-2 font-semibold text-center text-white lg:pt-0 ">
           Friend Listening Activity
         </h1>

@@ -17,7 +17,6 @@ import SearchSongPartyRoom from "../../components/post/search-song-party-room";
 import SearchSong from "../../components/post/search-song";
 import ListenerList from "../../components/party-room/listener-list";
 import AddMember from "../../services/party/add-member";
-import MemberList from "../../components/party-room/members-list";
 import SearchUserForInvite from "../../components/invitations/search-user-for-invite";
 
 import AppleMusicPartyRoomPlayerCard from "../../components/party-room/apple-music-party-player";
@@ -285,9 +284,7 @@ const PartyPage = () => {
               selectedSong={currentlyPlayingSong}
             />
           ) : (
-            <SpotifyPartyRoomPlayerCard
-              selectedSong={currentlyPlayingSong}
-            />
+            <SpotifyPartyRoomPlayerCard selectedSong={currentlyPlayingSong} />
           )}
           <PartyRoomChat />
         </div>

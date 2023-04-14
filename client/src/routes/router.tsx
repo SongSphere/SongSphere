@@ -18,6 +18,7 @@ import LikesPage from "../pages/likes-page";
 import RecentsPage from "../pages/recents-page";
 import PlaylistPage from "../pages/playlist-page";
 import CreateRoomPage from "../pages/party/enter-room-page";
+import Page404 from "../components/party-room/404";
 import PartyPage from "../pages/party/party-page";
 
 const Router = () => {
@@ -29,6 +30,10 @@ const Router = () => {
     {
       path: "/",
       element: <HomePage />,
+    },
+    {
+      path: "/404",
+      element: <Page404 />,
     },
     {
       path: "/notificationsPage",
