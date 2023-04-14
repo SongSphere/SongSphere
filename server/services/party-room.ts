@@ -97,8 +97,14 @@ export const addToQueue = async (song: TMusicContent, username: string) => {
         $in: [username],
       },
     });
+
     console.log("hello");
-    console.log(room._id);
+    if (!room) {
+      console.log("failed");
+    } else {
+      console.log("succeeded");
+    }
+
     await PartyRoom.findOneAndUpdate(
       { _id: room._id },
       { $push: { queue: song } }
