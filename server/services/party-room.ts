@@ -18,6 +18,7 @@ export const createPartyRoom = async (
     musicIndex: newRoom.musicIndex,
   });
   await User.findOneAndUpdate({username: newRoom.ownerUsername}, {partyRoom: party._id});
+  
   return party;
 };
 
