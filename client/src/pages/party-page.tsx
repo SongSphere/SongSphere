@@ -67,7 +67,7 @@ const PartyPage = () => {
     if (id) {
       fetchRoomById(id).then((res) => {
         if (res == null) {
-          console.log("It is null");
+          
           navigate('/404');
         } 
 
@@ -81,13 +81,15 @@ const PartyPage = () => {
   
   useEffect(() => {
     if (user && room?._id) {
-      if (!room.members.includes(user.username)) {
-        AddMember(room._id, user.username);
-        window.location.reload()
+      if (!room.members.includes(user.username) && room.ownerUsername != user.username) {
+        AddMember(room._id, user.username).then(() => {
+          window.location.reload();
+        });
+       
         //console.log(`${user.username} added to room}`);
       }
     }
-  });
+  }, [room]);
   useEffect(() => {
     if (user && id) {
       user.partyRoom = id;

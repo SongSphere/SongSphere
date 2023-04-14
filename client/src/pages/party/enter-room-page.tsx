@@ -111,7 +111,7 @@ const CreateRoomPage = () => {
                           ownerEmail: user.email,
                           partyName: name,
                           description: description,
-                          members: [],
+                          members: [user.username],
                           invitedMembers: [],
                           queue: [],
                           musicIndex: 0,
@@ -124,7 +124,7 @@ const CreateRoomPage = () => {
                             } else {
                               fetchRoomByOwner(newRoom.ownerUsername).then(
                                 (room) => {
-                                  if (room._id) {
+                                  if (room) {
                                     navigate(`/party/${room._id}`);
                                     
                                   }
