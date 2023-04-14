@@ -10,6 +10,7 @@ import Session from "../../session";
 import { TPost } from "../../types/post";
 import FailPopUp from "../popup/fail-popup";
 import { useNavigate } from "react-router-dom";
+import SearchMentionDropDown from "./search-mention";
 
 const AppleSearch = async (
   term: string,
@@ -37,6 +38,7 @@ const SearchSong = (props: ISearchSongProps) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState("");
   const [songs, setSongs] = useState<TMusicContent[]>([]);
+  const [followers, setFollowers] = useState<string[]>([]);
   const [selected, setSelected] = useState<TMusicContent>();
   const [song, setSong] = useState<string>("");
   const [category, setCategory] = useState<string>("songs");
@@ -50,6 +52,31 @@ const SearchSong = (props: ISearchSongProps) => {
 
   const isRepost = false;
   let navigate = useNavigate();
+
+  const [inputValue, setInputValue] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleInputChange = (e: { target: { value: any } }) => {
+    const value = e.target.value;
+    setInputValue(value);
+
+    // Detect "@" symbol
+    if (value.includes("@")) {
+      setShowDropdown(true);
+      // Fetch or update dropdown data based on input value
+      // e.g. fetch usernames from API or filter suggestions from local data
+    } else {
+      setShowDropdown(false);
+    }
+  };
+
+  const handleDropdownSelection = (
+    selectedItem: React.SetStateAction<string>
+  ) => {
+    // Handle dropdown selection
+    setInputValue(inputValue + "" + selectedItem);
+    setShowDropdown(false);
+  };
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -67,6 +94,15 @@ const SearchSong = (props: ISearchSongProps) => {
             setSelected(result[0]);
           }
         });
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      if (user.followers) {
+        setFollowers(user.followers);
+        
       }
     }
   }, [user]);
@@ -181,14 +217,41 @@ const SearchSong = (props: ISearchSongProps) => {
           <h1 className="text-xl text-navy">{selected?.artist}</h1>
           <form className="mt-5">
             <label>
-              <input
+              {/* <input
                 type="text"
                 value={caption}
                 placeholder={"Enter a caption"}
                 onChange={(e) => {
                   setCaption(e.target.value);
                 }}
+              /> */}
+              <input
+                type="text"
+                value={inputValue}
+                onChange={handleInputChange}
+                placeholder="Type '@' to mention someone..."
               />
+              {showDropdown && (
+                <ul className="w-[40%] mt-3 mx-auto">
+                {followers.map((s) => (
+                  <div className="grid w-full grid-flow-col">
+                    <button
+                      className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
+                      key={s}
+                      onClick={() => handleDropdownSelection(s)}
+                      // onClick={() => setSelected(s)}
+                    >
+                      <div className="flex text-center w-[75%]">
+    
+                        {s}
+                   
+                      </div>
+                    </button>
+                  </div>
+                ))}
+              </ul>
+              )}
+     
             </label>
           </form>
         </div>
@@ -199,7 +262,8 @@ const SearchSong = (props: ISearchSongProps) => {
               const newPost: TPost = {
                 username: user.username,
                 userEmail: user.email,
-                caption: caption,
+                //caption: caption,
+                caption: inputValue,
                 music: selected!,
                 comments: [],
                 likes: 0,
