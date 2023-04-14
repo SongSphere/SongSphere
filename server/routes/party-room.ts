@@ -15,6 +15,8 @@ import {
   removeInvitedMember,
   removeQueue,
   reorderQueue,
+  sendEmail,
+  block,
 } from "../controllers/party-room";
 
 // import middleware
@@ -27,6 +29,7 @@ router.post("/api/deleteroom", removeRoom);
 router.post("/api/addmember", addMember);
 router.post("/api/removemember", removeMember);
 router.post("/api/transferOwner", transferO);
+router.post("/api/roomBlock", block);
 router.post("/api/addqueue", addQueue);
 router.post("/api/removequeue", removeQueue);
 router.post("/api/reorderqueue", reorderQueue);
@@ -38,5 +41,7 @@ router.post("/api/transferOwner", transferO);
 
 router.get("/api/room/find/:username", getRoomByOwner);
 router.get("/api/room/:id", getRoomById);
+
+router.post("/api/sendInvitationEmail", sendEmail);
 
 export default router;

@@ -9,9 +9,6 @@ import Repost from "../post/repost";
 interface IOtherProfileFeedProps {
   posts: TPost[];
   setSong: React.Dispatch<React.SetStateAction<TMusicContent | null>>;
-  setPost: React.Dispatch<React.SetStateAction<TPost | null>>;
-  selectedUser: TUser | null;
-  blur: boolean;
   user: TUser;
 }
 

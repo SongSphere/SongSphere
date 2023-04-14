@@ -1,14 +1,13 @@
-import { TPartyRoom } from "../../types/party-room"
+import { TPartyRoom } from "../../types/party-room";
 
-
-const RemoveInvitation = async (roomId: string, username: string) => {
+const BlockMember = async (room: TPartyRoom, username: string) => {
     return new Promise<boolean>(async (resolve, reject) => {
       try {
-        await fetch(`${process.env.REACT_APP_API}/api/uninviteMember`, {
+        await fetch(`${process.env.REACT_APP_API}/api/roomBlock`, {
           method: "POST",
           credentials: "include",
           body: JSON.stringify({
-            roomId: roomId,
+            room: room,
             username: username,
           }),
           headers: {
@@ -17,13 +16,15 @@ const RemoveInvitation = async (roomId: string, username: string) => {
         }).then((res) => {
             if (res.status == 201) {
               resolve(true);
-            } else reject(false);
+            } else {
+              reject(false);
+            }
         });
       } catch (err) {
         console.error(err);
         reject(err);
       }
     });
-}
-
-export default RemoveInvitation;
+  };
+  
+  export default BlockMember;

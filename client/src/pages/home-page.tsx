@@ -1,4 +1,3 @@
-import Navbar from "../components/navbar";
 import { TUser } from "../types/user";
 import Session from "../session";
 import { useEffect, useState } from "react";
@@ -12,6 +11,8 @@ import {
 } from "../services/spotify/spotify-search";
 import RandomSongPost from "../components/feed/random-song-content";
 import FriendActivityCard from "../components/feed/friend-activity";
+
+import MainLayout from "../layouts/main-layout";
 
 const HomePage = () => {
   const [user, setUser] = useState<TUser | null>(null);
@@ -34,28 +35,28 @@ const HomePage = () => {
     return <div>fetching user</div>;
   }
 
-  return (
-    <div className="w-full h-full min-h-screen bg-lblue min-w-screen">
-      <Navbar />
-      <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
-        <FriendActivityCard />
-        <div className="col-span-2">
-          {user.showRandomSong ? (
-            <RandomSongPost song={randomSong} user={user} setSong={setSong} />
-          ) : (
-            <div></div>
-          )}
-
-          <Feed setSong={setSong} user={user} />
-        </div>
-        {service === "apple" ? (
-          <AppleMusicPlayerCard selectedSong={song} />
-        ) : (
-          <SpotifyPlayerCard selectedSong={song} />
-        )}
-      </div>
+  const left = <FriendActivityCard />;
+  const middle = (
+    <div>
+      {user.showRandomSong ? (
+        <RandomSongPost song={randomSong} user={user} setSong={setSong} />
+      ) : (
+        <div></div>
+      )}
+      <Feed setSong={setSong} user={user} />
     </div>
   );
+  const right = (
+    <div>
+      {service === "apple" ? (
+        <AppleMusicPlayerCard selectedSong={song} />
+      ) : (
+        <SpotifyPlayerCard selectedSong={song} />
+      )}
+    </div>
+  );
+
+  return <MainLayout left={left} middle={middle} right={right} />;
 };
 
 export default HomePage;

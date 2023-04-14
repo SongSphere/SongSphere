@@ -12,6 +12,8 @@ import fetchRoomByOwner from "../../services/party/fetch-room-by-owner";
 import { useNavigate } from "react-router-dom";
 import fetchRoomById from "../../services/party/fetch-room-by-id";
 import FailPopUp from "../../components/popup/fail-popup";
+import RemoveInvitation from "../../services/party/remove-invitation";
+import AddMember from "../../services/party/add-member";
 
 const CreateRoomPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
@@ -24,6 +26,8 @@ const CreateRoomPage = () => {
   const [idForinvite, setIdForInvite] = useState<string>("");
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
+
+  const [partyFailOpen, setPartyFailOpen] = useState(false);
 
   const ERROR_MSG = "Oh no! An error occurs when creating the party room";
   let navigate = useNavigate();
@@ -46,7 +50,7 @@ const CreateRoomPage = () => {
 
   if (user.partyRoom) {
     navigate(`/party/${user.partyRoom}`);
-    window.location.reload();
+    
   }
 
   return (
@@ -111,6 +115,7 @@ const CreateRoomPage = () => {
                           invitedMembers: [],
                           queue: [],
                           musicIndex: 0,
+                          blocked:[],
                         };
                         await CreateRoom(newRoom)
                           .then((res) => {
@@ -119,8 +124,10 @@ const CreateRoomPage = () => {
                             } else {
                               fetchRoomByOwner(newRoom.ownerUsername).then(
                                 (room) => {
-                                  navigate(`/party/${room._id}`);
-                                  window.location.reload();
+                                  if (room._id) {
+                                    navigate(`/party/${room._id}`);
+                                    
+                                  }
                                 }
                               );
                             }
@@ -160,18 +167,34 @@ const CreateRoomPage = () => {
                     />
                   </label>
                 </div>
+
                 <div className="flex justify-center w-full">
+                  <FailPopUp
+                    open={partyFailOpen}
+                    setOpen={setPartyFailOpen}
+                    failText={"Room does not exist"}
+                  />
                   <button
                     type="submit"
                     className="p-3 mt-4 text-white rounded-xl bg-navy"
                     onClick={() => {
-                      fetchRoomById(id).then((res) => {
-                        if (res) {
-                          navigate(`/party/${res._id}`);
-                          window.location.reload();
-                        } else {
-                        }
-                      });
+                      fetchRoomById(id)
+                        .then((res) => {
+                          if (res && res._id) {
+                            navigate(`/party/${res._id}`);
+                            RemoveInvitation(
+                              res._id.toString(),
+                              user.username
+                            );
+                            
+                            
+                            
+                          } else {
+                          }
+                        })
+                        .then((error) => {
+                          setPartyFailOpen(true);
+                        });
                     }}
                   >
                     Enter
