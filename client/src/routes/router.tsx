@@ -19,6 +19,7 @@ import RecentsPage from "../pages/recents-page";
 import PlaylistPage from "../pages/playlist-page";
 import CreateRoomPage from "../pages/party/enter-room-page";
 import PartyPage from "../pages/party-page";
+import Page404 from "../components/party-room/404";
 
 const Router = () => {
   let element = useRoutes([
@@ -29,6 +30,10 @@ const Router = () => {
     {
       path: "/",
       element: <HomePage />,
+    },
+    {
+      path: "/404",
+      element: <Page404/>,
     },
     {
       path: "/notificationsPage",

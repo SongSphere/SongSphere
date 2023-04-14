@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Session from "../../session";
+import { TUser } from "../../types/user";
 import fetchUser from "../../services/user/fetch-user";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
 import { follow, unfollow } from "../../services/follow/follow";
-import Session from "../../session";
-import { TUser } from "../../types/user";
 import BlockUserModal from "./block-user-modal";
 import { TNotification } from "../../types/notification";
 import sendNotification from "../../services/notification/send-notification";
@@ -18,9 +19,20 @@ interface IProfileCardProps {
 }
 
 const OtherUserProfileCard = (props: IProfileCardProps) => {
-  const [open, setOpen] = React.useState(false);
-  const [showBlockModal, setShowBlockModal] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [showBlockModal, setShowBlockModal] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+
+  const user = Session.getUser();
+  let navigate = useNavigate();
+
+  const handleOpenFollowers = () => {
+    props.openFollowersModal();
+  };
+
+  const handleOpenFollowing = () => {
+    props.openFollowingModal();
+  };
 
   const handleOpen = () => {
     setOpen(!open);
@@ -33,13 +45,19 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
     setShowBlockModal(false);
   };
 
-  const handleOpenFollowers = () => {
-    props.openFollowersModal();
-  };
+  useEffect(() => {
+    const user = Session.getUser();
 
-  const handleOpenFollowing = () => {
-    props.openFollowingModal();
-  };
+    if (props.selectedUser && user) {
+      if (user.following.includes(props.selectedUser.username)) {
+        setIsFollowing(true);
+      }
+    }
+  }, [props.selectedUser]);
+
+  if (!props.selectedUser) {
+    return <div>fetching user</div>;
+  }
 
   const handleFollowClick = async () => {
     const user = Session.getUser();
@@ -66,7 +84,6 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
             await sendNotification(notificationForAlerts);
           }
         });
-        
       } else {
         unfollow(user.username, props.selectedUser.username).then(async () => {
           Session.setUser(await fetchUser());
@@ -81,92 +98,65 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
     }
   };
 
-  useEffect(() => {
-    const user = Session.getUser();
-
-    if (props.selectedUser && user) {
-      if (user.following.includes(props.selectedUser.username)) {
-        setIsFollowing(true);
-      }
-    }
-  }, [props.selectedUser]);
-
-  if (!props.selectedUser) {
-    return <div>fetching user</div>;
+  if (!user) {
+    return <div>fetching user data</div>;
   }
 
   return (
-    <div className="flex justify-center h-screen">
-      <div className="fixed flex h-full mt-8">
-        <div className="bg-white w-80 h-5/6 drop-shadow-md">
-          <div className="relative w-full bg-gradient-to-tl from-purple-900 to-green-700 h-80">
-            <img
-              src={props.selectedUser.backgroundImgUrl}
-              className="absolute object-cover w-full h-full mix-blend-overlay"
-            />
-            <div className="p-8">
-              <div className="flex justify-center mt-8">
-                <div className="w-32 h-32 drop-shadow-md">
-                  <img
-                    className="w-full h-full rounded-full"
-                    src={props.selectedUser!.profileImgUrl}
-                  ></img>
-                </div>
+    <div className="w-full h-full">
+      <div className="p-4 h-5/6 drop-shadow-md">
+        <div className="relative font-bold text-white h-80">
+          <img
+            src={props.selectedUser.backgroundImgUrl}
+            className="absolute object-cover w-full h-full rounded-lg mix-blend-overlay brightness-75"
+          />
+          <div className="p-8">
+            <div className="flex justify-center mt-8">
+              <div className="w-32 h-32 drop-shadow-md">
+                <img
+                  className="w-full h-full rounded-full"
+                  src={props.selectedUser.profileImgUrl}
+                ></img>
               </div>
             </div>
           </div>
-
-          <div className="p-2 dropdown">
-            <button onClick={handleOpen} className="absolute py-2 right-3">
-              <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
+          <div className="mt-6 text-2xl text-center">{`${user.givenName} ${user.middleName} ${user.familyName}`}</div>
+          <div className="text-center">{user.username}</div>
+        </div>
+        <div className="pb-5 font-semibold text-white rounded-b-lg bg-slate-800">
+          <div className="flex justify-center w-full pt-2 pb-2 font-bold">
+            <button className="text-md" onClick={() => handleOpenFollowers()}>
+              {props.selectedUser.followers.length} followers
             </button>
-
-            {open ? (
-              <div className="w-1/2 p-2 text-center bg-gray-200 rounded-sm">
-                <button onClick={handleBlockOpen} className="text-sm">
-                  Block this user
-                </button>
-              </div>
-            ) : null}
+            <button
+              className="ml-3 text-md"
+              onClick={() => handleOpenFollowing()}
+            >
+              {props.selectedUser.following.length} following
+            </button>
           </div>
-
-          <div className="mt-6 text-2xl font-bold text-center text-black">{`${props.selectedUser.givenName} ${props.selectedUser.middleName} ${props.selectedUser.familyName}`}</div>
-          <div className="text-center text-black">
-            {props.selectedUser.username}
-          </div>
-
-          <div className="px-2 py-2">
-            <div className="p-2 rounded-lg bg-lgrey">
-              {isFollowing ? (
-                <button
-                  className={`ml-3 px-3 w-1/4 text-sm py-2 rounded text-white bg-slate-300`}
-                  onClick={() => handleFollowClick()}
-                >
-                  unfollow
-                </button>
-              ) : (
-                <button
-                  className={`ml-3 px-2 w-1/4 text-sm py-2 rounded text-white bg-blue-500 `}
-                  onClick={() => handleFollowClick()}
-                >
-                  follow
-                </button>
-              )}
-
+          <div className="flex justify-center">
+            {isFollowing ? (
               <button
-                className={`ml-3 px-1 text-sm py-2 rounded text-gre hover:bg-gray-400`}
-                onClick={() => handleOpenFollowers()}
+                className="px-4 py-2 text-sm text-white rounded bg-slate-500"
+                onClick={() => handleFollowClick()}
               >
-                {props.selectedUser.followers.length} followers
+                unfollow
               </button>
-
+            ) : (
               <button
-                className={`ml-3 px-1 text-sm py-2 rounded text-grey hover:bg-gray-400`}
-                onClick={() => handleOpenFollowing()}
+                className="px-4 py-2 text-sm text-white rounded bg-sky-500"
+                onClick={() => handleFollowClick()}
               >
-                {props.selectedUser.following.length} following
+                follow
               </button>
-            </div>
+            )}
+            <button
+              className="px-4 py-2 ml-2 text-sm text-white bg-red-400 rounded"
+              onClick={handleBlockOpen}
+            >
+              Block
+            </button>
           </div>
 
           <BlockUserModal
