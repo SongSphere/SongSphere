@@ -111,10 +111,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             name="name"
             value={commentContent}
             onChange={handleInputChange}
-            // value={commentContent}
-            // onChange={(e) => {
-            //   setCommentContent(e.target.value);
-            // }}
           />
         </div>
         {showDropdown && (

@@ -239,7 +239,6 @@ const SearchSong = (props: ISearchSongProps) => {
                       className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
                       key={s}
                       onClick={() => handleDropdownSelection(s)}
-                      // onClick={() => setSelected(s)}
                     >
                       <div className="flex text-center w-[75%]">
     
