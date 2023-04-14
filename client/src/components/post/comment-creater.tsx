@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import sendNotification from "../../services/notification/send-notification";
 import sendComment from "../../services/post/send-comment";
 import { TComment } from "../../types/comment";
@@ -16,6 +16,39 @@ interface ICommentCreatorProp {
 
 const CommentCreater = (props: ICommentCreatorProp) => {
   let [commentContent, setCommentContent] = useState("");
+  const [followers, setFollowers] = useState<string[]>([]);
+
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    if (props.user) {
+      if (props.user.followers) {
+        setFollowers(props.user.followers);
+      }
+    }
+  }, [props.user]);
+
+  const handleInputChange = (e: { target: { value: any } }) => {
+    const value = e.target.value;
+    setCommentContent(value);
+
+    // Detect "@" symbol
+    if (value.includes("@") && value.endsWith("@")) {
+      setShowDropdown(true);
+      // Fetch or update dropdown data based on input value
+      // e.g. fetch usernames from API or filter suggestions from local data
+    } else {
+      setShowDropdown(false);
+    }
+  };
+
+  const handleDropdownSelection = (
+    selectedItem: React.SetStateAction<string>
+  ) => {
+    // Handle dropdown selection
+    setCommentContent(commentContent + "" + selectedItem);
+    setShowDropdown(false);
+  };
 
   return (
     <form
@@ -77,11 +110,28 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             placeholder="Type ur comment here!"
             name="name"
             value={commentContent}
-            onChange={(e) => {
-              setCommentContent(e.target.value);
-            }}
+            onChange={handleInputChange}
+            // value={commentContent}
+            // onChange={(e) => {
+            //   setCommentContent(e.target.value);
+            // }}
           />
         </div>
+        {showDropdown && (
+          <ul className="w-[40%] mt-3 mx-auto">
+            {followers.map((s) => (
+              <div className="grid w-full grid-flow-col">
+                <button
+                  className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
+                  key={s}
+                  onClick={() => handleDropdownSelection(s)}
+                >
+                  <div className="flex text-center w-[75%]">{s}</div>
+                </button>
+              </div>
+            ))}
+          </ul>
+        )}
       </label>
     </form>
   );

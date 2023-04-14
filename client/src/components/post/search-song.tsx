@@ -44,7 +44,7 @@ const SearchSong = (props: ISearchSongProps) => {
   const [category, setCategory] = useState<string>("songs");
   const [AMInstance, setAMInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
-  const [caption, setCaption] = useState<string>("");
+  const [caption, setCaption] = useState("");
   const [postFailOpen, setPostFailOpen] = useState(false);
 
   const POST_ERR_MSG =
@@ -53,15 +53,15 @@ const SearchSong = (props: ISearchSongProps) => {
   const isRepost = false;
   let navigate = useNavigate();
 
-  const [inputValue, setInputValue] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
   const handleInputChange = (e: { target: { value: any } }) => {
     const value = e.target.value;
-    setInputValue(value);
+    setCaption(value);
 
     // Detect "@" symbol
-    if (value.includes("@")) {
+    
+    if (value.includes("@") && value.endsWith("@")) {
       setShowDropdown(true);
       // Fetch or update dropdown data based on input value
       // e.g. fetch usernames from API or filter suggestions from local data
@@ -74,7 +74,7 @@ const SearchSong = (props: ISearchSongProps) => {
     selectedItem: React.SetStateAction<string>
   ) => {
     // Handle dropdown selection
-    setInputValue(inputValue + "" + selectedItem);
+    setCaption(caption + "" + selectedItem);
     setShowDropdown(false);
   };
 
@@ -227,7 +227,7 @@ const SearchSong = (props: ISearchSongProps) => {
               /> */}
               <input
                 type="text"
-                value={inputValue}
+                value={caption}
                 onChange={handleInputChange}
                 placeholder="Type '@' to mention someone..."
               />
@@ -262,8 +262,8 @@ const SearchSong = (props: ISearchSongProps) => {
               const newPost: TPost = {
                 username: user.username,
                 userEmail: user.email,
-                //caption: caption,
-                caption: inputValue,
+                caption: caption,
+              
                 music: selected!,
                 comments: [],
                 likes: 0,
