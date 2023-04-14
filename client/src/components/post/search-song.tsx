@@ -5,12 +5,10 @@ import { TMusicContent } from "../../types/music-content";
 import { spotifySearch } from "../../services/spotify/spotify-search";
 import sendPost from "../../services/post/send-post";
 import { TUser } from "../../types/user";
-import Popup from "reactjs-popup";
 import Session from "../../session";
 import { TPost } from "../../types/post";
 import FailPopUp from "../popup/fail-popup";
 import { useNavigate } from "react-router-dom";
-import SearchMentionDropDown from "./search-mention";
 
 const AppleSearch = async (
   term: string,
