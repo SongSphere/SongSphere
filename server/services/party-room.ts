@@ -134,7 +134,7 @@ export const removeFromQueue = async (index: number, username: string) => {
       },
     });
     room.queue.splice(index, 1);
-    room.save();
+    await room.save();
   } catch (error) {
     throw error;
   }
@@ -152,7 +152,7 @@ export const moveUpQueue = async (index: number, username: string) => {
     room.queue[index - 1] = room.queue[index];
     room.queue[index] = temp;
 
-    room.save();
+    await room.save();
   } catch (error) {
     throw error;
   }
@@ -170,7 +170,7 @@ export const moveDownQueue = async (index: number, username: string) => {
     room.queue[index + 1] = room.queue[index];
     room.queue[index] = temp;
 
-    room.save();
+    await room.save();
   } catch (error) {
     throw error;
   }

@@ -29,7 +29,6 @@ import RemoveInvitation from "../services/party/remove-invitation";
 const PartyPage = () => {
   const { id } = useParams();
   let navigate = useNavigate();
-  
 
   const ERROR_MSG = "Oh no! An error occurs when deleting the party room";
 
@@ -62,28 +61,24 @@ const PartyPage = () => {
     setService(Session.getMusicService());
   }, [user]);
 
-
   useEffect(() => {
     if (id) {
       fetchRoomById(id).then((res) => {
         if (res == null) {
           console.log("It is null");
-          navigate('/404');
-        } 
+          navigate("/404");
+        }
 
-        setRoom(res);  
-      })
-      
-      
+        setRoom(res);
+      });
     }
   }, []);
 
-  
   useEffect(() => {
     if (user && room?._id) {
       if (!room.members.includes(user.username)) {
         AddMember(room._id, user.username);
-        window.location.reload()
+        window.location.reload();
         //console.log(`${user.username} added to room}`);
       }
     }
@@ -91,7 +86,7 @@ const PartyPage = () => {
   useEffect(() => {
     if (user && id) {
       user.partyRoom = id;
-     // console.log("Party room set to: " + user.partyRoom);
+      // console.log("Party room set to: " + user.partyRoom);
     }
   });
 
@@ -103,11 +98,9 @@ const PartyPage = () => {
     return (
       <div>
         <div></div>
-
       </div>
     );
   }
-
 
   if (!room || room.blocked.includes(user.username)) {
     return (
@@ -162,7 +155,7 @@ const PartyPage = () => {
         <div className="relative flex justify-center col-span-1 px-2">
           <div className="absolute flex h-[95%] mt-8 w-[90%]">
             <div className="w-full bg-white rounded-lg h-5/6 drop-shadow-md">
-              <div className=""> 
+              <div className="">
                 <h1 className="text-3xl text-center text-navy">
                   Name:{room?.partyName}
                 </h1>
@@ -177,14 +170,12 @@ const PartyPage = () => {
                   onClick={async () => {
                     if (user.username === room.ownerUsername) {
                       await DeleteRoom(room).then(() => {
-                        
                         navigate(`/`);
                         window.location.reload();
                       });
                     } else {
                       await DeleteMember(room, user.username).then((res) => {
-                        
-                        if(res) {
+                        if (res) {
                           navigate(`/`);
                           window.location.reload();
                         } else {
@@ -192,7 +183,7 @@ const PartyPage = () => {
                             open={partyFailOpen}
                             setOpen={setPartyFailOpen}
                             failText={ERROR_MSG}
-                          />
+                          />;
                         }
                       });
                     }
@@ -200,19 +191,19 @@ const PartyPage = () => {
                 >
                   Exit
                 </button>
-                
+
                 <button
                   className="p-3 ml-3 text-white bg-navy rounded-xl top-13 "
                   onClick={() => handleOpenListen()}
                 >
                   View Listeners
                 </button>
-               
-                <ListenerList 
-                listeners={room.members}
-                isVisible={showListenersModal}
-                onClose={handleCloseListen}
-                room={room}
+
+                <ListenerList
+                  listeners={room.members}
+                  isVisible={showListenersModal}
+                  onClose={handleCloseListen}
+                  room={room}
                 />
                 <SearchUserForInvite
                   following={user.following}
@@ -243,9 +234,7 @@ const PartyPage = () => {
                 >
                   Find User To Invite
                 </button>
-                
               </div>
-
 
               {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
               <div className="w-full h-96">
