@@ -250,7 +250,6 @@ const PartyPage = () => {
                 >
                   Find User To Invite
                 </button>
-                <MemberList listeners={room.members} room={room} />
               </div>
 
               {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
