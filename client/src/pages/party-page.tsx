@@ -25,6 +25,7 @@ import AppleMusicPartyRoomPlayerCard from "../components/party-room/apple-music-
 import SpotifyPartyRoomPlayerCard from "../components/party-room/spotify-music-party-player";
 import PartyRoomChat from "../components/party-room/party-chat";
 import RemoveInvitation from "../services/party/remove-invitation";
+import fetchQueue from "../services/party/fetch-queue";
 
 const PartyPage = () => {
   const { id } = useParams();
@@ -41,6 +42,7 @@ const PartyPage = () => {
   const [added, setAdded] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
+  const [queue, setQueue] = useState<TMusicContent[]>([]);
 
   const handleFollowingClose = () => {
     setShowFollowingModal(false);
@@ -72,6 +74,22 @@ const PartyPage = () => {
         setRoom(res);
       });
     }
+
+    const updateQueue = async () => {
+      let newQueue;
+
+      if (id) {
+        newQueue = await fetchQueue(id);
+      }
+
+      if (newQueue) {
+        setQueue(newQueue);
+      }
+    };
+
+    const interval = setInterval(updateQueue, 300);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -83,6 +101,7 @@ const PartyPage = () => {
       }
     }
   });
+
   useEffect(() => {
     if (user && id) {
       user.partyRoom = id;
@@ -153,8 +172,8 @@ const PartyPage = () => {
       </div> */}
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
         <div className="relative flex justify-center col-span-1 px-2">
-          <div className="absolute flex h-[95%] mt-8 w-[90%]">
-            <div className="w-full bg-white rounded-lg h-5/6 drop-shadow-md">
+          <div className="flex h-[100%] mt-8 w-[90%]">
+            <div className="w-full h-full bg-white rounded-lg drop-shadow-md">
               <div className="">
                 <h1 className="text-3xl text-center text-navy">
                   Name:{room?.partyName}
@@ -237,18 +256,17 @@ const PartyPage = () => {
               </div>
 
               {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
-              <div className="w-full h-96">
-                {song ? (
-                  <SearchSongPartyRoom song={song.name} />
-                ) : (
-                  <SearchSongPartyRoom />
-                )}
-              </div>
+
+              {song ? (
+                <SearchSongPartyRoom song={song.name} />
+              ) : (
+                <SearchSongPartyRoom />
+              )}
             </div>
           </div>
         </div>
         <div className="col-span-2">
-          <PartyRoomQueue />
+          <PartyRoomQueue songs={queue} />
         </div>
         <div className="relative flex-col justify-center ">
           {service === "apple" ? (

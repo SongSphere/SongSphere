@@ -95,12 +95,11 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
   };
 
   return (
-    <div className="h-full max-w-[95%]">
-      <div className="col-span-2 mt-5 ml-5 bg-lgrey rounded-2xl h-[90%] overflow-scroll">
-        <h1 className="text-4xl text-center text-navy">Search For</h1>
-        <div className="grid justify-center w-full grid-flow-col mt-5">
+    <div className=" max-w-[95%]">
+      <div className="flex flex-col h-full col-span-2 mt-5 ml-5 bg-lgrey rounded-2xl">
+        <h1 className="pt-4 text-4xl text-center text-navy">Search For</h1>
+        <div className="grid justify-center w-full grid-flow-col pb-2 mt-5s">
           <input
-            className=""
             placeholder="Enter Song Title"
             onChange={(event) =>
               selectService(event.target.value as string, category, 8).then(
@@ -114,41 +113,45 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
             }
           />
         </div>
-        <div className="w-[90%] mt-3 mx-auto">
-          {songs.map((s) => (
-            <div className="grid w-full grid-flow-col">
-              <button
-                className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
-                key={s.id}
-                onClick={() => setSelected(s)}
-              >
-                <div className="flex text-center w-[100%]">
-                  <div className="w-20 h-20 ">
-                    <img src={s.cover} />
+        <div className="overflow-y-auto" style={{ maxHeight: "400px" }}>
+          <div className="w-[90%] mt-3 mx-auto">
+            {songs.map((s) => (
+              <div className="grid w-full grid-flow-col">
+                <button
+                  className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
+                  key={s.id}
+                  onClick={() => setSelected(s)}
+                >
+                  <div className="flex text-center w-[100%]">
+                    <div className="w-20 h-20 ">
+                      <img src={s.cover} />
+                    </div>
+                    {s.name}
+                    <br />
+                    {s.artist}
                   </div>
-                  {s.name}
-                  <br />
-                  {s.artist}
-                </div>
-              </button>
-            </div>
-          ))}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="grid-flow-col mt-5 text-center">
-          <h1 className="text-2xl text-navy">{selected?.name}</h1>
-          <h1 className="text-xl text-navy">{selected?.artist}</h1>
+        <div className="justify-center pl-5">
+          <div className="grid-flow-col text-center">
+            <h1 className="text-2xl text-navy">{selected?.name}</h1>
+            <h1 className="text-xl text-navy">{selected?.artist}</h1>
+          </div>
+          <button
+            className="px-10 py-2 mb-2 mr-10 rounded-md text-lgrey bg-navy hover:bg-lblue"
+            onClick={async () => {
+              setOpen2(true);
+              if (user) {
+                await addQueue(selected!);
+              }
+            }}
+          >
+            Add Song
+          </button>
         </div>
-        <button
-          className="float-right p-2 mb-2 mr-10 rounded-md text-lgrey bg-navy hover:bg-lblue"
-          onClick={async () => {
-            setOpen2(true);
-            if (user) {
-              await addQueue(selected!);
-            }
-          }}
-        >
-          Add Song
-        </button>
       </div>
     </div>
   );
