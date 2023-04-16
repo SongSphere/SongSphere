@@ -393,3 +393,38 @@ export const setShowSong = async (email: string, set: boolean) => {
     throw error;
   }
 };
+
+export const getAnalytics = async (email: string) => {
+  try {
+    // index 0 -> total likes
+    // index 1 -> average likes
+    // index 2 -> total comments
+    // index 3 -> average comments
+    const analytics: number[] = [];
+    const posts = await Post.find({ userEmail: email });
+    const totalPosts = posts.length;
+
+    if (totalPosts == 0) {
+      for (let i = 0; i < 4; i++) {
+        analytics[i] = 0;
+      }
+      return analytics;
+    }
+
+    let totalLikes = 0;
+    let totalComments = 0;
+
+    for (let i = 0; i < posts.length; i++) {
+      totalLikes += posts[i].likes;
+      totalComments += posts[i].comments.length;
+    }
+
+    analytics[0] = totalLikes;
+    analytics[1] = Number((totalLikes / totalPosts).toFixed(2));
+    analytics[2] = totalComments;
+    analytics[3] = Number((totalComments / totalPosts).toFixed(2));
+    return analytics;
+  } catch (error) {
+    throw error;
+  }
+};

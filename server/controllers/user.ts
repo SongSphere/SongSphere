@@ -21,6 +21,7 @@ import {
   setPlayingSong,
   setShowSong,
   updateUserBio,
+  getAnalytics,
 } from "../services/user";
 
 import fs from "fs";
@@ -358,6 +359,17 @@ export const setUserBio = async (req: Request, res: Response) => {
     await updateUserBio(req.session.user.username, req.body.bio);
     res.status(200);
     res.json({ msg: "Bio update success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getPostAnalytics = async (req: Request, res: Response) => {
+  try {
+    const analytics = await getAnalytics(req.session.user.email);
+    res.status(200);
+    res.json({ analytics: analytics });
   } catch (error) {
     res.status(500);
     res.json({ error: error });

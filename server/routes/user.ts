@@ -22,6 +22,7 @@ import {
   setActivity,
   setDisplaySong,
   setUserBio,
+  getPostAnalytics,
 } from "../controllers/user";
 import {
   getNotificationsByEmail,
@@ -81,5 +82,6 @@ router.get("/user/activeListening", getActivity);
 router.post("/user/setPlayingSong", setActivity);
 router.post("/api/user/setShowSong", setDisplaySong);
 router.post("/api/user/updateBio", setUserBio);
+router.get("/user/analytics", getPostAnalytics);
 
 export default router;
