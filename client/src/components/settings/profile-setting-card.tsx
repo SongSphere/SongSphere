@@ -143,11 +143,6 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
                 Save
               </button>
             </div>
-
-            <div className="pt-5 pb-5 text-xl font-semibold text-center">
-              Danger Zone!
-            </div>
-            <DeleteGoogleAcountLink />
           </form>
         </div>
       </div>

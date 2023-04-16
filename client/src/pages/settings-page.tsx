@@ -7,6 +7,7 @@ import ProfileSettingCard from "../components/settings/profile-setting-card";
 import EvenLayout from "../layouts/even-layout";
 import ImageSettingCard from "../components/settings/image-setting-card";
 import MusicSettingCard from "../components/settings/music-setting-card";
+import DangerZone from "../components/settings/danger-zone";
 
 const SettingsPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
@@ -30,7 +31,12 @@ const SettingsPage = () => {
           />
         }
         middle={<ImageSettingCard />}
-        right={<MusicSettingCard user={user} />}
+        right={
+          <div>
+            <MusicSettingCard user={user} />
+            <DangerZone />
+          </div>
+        }
       />
       <BlockedList
         blockedList={user.blockedUsers}
