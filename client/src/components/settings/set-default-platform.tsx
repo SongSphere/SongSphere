@@ -1,83 +1,43 @@
-import fetchUser from "../../services/user/fetch-user";
-import { appleAuth } from "../../services/user/apple-music-link";
 import Session from "../../session";
 import { TUser } from "../../types/user";
-import React, { useEffect, useState } from "react";
-import {
-  setDefaultPlatform,
-  getDefaultPlatform,
-} from "../../services/user/default-platform";
+import { useEffect, useState } from "react";
+import { setDefaultPlatform } from "../../services/user/default-platform";
 
-const DefaultPlatform = () => {
-  let [user, setUser] = useState<TUser | null>(null);
+interface IDefaultPlatformProps {
+  appleAccountStatus: boolean;
+  spotifyAccountStatus: boolean;
+  defaultPlatform: string;
+}
+
+const DefaultPlatform = (props: IDefaultPlatformProps) => {
   let [currService, setCurrService] = useState<string>();
   let [service, setService] = useState<string[]>([]);
 
   useEffect(() => {
-    setUser(Session.getUser());
-    checkService();
-    if (user) {
-      setCurrService(user.defaultPlatform);
-
-      // If a user unlinks their default platform
-      if (user.spotifyToken == undefined || user.spotifyToken.length == 0) {
-        if (currService == "spotify") {
-          setCurrService("apple");
-          setDefaultPlatform("apple");
-          Session.setMusicService("apple");
-          user.defaultPlatform = "apple";
-        }
-      }
-      if (user.appleToken == undefined || user.appleToken.length == 0) {
-        if (currService == "apple") {
-          setCurrService("spotify");
-          setDefaultPlatform("spotify");
-          Session.setMusicService("spotify");
-          user.defaultPlatform = "spotify";
-        }
-      }
+    setCurrService(props.defaultPlatform);
+    let tempService: string[] = [];
+    if (props.appleAccountStatus) {
+      tempService.push("apple");
     }
-  }, [user, Session.getUser()]);
-
-  // this sucks but works
-  const checkService = () => {
-    if (user) {
-      let s = false;
-      if (user.spotifyToken != undefined && user.spotifyToken.length != 0) {
-        setService(["spotify"]);
-        s = true;
-      }
-      if (user.appleToken != undefined && user.appleToken.length != 0) {
-        if (s) {
-          setService(["spotify", "apple"]);
-        } else {
-          setService(["apple"]);
-        }
-      }
+    if (props.spotifyAccountStatus) {
+      tempService.push("spotify");
     }
-  };
-
-  if (user == null) {
-    return <div>"fetching user"</div>;
-  }
+    setService(tempService);
+  }, [props.appleAccountStatus, props.spotifyAccountStatus]);
 
   return (
-    <div>
-      <div>Current Service: {currService}</div>
-      Select Service
+    <div className="">
+      <div className="font-semibold">Default Service:</div>
       {service.map((s) => {
         if (s == currService) {
           return (
             <button
-              className="w-11/12 text-black bg-red-300 border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey"
+              className="px-2 py-1 mr-2 text-center text-black rounded-lg bg-sky-300 drop-shadow-lg"
               key={s}
               onClick={() => {
                 Session.setMusicService(s);
                 setDefaultPlatform(s);
                 setCurrService(s);
-                if (user) {
-                  user.defaultPlatform = s;
-                }
               }}
             >
               {s}
@@ -86,15 +46,12 @@ const DefaultPlatform = () => {
         } else {
           return (
             <button
-              className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey"
+              className="px-2 py-1 mr-2 text-center text-black rounded-lg bg-slate-100 drop-shadow-lg"
               key={s}
               onClick={() => {
                 Session.setMusicService(s);
                 setDefaultPlatform(s);
                 setCurrService(s);
-                if (user) {
-                  user.defaultPlatform = s;
-                }
               }}
             >
               {s}
