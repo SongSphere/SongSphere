@@ -154,7 +154,7 @@ const ProfileImgCropper = (props: ReactImageCropperProps) => {
       />
       <div className="flex justify-center pt-2">
         <button
-          className="px-2 py-1 text-center rounded-lg w-fit bg-sky-300"
+          className="px-2 py-1 text-center rounded-lg w-fit bg-sky-300 drop-shadow-lg"
           onClick={async () => {
             await updateProfileURL(ImgUrl)
               .then(async () => {

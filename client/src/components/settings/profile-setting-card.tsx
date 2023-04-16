@@ -51,7 +51,7 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
 
   return (
     <div className="w-full h-full p-4">
-      <div className="bg-white rounded-lg">
+      <div className="pb-10 bg-white rounded-lg">
         <h3 className="pt-10 text-3xl font-semibold text-center">
           Profile Settings
         </h3>
@@ -137,7 +137,7 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
             </div>
             <div className="mt-2">
               <button
-                className="px-2 py-1 rounded-lg bg-sky-300 hover:bg-sky-400"
+                className="px-2 py-1 rounded-lg bg-sky-300 hover:bg-sky-400 drop-shadow-lg"
                 onClick={handleSave}
               >
                 Save

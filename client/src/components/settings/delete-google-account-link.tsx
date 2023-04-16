@@ -27,7 +27,7 @@ const DeleteGoogleAcountLink = () => {
   return (
     <div>
       <button
-        className="px-2 py-1 bg-red-300 rounded-lg"
+        className="px-2 py-1 bg-red-300 rounded-lg drop-shadow-lg"
         onClick={async () => {
           const confirmDelete = window.confirm(
             "Are you sure you want to delete your account? This operation cannot be redone."

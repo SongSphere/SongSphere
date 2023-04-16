@@ -49,7 +49,7 @@ const SpotifyLinkButton = () => {
     <div>
       <button
         onClick={() => requestSpotifyAuthorization()}
-        className="px-2 py-1 bg-green-300 rounded-lg"
+        className="px-2 py-1 bg-green-300 rounded-lg drop-shadow-lg"
       >
         Link Spotify
       </button>
@@ -85,7 +85,7 @@ const MusicSettingCard = (props: IMusicSettingCardProps) => {
   if (appleAccountStatus) {
     appleLink = (
       <button
-        className="px-2 py-1 bg-red-400 rounded-lg"
+        className="px-2 py-1 bg-red-400 rounded-lg drop-shadow-lg"
         onClick={async () => {
           await unlinkMusic("apple").then(async () => {
             setAppleAccountStatus(false);
@@ -98,7 +98,7 @@ const MusicSettingCard = (props: IMusicSettingCardProps) => {
   } else {
     appleLink = (
       <button
-        className="px-2 py-1 bg-red-400 rounded-lg"
+        className="px-2 py-1 bg-red-400 rounded-lg drop-shadow-lg"
         onClick={async () => {
           try {
             await appleAuth(AMInstance!);
@@ -116,7 +116,7 @@ const MusicSettingCard = (props: IMusicSettingCardProps) => {
   if (spotifyAccountStatus) {
     spotifyLink = (
       <button
-        className="px-2 py-1 bg-green-300 rounded-lg"
+        className="px-2 py-1 bg-green-300 rounded-lg drop-shadow-lg"
         onClick={async () => {
           await unlinkMusic("spotify").then(async () => {
             setSpotifyAccountStatus(false);
@@ -138,22 +138,20 @@ const MusicSettingCard = (props: IMusicSettingCardProps) => {
     <div className="w-full h-full p-4">
       <div className="bg-white rounded-lg">
         <h3 className="pt-10 text-3xl font-semibold text-center">
-          Profile Settings
+          Music Settings
         </h3>
-        <div className="p-4">
-          <div className="flex">
+        <div className="flex justify-center p-4 pb-10">
+          <div className="">
             <div className="pr-2 font-semibold">Apple Music: </div>
             {appleLink}
-          </div>
-          <div className="flex">
             <div className="pr-2 font-semibold">Spotfiy: </div>
             {spotifyLink}
+            <DefaultPlatform
+              appleAccountStatus={appleAccountStatus}
+              spotifyAccountStatus={spotifyAccountStatus}
+              defaultPlatform={props.user.defaultPlatform}
+            />
           </div>
-          <DefaultPlatform
-            appleAccountStatus={appleAccountStatus}
-            spotifyAccountStatus={spotifyAccountStatus}
-            defaultPlatform={props.user.defaultPlatform}
-          />
         </div>
       </div>
     </div>

@@ -10,31 +10,11 @@ import MusicSettingCard from "../components/settings/music-setting-card";
 
 const SettingsPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
-
-  // const [defaultPlatform, setDefaultPlatform] = useState<string>("");
   const [showBlockModal, setShowBlockModal] = useState(false);
 
   useEffect(() => {
     setUser(Session.getUser());
   }, []);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     if (user.appleToken != undefined) {
-  //       setAppleAccountStatus(true);
-  //     } else {
-  //       setAppleAccountStatus(false);
-  //     }
-  //     if (user.spotifyToken != undefined) {
-  //       setSpotifyAccountStatus(true);
-  //     } else {
-  //       setSpotifyAccountStatus(false);
-  //     }
-  //     setBackgroundImgUrl(user.backgroundImgUrl);
-  //     setProfileImgUrl(user.profileImgUrl);
-  //     setDefaultPlatform(user.defaultPlatform);
-  //   }
-  // }, [user]);
 
   if (!user) {
     return <div>fetching user data</div>;

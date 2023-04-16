@@ -4,7 +4,7 @@ import ProfileImgCropper from "./profile-img-cropper";
 const ImageSettingCard = () => {
   return (
     <div className="w-full h-full p-4">
-      <div className="bg-white rounded-lg">
+      <div className="pb-10 bg-white rounded-lg">
         <h3 className="pt-10 text-3xl font-semibold text-center">
           Image Settings
         </h3>

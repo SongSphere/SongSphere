@@ -26,14 +26,13 @@ const DefaultPlatform = (props: IDefaultPlatformProps) => {
   }, [props.appleAccountStatus, props.spotifyAccountStatus]);
 
   return (
-    <div>
-      <div>Current Service: {currService}</div>
-      Select Service
+    <div className="">
+      <div className="font-semibold">Default Service:</div>
       {service.map((s) => {
         if (s == currService) {
           return (
             <button
-              className="w-11/12 text-black bg-red-300 border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey"
+              className="px-2 py-1 mr-2 text-center text-black rounded-lg bg-sky-300 drop-shadow-lg"
               key={s}
               onClick={() => {
                 Session.setMusicService(s);
@@ -47,7 +46,7 @@ const DefaultPlatform = (props: IDefaultPlatformProps) => {
         } else {
           return (
             <button
-              className="w-11/12 text-black bg-white border-2 border-solid w-1/2text-center border-lblue hover:text-lgrey"
+              className="px-2 py-1 mr-2 text-center text-black rounded-lg bg-slate-100 drop-shadow-lg"
               key={s}
               onClick={() => {
                 Session.setMusicService(s);
