@@ -11,10 +11,10 @@ import DeleteGoogleAcountLink from "./delete-google-account-link";
 
 interface IProfileSettingProps {
   setShowBlockModal: React.Dispatch<React.SetStateAction<boolean>>;
+  user: TUser;
 }
 
 const ProfileSettingCard = (props: IProfileSettingProps) => {
-  const [user, setUser] = useState<TUser | null>(null);
   const [username, setUsername] = useState<string>("");
   const [givenName, setGivenName] = useState<string>("");
   const [middleName, setMiddleName] = useState<string>("");
@@ -27,36 +27,14 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
     "Oops! An error occurs when saving your profile info. Try again later!";
 
   useEffect(() => {
-    setUser(Session.getUser());
-  }, [Session.getUser()]);
-
-  useEffect(() => {
-    if (user) {
-      setUsername(user.username);
-      setGivenName(user.givenName);
-      setMiddleName(user.middleName);
-      setFamilyName(user.familyName);
-      if (user.isPrivate == false) {
-        setIsPrivateStatus(false);
-      } else {
-        setIsPrivateStatus(true);
-      }
-      if (user.showRandomSong == false) {
-        setIsRandomStatus(false);
-      } else {
-        setIsRandomStatus(true);
-      }
-      if (user.showPlayingSong == true) {
-        setShareCurrentSong(true);
-      } else {
-        setShareCurrentSong(false);
-      }
-    }
-  }, [user]);
-
-  if (!user) {
-    return <div>fetching user</div>;
-  }
+    setUsername(props.user.username);
+    setGivenName(props.user.givenName);
+    setMiddleName(props.user.middleName);
+    setFamilyName(props.user.familyName);
+    setIsPrivateStatus(props.user.isPrivate);
+    setIsRandomStatus(props.user.showRandomSong);
+    setShareCurrentSong(props.user.showPlayingSong);
+  }, []);
 
   const handleSave = async () => {
     try {
