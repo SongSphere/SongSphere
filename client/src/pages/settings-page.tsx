@@ -14,6 +14,7 @@ import BlockedList from "../components/settings/blocked-list";
 import ProfileSettingCard from "../components/settings/profile-setting-card";
 
 import EvenLayout from "../layouts/even-layout";
+import ImageSettingCard from "../components/settings/image-setting-card";
 
 const SettingsPage = () => {
   const [user, setUser] = useState<TUser | null>(null);
@@ -52,15 +53,7 @@ const SettingsPage = () => {
     return <div>fetching user data</div>;
   }
 
-  const middle = (
-    <div className="justify-center w-full p-10 mt-5 ml-5 bg-white rounded-md h-5/6 sm:w-3/4 sm:px-6 drop-shadow-md">
-      <h3 className="mb-5 text-3xl font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
-        Image Settings
-      </h3>
-      <BackgroundImgCropper onCropComplete={console.log} />
-      <ProfileImgCropper onCropComplete={console.log} />
-    </div>
-  );
+  const middle = <ImageSettingCard />;
 
   const right = (
     <div className="justify-center w-full p-10 mt-5 ml-5 bg-white rounded-md h-5/6 sm:w-3/4 sm:px-6 drop-shadow-md">

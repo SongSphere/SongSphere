@@ -82,7 +82,7 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
   };
 
   return (
-    <>
+    <div className="flex flex-col">
       <Modal
         centered
         closeOnClickOutside={false}
@@ -117,55 +117,48 @@ export const ProfileImgCropper = (props: ReactImageCropperProps) => {
           <button onClick={cropImage}>Crop image</button>
         </Stack>
       </Modal>
-      <img src={image}></img>
-      {/* {croppedImage ? (
-        <Stack align="center" justify="center" sx={{ minHeight: "100vh" }}>
-          <Title>Cropped Image</Title>
-          <Image
-            width={400}
-            height={400}
-            src={croppedImage}
-            alt="cropped result"
-          />
-          <Button onClick={() => setCroppedImage(undefined)}>
-            Crop another image
-          </Button>
-        </Stack>
-      ) : ( */}
-      <Box className={classes.container}>
+      <div className="flex justify-center">
+        <img className="w-48 h-48" src={image}></img>
+      </div>
+      <div className="flex justify-center">
         <FileInput
           variant="filled"
+          className="w-48"
           placeholder="Upload Profile Photo"
           accept="image/*"
           onChange={handleFileUpload}
         />
-      </Box>
+      </div>
       <input
-        className="e-input"
+        className="w-48 e-input"
         type="text"
-        placeholder="Enter Profile Photo URL"
+        placeholder="Enter Profile URL"
         value={ImgUrl}
         onChange={(e) => setImgUrl(e.target.value)}
       />
-      <button
-        onClick={async () => {
-          await updateProfileURL(ImgUrl)
-            .then(async () => {
-              await Session.setUser(await fetchUser());
-            })
-            .catch((err) => {
-              setProfileFailOpen(true);
-            });
-        }}
-      >
-        Update Profile URL
-      </button>
+      <div className="flex justify-center pt-2">
+        <button
+          className="px-2 py-1 text-center rounded-lg w-fit bg-sky-300"
+          onClick={async () => {
+            await updateProfileURL(ImgUrl)
+              .then(async () => {
+                await Session.setUser(await fetchUser());
+              })
+              .catch((err) => {
+                setProfileFailOpen(true);
+              });
+          }}
+        >
+          Update Profile URL
+        </button>
+      </div>
+
       <FailPopUp
         open={profileFailOpen}
         setOpen={setProfileFailOpen}
         failText={PROFILE_ERR_MSG}
       />
-    </>
+    </div>
   );
 };
 
@@ -235,7 +228,7 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
   }, [Session.getUser()]);
 
   return (
-    <>
+    <div className="flex flex-col justify-center">
       <Modal
         centered
         closeOnClickOutside={false}
@@ -270,57 +263,49 @@ export const BackgroundImgCropper = (props: BackgroundImgCropperProps) => {
           <button onClick={cropImage}>Crop image</button>
         </Stack>
       </Modal>
-      <img src={image}></img>
-      {/* {croppedImage ? (
-        <Stack align="center" justify="center" sx={{ minHeight: "100vh" }}>
-          <Title>Cropped Image</Title>
-          <Image
-            width={400}
-            height={400}
-            src={croppedImage}
-            alt="cropped result"
-          />
-          <Button onClick={() => setCroppedImage(undefined)}>
-            Crop another image
-          </Button>
-        </Stack>
-      ) : ( */}
-      <Box className={classes.container}>
+      <div className="flex justify-center">
+        <img className="w-48 h-48" src={image}></img>
+      </div>
+      <div className="flex justify-center">
         <FileInput
           variant="filled"
+          className="w-48"
           placeholder="Upload Background Photo"
           accept="image/*"
           onChange={handleFileUpload}
         />
-      </Box>
-
+      </div>
       <input
-        className="e-input"
+        className="w-48 e-input"
         type="text"
-        placeholder="Enter Background Photo URL"
+        placeholder="Enter Background URL"
         value={ImgUrl}
         onChange={(e) => setImgUrl(e.target.value)}
       />
-      <button
-        onClick={async () => {
-          await updateBackgroundURL(ImgUrl)
-            .then(async () => {
-              await Session.setUser(await fetchUser());
-            })
-            .catch((error) => {
-              setBgFailOpen(true);
-              console.error(error);
-            });
-        }}
-      >
-        Update Background URL
-      </button>
+      <div className="flex justify-center pt-2">
+        <button
+          className="px-2 py-1 text-center rounded-lg w-fit bg-sky-300"
+          onClick={async () => {
+            await updateBackgroundURL(ImgUrl)
+              .then(async () => {
+                await Session.setUser(await fetchUser());
+              })
+              .catch((error) => {
+                setBgFailOpen(true);
+                console.error(error);
+              });
+          }}
+        >
+          Update Background URL
+        </button>
+      </div>
+
       <FailPopUp
         open={bgFailOpen}
         setOpen={setBgFailOpen}
         failText={BG_ERR_MSG}
       />
-    </>
+    </div>
   );
 };
 const useStyles = createStyles(() => ({

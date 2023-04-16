@@ -15,13 +15,13 @@ const EvenLayout = (props: IMainLayoutProps) => {
 
       <div className="relative h-screen gap-2 lg:grid lg:grid-cols-3">
         <div className="lg:pt-24 lg:h-screen">
-          <div className="lg:h-full">{props.left}</div>
+          <div className="lg:h-full bg-slate-900">{props.left}</div>
         </div>
         <div className="lg:pt-24 lg:h-screen">
-          <div className=" lg:h-full">{props.middle}</div>
+          <div className=" lg:h-full bg-slate-900">{props.middle}</div>
         </div>
         <div className="lg:pt-24 lg:h-screen">
-          <div className="lg:h-full">{props.right}</div>
+          <div className="lg:h-full bg-slate-900">{props.right}</div>
         </div>
       </div>
     </div>

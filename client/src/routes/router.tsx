@@ -19,7 +19,7 @@ import RecentsPage from "../pages/recents-page";
 import PlaylistPage from "../pages/playlist-page";
 import CreateRoomPage from "../pages/party/enter-room-page";
 import PartyPage from "../pages/party-page";
-import SettingsPage from "../pages/new-settings-page";
+import SettingsPage from "../pages/settings-page";
 
 const Router = () => {
   let element = useRoutes([
