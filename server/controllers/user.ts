@@ -172,11 +172,19 @@ export const deleteUserInControllers = async (
   res: Response,
   next: NextFunction
 ) => {
-  const email = req.session.user.email;
+  const username = req.session.user.username;
 
   try {
-    await deleteUserInServices(email);
-    res.status(200);
+    await req.session.destroy(async (error) => {
+      if (error) {
+        res.status(500);
+        res.json({ msg: "delete fail" });
+      } else {
+        await deleteUserInServices(username);
+        res.status(200);
+        res.json({ msg: "delete success" });
+      }
+    });
   } catch (error) {
     res.status(404);
     res.json({ msg: "Cannot find user in Delete User" });

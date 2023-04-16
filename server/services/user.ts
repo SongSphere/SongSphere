@@ -2,13 +2,13 @@
 import { TokenPayload } from "google-auth-library";
 import User, { IUser } from "../db/user";
 import Post, { IPost } from "../db/post";
+import PartyRoom from "../db/party-room";
 
 import mongoose from "mongoose";
 import { TMusicContent } from "../types/music-content";
 
 export const createUser = async (
-  userData: TokenPayload,
-  token: string
+  userData: TokenPayload
 ): Promise<mongoose.Document<unknown, any, IUser>> => {
   const user = new User({
     name: userData.name,
@@ -20,7 +20,7 @@ export const createUser = async (
     emailVerified: userData.email_verified,
     profileImgUrl: userData.picture,
     backgroundImgUrl: userData.picture,
-    token: token,
+    biography: "",
     followers: [],
     following: [],
     onboarded: false,
@@ -91,19 +91,6 @@ export const removeAppleToken = async (email: string) => {
     const user = await User.findOne({ email: email });
     user.appleToken = undefined;
     await user.save();
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const updateUserToken = async (email: string, token: string) => {
-  try {
-    const user = await User.findOneAndUpdate(
-      { email: email },
-      { token: token },
-      { new: true }
-    );
-    return user;
   } catch (error) {
     throw error;
   }
@@ -262,9 +249,11 @@ export const fetchFeed = async (email: string, num: number) => {
   }
 };
 
-export const deleteUserInServices = async (email: string) => {
+export const deleteUserInServices = async (username: string) => {
   try {
-    await User.deleteOne({ email: email });
+    await User.deleteOne({ username: username });
+    await Post.deleteMany({ username: username });
+    await PartyRoom.deleteMany({ username: username });
   } catch (error) {
     console.error(error);
     throw error;

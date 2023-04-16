@@ -10,6 +10,7 @@ export type TUser = {
   emailVerified: Boolean;
   profileImgUrl: string;
   backgroundImgUrl: string;
+  biography: string;
   token: string;
   spotifyToken: string;
   spotifyTokenEndDate: Date;
