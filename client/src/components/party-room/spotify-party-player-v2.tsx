@@ -9,16 +9,17 @@ import { spotifyRefresh } from "../../services/spotify/spotify-refresh";
 interface ISpotifySong {
   name: string;
   img: string;
-  artists: [{ name: string }];
+  artists: string[];
   uri: string;
 }
 
 interface ISpotifyPlayerCardProps {
-  playNext: Function;
+  isSongOver: boolean;
+  setIsSongOver: Function;
   selectedSong: TMusicContent | null;
 }
 
-const SpotifyPartyRoomPlayerCard = (props: ISpotifyPlayerCardProps) => {
+const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [song, setSong] = useState<ISpotifySong | null>(null);
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
@@ -28,12 +29,6 @@ const SpotifyPartyRoomPlayerCard = (props: ISpotifyPlayerCardProps) => {
   const [service, setService] = useState<string>("");
   const [AMInstance, setAMInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
-
-  useEffect(() => {
-    setUser(Session.getUser());
-    setService(Session.getMusicService());
-    setAMInstance(Session.getAMInstance());
-  }, [Session.getUser()]);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
@@ -85,7 +80,14 @@ const SpotifyPartyRoomPlayerCard = (props: ISpotifyPlayerCardProps) => {
   };
 
   useEffect(() => {
-    console.log("usefeect fired");
+    console.log("useEffect 1");
+    setUser(Session.getUser());
+    setService(Session.getMusicService());
+    setAMInstance(Session.getAMInstance());
+  }, [Session.getUser()]);
+
+  useEffect(() => {
+    console.log("useEffect 2");
     const selectServiceHandler = async (
       selectedSong: TMusicContent,
       appleMusicInstance: MusicKit.MusicKitInstance,
@@ -114,10 +116,7 @@ const SpotifyPartyRoomPlayerCard = (props: ISpotifyPlayerCardProps) => {
   }, [user, props.selectedSong]);
 
   useEffect(() => {
-    console.log("other fired");
-  }, [props.selectedSong]);
-
-  useEffect(() => {
+    console.log("useEffect 3");
     const setSong = async (song_uri: string, deviceId: string) => {
       await spotifyRefresh();
 
@@ -141,13 +140,12 @@ const SpotifyPartyRoomPlayerCard = (props: ISpotifyPlayerCardProps) => {
     };
 
     if (deviceId && song && player) {
-      setSong(song.uri, deviceId).then(() => {
-        playMusicHandler();
-      });
+      setSong(song.uri, deviceId);
     }
   }, [deviceId, song]);
 
   useEffect(() => {
+    console.log("useEffect 4");
     if (user) {
       // dynamically import Spotify
 
@@ -169,7 +167,7 @@ const SpotifyPartyRoomPlayerCard = (props: ISpotifyPlayerCardProps) => {
           getOAuthToken: (cb) => {
             cb(user.spotifyToken || "");
           },
-          volume: 0,
+          volume: 0.3,
         });
 
         setPlayer(player);
@@ -221,38 +219,23 @@ const SpotifyPartyRoomPlayerCard = (props: ISpotifyPlayerCardProps) => {
           const position = getStatePosition();
           setProgress(position);
 
-          if (position > 10) {
+          if (position > 98) {
             console.log("song over");
+            props.setIsSongOver(true);
             clearInterval(interval);
-            props.playNext();
           }
         }, 300);
 
         return () => clearInterval(interval);
       };
     }
-  }, [user]);
+  }, [user, props.selectedSong]);
 
   return (
     <div className="flex h-[50%] mt-8 justify-center pb-5">
       <div className="bg-white rounded-lg w-[90%] h-full drop-shadow-md p-4 flex flex-col items-center justify-between">
         <img className="w-1/2 mt-5 h-1/2" src={song?.img}></img>
         <div className="text-lg font-semibold text-center">{song?.name}</div>
-        <div
-          className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300"
-          onClick={() => {
-            playMusicHandler();
-          }}
-        >
-          <img
-            className="w-5 h-5"
-            src={
-              isPlaying
-                ? "/img/icons/pause-icon.svg"
-                : "/img/icons/play-icon.svg"
-            }
-          ></img>
-        </div>
         <div className="w-full h-1 mb-2 bg-neutral-200 dark:bg-neutral-600">
           <div
             className={`h-1 bg-red-400`}
@@ -265,4 +248,4 @@ const SpotifyPartyRoomPlayerCard = (props: ISpotifyPlayerCardProps) => {
     </div>
   );
 };
-export default SpotifyPartyRoomPlayerCard;
+export default SpotifyPartyRoomPlayerV2;

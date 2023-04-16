@@ -106,14 +106,13 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
                 (result) => {
                   setSong(event.target.value);
                   songs = result!;
-                  console.log(songs);
                   setSongs(result!);
                 }
               )
             }
           />
         </div>
-        <div className="overflow-y-auto" style={{ maxHeight: "400px" }}>
+        <div className="overflow-y-auto" style={{ maxHeight: "300px" }}>
           <div className="w-[90%] mt-3 mx-auto">
             {songs.map((s) => (
               <div className="grid w-full grid-flow-col">
@@ -122,8 +121,8 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
                   key={s.id}
                   onClick={() => setSelected(s)}
                 >
-                  <div className="flex text-center w-[100%]">
-                    <div className="w-20 h-20 ">
+                  <div className="flex text-center w-[100%] text-sm">
+                    <div className="w-10 h-10 ">
                       <img src={s.cover} />
                     </div>
                     {s.name}
@@ -135,7 +134,7 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
             ))}
           </div>
         </div>
-        <div className="justify-center pl-5">
+        <div className="justify-center pt-2 pl-5">
           <div className="grid-flow-col text-center">
             <h1 className="text-2xl text-navy">{selected?.name}</h1>
             <h1 className="text-xl text-navy">{selected?.artist}</h1>
