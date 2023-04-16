@@ -48,7 +48,6 @@ export const getApplePlaylists = async (
       });
     });
 
-  console.log(list);
   return list;
 };
 
@@ -73,5 +72,5 @@ export const getAppleTracksFromPlaylist = async (
       });
     });
   });
-  console.log(songs);
+  return songs;
 };
