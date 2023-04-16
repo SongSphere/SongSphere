@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
 import { TUser } from "../types/user";
-import {
-  BackgroundImgCropper,
-  ProfileImgCropper,
-} from "../components/settings/image-handler";
 import AppleLink from "../components/settings/apple-link";
 import SpotifyLinkButton from "../components/settings/spotify-link";
 import unlinkMusic from "../services/user/unlink-music";

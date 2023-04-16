@@ -1,4 +1,5 @@
-import { BackgroundImgCropper, ProfileImgCropper } from "./image-handler";
+import BgImgCropper from "./bg-img-cropper";
+import ProfileImgCropper from "./profile-img-cropper";
 
 const ImageSettingCard = () => {
   return (
@@ -8,7 +9,7 @@ const ImageSettingCard = () => {
           Image Settings
         </h3>
         <div className="grid grid-cols-2 gap-2 p-4 place-items-center">
-          <BackgroundImgCropper onCropComplete={console.log} />
+          <BgImgCropper onCropComplete={console.log} />
           <ProfileImgCropper onCropComplete={console.log} />
         </div>
       </div>
