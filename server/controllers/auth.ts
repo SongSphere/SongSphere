@@ -9,7 +9,6 @@ import {
   createUser,
   checkUser,
   saveUser,
-  updateUserToken,
   updateSpotifyTokens,
   removeSpotifyTokens,
   updateAppleToken,
@@ -183,12 +182,12 @@ export const signInUp = async (
     const exist = await checkUser(userData.email);
     if (exist) {
       // exist == document with _id
-      await updateUserToken(userData.email, token);
+      // await updateUserToken(userData.email, token);
       const user = await fetchUserByEmail(userData.email);
       req.session.user = user;
     } else {
       // exist == null
-      const user = await createUser(userData, token);
+      const user = await createUser(userData);
       existingAccount = false;
       await saveUser(user);
 
@@ -202,7 +201,7 @@ export const signInUp = async (
         emailVerified: userData.email_verified,
         profileImgUrl: userData.picture,
         backgroundImgUrl: userData.picture,
-        token: token,
+        biography: "",
         spotifyToken: "",
         spotifyRefreshToken: "",
         spotifyTokenEndDate: null,

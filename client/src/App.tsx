@@ -18,6 +18,7 @@ const App = () => {
     const updateSession = async () => {
       try {
         await checkLoggedIn().then(async (isLoggedIn) => {
+          console.log("is logged in", isLoggedIn);
           Session.setIsLoggedIn(isLoggedIn);
           if (isLoggedIn) {
             await fetchUser().then((userData) => {

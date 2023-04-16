@@ -1,16 +1,12 @@
 // import packages
 import { useEffect, useState } from "react";
 
-// import services
-import fetchUserPosts from "../../services/post/fetch-user-posts";
-
 // import types
 import { TMusicContent } from "../../types/music-content";
 import { TPost } from "../../types/post";
 import { TUser } from "../../types/user";
 
 // import components
-import Navbar from "../../components/navbar";
 import AppleMusicPlayerCard from "../../components/player/apple-music-player-card";
 import SpotifyPlayerCard from "../../components/player/spotify-music-player-card";
 import ProfileCard from "../../components/profile/profile-card";

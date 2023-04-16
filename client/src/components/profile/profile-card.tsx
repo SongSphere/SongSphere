@@ -63,6 +63,7 @@ const ProfileCard = (props: IProfileCardProps) => {
               {followingButtonText}
             </button>
           </div>
+          <div className="p-4 text-center">{user.biography}</div>
           <div className="flex justify-center gap-2">
             <button
               className="px-4 py-1 rounded-md bg-slate-700"

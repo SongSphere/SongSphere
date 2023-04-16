@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import setShowSong from "../../services/settings/set-show-song";
 import setRandomSong from "../../services/settings/set-random-song";
 import setPrivate from "../../services/settings/set-private";
-import AdjustName from "../../services/user/adjust-name";
+import adjustName from "../../services/user/adjust-name";
 import fetchUser from "../../services/user/fetch-user";
 import Session from "../../session";
 import { TUser } from "../../types/user";
 import FailPopUp from "../popup/fail-popup";
-import DeleteGoogleAcountLink from "./delete-google-account-link";
+import adjustBio from "../../services/user/adjust-bio";
 
 interface IProfileSettingProps {
   setShowBlockModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +19,7 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
   const [givenName, setGivenName] = useState<string>("");
   const [middleName, setMiddleName] = useState<string>("");
   const [familyName, setFamilyName] = useState<string>("");
+  const [bio, setBio] = useState<string>("");
   const [isPrivateStatus, setIsPrivateStatus] = useState<boolean>(false);
   const [isRandomStatus, setIsRandomStatus] = useState<boolean>(false);
   const [shareCurrentSong, setShareCurrentSong] = useState<boolean>(false);
@@ -34,14 +35,16 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
     setIsPrivateStatus(props.user.isPrivate);
     setIsRandomStatus(props.user.showRandomSong);
     setShareCurrentSong(props.user.showPlayingSong);
+    setBio(props.user.biography);
   }, []);
 
   const handleSave = async () => {
     try {
-      await AdjustName(username, givenName, middleName, familyName);
+      await adjustName(username, givenName, middleName, familyName);
       await setShowSong(shareCurrentSong);
       await setRandomSong(isRandomStatus);
       await setPrivate(isPrivateStatus);
+      await adjustBio(bio);
       Session.setUser(await fetchUser());
     } catch (err) {
       setSaveFailOpen(true);
@@ -85,6 +88,14 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
               placeholder="Enter Middle Name"
               value={middleName}
               onChange={(e) => setMiddleName(e.target.value)}
+            />
+            <div className="font-semibold">Biography:</div>
+            <input
+              className="border-b-2 outline-none border-b-lgrey"
+              type="text"
+              placeholder="Enter Biography"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
             />
             <div className="font-semibold">Last Name:</div>
             <input
@@ -143,11 +154,6 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
                 Save
               </button>
             </div>
-
-            <div className="pt-5 pb-5 text-xl font-semibold text-center">
-              Danger Zone!
-            </div>
-            <DeleteGoogleAcountLink />
           </form>
         </div>
       </div>
