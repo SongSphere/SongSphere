@@ -7,7 +7,7 @@ import HomePage from "../pages/home-page";
 import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import SearchUsersPage from "../pages/search-users-page";
-import SettingsPage from "../pages/settings-page";
+// import SettingsPage from "../pages/settings-page";
 import EditPage from "../pages/edit-page";
 import ProfilePage from "../pages/profile/profile-page";
 import OtherUserProfilePage from "../pages/profile/other-user-profile-page";
@@ -19,6 +19,7 @@ import RecentsPage from "../pages/recents-page";
 import PlaylistPage from "../pages/playlist-page";
 import CreateRoomPage from "../pages/party/enter-room-page";
 import PartyPage from "../pages/party-page";
+import SettingsPage from "../pages/new-settings-page";
 
 const Router = () => {
   let element = useRoutes([
