@@ -69,6 +69,10 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
+    biography: {
+      type: String,
+      required: false,
+    },
     spotifyToken: {
       type: String,
       required: false,

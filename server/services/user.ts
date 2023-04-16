@@ -96,6 +96,19 @@ export const removeAppleToken = async (email: string) => {
   }
 };
 
+export const updateUserBio = async (username: string, bio: string) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { username: username },
+      { biography: bio },
+      { new: true }
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateUserOnboarded = async (
   email: string,
   onboarded: boolean
