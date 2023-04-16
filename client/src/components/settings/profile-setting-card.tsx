@@ -86,7 +86,7 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
           >
             <div className="font-semibold">Username:</div>
             <input
-              className="border-b-2 e-input border-b-lgrey"
+              className="border-b-2 outline-none border-b-lgrey"
               type="text"
               placeholder="Enter User Name"
               value={username}
@@ -94,7 +94,7 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
             />
             <div className="font-semibold">First name:</div>
             <input
-              className="border-b-2 e-input border-b-lgrey"
+              className="border-b-2 outline-none border-b-lgrey"
               type="text"
               placeholder="Enter Given Name"
               value={givenName}
@@ -102,7 +102,7 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
             />
             <div className="font-semibold">Middle Name:</div>
             <input
-              className="border-b-2 e-input border-b-lgrey"
+              className="border-b-2 outline-none border-b-lgrey"
               type="text"
               placeholder="Enter Middle Name"
               value={middleName}
@@ -110,7 +110,7 @@ const ProfileSettingCard = (props: IProfileSettingProps) => {
             />
             <div className="font-semibold">Last Name:</div>
             <input
-              className="border-b-2 e-input border-b-lgrey"
+              className="border-b-2 outline-none border-b-lgrey"
               type="text"
               placeholder="Enter Last Name"
               value={familyName}

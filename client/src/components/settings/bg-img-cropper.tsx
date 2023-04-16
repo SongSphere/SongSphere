@@ -97,6 +97,9 @@ const BgImgCropper = (props: BackgroundImgCropperProps) => {
 
   return (
     <div className="flex flex-col justify-center">
+      <div className="pb-5 text-xl font-semibold text-center">
+        Background Image:
+      </div>
       <Modal
         centered
         closeOnClickOutside={false}
@@ -144,7 +147,7 @@ const BgImgCropper = (props: BackgroundImgCropperProps) => {
         />
       </div>
       <input
-        className="w-48 e-input"
+        className="w-48 border-b-2 outline-none border-b-lgrey"
         type="text"
         placeholder="Enter Background URL"
         value={ImgUrl}

@@ -96,6 +96,9 @@ const ProfileImgCropper = (props: ReactImageCropperProps) => {
 
   return (
     <div className="flex flex-col">
+      <div className="pb-5 text-xl font-semibold text-center">
+        Profile Image:
+      </div>
       <Modal
         centered
         closeOnClickOutside={false}
@@ -143,7 +146,7 @@ const ProfileImgCropper = (props: ReactImageCropperProps) => {
         />
       </div>
       <input
-        className="w-48 e-input"
+        className="w-48 border-b-2 outline-none border-b-lgrey"
         type="text"
         placeholder="Enter Profile URL"
         value={ImgUrl}
