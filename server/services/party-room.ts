@@ -17,6 +17,7 @@ export const createPartyRoom = async (
     queue: newRoom.queue,
     musicIndex: newRoom.musicIndex,
   });
+  await User.findOneAndUpdate({username: newRoom.ownerUsername}, {partyRoom: party._id});
   return party;
 };
 
@@ -43,6 +44,10 @@ export const fetchRoomByOwner = async (username: string) => {
 export const fetchRoomById = async (id: string) => {
   try {
     const room = await PartyRoom.findOne({ _id: id });
+    if (!room) { 
+      throw Error;
+    }
+    
     return room;
   } catch (error) {
     throw error;
@@ -51,7 +56,12 @@ export const fetchRoomById = async (id: string) => {
 
 export const deleteRoom = async (room: TPartyRoom) => {
   try {
-    await PartyRoom.findByIdAndDelete(room._id);
+    await PartyRoom.findByIdAndDelete(room._id).then(async () => {
+      await User.findOneAndUpdate(
+        {username: room.ownerUsername}, 
+        {partyRoom: ""}
+      )
+    });
   } catch (error) {
     throw error;
   }
@@ -62,18 +72,28 @@ export const addListener = async (roomId: string, username: string) => {
     await PartyRoom.findOneAndUpdate(
       { _id: roomId },
       { $push: { members: username } }
-    );
+    ).then(async () => {
+      await User.findOneAndUpdate(
+        {username: username}, 
+        {partyRoom: roomId}
+      )
+    });
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteListener = async (id: string, username: string) => {
+export const deleteListener = async (room: TPartyRoom, username: string) => {
   try {
     await PartyRoom.findOneAndUpdate(
-      { _id: id },
+      { _id: room._id },
       { $pull: { members: username } }
-    );
+    ).then(async () => {
+      await User.findOneAndUpdate(
+        {username: username}, 
+        {partyRoom: ""}
+      )
+    });
   } catch (error) {
     throw error;
   }
@@ -106,6 +126,19 @@ export const addToQueue = async (song: TMusicContent, username: string) => {
   }
 };
 
+export const getQueue = async (username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
+    });
+    return room.queue;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const removeFromQueue = async (index: number, username: string) => {
   try {
     const room = await PartyRoom.findOne({
@@ -114,7 +147,7 @@ export const removeFromQueue = async (index: number, username: string) => {
       },
     });
     room.queue.splice(index, 1);
-    room.save();
+    await room.save();
   } catch (error) {
     throw error;
   }
@@ -132,7 +165,7 @@ export const moveUpQueue = async (index: number, username: string) => {
     room.queue[index - 1] = room.queue[index];
     room.queue[index] = temp;
 
-    room.save();
+    await room.save();
   } catch (error) {
     throw error;
   }
@@ -150,7 +183,7 @@ export const moveDownQueue = async (index: number, username: string) => {
     room.queue[index + 1] = room.queue[index];
     room.queue[index] = temp;
 
-    room.save();
+    await room.save();
   } catch (error) {
     throw error;
   }
@@ -181,6 +214,24 @@ export const transferOwner = async (room: TPartyRoom, username: string) => {
   }
 };
 
+export const blockUser = async (room: TPartyRoom, username: string) => {
+  try {
+    await PartyRoom.findOneAndUpdate(
+      { _id: room._id },
+      {
+        $push: { blocked: username } 
+      }
+    ).then(async () => {
+      await User.findOneAndUpdate(
+        {username: username}, 
+        {partyRoom: ""}
+      )
+    });
+  } catch (error) {
+    throw error
+  }
+}
+
 // Require
 var postmark = require("postmark");
 
@@ -200,6 +251,7 @@ var postmark = require("postmark");
 // };
 
 import { CourierClient } from "@trycourier/courier";
+import User from "../db/user";
 export const sendInvitationEmail = async (
   roomId: string,
   senderUsername: string,

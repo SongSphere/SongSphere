@@ -10,4 +10,5 @@ export type TPartyRoom = {
     invitedMembers: string[];
     queue: TMusicContent[];
     musicIndex: number;
+    blocked: string[];
   };
