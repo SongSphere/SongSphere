@@ -17,8 +17,11 @@ interface ICommentCreatorProp {
 const CommentCreater = (props: ICommentCreatorProp) => {
   let [commentContent, setCommentContent] = useState("");
   const [followers, setFollowers] = useState<string[]>([]);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [filteredOptions, setFilteredOptions] = useState<string[]>([]);
+  const [stringToRemove, setStringToRemove] = useState<string>("");
+  const [startLookingLocation, setStartLookingLocation] = useState<number>(0);
 
   useEffect(() => {
     if (props.user) {
@@ -43,11 +46,17 @@ const CommentCreater = (props: ICommentCreatorProp) => {
   };
 
   const handleDropdownSelection = (
-    selectedItem: React.SetStateAction<string>
+    nameSelected: React.SetStateAction<string>
   ) => {
     // Handle dropdown selection
-    setCommentContent(commentContent + "" + selectedItem);
+    const newCommentContent = commentContent.replace(stringToRemove, "");
+    setStringToRemove(""); // reset the string to remove
+    setCommentContent(newCommentContent + nameSelected); // Auto fill
+    setSearchTerm("");
     setShowDropdown(false);
+    setFilteredOptions([]);
+    setStartLookingLocation(commentContent.length);
+    console.log(startLookingLocation);
   };
 
   return (
@@ -92,10 +101,10 @@ const CommentCreater = (props: ICommentCreatorProp) => {
           }
         }
 
-        if (res) {
-          setCommentContent("");
-          props.setCommentChanged(props.commentChanged + 1);
-        }
+        // if (res) {
+        //   setCommentContent("");
+        //   props.setCommentChanged(props.commentChanged + 1);
+        // }
       }}
     >
       <label>
@@ -109,13 +118,57 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             type="text"
             placeholder="Type ur comment here!"
             name="name"
+            id="myInput"
             value={commentContent}
-            onChange={handleInputChange}
+            //onChange={handleInputChange}
+            onChange={async (event) => {
+              /*
+                This functionality calls to backend for User Document
+              */
+              if ((event.target.value as string) === "") {
+                setShowDropdown(false);
+              } else if ((event.target.value as string) !== "") {
+                const value = event.target.value;
+                setCommentContent(value);
+
+                const valueToMatch = value.slice(startLookingLocation);
+                // Step 3: Apply regular expression to extracted substring
+                const regex = /@(\S+)/; // Replace with your desired regular expression
+                const match = valueToMatch.match(regex);
+
+                // // Use regular expression to match string after "@" symbol
+                // const regex = /@(\S+)/; ///@(\w+)/;
+
+                // const match = value.match(regex);
+
+                if (match && match[1]) {
+                  const selectedItem = match[1]; // Extract string after "@" symbol
+                  setShowDropdown(true);
+
+                  setSearchTerm(selectedItem); // search term is the matched string
+
+                  const filtered = followers.filter((option) =>
+                    option.includes(selectedItem)
+                  );
+                  setFilteredOptions(filtered); // sets to only show the item with matched string
+                  setStringToRemove(selectedItem);
+                  // const newCommentContent = value.replace(selectedItem, '');
+                  // setCommentContent(newCommentContent);
+
+                  setSearchTerm("");
+
+                  // Fetch or update dropdown data based on input value
+                  // e.g. fetch usernames from API or filter suggestions from local data
+                } else {
+                  setShowDropdown(false);
+                }
+              }
+            }}
           />
         </div>
         {showDropdown && (
           <ul className="w-[40%] mt-3 mx-auto">
-            {followers.map((s) => (
+            {filteredOptions.map((s) => (
               <div className="grid w-full grid-flow-col">
                 <button
                   className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
