@@ -354,6 +354,7 @@ describe("Testing db services", () => {
       comments: [],
       likes: 0,
       repost: false,
+      taggedUsers: [],
     });
 
     // user C made a post
@@ -369,6 +370,7 @@ describe("Testing db services", () => {
       comments: [],
       likes: 0,
       repost: false,
+      taggedUsers: [],
     });
 
     await userA.save();
@@ -446,6 +448,7 @@ describe("Testing db services", () => {
       comments: [],
       likes: 0,
       repost: false,
+      taggedUsers: [],
     });
 
     // user C made a post
@@ -461,6 +464,7 @@ describe("Testing db services", () => {
       comments: [],
       likes: 0,
       repost: false,
+      taggedUsers: [],
     };
 
     await userA.save();
