@@ -31,19 +31,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
     }
   }, [props.user]);
 
-  const handleInputChange = (e: { target: { value: any } }) => {
-    const value = e.target.value;
-    setCommentContent(value);
-
-    // Detect "@" symbol
-    if (value.includes("@") && value.endsWith("@")) {
-      setShowDropdown(true);
-      // Fetch or update dropdown data based on input value
-      // e.g. fetch usernames from API or filter suggestions from local data
-    } else {
-      setShowDropdown(false);
-    }
-  };
 
   const handleDropdownSelection = (
     nameSelected: React.SetStateAction<string>
@@ -51,7 +38,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
     // Handle dropdown selection
     const newCommentContent = commentContent.replace(stringToRemove, "");
     setStringToRemove(""); // reset the string to remove
-    setCommentContent(newCommentContent + nameSelected); // Auto fill
+    setCommentContent(newCommentContent + "" + nameSelected); // Auto fill
     setSearchTerm("");
     setShowDropdown(false);
     setFilteredOptions([]);
@@ -101,10 +88,10 @@ const CommentCreater = (props: ICommentCreatorProp) => {
           }
         }
 
-        // if (res) {
-        //   setCommentContent("");
-        //   props.setCommentChanged(props.commentChanged + 1);
-        // }
+        if (res) {
+          setCommentContent("");
+          props.setCommentChanged(props.commentChanged + 1);
+        }
       }}
     >
       <label>
@@ -120,6 +107,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             name="name"
             id="myInput"
             value={commentContent}
+
             //onChange={handleInputChange}
             onChange={async (event) => {
               /*
@@ -136,11 +124,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
                 const regex = /@(\S+)/; // Replace with your desired regular expression
                 const match = valueToMatch.match(regex);
 
-                // // Use regular expression to match string after "@" symbol
-                // const regex = /@(\S+)/; ///@(\w+)/;
-
-                // const match = value.match(regex);
-
                 if (match && match[1]) {
                   const selectedItem = match[1]; // Extract string after "@" symbol
                   setShowDropdown(true);
@@ -150,15 +133,12 @@ const CommentCreater = (props: ICommentCreatorProp) => {
                   const filtered = followers.filter((option) =>
                     option.includes(selectedItem)
                   );
+
                   setFilteredOptions(filtered); // sets to only show the item with matched string
                   setStringToRemove(selectedItem);
-                  // const newCommentContent = value.replace(selectedItem, '');
-                  // setCommentContent(newCommentContent);
+
 
                   setSearchTerm("");
-
-                  // Fetch or update dropdown data based on input value
-                  // e.g. fetch usernames from API or filter suggestions from local data
                 } else {
                   setShowDropdown(false);
                 }
