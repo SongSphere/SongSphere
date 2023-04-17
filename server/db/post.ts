@@ -10,6 +10,7 @@ export interface IPost {
   comments: Array<String>;
   likes: number;
   repost: boolean;
+  taggedUsers: Array<String>;
 }
 
 const PostSchema = new Schema<IPost>(
@@ -54,6 +55,10 @@ const PostSchema = new Schema<IPost>(
       type: Boolean,
       required: true,
     },
+    taggedUsers: {
+      type: Array<String>(),
+      required: false,
+    }
   },
   {
     // this enables createdAt and updatedAt

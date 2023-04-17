@@ -56,6 +56,7 @@ const SearchSong = (props: ISearchSongProps) => {
   const [stringToRemove, setStringToRemove] = useState<string>("");
   const [startLookingLocation, setStartLookingLocation] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState("");
+  const [listOfTaggedUsers, setListOfTaggedUsers] = useState<string[]>([]);
 
 
   const handleDropdownSelection = (
@@ -276,11 +277,11 @@ const SearchSong = (props: ISearchSongProps) => {
                 username: user.username,
                 userEmail: user.email,
                 caption: caption,
-
                 music: selected!,
                 comments: [],
                 likes: 0,
                 repost: isRepost,
+                taggedUsers: listOfTaggedUsers,
               };
               await sendPost(newPost)
                 .then((res) => {
