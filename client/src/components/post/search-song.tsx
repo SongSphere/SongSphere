@@ -9,6 +9,9 @@ import Session from "../../session";
 import { TPost } from "../../types/post";
 import FailPopUp from "../popup/fail-popup";
 import { useNavigate } from "react-router-dom";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
+import sendNotification from "../../services/notification/send-notification";
+import { TNotification } from "../../types/notification";
 
 const AppleSearch = async (
   term: string,
@@ -66,11 +69,21 @@ const SearchSong = (props: ISearchSongProps) => {
     const newCommentContent = caption.replace(stringToRemove, "");
     setStringToRemove(""); // reset the string to remove
     setCaption(newCommentContent + "" + nameSelected); // Auto fill
+
+    // This fetches the user name
+
+    fetchUserByUsername(nameSelected.toString()).then((result) => {
+      listOfTaggedUsers.push(result.email);
+      console.log(listOfTaggedUsers)
+    }).catch((err) => {
+      console.log(err);
+    });
+    
     setSearchTerm("");
     setShowDropdown(false);
     setFilteredOptions([]);
     setStartLookingLocation(caption.length);
-    console.log(startLookingLocation);
+   
   };
 
   useEffect(() => {
@@ -220,6 +233,7 @@ const SearchSong = (props: ISearchSongProps) => {
                     This functionality calls to backend for User Document
                   */
                   if ((event.target.value as string) === "") {
+                    setListOfTaggedUsers([]);
                     setShowDropdown(false);
                   } else if ((event.target.value as string) !== "") {
                     const value = event.target.value;
@@ -288,6 +302,17 @@ const SearchSong = (props: ISearchSongProps) => {
                   if (!res) {
                     setPostFailOpen(true);
                   } else {
+                    listOfTaggedUsers.forEach(async element => {
+                      const notificationForAlerts: TNotification = {
+                        userEmailSender: user.email,
+                        userEmailReceiver: element,
+                        notificationType: "Follow",
+                        text: `${user.username} tagged you in a post!`,
+                      };
+                      await sendNotification(notificationForAlerts);
+                      console.log("Notification sent" + element);
+                    });
+
                     navigate("/profile");
                   }
                 })
