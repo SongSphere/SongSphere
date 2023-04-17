@@ -54,8 +54,8 @@ const PartyPage = () => {
   const [isSongOver, setIsSongOver] = useState<boolean>(false);
 
   const playNextSong = () => {
-    console.log("upnext: ", upNext);
-    console.log("queue: ", queueRef.current);
+    // console.log("upnext: ", upNext);
+    // console.log("queue: ", queueRef.current);
     if (upNext && queueRef.current) {
       console.log("playing the next song");
       setIsSongOver(false);
@@ -120,11 +120,10 @@ const PartyPage = () => {
         JSON.stringify(newQueue) !== JSON.stringify(queueRef.current) &&
         mounted
       ) {
-        console.log("queue has changed.");
         queueRef.current = newQueue;
 
-        console.log("newqueue", newQueue);
-        console.log("newQueue sliced", newQueue.slice(queueIndex + 1));
+        // console.log("newqueue", newQueue);
+        // console.log("newQueue sliced", newQueue.slice(queueIndex + 1));
 
         // Only update the songPlaying state if the queue was empty before
         if (!songPlaying) {

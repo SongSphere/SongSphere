@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 import selectService from "../../services/user/select-service";
@@ -29,6 +29,8 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
   const [service, setService] = useState<string>("");
   const [AMInstance, setAMInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
+  const playerRef = useRef<Spotify.Player | null>(null);
+  const getStatePositionRef = useRef<() => number>(() => 0);
 
   const playMusicHandler = () => {
     setIsPlaying(!isPlaying);
@@ -200,7 +202,9 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
           currState.updateTime = performance.now();
         });
 
-        const getStatePosition = () => {
+        playerRef.current = player;
+
+        getStatePositionRef.current = () => {
           if (currState.paused) {
             return currState.position
               ? (currState.position * 100) / currState.duration
@@ -214,22 +218,30 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
             ? (currState.duration * 100) / currState.duration
             : position;
         };
-
-        const interval = setInterval(() => {
-          const position = getStatePosition();
-          setProgress(position);
-
-          if (position > 98) {
-            console.log("song over");
-            props.setIsSongOver(true);
-            clearInterval(interval);
-          }
-        }, 300);
-
-        return () => clearInterval(interval);
       };
     }
-  }, [user, props.selectedSong]);
+  }, [user]);
+
+  useEffect(() => {
+    if (!playerRef.current || !song) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const position = getStatePositionRef.current();
+      setProgress(position);
+
+      if (position > 98) {
+        console.log("song over");
+        props.setIsSongOver(true);
+        clearInterval(interval);
+      }
+    }, 300);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [song]);
 
   return (
     <div className="flex h-[50%] mt-8 justify-center pb-5">
