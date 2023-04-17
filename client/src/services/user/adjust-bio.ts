@@ -1,19 +1,11 @@
-const adjustName = async (
-  username: string,
-  givenName: string,
-  middleName: string,
-  familyName: string
-): Promise<boolean> => {
+const adjustBio = async (bio: string): Promise<boolean> => {
   return new Promise<boolean>(async (resolve, reject) => {
     try {
-      await fetch(`${process.env.REACT_APP_API}/api/user/adjustNames`, {
+      await fetch(`${process.env.REACT_APP_API}/api/user/updateBio`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({
-          username: username,
-          givenName: givenName,
-          middleName: middleName,
-          familyName: familyName,
+          bio: bio,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -32,4 +24,4 @@ const adjustName = async (
   });
 };
 
-export default adjustName;
+export default adjustBio;

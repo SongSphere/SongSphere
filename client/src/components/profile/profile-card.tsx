@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Session from "../../session";
+import fetchAnalytics from "../../services/user/fetch-analytics";
 
 interface IProfileCardProps {
   openFollowingModal: Function;
@@ -8,6 +9,9 @@ interface IProfileCardProps {
 }
 
 const ProfileCard = (props: IProfileCardProps) => {
+  const [analytics, setAnalytics] = useState<number[]>([]);
+  const [analyticsOpen, setAnalyticsOpen] = useState(false);
+
   const user = Session.getUser();
   let navigate = useNavigate();
 
@@ -24,6 +28,18 @@ const ProfileCard = (props: IProfileCardProps) => {
 
   const handleOpenFollowing = () => {
     props.openFollowingModal();
+  };
+
+  const handleCloseAnalytics = (e: React.ChangeEvent<any>) => {
+    if (e.target.id === "modal-container") {
+      setAnalyticsOpen(false);
+    }
+  };
+
+  const handleOpenAnalytics = async () => {
+    setAnalyticsOpen(!analyticsOpen);
+    const a = await fetchAnalytics();
+    setAnalytics(a);
   };
 
   if (!user) {
@@ -63,6 +79,7 @@ const ProfileCard = (props: IProfileCardProps) => {
               {followingButtonText}
             </button>
           </div>
+          <div className="p-4 text-center">{user.biography}</div>
           <div className="flex justify-center gap-2">
             <button
               className="px-4 py-1 rounded-md bg-slate-700"
@@ -99,6 +116,37 @@ const ProfileCard = (props: IProfileCardProps) => {
             >
               My Playlist
             </button>
+
+            <button
+              className="px-4 py-1 rounded-md bg-slate-700"
+              onClick={() => {
+                handleOpenAnalytics();
+              }}
+            >
+              Post Analytics
+            </button>
+          </div>
+          <div className="flex justify-bottom">
+            {analyticsOpen ? (
+              <div
+                id="modal-container"
+                onClick={handleCloseAnalytics}
+                className="fixed inset-0 flex items-center justify-center bg-opacity-30 backdrop-blur-sm"
+              >
+                <div className="w-3/4 p-4 bg-slate-700 rounded-md grid grid-cols-4">
+                  <div className="col-span-3">Total Likes:</div>
+                  <div>{analytics[0]}</div>
+                  <div className="col-span-3">Average Likes:</div>
+                  <div>{analytics[1]}</div>
+                  <div className="col-span-3">Total Comments:</div>
+                  <div>{analytics[2]}</div>
+                  <div className="col-span-3">Average Comments:</div>
+                  <div>{analytics[3]}</div>
+                </div>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
       </div>

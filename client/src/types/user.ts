@@ -10,6 +10,7 @@ export type TUser = {
   emailVerified: Boolean;
   profileImgUrl: string;
   backgroundImgUrl: string;
+  biography: string;
   token: string;
   spotifyToken: string;
   spotifyTokenEndDate: Date;
@@ -19,13 +20,13 @@ export type TUser = {
   followers: string[];
   blockedUsers: string[];
   blockedBy: string[];
-  onboarded: Boolean;
-  isPrivate: Boolean;
+  onboarded: boolean;
+  isPrivate: boolean;
   likes: string[];
   defaultPlatform: string;
-  showRandomSong: Boolean;
+  showRandomSong: boolean;
   currentlyPlayingSong: TMusicContent;
-  showPlayingSong: Boolean;
+  showPlayingSong: boolean;
   partyRoom: string;
 };
 

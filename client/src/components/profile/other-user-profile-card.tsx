@@ -120,8 +120,8 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
               </div>
             </div>
           </div>
-          <div className="mt-6 text-2xl text-center">{`${user.givenName} ${user.middleName} ${user.familyName}`}</div>
-          <div className="text-center">{user.username}</div>
+          <div className="mt-6 text-2xl text-center">{`${props.selectedUser.givenName} ${props.selectedUser.middleName} ${props.selectedUser.familyName}`}</div>
+          <div className="text-center">{props.selectedUser.username}</div>
         </div>
         <div className="pb-5 font-semibold text-white rounded-b-lg bg-slate-800">
           <div className="flex justify-center w-full pt-2 pb-2 font-bold">
@@ -135,6 +135,7 @@ const OtherUserProfileCard = (props: IProfileCardProps) => {
               {props.selectedUser.following.length} following
             </button>
           </div>
+          <div className="p-4 text-center">{props.selectedUser.biography}</div>
           <div className="flex justify-center">
             {isFollowing ? (
               <button

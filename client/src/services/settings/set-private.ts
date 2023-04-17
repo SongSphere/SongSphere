@@ -3,7 +3,7 @@
     This helps communicate with backend for the public account 
 */
 
-const SetVisibilityPublic = async (email: string | undefined) => {
+const setPrivate = async (visibility: Boolean) => {
   return new Promise<Boolean>(async (resolve, reject) => {
     await fetch(`${process.env.REACT_APP_API}/api/user/visibility`, {
       method: "POST",
@@ -12,16 +12,16 @@ const SetVisibilityPublic = async (email: string | undefined) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        isPrivate: false,
+        isPrivate: visibility,
       }),
     })
       .then(async (res) => {
-        resolve(true)
+        resolve(true);
       })
       .catch((error) => {
-        reject(false)
+        reject(false);
       });
-  })
+  });
 };
 
-export default SetVisibilityPublic;
+export default setPrivate;
