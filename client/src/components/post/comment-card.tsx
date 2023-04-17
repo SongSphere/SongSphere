@@ -38,7 +38,8 @@ const CommentCard = (props: ICommentCardProps) => {
           <a href={`/user/${props.user.username}`}>
             <div className="font-bold">{props.comment.username}</div>
           </a>
-          <div>{props.comment.text}</div>
+          <div>{props.comment.text}</div> 
+          {/* something here */}
           <div className="flex">
             <LikeButton
               id={props.comment._id}

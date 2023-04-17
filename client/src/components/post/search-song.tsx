@@ -52,28 +52,24 @@ const SearchSong = (props: ISearchSongProps) => {
   let navigate = useNavigate();
 
   const [showDropdown, setShowDropdown] = useState(false);
+  const [filteredOptions, setFilteredOptions] = useState<string[]>([]);
+  const [stringToRemove, setStringToRemove] = useState<string>("");
+  const [startLookingLocation, setStartLookingLocation] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleInputChange = (e: { target: { value: any } }) => {
-    const value = e.target.value;
-    setCaption(value);
-
-    // Detect "@" symbol
-    
-    if (value.includes("@") && value.endsWith("@")) {
-      setShowDropdown(true);
-      // Fetch or update dropdown data based on input value
-      // e.g. fetch usernames from API or filter suggestions from local data
-    } else {
-      setShowDropdown(false);
-    }
-  };
 
   const handleDropdownSelection = (
-    selectedItem: React.SetStateAction<string>
+    nameSelected: React.SetStateAction<string>
   ) => {
     // Handle dropdown selection
-    setCaption(caption + "" + selectedItem);
+    const newCommentContent = caption.replace(stringToRemove, "");
+    setStringToRemove(""); // reset the string to remove
+    setCaption(newCommentContent + "" + nameSelected); // Auto fill
+    setSearchTerm("");
     setShowDropdown(false);
+    setFilteredOptions([]);
+    setStartLookingLocation(caption.length);
+    console.log(startLookingLocation);
   };
 
   useEffect(() => {
@@ -100,7 +96,6 @@ const SearchSong = (props: ISearchSongProps) => {
     if (user) {
       if (user.followers) {
         setFollowers(user.followers);
-        
       }
     }
   }, [user]);
@@ -215,40 +210,61 @@ const SearchSong = (props: ISearchSongProps) => {
           <h1 className="text-xl text-navy">{selected?.artist}</h1>
           <form className="mt-5">
             <label>
-              {/* <input
-                type="text"
-                value={caption}
-                placeholder={"Enter a caption"}
-                onChange={(e) => {
-                  setCaption(e.target.value);
-                }}
-              /> */}
               <input
                 type="text"
                 value={caption}
-                onChange={handleInputChange}
+                //onChange={handleInputChange}
+                onChange={async (event) => {
+                  /*
+                    This functionality calls to backend for User Document
+                  */
+                  if ((event.target.value as string) === "") {
+                    setShowDropdown(false);
+                  } else if ((event.target.value as string) !== "") {
+                    const value = event.target.value;
+                    setCaption(value);
+
+                    const valueToMatch = value.slice(startLookingLocation);
+                    // Step 3: Apply regular expression to extracted substring
+                    const regex = /@(\S+)/; // Replace with your desired regular expression
+                    const match = valueToMatch.match(regex);
+
+                    if (match && match[1]) {
+                      const selectedItem = match[1]; // Extract string after "@" symbol
+                      setShowDropdown(true);
+
+                      setSearchTerm(selectedItem); // search term is the matched string
+
+                      const filtered = followers.filter((option) =>
+                        option.includes(selectedItem)
+                      );
+
+                      setFilteredOptions(filtered); // sets to only show the item with matched string
+                      setStringToRemove(selectedItem);
+
+                      setSearchTerm("");
+                    } else {
+                      setShowDropdown(false);
+                    }
+                  }
+                }}
                 placeholder="Type '@' to mention someone..."
               />
               {showDropdown && (
                 <ul className="w-[40%] mt-3 mx-auto">
-                {followers.map((s) => (
-                  <div className="grid w-full grid-flow-col">
-                    <button
-                      className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
-                      key={s}
-                      onClick={() => handleDropdownSelection(s)}
-                    >
-                      <div className="flex text-center w-[75%]">
-    
-                        {s}
-                   
-                      </div>
-                    </button>
-                  </div>
-                ))}
-              </ul>
+                  {filteredOptions.map((s) => (
+                    <div className="grid w-full grid-flow-col">
+                      <button
+                        className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
+                        key={s}
+                        onClick={() => handleDropdownSelection(s)}
+                      >
+                        <div className="flex text-center w-[75%]">{s}</div>
+                      </button>
+                    </div>
+                  ))}
+                </ul>
               )}
-     
             </label>
           </form>
         </div>
@@ -260,7 +276,7 @@ const SearchSong = (props: ISearchSongProps) => {
                 username: user.username,
                 userEmail: user.email,
                 caption: caption,
-              
+
                 music: selected!,
                 comments: [],
                 likes: 0,

@@ -105,7 +105,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             type="text"
             placeholder="Type ur comment here!"
             name="name"
-            id="myInput"
             value={commentContent}
 
             //onChange={handleInputChange}
