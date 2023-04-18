@@ -115,8 +115,8 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
           </div>
         </div>
         <SearchSongPartyRoom />
-        {/* 
-        {props.song ? (
+
+        {/* {props.song ? (
           <SearchSongPartyRoom song={props.song.name} />
         ) : (
           <SearchSongPartyRoom />

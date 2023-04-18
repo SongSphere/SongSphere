@@ -26,7 +26,7 @@ const SpotifySearch = async (
 };
 
 interface ISearchSongProps {
-  // song?: string;
+  song?: string;
 }
 
 const SearchSongPartyRoom = (props: ISearchSongProps) => {

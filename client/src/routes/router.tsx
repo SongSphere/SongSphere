@@ -21,6 +21,7 @@ import CreateRoomPage from "../pages/party/enter-room-page";
 import PartyPage from "../pages/party/party-page";
 import SettingsPage from "../pages/settings-page";
 import Page404 from "../components/party-room/404";
+import PartyPageOld from "../pages/party/part-room-old";
 
 const Router = () => {
   let element = useRoutes([
@@ -94,7 +95,8 @@ const Router = () => {
     },
     {
       path: "/party/:id",
-      element: <PartyPage />,
+      // element: <PartyPage />,
+      element: <PartyPageOld />,
     },
   ]);
   return element;

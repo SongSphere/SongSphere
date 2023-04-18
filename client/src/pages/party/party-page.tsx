@@ -14,20 +14,10 @@ import { TUser } from "../../types/user";
 import PartyInfoCard from "./party-info-card";
 
 const PartyPage = () => {
-  const left = <div>left</div>;
-  const middle = <div>middle</div>;
-  const right = <div>right</div>;
   const { id } = useParams();
 
-  // const [isLoading, setIsLoading] = useState(true);
   const [currentlyPlayingSong, setCurrentlyPlayingSong] =
     useState<TMusicContent | null>(null);
-  const [showListenersModal, setShowListenersModal] = useState(false);
-  const [partyFailOpen, setPartyFailOpen] = useState(false);
-  const [showFollowingModal, setShowFollowingModal] = useState(false);
-  const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
-
-  const [queue, setQueue] = useState<TMusicContent[] | null>(null);
   const [upNext, setUpNext] = useState<TMusicContent[] | null>(null);
   const upNextRef = useRef<TMusicContent[] | null>(null);
   const queueRef = useRef<TMusicContent[] | null>(null);
@@ -39,6 +29,7 @@ const PartyPage = () => {
     let mounted = true;
 
     const updateQueue = async () => {
+      console.log("called updated Queue");
       let newQueue;
 
       if (id) {
@@ -51,6 +42,7 @@ const PartyPage = () => {
         mounted
       ) {
         queueRef.current = newQueue;
+        console.log(newQueue);
         // Only update the songPlaying state if the queue was empty before
         if (!songPlaying) {
           setSongPlaying(newQueue[0]);
@@ -59,7 +51,6 @@ const PartyPage = () => {
         setUpNext(newQueue.slice(queueIndex + 1));
       }
     };
-
     const interval = setInterval(updateQueue, 500);
 
     return () => {
@@ -118,7 +109,6 @@ const PartyPage = () => {
   const [room, setRoom] = useState<TPartyRoom | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
-  const [song, setSong] = useState<TMusicContent | null>(null);
 
   useEffect(() => {
     setUser(Session.getUser());
