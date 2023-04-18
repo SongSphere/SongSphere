@@ -15,7 +15,7 @@ const PartyRoomLayout = (props: IMainLayoutProps) => {
 
       <div className="relative h-screen gap-2 lg:grid lg:grid-cols-4">
         <div className="pt-16 lg:pt-24 lg:h-screen">
-          <div className="bg-red-300 lg:h-full">{props.left}</div>
+          <div className="lg:h-full">{props.left}</div>
         </div>
         <div className="lg:overflow-y-auto h-3/4 lg:row-span-2 no-scrollbar lg:pt-24 lg:h-screen lg:col-span-2">
           <div className="bg-green-300 lg:h-full">{props.middle}</div>

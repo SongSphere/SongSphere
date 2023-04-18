@@ -42,33 +42,62 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
   const ERROR_MSG = "Oh no! An error occurs when deleting a member";
 
   return (
-    <div className="relative flex justify-center col-span-1 px-2">
-      <div className="absolute flex h-[95%] mt-8 w-[90%]">
-        <div className="w-full bg-white rounded-lg h-5/6 drop-shadow-md">
-          <div className="">
-            <h1 className="text-3xl text-center text-navy">
-              Name:{props.room.partyName}
-            </h1>
-            <h1 className="text-3xl text-center text-navy">
-              Description: {props.room.description}
-            </h1>
-            <h1 className="text-3xl text-center text-navy">
-              Owner: {props.room.ownerUsername}
-            </h1>
+    <div className="w-full h-full p-4">
+      <div className="pb-10 bg-white rounded-lg">
+        <h3 className="pt-10 text-3xl font-semibold text-center">
+          Profile Settings
+        </h3>
+        <div className="p-4">
+          <h1 className="text-navy">
+            <span className="font-semibold">Name: </span>
+            {props.room.partyName}
+          </h1>
+          <h1 className="text-navy">
+            <span className="font-semibold">Description: </span>
+            {props.room.description}
+          </h1>
+          <h1 className="text-navy">
+            <span className="font-semibold">Owner: </span>
+            {props.room.ownerUsername}
+          </h1>
+          <div className="flex flex-wrap gap-2 mt-2">
             <button
-              className="p-3 ml-3 text-white bg-navy rounded-xl top-13"
+              className="px-2 py-1 rounded-lg bg-sky-300 hover:bg-sky-400 drop-shadow-lg"
+              onClick={() => handleOpenListen()}
+            >
+              View Listeners
+            </button>
+            {props.room.ownerUsername === props.user.username && (
+              <button
+                className="px-2 py-1 rounded-lg bg-sky-300 hover:bg-sky-400 drop-shadow-lg"
+                onClick={() => {
+                  if (props.room && props.id) {
+                    fetchRoomById(props.id).then((res) => {
+                      if (res) {
+                        handleFollowingOpen();
+                        setPartyRoom(res);
+                      } else {
+                        alert("Room does not exist");
+                      }
+                    });
+                  }
+                }}
+              >
+                Find User To Invite
+              </button>
+            )}
+            <button
+              className="px-2 py-1 rounded-lg bg-sky-300 hover:bg-sky-400 drop-shadow-lg"
               onClick={async () => {
                 if (props.user.username === props.room.ownerUsername) {
                   await DeleteRoom(props.room).then(() => {
                     navigate("/");
-                    // window.location.reload();
                   });
                 } else {
                   await DeleteMember(props.room, props.user.username).then(
                     (res) => {
                       if (res) {
                         navigate(`/`);
-                        window.location.reload();
                       } else {
                         <FailPopUp
                           open={removeMemberFailOpen}
@@ -83,60 +112,29 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
             >
               Exit
             </button>
-
-            <button
-              className="p-3 ml-3 text-white bg-navy rounded-xl top-13 "
-              onClick={() => handleOpenListen()}
-            >
-              View Listeners
-            </button>
-
-            <ListenerList
-              listeners={props.room.members}
-              isVisible={showListenersModal}
-              onClose={handleCloseListen}
-              room={props.room}
-            />
-            <SearchUserForInvite
-              following={props.user.following}
-              isVisible={showFollowingModal}
-              onClose={handleFollowingClose}
-              roomId={props.id}
-              room={props.room}
-            />
-
-            <button
-              className="p-3 ml-3 text-white rounded-xl bg-navy"
-              onClick={() => {
-                if (props.room && props.id) {
-                  fetchRoomById(props.id).then((res) => {
-                    if (res) {
-                      if (res.ownerUsername === props.user.username) {
-                        handleFollowingOpen();
-                        setPartyRoom(res);
-                      } else {
-                        console.log("You are not the owner of this party");
-                      }
-                    } else {
-                      alert("Room does not exist");
-                    }
-                  });
-                }
-              }}
-            >
-              Find User To Invite
-            </button>
-          </div>
-
-          <div className="w-full h-96">
-            {props.song ? (
-              <SearchSongPartyRoom song={props.song.name} />
-            ) : (
-              <SearchSongPartyRoom />
-            )}
           </div>
         </div>
+        <div className="w-full h-96">
+          {props.song ? (
+            <SearchSongPartyRoom song={props.song.name} />
+          ) : (
+            <SearchSongPartyRoom />
+          )}
+        </div>
       </div>
+      <ListenerList
+        listeners={props.room.members}
+        isVisible={showListenersModal}
+        onClose={handleCloseListen}
+        room={props.room}
+      />
+      <SearchUserForInvite
+        following={props.user.following}
+        isVisible={showFollowingModal}
+        onClose={handleFollowingClose}
+        roomId={props.id}
+        room={props.room}
+      />
     </div>
   );
 };

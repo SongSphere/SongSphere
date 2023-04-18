@@ -18,7 +18,7 @@ import LikesPage from "../pages/likes-page";
 import RecentsPage from "../pages/recents-page";
 import PlaylistPage from "../pages/playlist-page";
 import CreateRoomPage from "../pages/party/enter-room-page";
-import PartyPage from "../pages/party-page";
+import PartyPage from "../pages/party/party-page";
 import SettingsPage from "../pages/settings-page";
 import Page404 from "../components/party-room/404";
 import PartyRoomPage from "../pages/party/new-party-room-page";

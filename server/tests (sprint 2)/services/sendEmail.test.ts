@@ -32,7 +32,7 @@ describe("Testing send email services", () => {
 
     test("Testing send email", async () => {
 
-        sendInvitationEmail();
+        sendInvitationEmail("something" , "David", "davidcollegeadmission@gmail.com");
         
         expect(0).toContain(0);
     });

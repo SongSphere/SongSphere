@@ -93,6 +93,7 @@ const RepostPage = () => {
                   likes: 0,
                   repost: true,
                   comments: [],
+                  taggedUsers: [],
                 };
                 await sendPost(newPost)
                   .then(async (res) => {

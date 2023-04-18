@@ -28,6 +28,7 @@ export const createPost = async (
     },
     repost: newPost.repost,
     likes: newPost.likes,
+    taggedUsers: newPost.taggedUsers,
   });
 
   return post;
