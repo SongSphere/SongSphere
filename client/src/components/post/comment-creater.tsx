@@ -43,7 +43,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
     setShowDropdown(false);
     setFilteredOptions([]);
     setStartLookingLocation(commentContent.length);
-    console.log(startLookingLocation);
   };
 
   return (

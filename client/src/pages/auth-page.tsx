@@ -11,7 +11,6 @@ const AuthPage = (props: IAuthPageProps) => {
 
   useEffect(() => {
     const user = Session.getUser();
-    console.log("debug", user);
     if (user != null) {
       navigate("/");
     }

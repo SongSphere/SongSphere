@@ -61,7 +61,6 @@ const SearchSong = (props: ISearchSongProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [listOfTaggedUsers, setListOfTaggedUsers] = useState<string[]>([]);
 
-
   const handleDropdownSelection = (
     nameSelected: React.SetStateAction<string>
   ) => {
@@ -71,19 +70,13 @@ const SearchSong = (props: ISearchSongProps) => {
     setCaption(newCommentContent + "" + nameSelected); // Auto fill
 
     // This fetches the user name
+    listOfTaggedUsers.push(nameSelected.toString());
 
-    fetchUserByUsername(nameSelected.toString()).then((result) => {
-      listOfTaggedUsers.push(result.email);
-      console.log(listOfTaggedUsers)
-    }).catch((err) => {
-      console.log(err);
-    });
-    
+
     setSearchTerm("");
     setShowDropdown(false);
     setFilteredOptions([]);
     setStartLookingLocation(caption.length);
-   
   };
 
   useEffect(() => {
@@ -302,15 +295,17 @@ const SearchSong = (props: ISearchSongProps) => {
                   if (!res) {
                     setPostFailOpen(true);
                   } else {
-                    listOfTaggedUsers.forEach(async element => {
-                      const notificationForAlerts: TNotification = {
-                        userEmailSender: user.email,
-                        userEmailReceiver: element,
-                        notificationType: "Follow",
-                        text: `${user.username} tagged you in a post!`,
-                      };
-                      await sendNotification(notificationForAlerts);
-                      console.log("Notification sent" + element);
+                    listOfTaggedUsers.forEach(async (element) => {
+                      fetchUserByUsername(element).then(async (res) => {
+                        const notificationForAlerts: TNotification = {
+                          userEmailSender: user.email,
+                          userEmailReceiver: res.email,
+                          notificationType: "Follow",
+                          text: `${user.username} tagged you in a post!`,
+                        };
+                        await sendNotification(notificationForAlerts);
+  
+                      });
                     });
 
                     navigate("/profile");

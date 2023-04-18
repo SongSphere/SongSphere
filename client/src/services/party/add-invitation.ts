@@ -13,10 +13,8 @@ const AddInvitation = async (roomId: string , username: string) => {
         },
       }).then((res) => {
         if (res.status == 201) {
-          console.log("Invitation added");
           resolve(true);
         } else {
-          console.log("Invitation not added");
           reject(false);
         }
       });

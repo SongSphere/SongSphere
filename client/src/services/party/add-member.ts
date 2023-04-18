@@ -16,10 +16,10 @@ const AddMember = async (roomId: string, username: string) => {
           },
         }).then((res) => {
             if (res.status == 201) {
-              console.log("Member added");
+
               resolve(true);
             } else {
-              console.log("Member not added");
+
               reject(false);
             }
         });

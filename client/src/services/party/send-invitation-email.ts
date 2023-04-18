@@ -18,10 +18,8 @@ const SendInvitationEmail = async (
         },
       }).then((res) => {
         if (res.status == 201) {
-          console.log("Invitation email sent");
           resolve(true);
         } else {
-          console.log("Invitation email not sent");
           reject(false);
         }
       });
