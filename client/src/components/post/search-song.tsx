@@ -220,14 +220,16 @@ const SearchSong = (props: ISearchSongProps) => {
               <input
                 type="text"
                 value={caption}
-                //onChange={handleInputChange}
+       
                 onChange={async (event) => {
                   /*
                     This functionality calls to backend for User Document
                   */
+                 
                   if ((event.target.value as string) === "") {
                     setListOfTaggedUsers([]);
                     setShowDropdown(false);
+                    setCaption("");
                   } else if ((event.target.value as string) !== "") {
                     const value = event.target.value;
                     setCaption(value);
