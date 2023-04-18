@@ -155,12 +155,9 @@ const PartyPage = () => {
     if (user && room?._id) {
       if (!room.members.includes(user.username)) {
         AddMember(room._id, user.username);
-        window.location.reload();
       }
     }
-  });
 
-  useEffect(() => {
     if (user && id) {
       user.partyRoom = id;
     }
