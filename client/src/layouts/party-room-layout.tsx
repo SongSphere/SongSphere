@@ -6,7 +6,7 @@ interface IMainLayoutProps {
   right: JSX.Element;
 }
 
-const MainLayout = (props: IMainLayoutProps) => {
+const PartyRoomLayout = (props: IMainLayoutProps) => {
   return (
     <div className="w-full h-full min-h-screen bg-slate-900 min-w-screen">
       <div className="fixed z-10">
@@ -18,10 +18,11 @@ const MainLayout = (props: IMainLayoutProps) => {
           <div className="lg:h-full">{props.left}</div>
         </div>
         <div className="lg:overflow-y-auto h-3/4 lg:row-span-2 no-scrollbar lg:pt-24 lg:h-screen lg:col-span-2">
-          <div className=" lg:h-full">{props.middle}</div>
+          <div className="lg:h-full">{props.middle}</div>
         </div>
         <div className="lg:pt-24 lg:h-screen">
-          <div className="fixed bottom-0 w-full bg-slate-900 lg:static lg:h-full">
+          {/* <div className="lg:h-1/2"> */}
+          <div className="fixed bottom-0 w-full lg:static lg:h-full">
             {props.right}
           </div>
         </div>
@@ -30,4 +31,4 @@ const MainLayout = (props: IMainLayoutProps) => {
   );
 };
 
-export default MainLayout;
+export default PartyRoomLayout;
