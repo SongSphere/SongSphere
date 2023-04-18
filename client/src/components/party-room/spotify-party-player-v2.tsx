@@ -174,16 +174,6 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
         });
 
         player.addListener("player_state_changed", (state) => {
-          // if (
-          //   currStateRef.current &&
-          //   !currStateRef.current.paused &&
-          //   state.paused &&
-          //   state.position === 0
-          // ) {
-          //   console.log("Track ended");
-          //   props.setIsSongOver(true);
-          // }
-
           if (
             currStateRef.current &&
             state.track_window.previous_tracks.find(
