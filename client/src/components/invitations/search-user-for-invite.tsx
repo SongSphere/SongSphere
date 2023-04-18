@@ -22,7 +22,6 @@ interface ISearchUserForInviteProps {
 const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
   const [following, setFollowing] = useState(props.following);
   const [isInvited, setIsInvited] = useState<Boolean>(false);
-  const [room, setRoom] = useState<TPartyRoom | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
@@ -85,7 +84,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                     let filteredUsers: Array<string> = Array<string>();
                     let filteredUsersStatus: Array<Boolean> = Array<Boolean>();
 
-                  //  let fusers: Array<TUserInvite> = Array<TUserInvite>();
+                    //  let fusers: Array<TUserInvite> = Array<TUserInvite>();
 
                     props.following.forEach((u) => {
                       if (u.startsWith(event.target.value as string)) {
@@ -96,9 +95,8 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                           console.log(u);
                           props.room.invitedMembers.forEach((invitedUser) => {
                             if (invitedUser == u) {
-                          
                               setIsInvited(true);
-                            //  filteredUsersStatus.push(true);
+                              //  filteredUsersStatus.push(true);
                             }
                           });
                         }
@@ -106,7 +104,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                     });
 
                     setFollowing(filteredUsers);
-                 //   setIsInvited(filteredUsersStatus[0]);
+                    //   setIsInvited(filteredUsersStatus[0]);
                     console.log(isInvited);
                   }
                 }}
@@ -117,7 +115,6 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
               <div className="overflow-y-auto max-h-[45vh]">
                 {following.length > 0 ? (
                   following.map((userName) => {
-               
                     return (
                       <div className="flex">
                         <div className="flex-1 inline-block text-left">
@@ -135,13 +132,14 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                                     className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
                                     onClick={async () => {
                                       if (props.roomId) {
-                                        await removeInvitation(props.roomId, userName);
+                                        await removeInvitation(
+                                          props.roomId,
+                                          userName
+                                        );
                                         handleInviteClick();
                                       } else {
                                         console.log("The room does not exist");
                                       }
-
-                                     
                                     }}
                                   >
                                     Invited
@@ -155,8 +153,6 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                                           props.roomId,
                                           userName
                                         );
-
-                                    
 
                                         if (user) {
                                           const receiverEmail = (
@@ -189,8 +185,6 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
 
                                         handleInviteClick();
                                       }
-
-                                      
                                     }}
                                   >
                                     Invite
