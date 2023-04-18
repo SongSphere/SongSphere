@@ -14,7 +14,7 @@ import { TUser } from "../../types/user";
 interface IPartyInfoCardProps {
   room: TPartyRoom;
   user: TUser;
-  song: TMusicContent | null;
+  // song: TMusicContent | null;
   id: string;
 }
 
@@ -114,11 +114,13 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
             </button>
           </div>
         </div>
+        <SearchSongPartyRoom />
+        {/* 
         {props.song ? (
           <SearchSongPartyRoom song={props.song.name} />
         ) : (
           <SearchSongPartyRoom />
-        )}
+        )} */}
       </div>
       <ListenerList
         listeners={props.room.members}

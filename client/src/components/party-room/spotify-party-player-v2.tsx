@@ -214,17 +214,26 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
   }, [song, user, deviceId]);
 
   return (
-    <div className="flex h-[50%] mt-8 justify-center pb-5">
-      <div className="bg-white rounded-lg w-[90%] h-full drop-shadow-md p-4 flex flex-col items-center justify-between">
-        <img className="w-1/2 mt-5 h-1/2" src={song?.img}></img>
-        <div className="text-lg font-semibold text-center">{song?.name}</div>
-        <div className="w-full h-1 mb-2 bg-neutral-200 dark:bg-neutral-600">
-          <div
-            className={`h-1 bg-red-400`}
-            style={{
-              width: `${progress}%`,
-            }}
-          ></div>
+    <div className="flex flex-row justify-center h-full text-white lg:flex-col">
+      <div className="flex w-1/2 p-4 lg:w-full">
+        <img className="w-24 h-24" src={song?.img}></img>
+        <div className="pl-2">
+          <div className="text-2xl font-semibold ">{song?.name}</div>
+          {song?.artists.map((artist) => {
+            return <p className="text-white">{artist}</p>;
+          })}
+        </div>
+      </div>
+      <div className="w-1/2 p-4 lg:w-full">
+        <div className="flex flex-col mt-4 place-items-center">
+          <div className="w-4/5 h-1 mt-5 bg-neutral-200 dark:bg-neutral-600">
+            <div
+              className={`h-1 bg-red-400`}
+              style={{
+                width: `${progress}%`,
+              }}
+            ></div>
+          </div>
         </div>
       </div>
     </div>

@@ -26,7 +26,7 @@ const SpotifySearch = async (
 };
 
 interface ISearchSongProps {
-  song?: string;
+  // song?: string;
 }
 
 const SearchSongPartyRoom = (props: ISearchSongProps) => {
@@ -47,20 +47,19 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
     setAMInstance(Session.getAMInstance());
   }, [Session.getUser()]);
 
-  useEffect(() => {
-    if (user) {
-      if (props.song && user) {
-        selectService(props.song, "songs", 1).then((result) => {
-          setCategory("songs");
-          songs = result!;
-          setSongs(result!);
-          if (result) {
-            setSelected(result[0]);
-          }
-        });
-      }
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     if (props.song && user) {
+  //       selectService(props.song, "songs", 1).then((result) => {
+  //         setCategory("songs");
+  //         setSongs(result!);
+  //         if (result) {
+  //           setSelected(result[0]);
+  //         }
+  //       });
+  //     }
+  //   }
+  // }, [user]);
 
   const selectService = async (
     term: string,
