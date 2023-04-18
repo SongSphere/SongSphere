@@ -41,6 +41,7 @@ const PartyPage = () => {
   const [added, setAdded] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const handleFollowingClose = () => {
     setShowFollowingModal(false);
@@ -64,28 +65,29 @@ const PartyPage = () => {
   useEffect(() => {
     if (id) {
       fetchRoomById(id).then((res) => {
+        setLoading(false);
         if (res == null) {
           navigate("/404");
         }
-
         setRoom(res);
+
+        if (user && room?._id) {
+          if (!room.members.includes(user.username)) {
+            AddMember(room._id, user.username);
+            window.location.reload();
+          }
+        }
+
+        if (user && id) {
+          user.partyRoom = id;
+        }
       });
     }
   }, []);
 
-  useEffect(() => {
-    if (user && room?._id) {
-      if (!room.members.includes(user.username)) {
-        AddMember(room._id, user.username);
-        window.location.reload();
-      }
-    }
-  });
-  useEffect(() => {
-    if (user && id) {
-      user.partyRoom = id;
-    }
-  });
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!user) {
     return <div>fetching user</div>;
@@ -220,7 +222,6 @@ const PartyPage = () => {
                             handleFollowingOpen();
                             setPartyRoom(res);
                           } else {
-   
                           }
                         } else {
                           alert("Room does not exist");
