@@ -37,6 +37,11 @@ export const createPost = async (
 export const fetchPostsByUsername = async (username: string) => {
   try {
     const posts = await Post.find({ username: username });
+
+    posts.sort(function (a, b) {
+      return b.get("createdAt") - a.get("createdAt");
+    });
+
     return posts;
   } catch (error) {
     throw error;
