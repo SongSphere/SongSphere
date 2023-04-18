@@ -120,6 +120,7 @@ export const comment = async (
     text: newComment.text,
     subComments: newComment.subComments,
     like: 0,
+    taggedUsers: newComment.taggedUsers,
   });
 
   if (replyingTo.length == 0) {

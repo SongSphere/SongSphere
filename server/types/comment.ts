@@ -3,7 +3,7 @@ export type TComment = {
   username: string;
   userEmail: string;
   text: string;
-  like: number; 
+  like: number;
   subComments?: string[];
-  
+  taggedUsers: Array<string>;
 };
