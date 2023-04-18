@@ -3,11 +3,8 @@ import { useEffect } from "react";
 import appleSearch from "../../services/apple/apple-search";
 import { TMusicContent } from "../../types/music-content";
 import { spotifySearch } from "../../services/spotify/spotify-search";
-import sendPost from "../../services/post/send-post";
 import { TUser } from "../../types/user";
-import Popup from "reactjs-popup";
 import Session from "../../session";
-import { TPost } from "../../types/post";
 import addQueue from "../../services/party/add-queue";
 
 const AppleSearch = async (
@@ -29,7 +26,6 @@ const SpotifySearch = async (
 };
 
 interface ISearchSongProps {
-  // musicInstance: MusicKit.MusicKitInstance;
   song?: string;
 }
 
@@ -44,9 +40,6 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
   const [open2, setOpen2] = React.useState(false);
   const [AMInstance, setAMInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
-  const [postSuccessFail, setPostSuccessFail] = React.useState<JSX.Element>();
-  const [caption, setCaption] = useState<string>("");
-  const isRepost = false;
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -85,62 +78,55 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
     }
   };
 
-  const closeModal = () => setOpen2(false);
-
-  const handleOpen = () => {
-    setOpen(!open);
-  };
-  const handleOpen2 = () => {
-    setOpen2(!open2);
-  };
-
   return (
-    <div className=" max-w-[95%]">
-      <div className="flex flex-col h-full col-span-2 mt-5 ml-5 bg-lgrey rounded-2xl">
-        <h1 className="pt-4 text-4xl text-center text-navy">Search For</h1>
-        <div className="grid justify-center w-full grid-flow-col pb-2 mt-5s">
+    <div className="p-4">
+      <div className="flex">
+        <div className="relative w-2/3">
           <input
-            placeholder="Enter Song Title"
-            onChange={(event) =>
+            className="w-full border-b-2 outline-none border-b-lgrey"
+            placeholder="Enter Song Name"
+            value={song}
+            onChange={(event) => {
+              setSong(event.target.value);
               selectService(event.target.value as string, category, 8).then(
                 (result) => {
-                  setSong(event.target.value);
-                  songs = result!;
                   setSongs(result!);
                 }
-              )
-            }
+              );
+            }}
           />
-        </div>
-        <div className="overflow-y-auto" style={{ maxHeight: "300px" }}>
-          <div className="w-[90%] mt-3 mx-auto">
-            {songs.map((s) => (
-              <div className="grid w-full grid-flow-col">
-                <button
-                  className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
-                  key={s.id}
-                  onClick={() => setSelected(s)}
-                >
-                  <div className="flex text-center w-[100%] text-sm">
-                    <div className="w-10 h-10 ">
-                      <img src={s.cover} />
+          <div className="w-full ">
+            <div className="absolute overflow-y-auto max-h-40 no-scrollbar">
+              {songs.map((s) => (
+                <div className="grid w-full grid-flow-col">
+                  <button
+                    className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
+                    key={s.id}
+                    onClick={() => {
+                      setSelected(s);
+                      setSongs([]);
+                      if (s.name) {
+                        setSong(s.name);
+                      }
+                    }}
+                  >
+                    <div className="flex w-full text-sm text-center">
+                      <div className="w-10 h-10 ">
+                        <img src={s.cover} />
+                      </div>
+                      {s.name}
+                      <br />
+                      {s.artist}
                     </div>
-                    {s.name}
-                    <br />
-                    {s.artist}
-                  </div>
-                </button>
-              </div>
-            ))}
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="justify-center pt-2 pl-5">
-          <div className="grid-flow-col text-center">
-            <h1 className="text-2xl text-navy">{selected?.name}</h1>
-            <h1 className="text-xl text-navy">{selected?.artist}</h1>
-          </div>
+        <div className="w-1/3">
           <button
-            className="px-10 py-2 mb-2 mr-10 rounded-md text-lgrey bg-navy hover:bg-lblue"
+            className="px-2 py-1 ml-2 rounded-lg drop-shadow-lg bg-sky-300 hover:bg-sky-400"
             onClick={async () => {
               setOpen2(true);
               if (user) {
@@ -152,6 +138,17 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
           </button>
         </div>
       </div>
+      {selected && (
+        <div className="flex w-full text-sm">
+          <div className="w-1/5">
+            <img src={selected.cover} />
+          </div>
+          <div className="w-4/5 pl-2">
+            <div className="truncate">{selected.name}</div>
+            <div className="truncate">{selected.artist}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -43,7 +43,7 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
 
   return (
     <div className="w-full h-full p-4">
-      <div className="pb-10 bg-white rounded-lg">
+      <div className="pb-10 bg-white rounded-lg h-128">
         <h3 className="pt-10 text-3xl font-semibold text-center">
           Profile Settings
         </h3>
@@ -114,13 +114,11 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
             </button>
           </div>
         </div>
-        <div className="w-full h-96">
-          {props.song ? (
-            <SearchSongPartyRoom song={props.song.name} />
-          ) : (
-            <SearchSongPartyRoom />
-          )}
-        </div>
+        {props.song ? (
+          <SearchSongPartyRoom song={props.song.name} />
+        ) : (
+          <SearchSongPartyRoom />
+        )}
       </div>
       <ListenerList
         listeners={props.room.members}
