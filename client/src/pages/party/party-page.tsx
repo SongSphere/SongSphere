@@ -24,26 +24,19 @@ import PartyRoomChat from "../../components/party-room/party-chat";
 import RemoveInvitation from "../../services/party/remove-invitation";
 import fetchQueue from "../../services/party/fetch-queue";
 import SpotifyPartyRoomPlayerV2 from "../../components/party-room/spotify-party-player-v2";
+import PartyRoomLayout from "../../layouts/party-room-layout";
+import PartyInfoCard from "../../components/party-room/party-info-card";
 
 const PartyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
   let navigate = useNavigate();
 
-  const ERROR_MSG = "Oh no! An error occurs when deleting the party room";
-
   const [room, setRoom] = useState<TPartyRoom | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState<string>("");
   const [currentlyPlayingSong, setCurrentlyPlayingSong] =
     useState<TMusicContent | null>(null);
-  const [showListenersModal, setShowListenersModal] = useState(false);
-  const [partyFailOpen, setPartyFailOpen] = useState(false);
-  const [added, setAdded] = useState(false);
-  const [showFollowingModal, setShowFollowingModal] = useState(false);
-  const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
-
-  const [queue, setQueue] = useState<TMusicContent[] | null>(null);
   const [upNext, setUpNext] = useState<TMusicContent[] | null>(null);
   const upNextRef = useRef<TMusicContent[] | null>(null);
   const queueRef = useRef<TMusicContent[] | null>(null);
@@ -51,36 +44,23 @@ const PartyPage = () => {
   const [songPlaying, setSongPlaying] = useState<TMusicContent | null>(null);
   const [isSongOver, setIsSongOver] = useState<boolean>(false);
 
-  const handleFollowingClose = () => {
-    setShowFollowingModal(false);
-  };
-  const handleFollowingOpen = () => {
-    setShowFollowingModal(true);
-  };
-
-  const handleOpenListen = () => {
-    setShowListenersModal(true);
-  };
-  const handleCloseListen = () => {
-    setShowListenersModal(false);
-  };
-
   useEffect(() => {
     const playNextSong = () => {
-      if (upNextRef.current && queueRef.current) {
-        console.log(
-          "next song. index, upnext, queue: ",
-          queueIndex,
-          upNextRef.current,
-          queueRef.current
-        );
-        setIsSongOver(false);
+      if (isSongOver) {
+        if (upNextRef.current && queueRef.current) {
+          console.log("next song. index: ", queueIndex);
+          console.log("upnext", upNextRef.current);
+          console.log("current", queueRef.current);
 
-        upNextRef.current = queueRef.current.slice(queueIndex + 1);
-        setSongPlaying(upNextRef.current[0]);
+          setIsSongOver(false);
 
-        setUpNext(upNextRef.current.slice(1));
-        setQueueIndex(queueIndex + 1);
+          upNextRef.current = queueRef.current.slice(queueIndex + 1);
+          console.log("setting current song 1", upNextRef.current);
+          setSongPlaying(upNextRef.current[0]);
+
+          setUpNext(upNextRef.current.slice(1));
+          setQueueIndex(queueIndex + 1);
+        }
       }
     };
 
@@ -127,12 +107,9 @@ const PartyPage = () => {
         mounted
       ) {
         queueRef.current = newQueue;
-
-        // console.log("newqueue", newQueue);
-        // console.log("newQueue sliced", newQueue.slice(queueIndex + 1));
-
         // Only update the songPlaying state if the queue was empty before
         if (!songPlaying) {
+          console.log("setting current song 2", newQueue);
           setSongPlaying(newQueue[0]);
         }
         upNextRef.current = newQueue.slice(queueIndex + 1);
@@ -160,158 +137,165 @@ const PartyPage = () => {
     }
   });
 
-  if (isLoading || !user || !queueRef.current || !room) {
+  if (isLoading || !user || !queueRef.current || !room || !id) {
     return <div>Loading...</div>;
   }
 
-  if (!room || room.blocked.includes(user.username)) {
-    return (
-      <div className="h-screen w-full flex flex-col justify-center items-center bg-[#1A2238]">
-        <h1 className="font-extrabold tracking-widest text-white text-9xl">
-          404
-        </h1>
-        <div className="bg-[#FF6A3D] px-2 text-sm rounded rotate-12 absolute">
-          Page Not Found
-        </div>
-        <button className="mt-5">
-          <a className="relative inline-block text-sm font-medium text-[#FF6A3D] group active:text-orange-500 focus:outline-none focus:ring">
-            <span className="absolute inset-0 transition-transform translate-x-0.5 translate-y-0.5 bg-[#FF6A3D] group-hover:translate-y-0 group-hover:translate-x-0"></span>
-
-            <span
-              onClick={() => {
-                navigate(`/`);
-                user.partyRoom = "";
-              }}
-              className="relative block px-8 py-3 bg-[#1A2238] border border-current"
-            >
-              Go Home
-            </span>
-          </a>
-        </button>
-      </div>
-    );
-  }
-  return (
-    <div className="w-full h-full min-h-screen bg-lblue">
-      <Navbar />
-      <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
-        <div className="relative flex justify-center col-span-1 px-2">
-          <div className="flex h-[100%] mt-8 w-[90%]">
-            <div className="w-full h-full bg-white rounded-lg drop-shadow-md">
-              <div className="">
-                <h1 className="text-3xl text-center text-navy">
-                  Name:{room?.partyName}
-                </h1>
-                <h1 className="text-3xl text-center text-navy">
-                  Description: {room?.description}
-                </h1>
-                <h1 className="text-3xl text-center text-navy">
-                  Owner: {room?.ownerUsername}
-                </h1>
-                <button
-                  className="p-3 ml-3 text-white bg-navy rounded-xl top-13"
-                  onClick={async () => {
-                    if (user.username === room.ownerUsername) {
-                      await DeleteRoom(room).then(() => {
-                        navigate(`/`);
-                        window.location.reload();
-                      });
-                    } else {
-                      await DeleteMember(room, user.username).then((res) => {
-                        if (res) {
-                          navigate(`/`);
-                          window.location.reload();
-                        } else {
-                          <FailPopUp
-                            open={partyFailOpen}
-                            setOpen={setPartyFailOpen}
-                            failText={ERROR_MSG}
-                          />;
-                        }
-                      });
-                    }
-                  }}
-                >
-                  Exit
-                </button>
-
-                <button
-                  className="p-3 ml-3 text-white bg-navy rounded-xl top-13 "
-                  onClick={() => handleOpenListen()}
-                >
-                  View Listeners
-                </button>
-
-                <ListenerList
-                  listeners={room.members}
-                  isVisible={showListenersModal}
-                  onClose={handleCloseListen}
-                  room={room}
-                />
-                <SearchUserForInvite
-                  following={user.following}
-                  isVisible={showFollowingModal}
-                  onClose={handleFollowingClose}
-                  roomId={id}
-                  room={partyRoom}
-                />
-
-                <button
-                  className="p-3 ml-3 text-white rounded-xl bg-navy"
-                  onClick={() => {
-                    if (room && id) {
-                      fetchRoomById(id).then((res) => {
-                        if (res) {
-                          if (res.ownerUsername === user.username) {
-                            handleFollowingOpen();
-                            setPartyRoom(res);
-                          } else {
-                          }
-                        } else {
-                          alert("Room does not exist");
-                        }
-                      });
-                    }
-                  }}
-                >
-                  Find User To Invite
-                </button>
-              </div>
-
-              {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
-
-              {currentlyPlayingSong ? (
-                <SearchSongPartyRoom song={currentlyPlayingSong.name} />
-              ) : (
-                <SearchSongPartyRoom />
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="col-span-2">
-          <PartyRoomQueue
-            queueIndex={queueIndex}
-            currentlyPlayingSong={songPlaying}
-            upNextSongs={upNext}
-          />
-        </div>
-        <div className="relative flex-col justify-center ">
-          {service === "apple" ? (
-            <AppleMusicPartyRoomPlayerCard
-              selectedSong={currentlyPlayingSong}
-            />
-          ) : (
-            <SpotifyPartyRoomPlayerV2
-              isSongOver={isSongOver}
-              setIsSongOver={setIsSongOver}
-              selectedSong={songPlaying}
-            />
-          )}
-          <PartyRoomChat />
-        </div>
-      </div>
+  const player = (
+    <div className="w-full h-full bg-slate-900">
+      {service === "apple" ? (
+        <AppleMusicPartyRoomPlayerCard selectedSong={currentlyPlayingSong} />
+      ) : (
+        <SpotifyPartyRoomPlayerV2
+          isSongOver={isSongOver}
+          setIsSongOver={setIsSongOver}
+          selectedSong={songPlaying}
+        />
+      )}
     </div>
   );
+
+  return (
+    <PartyRoomLayout
+      // left={<PartyInfoCard user={user} room={room} song={song} id={id} />}
+      left={
+        <PartyInfoCard
+          user={user}
+          currentlyPlayingSong={currentlyPlayingSong}
+          room={room}
+          id={id}
+        />
+      }
+      middle={
+        <PartyRoomQueue
+          queueIndex={queueIndex}
+          currentlyPlayingSong={songPlaying}
+          upNextSongs={upNext}
+        />
+      }
+      right={player}
+    />
+  );
+
+  // return (
+  //   <div className="w-full h-full min-h-screen bg-lblue">
+  //     <Navbar />
+  //     <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
+  //       <div className="relative flex justify-center col-span-1 px-2">
+  //         <div className="flex h-[100%] mt-8 w-[90%]">
+  //           <div className="w-full h-full bg-white rounded-lg drop-shadow-md">
+  //             <div className="">
+  //               <h1 className="text-3xl text-center text-navy">
+  //                 Name:{room?.partyName}
+  //               </h1>
+  //               <h1 className="text-3xl text-center text-navy">
+  //                 Description: {room?.description}
+  //               </h1>
+  //               <h1 className="text-3xl text-center text-navy">
+  //                 Owner: {room?.ownerUsername}
+  //               </h1>
+  //               <button
+  //                 className="p-3 ml-3 text-white bg-navy rounded-xl top-13"
+  //                 onClick={async () => {
+  //                   if (user.username === room.ownerUsername) {
+  //                     await DeleteRoom(room).then(() => {
+  //                       navigate("/");
+  //                     });
+  //                   } else {
+  //                     await DeleteMember(room, user.username).then((res) => {
+  //                       if (res) {
+  //                         navigate("/");
+  //                       } else {
+  //                         <FailPopUp
+  //                           open={partyFailOpen}
+  //                           setOpen={setPartyFailOpen}
+  //                           failText={ERROR_MSG}
+  //                         />;
+  //                       }
+  //                     });
+  //                   }
+  //                 }}
+  //               >
+  //                 Exit
+  //               </button>
+
+  //               <button
+  //                 className="p-3 ml-3 text-white bg-navy rounded-xl top-13 "
+  //                 onClick={() => handleOpenListen()}
+  //               >
+  //                 View Listeners
+  //               </button>
+
+  //               <ListenerList
+  //                 listeners={room.members}
+  //                 isVisible={showListenersModal}
+  //                 onClose={handleCloseListen}
+  //                 room={room}
+  //               />
+  //               <SearchUserForInvite
+  //                 following={user.following}
+  //                 isVisible={showFollowingModal}
+  //                 onClose={handleFollowingClose}
+  //                 roomId={id}
+  //                 room={partyRoom}
+  //               />
+
+  //               <button
+  //                 className="p-3 ml-3 text-white rounded-xl bg-navy"
+  //                 onClick={() => {
+  //                   if (room && id) {
+  //                     fetchRoomById(id).then((res) => {
+  //                       if (res) {
+  //                         if (res.ownerUsername === user.username) {
+  //                           handleFollowingOpen();
+  //                           setPartyRoom(res);
+  //                         } else {
+  //                         }
+  //                       } else {
+  //                         alert("Room does not exist");
+  //                       }
+  //                     });
+  //                   }
+  //                 }}
+  //               >
+  //                 Find User To Invite
+  //               </button>
+  //             </div>
+
+  //             {/* <div className="w-screen max-w-[200%] max-h-[80%] h-screen"> */}
+
+  //             {currentlyPlayingSong ? (
+  //               <SearchSongPartyRoom song={currentlyPlayingSong.name} />
+  //             ) : (
+  //               <SearchSongPartyRoom />
+  //             )}
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <div className="col-span-2">
+  //         <PartyRoomQueue
+  //           queueIndex={queueIndex}
+  //           currentlyPlayingSong={songPlaying}
+  //           upNextSongs={upNext}
+  //         />
+  //       </div>
+  //       <div className="relative flex-col justify-center ">
+  //         {service === "apple" ? (
+  //           <AppleMusicPartyRoomPlayerCard
+  //             selectedSong={currentlyPlayingSong}
+  //           />
+  //         ) : (
+  //           <SpotifyPartyRoomPlayerV2
+  //             isSongOver={isSongOver}
+  //             setIsSongOver={setIsSongOver}
+  //             selectedSong={songPlaying}
+  //           />
+  //         )}
+  //         <PartyRoomChat />
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 };
 
 export default PartyPage;
