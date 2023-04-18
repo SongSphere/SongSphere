@@ -20,6 +20,8 @@ import {
   getFriendActivity,
   setPlayingSong,
   setShowSong,
+  updateUserBio,
+  getAnalytics,
 } from "../services/user";
 
 import fs from "fs";
@@ -172,11 +174,19 @@ export const deleteUserInControllers = async (
   res: Response,
   next: NextFunction
 ) => {
-  const email = req.session.user.email;
+  const username = req.session.user.username;
 
   try {
-    await deleteUserInServices(email);
-    res.status(200);
+    await req.session.destroy(async (error) => {
+      if (error) {
+        res.status(500);
+        res.json({ msg: "delete fail" });
+      } else {
+        await deleteUserInServices(username);
+        res.status(200);
+        res.json({ msg: "delete success" });
+      }
+    });
   } catch (error) {
     res.status(404);
     res.json({ msg: "Cannot find user in Delete User" });
@@ -338,6 +348,28 @@ export const setDisplaySong = async (req: Request, res: Response) => {
     await setShowSong(req.session.user.email, req.body.set);
     res.status(200);
     res.json({ msg: "Success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const setUserBio = async (req: Request, res: Response) => {
+  try {
+    await updateUserBio(req.session.user.username, req.body.bio);
+    res.status(200);
+    res.json({ msg: "Bio update success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const getPostAnalytics = async (req: Request, res: Response) => {
+  try {
+    const analytics = await getAnalytics(req.session.user.email);
+    res.status(200);
+    res.json({ analytics: analytics });
   } catch (error) {
     res.status(500);
     res.json({ error: error });

@@ -1,32 +1,29 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { TUser } from "../types/user";
-import Navbar from "../components/navbar";
-import { TPartyRoom } from "../types/party-room";
+import { TUser } from "../../types/user";
+import Navbar from "../../components/navbar";
+import { TPartyRoom } from "../../types/party-room";
 import { useEffect, useRef, useState } from "react";
-import fetchRoomById from "../services/party/fetch-room-by-id";
-import Session from "../session";
-import DeleteRoom from "../services/party/delete-room";
-import DeleteMember from "../services/party/delete-member";
-import TransferOwner from "../services/party/trasnfer-owner";
-import { TMusicContent } from "../types/music-content";
-import AppleMusicPlayerCard from "../components/player/apple-music-player-card";
-import SpotifyPlayerCard from "../components/player/spotify-music-player-card";
-import PartyRoomQueue from "../components/party-room/party-queue";
-import Search from "../components/post/search-song";
-import SearchSongPartyRoom from "../components/post/search-song-party-room";
-import SearchSong from "../components/post/search-song";
-import ListenerList from "../components/party-room/listener-list";
-import AddMember from "../services/party/add-member";
-import FailPopUp from "../components/popup/fail-popup";
+import fetchRoomById from "../../services/party/fetch-room-by-id";
+import Session from "../../session";
+import DeleteRoom from "../../services/party/delete-room";
+import DeleteMember from "../../services/party/delete-member";
+import TransferOwner from "../../services/party/trasnfer-owner";
+import { TMusicContent } from "../../types/music-content";
+import PartyRoomQueue from "../../components/party-room/party-queue";
+import Search from "../../components/post/search-song";
+import SearchSongPartyRoom from "../../components/post/search-song-party-room";
+import SearchSong from "../../components/post/search-song";
+import ListenerList from "../../components/party-room/listener-list";
+import AddMember from "../../services/party/add-member";
+import FailPopUp from "../../components/popup/fail-popup";
 
-import SearchUserForInvite from "../components/invitations/search-user-for-invite";
+import SearchUserForInvite from "../../components/invitations/search-user-for-invite";
 
-import AppleMusicPartyRoomPlayerCard from "../components/party-room/apple-music-party-player";
-import SpotifyPartyRoomPlayerCard from "../components/party-room/spotify-music-party-player";
-import PartyRoomChat from "../components/party-room/party-chat";
-import RemoveInvitation from "../services/party/remove-invitation";
-import fetchQueue from "../services/party/fetch-queue";
-import SpotifyPartyRoomPlayerV2 from "../components/party-room/spotify-party-player-v2";
+import AppleMusicPartyRoomPlayerCard from "../../components/party-room/apple-music-party-player";
+import PartyRoomChat from "../../components/party-room/party-chat";
+import RemoveInvitation from "../../services/party/remove-invitation";
+import fetchQueue from "../../services/party/fetch-queue";
+import SpotifyPartyRoomPlayerV2 from "../../components/party-room/spotify-party-player-v2";
 
 const PartyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -269,7 +266,6 @@ const PartyPage = () => {
                             handleFollowingOpen();
                             setPartyRoom(res);
                           } else {
-                            console.log("You are not the owner of this party");
                           }
                         } else {
                           alert("Room does not exist");

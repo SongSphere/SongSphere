@@ -11,7 +11,7 @@ export interface IUser {
   emailVerified: Boolean;
   profileImgUrl: string;
   backgroundImgUrl: string;
-  token: string; // this is for debugging purposese
+  biography: string;
   spotifyToken: string;
   spotifyTokenEndDate: Date;
   spotifyRefreshToken: string;
@@ -69,9 +69,9 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
-    token: {
+    biography: {
       type: String,
-      required: true,
+      required: false,
     },
     spotifyToken: {
       type: String,

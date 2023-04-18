@@ -126,6 +126,19 @@ export const addToQueue = async (song: TMusicContent, username: string) => {
   }
 };
 
+export const getQueue = async (username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
+    });
+    return room.queue;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const removeFromQueue = async (index: number, username: string) => {
   try {
     const room = await PartyRoom.findOne({
@@ -219,23 +232,6 @@ export const blockUser = async (room: TPartyRoom, username: string) => {
   }
 }
 
-// Require
-var postmark = require("postmark");
-
-// const nodemailer = require('nodemailer');
-// export const sendInvitationEmail = async () => {
-//   // Example request
-//   var client = new postmark.ServerClient(
-//     "ace1f28f-730e-465c-9a53-1a53f73177ba"
-//   );
-
-//   client.sendEmail({
-//     From: "khkim@purdue.edu",
-//     To: "khkim@purdue.edu",
-//     Subject: "Test",
-//     TextBody: "Hello from Postmark!",
-//   });
-// };
 
 import { CourierClient } from "@trycourier/courier";
 import User from "../db/user";
@@ -244,11 +240,10 @@ export const sendInvitationEmail = async (
   senderUsername: string,
   receiverEmail: string
 ) => {
-  console.log("sendInvitationEmail in server/services");
-  console.log(roomId, senderUsername, receiverEmail);
+
 
   const courier = CourierClient({
-    authorizationToken: "pk_prod_YMG62BBWAWMTNQPR5E9ZK64RTJSS",
+    authorizationToken: process.env.EMAIL_API_KEY,
   });
 
   const { requestId } = await courier.send({

@@ -1,28 +1,27 @@
-const AddInvitation = async (roomId: string , username: string) => {
+const adjustBio = async (bio: string): Promise<boolean> => {
   return new Promise<boolean>(async (resolve, reject) => {
     try {
-      await fetch(`${process.env.REACT_APP_API}/api/inviteMember`, {
+      await fetch(`${process.env.REACT_APP_API}/api/user/updateBio`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({
-          roomId: roomId,
-          username: username,
+          bio: bio,
         }),
         headers: {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        if (res.status == 201) {
+        if (res.status == 200) {
           resolve(true);
         } else {
-          reject(false);
+          resolve(false);
         }
       });
     } catch (err) {
-      console.error(err);
+      resolve(false);
       reject(err);
     }
   });
 };
 
-export default AddInvitation;
+export default adjustBio;

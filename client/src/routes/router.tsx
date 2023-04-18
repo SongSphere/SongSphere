@@ -7,7 +7,7 @@ import HomePage from "../pages/home-page";
 import OnBoardPage from "../pages/onboard-page";
 import PostPage from "../pages/post-page";
 import SearchUsersPage from "../pages/search-users-page";
-import SettingsPage from "../pages/settings-page";
+// import SettingsPage from "../pages/settings-page";
 import EditPage from "../pages/edit-page";
 import ProfilePage from "../pages/profile/profile-page";
 import OtherUserProfilePage from "../pages/profile/other-user-profile-page";
@@ -18,7 +18,8 @@ import LikesPage from "../pages/likes-page";
 import RecentsPage from "../pages/recents-page";
 import PlaylistPage from "../pages/playlist-page";
 import CreateRoomPage from "../pages/party/enter-room-page";
-import PartyPage from "../pages/party-page";
+import PartyPage from "../pages/party/party-page";
+import SettingsPage from "../pages/settings-page";
 import Page404 from "../components/party-room/404";
 
 const Router = () => {
@@ -33,7 +34,7 @@ const Router = () => {
     },
     {
       path: "/404",
-      element: <Page404/>,
+      element: <Page404 />,
     },
     {
       path: "/notificationsPage",

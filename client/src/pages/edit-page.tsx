@@ -59,6 +59,7 @@ const EditPage = () => {
                 comments: post.comments,
                 likes: post.likes,
                 repost: post.repost,
+                taggedUsers: post.taggedUsers,
               })
                 .then(async (res) => {
                   if (!res) {

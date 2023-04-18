@@ -47,10 +47,8 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
   const handleInviteClick = async () => {
     if (isInvited) {
       setIsInvited(false);
-      console.log("removing invitation");
     } else {
       setIsInvited(true);
-      console.log("adding invitation");
     }
   };
 
@@ -92,8 +90,6 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                         filteredUsers.push(u);
                         filteredUsersStatus.push(false);
                         if (props.room?.invitedMembers) {
-                          console.log(props.room.invitedMembers);
-                          console.log(u);
                           props.room.invitedMembers.forEach((invitedUser) => {
                             if (invitedUser == u) {
                           
@@ -106,8 +102,8 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                     });
 
                     setFollowing(filteredUsers);
-                 //   setIsInvited(filteredUsersStatus[0]);
-                    console.log(isInvited);
+
+
                   }
                 }}
               />
@@ -138,7 +134,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                                         await removeInvitation(props.roomId, userName);
                                         handleInviteClick();
                                       } else {
-                                        console.log("The room does not exist");
+                                        alert("The room does not exist");
                                       }
 
                                      
@@ -175,11 +171,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                                             await sendNotification(
                                               notificationForAlerts
                                             );
-                                            // await SendInvitationEmail(
-                                            //   props.roomId,
-                                            //   user.username,
-                                            //   receiverEmail
-                                            // );
+                   
                                           } else {
                                             console.log(
                                               "Error: the user does not have an email"

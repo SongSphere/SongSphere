@@ -1,4 +1,4 @@
-const AdjustName = async (
+const adjustName = async (
   username: string,
   givenName: string,
   middleName: string,
@@ -32,4 +32,4 @@ const AdjustName = async (
   });
 };
 
-export default AdjustName;
+export default adjustName;

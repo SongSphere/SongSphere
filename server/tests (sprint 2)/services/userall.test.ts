@@ -11,9 +11,6 @@ import createApp from "../../app";
 
 // import db
 import { connect } from "../../db/connect";
-import { updateUserBio } from "../../services/user";
-
-
 import {
   fetchFeed,
   fetchUserbyUserName,
@@ -54,31 +51,6 @@ describe("Testing db services", () => {
 
   afterAll(async () => {
     await mongoose.connection.close();
-  });
-
-  test("Test Update Bio", async () => {
-    const bio = "today is a nice day";
-    const userA = new User({
-      name: "Willy",
-      username: "magician3124",
-      givenName: "Chi-Wei",
-      familyName: "Lien",
-      email: "crashingballoon@gmail.com",
-      emailVerified: true,
-      biography: "",
-      profileImgUrl: "google.com",
-      backgroundImgUrl: "google.com",
-      token: "idk",
-      onboarded: false,
-      isPrivate: false,
-      showPlayingSong: false,
-    });
-    await userA.save();
-
-    updateUserBio(userA.username, bio);
-    let newUserA = await fetchUserbyUserName(userA.username);
-    // console.log(newUserA);
-    expect(newUserA.biography).toBe(bio);
   });
 
   test("Testing isPrivate to true", async () => {

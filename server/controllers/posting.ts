@@ -85,7 +85,11 @@ export const getPostById = async (req: Request, res: Response) => {
 export const storePost = async (req: Request, res: Response) => {
   try {
     const post = await createPost(req.body.post);
+    
+
     await savePost(post);
+
+  
 
     res.status(201);
     res.json({ msg: "success" });

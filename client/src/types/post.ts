@@ -9,4 +9,5 @@ export type TPost = {
   comments: string[];
   likes: number;
   repost: boolean;
+  taggedUsers: string[];
 };

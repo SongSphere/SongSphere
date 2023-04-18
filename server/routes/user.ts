@@ -21,6 +21,8 @@ import {
   getActivity,
   setActivity,
   setDisplaySong,
+  setUserBio,
+  getPostAnalytics,
 } from "../controllers/user";
 import {
   getNotificationsByEmail,
@@ -29,6 +31,7 @@ import {
 
 // import middleware
 import auth from "../middleware/auth";
+import multer from "multer";
 
 const router = express.Router();
 
@@ -55,7 +58,6 @@ router.post("/api/user/deleteAccount", auth, deleteUserInControllers);
 router.post("/api/user/queryUsernames", auth, findUsersByUserName);
 router.post("/api/user/queryUsername", auth, findUsersByUserName);
 
-import multer from "multer";
 const upload = multer({ dest: "images/" });
 router.post(
   "/user/updateProfile",
@@ -79,5 +81,7 @@ router.post("/user/setDefaultPlatform", setPlatform);
 router.get("/user/activeListening", getActivity);
 router.post("/user/setPlayingSong", setActivity);
 router.post("/api/user/setShowSong", setDisplaySong);
+router.post("/api/user/updateBio", setUserBio);
+router.get("/user/analytics", getPostAnalytics);
 
 export default router;
