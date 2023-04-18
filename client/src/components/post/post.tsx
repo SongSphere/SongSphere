@@ -13,6 +13,7 @@ import Session from "../../session";
 import selectService from "../../services/user/select-service";
 import { addToAppleLibrary } from "../../services/apple/add-to-library";
 import FailPopUp from "../popup/fail-popup";
+import TaggedUserList from "../profile/tagged-user-list";
 
 interface IPostProps {
   post: TPost;
@@ -51,6 +52,16 @@ const Post = (props: IPostProps) => {
       setPostOwner(postOwner);
     });
   }, []);
+
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+  const [showFollowerModal, setShowFollowerModal] = useState(false);
+
+   const handleFollowingOpen = () => {
+    setShowFollowingModal(true);
+  };
+  const handleFollowingClose = () => {
+    setShowFollowingModal(false);
+  };
 
   return (
     <div className="flex w-full p-6 mb-8 transition ease-in-out rounded-lg delay-50 drop-shadow-md hover:bg-slate-800">
@@ -166,6 +177,13 @@ const Post = (props: IPostProps) => {
         <img className="rounded-sm" src={props.post.music.cover}></img>
       </div>
 
+     
+      <TaggedUserList
+        taggedUsers={props.post.taggedUsers}
+        isVisible={showFollowingModal}
+        onClose={handleFollowingClose}
+      />
+
       <FailPopUp
         open={deleteFailOpen}
         setOpen={setDeleteFailOpen}
@@ -241,6 +259,15 @@ const Post = (props: IPostProps) => {
                 <img src="/img/icons/repost.svg"></img>
               </div>
             )}
+
+            <div
+              className="mt-1 ml-2 cursor-pointer w-7 h-7"
+              onClick={() => {
+                handleFollowingOpen();
+              }}
+            >
+              <img src="/img/icons/repost.svg"></img>
+            </div>
           </div>
         </div>
       </div>

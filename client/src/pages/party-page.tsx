@@ -65,7 +65,6 @@ const PartyPage = () => {
     if (id) {
       fetchRoomById(id).then((res) => {
         if (res == null) {
-          console.log("It is null");
           navigate("/404");
         }
 
@@ -79,14 +78,12 @@ const PartyPage = () => {
       if (!room.members.includes(user.username)) {
         AddMember(room._id, user.username);
         window.location.reload();
-        //console.log(`${user.username} added to room}`);
       }
     }
   });
   useEffect(() => {
     if (user && id) {
       user.partyRoom = id;
-      // console.log("Party room set to: " + user.partyRoom);
     }
   });
 
@@ -223,7 +220,7 @@ const PartyPage = () => {
                             handleFollowingOpen();
                             setPartyRoom(res);
                           } else {
-                            console.log("You are not the owner of this party");
+   
                           }
                         } else {
                           alert("Room does not exist");

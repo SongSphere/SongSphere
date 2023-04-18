@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Session from "../../session";
 import fetchAnalytics from "../../services/user/fetch-analytics";
 
+
+
 interface IProfileCardProps {
   openFollowingModal: Function;
   openFollowersModal: Function;

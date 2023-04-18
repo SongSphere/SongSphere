@@ -5,11 +5,13 @@ import { TMusicContent } from "../../types/music-content";
 import { spotifySearch } from "../../services/spotify/spotify-search";
 import sendPost from "../../services/post/send-post";
 import { TUser } from "../../types/user";
-import Popup from "reactjs-popup";
 import Session from "../../session";
 import { TPost } from "../../types/post";
 import FailPopUp from "../popup/fail-popup";
 import { useNavigate } from "react-router-dom";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
+import sendNotification from "../../services/notification/send-notification";
+import { TNotification } from "../../types/notification";
 
 const AppleSearch = async (
   term: string,
@@ -37,12 +39,13 @@ const SearchSong = (props: ISearchSongProps) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [service, setService] = useState("");
   const [songs, setSongs] = useState<TMusicContent[]>([]);
+  const [followers, setFollowers] = useState<string[]>([]);
   const [selected, setSelected] = useState<TMusicContent>();
   const [song, setSong] = useState<string>("");
   const [category, setCategory] = useState<string>("songs");
   const [AMInstance, setAMInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
-  const [caption, setCaption] = useState<string>("");
+  const [caption, setCaption] = useState("");
   const [postFailOpen, setPostFailOpen] = useState(false);
 
   const POST_ERR_MSG =
@@ -50,6 +53,31 @@ const SearchSong = (props: ISearchSongProps) => {
 
   const isRepost = false;
   let navigate = useNavigate();
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [filteredOptions, setFilteredOptions] = useState<string[]>([]);
+  const [stringToRemove, setStringToRemove] = useState<string>("");
+  const [startLookingLocation, setStartLookingLocation] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [listOfTaggedUsers, setListOfTaggedUsers] = useState<string[]>([]);
+
+  const handleDropdownSelection = (
+    nameSelected: React.SetStateAction<string>
+  ) => {
+    // Handle dropdown selection
+    const newCommentContent = caption.replace(stringToRemove, "");
+    setStringToRemove(""); // reset the string to remove
+    setCaption(newCommentContent + "" + nameSelected); // Auto fill
+
+    // This fetches the user name
+    listOfTaggedUsers.push(nameSelected.toString());
+
+
+    setSearchTerm("");
+    setShowDropdown(false);
+    setFilteredOptions([]);
+    setStartLookingLocation(caption.length);
+  };
 
   useEffect(() => {
     setUser(Session.getUser());
@@ -67,6 +95,14 @@ const SearchSong = (props: ISearchSongProps) => {
             setSelected(result[0]);
           }
         });
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      if (user.followers) {
+        setFollowers(user.followers);
       }
     }
   }, [user]);
@@ -184,11 +220,61 @@ const SearchSong = (props: ISearchSongProps) => {
               <input
                 type="text"
                 value={caption}
-                placeholder={"Enter a caption"}
-                onChange={(e) => {
-                  setCaption(e.target.value);
+       
+                onChange={async (event) => {
+                  /*
+                    This functionality calls to backend for User Document
+                  */
+                 
+                  if ((event.target.value as string) === "") {
+                    setListOfTaggedUsers([]);
+                    setShowDropdown(false);
+                    setCaption("");
+                  } else if ((event.target.value as string) !== "") {
+                    const value = event.target.value;
+                    setCaption(value);
+
+                    const valueToMatch = value.slice(startLookingLocation);
+                    // Step 3: Apply regular expression to extracted substring
+                    const regex = /@(\S+)/; // Replace with your desired regular expression
+                    const match = valueToMatch.match(regex);
+
+                    if (match && match[1]) {
+                      const selectedItem = match[1]; // Extract string after "@" symbol
+                      setShowDropdown(true);
+
+                      setSearchTerm(selectedItem); // search term is the matched string
+
+                      const filtered = followers.filter((option) =>
+                        option.includes(selectedItem)
+                      );
+
+                      setFilteredOptions(filtered); // sets to only show the item with matched string
+                      setStringToRemove(selectedItem);
+
+                      setSearchTerm("");
+                    } else {
+                      setShowDropdown(false);
+                    }
+                  }
                 }}
+                placeholder="Type '@' to mention someone..."
               />
+              {showDropdown && (
+                <ul className="w-[40%] mt-3 mx-auto">
+                  {filteredOptions.map((s) => (
+                    <div className="grid w-full grid-flow-col">
+                      <button
+                        className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
+                        key={s}
+                        onClick={() => handleDropdownSelection(s)}
+                      >
+                        <div className="flex text-center w-[75%]">{s}</div>
+                      </button>
+                    </div>
+                  ))}
+                </ul>
+              )}
             </label>
           </form>
         </div>
@@ -204,12 +290,26 @@ const SearchSong = (props: ISearchSongProps) => {
                 comments: [],
                 likes: 0,
                 repost: isRepost,
+                taggedUsers: listOfTaggedUsers,
               };
               await sendPost(newPost)
                 .then((res) => {
                   if (!res) {
                     setPostFailOpen(true);
                   } else {
+                    listOfTaggedUsers.forEach(async (element) => {
+                      fetchUserByUsername(element).then(async (res) => {
+                        const notificationForAlerts: TNotification = {
+                          userEmailSender: user.email,
+                          userEmailReceiver: res.email,
+                          notificationType: "Follow",
+                          text: `${user.username} tagged you in a post!`,
+                        };
+                        await sendNotification(notificationForAlerts);
+  
+                      });
+                    });
+
                     navigate("/profile");
                   }
                 })

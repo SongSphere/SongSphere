@@ -107,7 +107,6 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
                 (result) => {
                   setSong(event.target.value);
                   songs = result!;
-                  console.log(songs);
                   setSongs(result!);
                 }
               )
