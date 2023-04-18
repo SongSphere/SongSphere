@@ -48,22 +48,11 @@ const PartyPage = () => {
 
   const [queue, setQueue] = useState<TMusicContent[] | null>(null);
   const [upNext, setUpNext] = useState<TMusicContent[] | null>(null);
+  const upNextRef = useRef<TMusicContent[] | null>(null);
   const queueRef = useRef<TMusicContent[] | null>(null);
   const [queueIndex, setQueueIndex] = useState(0);
   const [songPlaying, setSongPlaying] = useState<TMusicContent | null>(null);
   const [isSongOver, setIsSongOver] = useState<boolean>(false);
-
-  const playNextSong = () => {
-    // console.log("upnext: ", upNext);
-    // console.log("queue: ", queueRef.current);
-    if (upNext && queueRef.current) {
-      console.log("playing the next song");
-      setIsSongOver(false);
-      setSongPlaying(upNext[0]);
-      setUpNext(queueRef.current.slice(queueIndex + 1));
-      setQueueIndex(queueIndex + 1);
-    }
-  };
 
   const handleFollowingClose = () => {
     setShowFollowingModal(false);
@@ -80,7 +69,27 @@ const PartyPage = () => {
   };
 
   useEffect(() => {
-    playNextSong();
+    const playNextSong = () => {
+      if (upNextRef.current && queueRef.current) {
+        console.log(
+          "next song. index, upnext, queue: ",
+          queueIndex,
+          upNextRef.current,
+          queueRef.current
+        );
+        setIsSongOver(false);
+
+        upNextRef.current = queueRef.current.slice(queueIndex + 1);
+        setSongPlaying(upNextRef.current[0]);
+
+        setUpNext(upNextRef.current.slice(1));
+        setQueueIndex(queueIndex + 1);
+      }
+    };
+
+    if (isSongOver) {
+      playNextSong();
+    }
   }, [isSongOver]);
 
   useEffect(() => {
@@ -129,6 +138,7 @@ const PartyPage = () => {
         if (!songPlaying) {
           setSongPlaying(newQueue[0]);
         }
+        upNextRef.current = newQueue.slice(queueIndex + 1);
         setUpNext(newQueue.slice(queueIndex + 1));
       }
     };

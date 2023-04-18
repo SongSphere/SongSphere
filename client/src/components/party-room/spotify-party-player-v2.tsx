@@ -3,7 +3,6 @@ import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 import selectService from "../../services/user/select-service";
 import Session from "../../session";
-import setActivity from "../../services/general/set-activity";
 import { spotifyRefresh } from "../../services/spotify/spotify-refresh";
 
 interface ISpotifySong {
@@ -20,9 +19,7 @@ interface ISpotifyPlayerCardProps {
 }
 
 const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [song, setSong] = useState<ISpotifySong | null>(null);
-  const [player, setPlayer] = useState<Spotify.Player | null>(null);
   const [deviceId, setDeviceId] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState<TUser | null>(null);
@@ -30,25 +27,27 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
   const [AMInstance, setAMInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
   const playerRef = useRef<Spotify.Player | null>(null);
-  const getStatePositionRef = useRef<() => number>(() => 0);
 
-  const playMusicHandler = () => {
-    setIsPlaying(!isPlaying);
+  const currStateRef = useRef({
+    paused: false,
+    position: 0,
+    duration: 0,
+    updateTime: 0,
+  });
 
-    if (player) {
-      if (!isPlaying) {
-        player.resume();
-        if (props.selectedSong) {
-          setActivity(props.selectedSong);
-        }
-      } else {
-        player.pause();
-        if (props.selectedSong) {
-          setActivity(null);
-        }
-      }
+  const getStatePosition = () => {
+    const position =
+      ((currStateRef.current.position +
+        (performance.now() - currStateRef.current.updateTime)) *
+        100) /
+      currStateRef.current.duration;
+
+    if (position > currStateRef.current.duration) {
+      return (
+        (currStateRef.current.duration * 100) / currStateRef.current.duration
+      );
     } else {
-      console.error("music not instantiated");
+      return position;
     }
   };
 
@@ -81,15 +80,35 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
       });
   };
 
+  const setSongInPlayer = async (song_uri: string, deviceId: string) => {
+    await spotifyRefresh();
+
+    const url =
+      "https://api.spotify.com/v1/me/player/play?" +
+      new URLSearchParams({ device_id: deviceId });
+
+    if (user) {
+      await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.spotifyToken}`,
+        },
+        body: JSON.stringify({
+          uris: [song_uri],
+          position_ms: 0,
+        }),
+      });
+    }
+  };
+
   useEffect(() => {
-    console.log("useEffect 1");
     setUser(Session.getUser());
     setService(Session.getMusicService());
     setAMInstance(Session.getAMInstance());
   }, [Session.getUser()]);
 
   useEffect(() => {
-    console.log("useEffect 2");
     const selectServiceHandler = async (
       selectedSong: TMusicContent,
       appleMusicInstance: MusicKit.MusicKitInstance,
@@ -118,39 +137,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
   }, [user, props.selectedSong]);
 
   useEffect(() => {
-    console.log("useEffect 3");
-    const setSong = async (song_uri: string, deviceId: string) => {
-      await spotifyRefresh();
-
-      const url =
-        "https://api.spotify.com/v1/me/player/play?" +
-        new URLSearchParams({ device_id: deviceId });
-
-      if (user) {
-        await fetch(url, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.spotifyToken}`,
-          },
-          body: JSON.stringify({
-            uris: [song_uri],
-            position_ms: 0,
-          }),
-        });
-      }
-    };
-
-    if (deviceId && song && player) {
-      setSong(song.uri, deviceId);
-    }
-  }, [deviceId, song]);
-
-  useEffect(() => {
-    console.log("useEffect 4");
     if (user) {
-      // dynamically import Spotify
-
       const refresh = async () => {
         await spotifyRefresh();
       };
@@ -169,10 +156,9 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
           getOAuthToken: (cb) => {
             cb(user.spotifyToken || "");
           },
-          volume: 0.3,
+          volume: 1,
         });
 
-        setPlayer(player);
         player.addListener("ready", async ({ device_id }) => {
           console.log("Ready with Device ID", device_id);
           setDeviceId(device_id);
@@ -187,61 +173,45 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
           }
         });
 
-        // reference: https://github.com/spotify/web-playback-sdk/issues/106
-        let currState = {
-          paused: false,
-          position: 0,
-          duration: 0,
-          updateTime: 0,
-        };
-
         player.addListener("player_state_changed", (state) => {
-          currState.paused = state.paused;
-          currState.position = state.position;
-          currState.duration = state.duration;
-          currState.updateTime = performance.now();
+          if (
+            currStateRef.current &&
+            !currStateRef.current.paused &&
+            state.paused &&
+            state.position === 0
+          ) {
+            console.log("Track ended");
+            props.setIsSongOver(true);
+          }
+
+          currStateRef.current.paused = state.paused;
+          currStateRef.current.position = state.position;
+          currStateRef.current.duration = state.duration;
+          currStateRef.current.updateTime = performance.now();
         });
 
         playerRef.current = player;
-
-        getStatePositionRef.current = () => {
-          if (currState.paused) {
-            return currState.position
-              ? (currState.position * 100) / currState.duration
-              : 0;
-          }
-          const position =
-            ((currState.position + (performance.now() - currState.updateTime)) *
-              100) /
-            currState.duration;
-          return position > currState.duration
-            ? (currState.duration * 100) / currState.duration
-            : position;
-        };
       };
     }
   }, [user]);
 
   useEffect(() => {
-    if (!playerRef.current || !song) {
-      return;
+    if (deviceId && song && playerRef.current) {
+      currStateRef.current.position = 0;
+      setProgress(0);
+
+      setSongInPlayer(song.uri, deviceId).then(() => {
+        const interval = setInterval(() => {
+          const position = getStatePosition();
+          setProgress(position);
+        }, 100);
+
+        return () => {
+          clearInterval(interval);
+        };
+      });
     }
-
-    const interval = setInterval(() => {
-      const position = getStatePositionRef.current();
-      setProgress(position);
-
-      if (position > 98) {
-        console.log("song over");
-        props.setIsSongOver(true);
-        clearInterval(interval);
-      }
-    }, 300);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [song]);
+  }, [song, user, deviceId]);
 
   return (
     <div className="flex h-[50%] mt-8 justify-center pb-5">
