@@ -26,26 +26,21 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
     setAMInstance(Session.getAMInstance());
   }, [Session.getUser()]);
 
-  useEffect(() => {
-    console.log("cleanup function");
-    // Cleanup function to stop playback and clear the queue when the component is unmounted
-    return () => {
-      if (AMInstance) {
-        if (AMInstance.player.isPlaying) {
-          AMInstance.player.pause();
-        }
-        AMInstance.setQueue({ items: [] });
-      }
-    };
-  }, [AMInstance]);
+  // useEffect(() => {
+  //   console.log("cleanup function");
+  //   // Cleanup function to stop playback and clear the queue when the component is unmounted
+  //   return () => {
+  //     if (AMInstance) {
+  //       if (AMInstance.player.isPlaying) {
+  //         AMInstance.player.pause();
+  //       }
+  //       AMInstance.setQueue({ items: [] });
+  //     }
+  //   };
+  // }, [AMInstance]);
 
   useEffect(() => {
-    console.log("useEffect for song changed", props.selectedSong?.name);
-
-    if (AMInstance && AMInstance.player.isPlaying) {
-      AMInstance.player.pause();
-    }
-
+    console.log("hello");
     if (AMInstance) {
       AMInstance.addEventListener("playbackTimeDidChange", () => {
         setProgress(AMInstance.player.currentPlaybackProgress * 100);
@@ -65,9 +60,24 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
       });
     }
 
+    return () => {
+      if (AMInstance) {
+        if (AMInstance.player.isPlaying) {
+          AMInstance.player.pause();
+        }
+        AMInstance.setQueue({ items: [] });
+      }
+    };
+  }, [AMInstance]);
+
+  useEffect(() => {
+    console.log("useEffect for song changed", props.selectedSong?.name);
+
     const fetchSong = async (songId: string) => {
+      console.log("fetching song");
       if (AMInstance) {
         const song = await AMInstance.api.song(songId.toString());
+        console.log("fetched ", song);
         setSong(song);
 
         const mediaItemOptions: MusicKit.MediaItemOptions = {
@@ -78,10 +88,18 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
 
         const mediaItem = new MusicKit.MediaItem(mediaItemOptions);
 
-        AMInstance.setQueue({ items: [] });
-        AMInstance.setQueue({ items: [mediaItem] });
+        if (AMInstance.player.isPlaying) {
+          AMInstance.player.pause();
+        }
 
-        AMInstance.play();
+        AMInstance.setQueue({ items: [] }).then(() => {
+          AMInstance.setQueue({ items: [mediaItem] }).then(() => {
+            console.log("play");
+            setTimeout(() => {
+              AMInstance.play();
+            }, 500); // Add a delay of 500ms before playing the song
+          });
+        });
       } else {
         console.error("music not set");
       }
@@ -104,32 +122,10 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
 
     if (props.selectedSong && user && AMInstance) {
       selectServiceHandler(props.selectedSong, AMInstance, user, service);
-      fetchSong(props.selectedSong.id);
-      AMInstance.play();
     } else {
       console.log("else 1");
     }
   }, [props.selectedSong, user, AMInstance]);
-
-  const playMusicHandler = () => {
-    setIsPlaying(!isPlaying);
-
-    if (AMInstance != null) {
-      if (!isPlaying) {
-        AMInstance.play();
-        if (props.selectedSong) {
-          setActivity(props.selectedSong);
-        }
-      } else {
-        AMInstance.pause();
-        if (props.selectedSong) {
-          setActivity(null);
-        }
-      }
-    } else {
-      console.error("music not instantiated");
-    }
-  };
 
   return (
     <div className="flex flex-row justify-centertext-white lg:mb-5 h-fit lg:flex-col">

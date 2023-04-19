@@ -156,7 +156,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
           getOAuthToken: (cb) => {
             cb(user.spotifyToken || "");
           },
-          volume: 1,
+          volume: 0,
         });
 
         player.addListener("ready", async ({ device_id }) => {

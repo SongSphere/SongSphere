@@ -104,7 +104,8 @@ const PartyPage = () => {
 
       if (
         newQueue?.queue &&
-        JSON.stringify(newQueue?.queue) !== JSON.stringify(queueRef.current) &&
+        (JSON.stringify(newQueue?.queue) !== JSON.stringify(queueRef.current) ||
+          newQueue.index != queueIndex) &&
         mounted
       ) {
         queueRef.current = newQueue.queue;
