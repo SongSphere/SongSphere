@@ -220,7 +220,7 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   }, [user]);
 
   if (!song) {
-    return <div>fetching</div>;
+    return <div></div>;
   }
 
   return (

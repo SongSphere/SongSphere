@@ -45,7 +45,7 @@ const CreateRoomPage = () => {
   };
 
   if (!user) {
-    return <div>fethcing user</div>;
+    return <div>fetching user</div>;
   }
 
   if (user.partyRoom) {

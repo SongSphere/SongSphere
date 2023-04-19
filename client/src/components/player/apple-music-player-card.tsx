@@ -99,7 +99,7 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
   };
 
   if (!song) {
-    return <div>fetching</div>;
+    return <div></div>;
   }
 
   return (
