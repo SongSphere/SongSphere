@@ -13,6 +13,7 @@ import fetchQueue from "../../services/party/fetch-queue";
 import SpotifyPartyRoomPlayerV2 from "../../components/party-room/spotify-party-player-v2";
 import PartyRoomLayout from "../../layouts/party-room-layout";
 import PartyInfoCard from "../../components/party-room/party-info-card";
+import PartyRoomChat from "../../components/party-room/party-chat";
 
 const PartyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -128,7 +129,7 @@ const PartyPage = () => {
     return <div>Loading...</div>;
   }
 
-  const player = (
+  const left = (
     <div className="w-full h-full bg-slate-900">
       {service === "apple" ? (
         <AppleMusicPartyRoomPlayerCard selectedSong={currentlyPlayingSong} />
@@ -139,19 +140,26 @@ const PartyPage = () => {
           selectedSong={songPlaying}
         />
       )}
+      <div className="hidden w-full lg:block">
+        <PartyRoomChat />
+      </div>
     </div>
   );
 
   return (
     <PartyRoomLayout
-      // left={<PartyInfoCard user={user} room={room} song={song} id={id} />}
       left={
-        <PartyInfoCard
-          user={user}
-          currentlyPlayingSong={currentlyPlayingSong}
-          room={room}
-          id={id}
-        />
+        <div>
+          <PartyInfoCard
+            user={user}
+            currentlyPlayingSong={currentlyPlayingSong}
+            room={room}
+            id={id}
+          />
+          <div className="w-full bg-slate-900 lg:hidden">
+            <PartyRoomChat />
+          </div>
+        </div>
       }
       middle={
         <PartyRoomQueue
@@ -160,7 +168,7 @@ const PartyPage = () => {
           upNextSongs={upNext}
         />
       }
-      right={player}
+      right={left}
     />
   );
 };
