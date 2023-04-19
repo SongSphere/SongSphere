@@ -36,14 +36,12 @@ const PartyPage = () => {
     const playNextSong = () => {
       if (isSongOver) {
         if (upNextRef.current && queueRef.current) {
-          console.log("next song. index: ", queueIndex);
-          console.log("upnext", upNextRef.current);
-          console.log("current", queueRef.current);
+          
 
           setIsSongOver(false);
 
           upNextRef.current = queueRef.current.slice(queueIndex + 1);
-          console.log("setting current song 1", upNextRef.current);
+        
           setSongPlaying(upNextRef.current[0]);
 
           setUpNext(upNextRef.current.slice(1));
@@ -77,7 +75,7 @@ const PartyPage = () => {
       setIsLoading(false);
     };
     fetchUserData();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     let mounted = true;
@@ -123,7 +121,7 @@ const PartyPage = () => {
     if (user && id) {
       user.partyRoom = id;
     }
-  }, []);
+  }, [room]);
 
   if (isLoading || !user || !queueRef.current || !room || !id) {
     return <div>Loading...</div>;

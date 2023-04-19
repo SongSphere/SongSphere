@@ -97,10 +97,12 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
               className="px-2 py-1 rounded-lg bg-sky-300 hover:bg-sky-400 drop-shadow-lg"
               onClick={async () => {
                 if (props.user.username === props.room.ownerUsername) {
+                  props.user.partyRoom="";
                   await DeleteRoom(props.room).then(() => {
                     navigate("/");
                   });
                 } else {
+                  props.user.partyRoom="";
                   await DeleteMember(props.room, props.user.username).then(
                     (res) => {
                       if (res) {

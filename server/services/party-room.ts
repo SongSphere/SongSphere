@@ -18,6 +18,7 @@ export const createPartyRoom = async (
     musicIndex: newRoom.musicIndex,
   });
   await User.findOneAndUpdate({username: newRoom.ownerUsername}, {partyRoom: party._id});
+  
   return party;
 };
 
@@ -56,12 +57,8 @@ export const fetchRoomById = async (id: string) => {
 
 export const deleteRoom = async (room: TPartyRoom) => {
   try {
-    await PartyRoom.findByIdAndDelete(room._id).then(async () => {
-      await User.findOneAndUpdate(
-        {username: room.ownerUsername}, 
-        {partyRoom: ""}
-      )
-    });
+    await PartyRoom.findByIdAndDelete(room._id);
+    
   } catch (error) {
     throw error;
   }
@@ -72,12 +69,7 @@ export const addListener = async (roomId: string, username: string) => {
     await PartyRoom.findOneAndUpdate(
       { _id: roomId },
       { $push: { members: username } }
-    ).then(async () => {
-      await User.findOneAndUpdate(
-        {username: username}, 
-        {partyRoom: roomId}
-      )
-    });
+    );
   } catch (error) {
     throw error;
   }
@@ -228,7 +220,18 @@ export const blockUser = async (room: TPartyRoom, username: string) => {
       )
     });
   } catch (error) {
-    throw error
+    throw error;
+  }
+}
+
+export const updatePartyRoom = async (username: string, update: string) => {
+  try {
+    await User.findOneAndUpdate(
+      {username: username}, 
+      {partyRoom: update}
+    );
+  } catch(error) {
+    throw error;
   }
 }
 

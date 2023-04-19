@@ -111,7 +111,7 @@ const CreateRoomPage = () => {
                           ownerEmail: user.email,
                           partyName: name,
                           description: description,
-                          members: [],
+                          members: [user.username],
                           invitedMembers: [],
                           queue: [],
                           musicIndex: 0,
