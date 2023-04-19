@@ -232,7 +232,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
             <div
               className={`h-1 bg-red-400`}
               style={{
-                width: `${progress}%`,
+                width: `${progress > 100 ? 100 : progress}%`,
               }}
             ></div>
           </div>
