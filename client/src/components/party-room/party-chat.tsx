@@ -1,18 +1,39 @@
 import { useEffect, useRef, useState } from "react";
+import { TPartyRoom } from "../../types/party-room";
+import { TChat } from "../../types/chat";
+import { TUser } from "../../types/user";
+import Session from "../../session";
+import SendChat from "../../services/party/send-chat";
 
-const PartyRoomChat = () => {
-  const [messages, setMessages] = useState([
-    { sender: "user", content: "Hello" },
-    { sender: "other", content: "Hi" },
-  ]);
+interface ISendChatProps {
+  room: TPartyRoom;
+}
+
+const PartyRoomChat = (props: ISendChatProps) => {
+  const [messages, setMessages] = useState(props.room.chats);
   const [messageInput, setMessageInput] = useState("");
+  const[user, setUser] = useState<TUser | null >(null);
+
+  useEffect(() => {
+    const fetched = Session.getUser();
+    setUser(fetched);
+  }, [])
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const sendMessage = () => {
     if (messageInput.trim() === "") return;
-    setMessages([...messages, { sender: "user", content: messageInput }]);
-    setMessageInput("");
+    if(user) {
+      const newChat: TChat = {
+        sender: user.username,
+        message: messageInput,
+      };
+      setMessages([...messages , newChat]);
+      setMessageInput("");
+      SendChat(props.room, newChat);
+    }
+    
+    
   };
 
   useEffect(() => {
@@ -35,13 +56,13 @@ const PartyRoomChat = () => {
               <div
                 key={index}
                 className={`mb-1 rounded-md pl-3 py-1 ${
-                  message.sender === "user"
+                  message.sender === user?.username
                     ? "bg-sky-800 text-white"
                     : "bg-gray-300 text-gray-700"
                 }`}
               >
                 <div className="text-sm font-semibold">{message.sender}</div>
-                <div className="pl-2 text-sm">{message.content}</div>
+                <div className="pl-2 text-sm">{message.message}</div>
               </div>
             ))}
           </div>

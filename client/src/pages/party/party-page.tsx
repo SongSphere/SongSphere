@@ -31,6 +31,7 @@ const PartyPage = () => {
   const [queueIndex, setQueueIndex] = useState(0);
   const [songPlaying, setSongPlaying] = useState<TMusicContent | null>(null);
   const [isSongOver, setIsSongOver] = useState<boolean>(false);
+  
 
   useEffect(() => {
     const playNextSong = () => {
@@ -129,7 +130,8 @@ const PartyPage = () => {
         />
       )}
       <div className="hidden w-full lg:block">
-        <PartyRoomChat />
+        <PartyRoomChat
+        room={room}/>
       </div>
     </div>
   );
@@ -145,7 +147,8 @@ const PartyPage = () => {
             id={id}
           />
           <div className="w-full bg-slate-900 lg:hidden">
-            <PartyRoomChat />
+            <PartyRoomChat 
+            room={room}/>
           </div>
         </div>
       }

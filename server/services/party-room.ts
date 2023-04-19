@@ -3,6 +3,7 @@ import { TMusicContent } from "../types/music-content";
 
 import PartyRoom, { IPartyRoom } from "../db/party-room";
 import { TPartyRoom } from "../types/party-room";
+import { TChat } from "../types/chat";
 
 export const createPartyRoom = async (
   newRoom: TPartyRoom
@@ -225,7 +226,7 @@ export const blockUser = async (room: TPartyRoom, username: string) => {
   }
 }
 
-export const updatePartyRoom = async (username: string, update: string) => {
+export const updatePartyRoom = async ( username: string, update: string) => {
   try {
     await User.findOneAndUpdate(
       {username: username}, 
@@ -236,6 +237,18 @@ export const updatePartyRoom = async (username: string, update: string) => {
   }
 }
 
+export const sendChat = async (room:TPartyRoom,chat: TChat) => {
+  try {
+    await PartyRoom.findOneAndUpdate(
+      {_id: room._id},
+      {
+        $push:{chats: chat}
+      }
+      );
+  } catch (error) {
+    throw error;
+  }
+}
 
 import { CourierClient } from "@trycourier/courier";
 import User from "../db/user";
