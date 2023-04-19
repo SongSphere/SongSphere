@@ -14,16 +14,29 @@ const selectService = async (
   if (service === song.service || service === "both") {
     bestFitSongId = song.id;
   } else if (song.service === "spotify") {
-    await appleSearch(song.name!, "songs", 1, musicInstance).then((result) => {
+    await appleSearch(song.name!, "songs", 20, musicInstance).then((result) => {
       if (result.length !== 0) {
-        bestFitSongId = result[0].id;
+        for (let i = 0; i < result.length; i++) {
+          if (result[i].artist == song.artist && result[i].name == song.name) {
+            bestFitSongId = result[i].id;
+            break;
+          }
+        }
       }
     });
   } else {
-    await spotifySearch(song.name!, "tracks", user?.spotifyToken!, 1).then(
+    await spotifySearch(song.name!, "tracks", user?.spotifyToken!, 20).then(
       (result) => {
         if (result.length !== 0) {
-          bestFitSongId = result[0].id;
+          for (let i = 0; i < result.length; i++) {
+            if (
+              result[i].artist == song.artist &&
+              result[i].name == song.name
+            ) {
+              bestFitSongId = result[i].id;
+              break;
+            }
+          }
         }
       }
     );
