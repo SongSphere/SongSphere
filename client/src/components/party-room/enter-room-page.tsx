@@ -111,7 +111,7 @@ const CreateRoomPage = () => {
                           ownerEmail: user.email,
                           partyName: name,
                           description: description,
-                          members: [],
+                          members: [user.username],
                           invitedMembers: [],
                           queue: [],
                           musicIndex: 0,
@@ -180,8 +180,11 @@ const CreateRoomPage = () => {
                     onClick={() => {
                       fetchRoomById(id)
                         .then((res) => {
+                          
                           if (res && res._id) {
                             navigate(`/party/${res._id}`);
+                            let bol = AddMember(res._id.toString(), user.username);
+                            console.log(bol);
                             RemoveInvitation(
                               res._id.toString(),
                               user.username
