@@ -23,13 +23,13 @@ const PartyRoomChat = () => {
   }, [messages]);
 
   return (
-    <div className="relative flex h-[60%] justify-center ">
-      <div className="absolute bg-white rounded-lg w-[90%] h-full drop-shadow-md">
+    <div className="w-full px-4 lg:h-72 h-96">
+      <div className="h-full bg-white rounded-lg drop-shadow-md">
         <div className="pt-3 mb-2 text-2xl font-bold text-gray-700 pl-7">
           Chat
         </div>
-        <div className="w-[95%] mx-auto border-b-2 border-gray-300"></div>
-        <div className="flex flex-col h-[calc(100%-3rem)] p-2 pb-4">
+        <div className="border-b-2 border-gray-300"></div>
+        <div className="flex flex-col p-2">
           <div className="flex-grow p-2 overflow-y-auto" ref={chatContainerRef}>
             {messages.map((message, index) => (
               <div
@@ -53,7 +53,7 @@ const PartyRoomChat = () => {
               onKeyPress={(e) => {
                 if (e.key === "Enter") {
                   sendMessage();
-                  e.preventDefault(); // Prevent the default behavior of submitting the form
+                  e.preventDefault();
                 }
               }}
               className="flex-grow p-1 mr-2 text-sm border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"

@@ -99,7 +99,7 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
   };
 
   return (
-    <div className="flex flex-row justify-center h-full text-white lg:flex-col">
+    <div className="flex flex-row justify-center text-white h-1/2 lg:flex-col">
       <div className="flex w-1/2 p-4 lg:w-full">
         <img
           className="w-24 h-24"

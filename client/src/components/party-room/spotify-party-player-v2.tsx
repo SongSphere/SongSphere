@@ -176,9 +176,11 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
         player.addListener("player_state_changed", (state) => {
           if (
             currStateRef.current &&
+            state.track_window.previous_tracks.find(
+              (x) => x.id === state.track_window.current_track.id
+            ) &&
             !currStateRef.current.paused &&
-            state.paused &&
-            state.position === 0
+            state.paused
           ) {
             console.log("Track ended");
             props.setIsSongOver(true);
@@ -214,7 +216,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
   }, [song, user, deviceId]);
 
   return (
-    <div className="flex flex-row justify-center h-full text-white lg:flex-col">
+    <div className="flex flex-row justify-centertext-white lg:mb-5 h-fit lg:flex-col">
       <div className="flex w-1/2 p-4 lg:w-full">
         <img className="w-24 h-24" src={song?.img}></img>
         <div className="pl-2">
