@@ -111,17 +111,7 @@ const PartyPage = () => {
     };
   }, [id, songPlaying]);
 
-  useEffect(() => {
-    if (user && room?._id) {
-      if (!room.members.includes(user.username)) {
-        AddMember(room._id, user.username);
-      }
-    }
 
-    if (user && id) {
-      user.partyRoom = id;
-    }
-  }, [room]);
 
   if (isLoading || !user || !queueRef.current || !room || !id) {
     return <div>Loading...</div>;

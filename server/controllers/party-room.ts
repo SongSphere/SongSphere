@@ -74,6 +74,7 @@ export const addMember = async (req: Request, res: Response) => {
   try {
     await addListener(req.body.roomId, req.body.username);
     await updatePartyRoom(req.body.username, req.body.roomId);
+    
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
