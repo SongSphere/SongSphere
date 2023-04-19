@@ -10,6 +10,7 @@ import fetchRoomById from "../../services/party/fetch-room-by-id";
 import { TMusicContent } from "../../types/music-content";
 import { TPartyRoom } from "../../types/party-room";
 import { TUser } from "../../types/user";
+import SearchSongPlayList from "./search-song-playlist";
 
 interface IPartyInfoCardProps {
   room: TPartyRoom;
@@ -23,11 +24,17 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
   const [removeMemberFailOpen, setRemoveMemberFailOpen] = useState(false);
   const [showListenersModal, setShowListenersModal] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
+  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
+
+  const handlePlaylistClose = () => {
+    setShowPlaylistModal(false);
+  };
 
   const handleFollowingClose = () => {
     setShowFollowingModal(false);
   };
+
   const handleFollowingOpen = () => {
     setShowFollowingModal(true);
   };
@@ -43,11 +50,11 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
 
   return (
     <div className="w-full h-full p-4">
-      <div className="pb-10 bg-white rounded-lg h-128">
+      <div className="p-4 pb-10 bg-white rounded-lg h-128">
         <h3 className="pt-10 text-3xl font-semibold text-center">
           Profile Settings
         </h3>
-        <div className="p-4">
+        <div className="">
           <h1 className="text-navy">
             <span className="font-semibold">Name: </span>
             {props.room.partyName}
@@ -119,7 +126,20 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
         ) : (
           <SearchSongPartyRoom />
         )}
+        <button
+          className="px-2 py-1 rounded-lg bg-sky-300 hover:bg-sky-400 drop-shadow-lg"
+          onClick={() => {
+            setShowPlaylistModal(true);
+          }}
+        >
+          Add from library
+        </button>
       </div>
+      <SearchSongPlayList
+        user={props.user}
+        isVisible={showPlaylistModal}
+        onClose={handlePlaylistClose}
+      />
       <ListenerList
         listeners={props.room.members}
         isVisible={showListenersModal}

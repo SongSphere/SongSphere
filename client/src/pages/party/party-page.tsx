@@ -123,7 +123,7 @@ const PartyPage = () => {
     if (user && id) {
       user.partyRoom = id;
     }
-  });
+  }, []);
 
   if (isLoading || !user || !queueRef.current || !room || !id) {
     return <div>Loading...</div>;

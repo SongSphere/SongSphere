@@ -21,7 +21,6 @@ const PartyRoomLayout = (props: IMainLayoutProps) => {
           <div className="lg:h-full">{props.middle}</div>
         </div>
         <div className="lg:pt-24 lg:h-screen">
-          {/* <div className="lg:h-1/2"> */}
           <div className="fixed bottom-0 w-full lg:static lg:h-full">
             {props.right}
           </div>

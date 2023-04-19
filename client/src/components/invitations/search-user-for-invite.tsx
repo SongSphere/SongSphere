@@ -3,13 +3,10 @@ import AddInvitation from "../../services/party/add-invitation";
 import { TUser } from "../../types/user";
 import Session from "../../session";
 import sendNotification from "../../services/notification/send-notification";
-import fetchRoomById from "../../services/party/fetch-room-by-id";
 import removeInvitation from "../../services/party/remove-invitation";
 import { TPartyRoom } from "../../types/party-room";
 import { TNotification } from "../../types/notification";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
-import SendInvitationEmail from "../../services/party/send-invitation-email";
-import { TUserInvite } from "../../types/user-invite";
 
 interface ISearchUserForInviteProps {
   following: string[];
@@ -55,7 +52,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
     <div
       id="container"
       onClick={handleOnClose}
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
+      className="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
     >
       <div className="w-3/4 p-5 bg-white rounded max-h-[60vh] min-h-[60vh]">
         <h1 className="py-3 font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">

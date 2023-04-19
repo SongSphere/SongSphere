@@ -42,6 +42,7 @@ export const getSpotifyTracksFromPlaylist = async (
   token: string
 ) => {
   let songs: TMusicContent[] = [];
+  console.log("spotify get playlist");
 
   await spotifyRefresh();
 
@@ -53,10 +54,13 @@ export const getSpotifyTracksFromPlaylist = async (
   })
     .then(async (res) => {
       // passes json to the next handler function
+      // console.log("res", res.body);
       return res.json();
     })
     .then((data) => {
+      console.log("data", data);
       const items = data.items;
+      console.log(items);
 
       items.forEach(function (item: any) {
         songs.push({
