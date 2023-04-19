@@ -116,6 +116,7 @@ const CreateRoomPage = () => {
                           queue: [],
                           musicIndex: 0,
                           blocked:[],
+                          chats: [],
                         };
                         await CreateRoom(newRoom)
                           .then((res) => {
