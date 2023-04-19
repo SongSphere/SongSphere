@@ -196,7 +196,8 @@ const SearchSong = (props: ISearchSongProps) => {
                     <img src={s.cover} />
                   </div>
                   {s.name}
-                  <br />
+                  {/* <br /> */}
+                  <br></br>
                   {s.artist}
                 </div>
               </button>
