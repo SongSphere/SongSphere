@@ -20,6 +20,7 @@ import {
   moveDownQueue,
   sendInvitationEmail,
   blockUser,
+  updateIndex,
 } from "../services/party-room";
 
 export const newRoom = async (req: Request, res: Response) => {
@@ -127,7 +128,7 @@ export const transferO = async (req: Request, res: Response) => {
 export const block = async (req: Request, res: Response) => {
   try {
     await blockUser(req.body.room, req.body.username).then(() => {
-      deleteListener(req.body.room, req.body.username)
+      deleteListener(req.body.room, req.body.username);
     });
     res.status(201);
     res.json({ msg: "success" });
@@ -136,7 +137,6 @@ export const block = async (req: Request, res: Response) => {
     res.json({ error: error });
   }
 };
-
 
 export const addQueue = async (req: Request, res: Response) => {
   try {
@@ -181,6 +181,17 @@ export const sendEmail = async (req: Request, res: Response) => {
       req.body.senderUsername,
       req.body.receiverEmail
     );
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const updateQueueIndex = async (req: Request, res: Response) => {
+  try {
+    await updateIndex(req.body.index, req.session.user.username);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {

@@ -14,6 +14,12 @@ import SpotifyPartyRoomPlayerV2 from "../../components/party-room/spotify-party-
 import PartyRoomLayout from "../../layouts/party-room-layout";
 import PartyInfoCard from "../../components/party-room/party-info-card";
 import PartyRoomChat from "../../components/party-room/party-chat";
+import updateQueueIndex from "../../services/party/update-queue-index";
+
+interface IQueue {
+  queue: TMusicContent[];
+  index: number;
+}
 
 const PartyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -47,6 +53,13 @@ const PartyPage = () => {
           setSongPlaying(upNextRef.current[0]);
 
           setUpNext(upNextRef.current.slice(1));
+
+          if (user && room) {
+            if ((user.username = room?.ownerUsername)) {
+              updateQueueIndex(queueIndex + 1);
+            }
+          }
+
           setQueueIndex(queueIndex + 1);
         }
       }
@@ -90,18 +103,18 @@ const PartyPage = () => {
       }
 
       if (
-        newQueue &&
-        JSON.stringify(newQueue) !== JSON.stringify(queueRef.current) &&
+        newQueue?.queue &&
+        JSON.stringify(newQueue?.queue) !== JSON.stringify(queueRef.current) &&
         mounted
       ) {
-        queueRef.current = newQueue;
-        // Only update the songPlaying state if the queue was empty before
+        queueRef.current = newQueue.queue;
+        setQueueIndex(newQueue.index);
+        // Only update the songPlaying state if the upnext queue was empty before
         if (!songPlaying) {
-          console.log("setting current song 2", newQueue);
-          setSongPlaying(newQueue[0]);
+          setSongPlaying(newQueue.queue[newQueue.index]);
         }
-        upNextRef.current = newQueue.slice(queueIndex + 1);
-        setUpNext(newQueue.slice(queueIndex + 1));
+        upNextRef.current = newQueue.queue.slice(newQueue.index + 1);
+        setUpNext(newQueue.queue.slice(newQueue.index + 1));
       }
     };
 
@@ -129,10 +142,14 @@ const PartyPage = () => {
     return <div>Loading...</div>;
   }
 
-  const left = (
+  const right = (
     <div className="w-full h-full bg-slate-900">
       {service === "apple" ? (
-        <AppleMusicPartyRoomPlayerCard selectedSong={currentlyPlayingSong} />
+        <AppleMusicPartyRoomPlayerCard
+          isSongOver={isSongOver}
+          setIsSongOver={setIsSongOver}
+          selectedSong={songPlaying}
+        />
       ) : (
         <SpotifyPartyRoomPlayerV2
           isSongOver={isSongOver}
@@ -168,7 +185,7 @@ const PartyPage = () => {
           upNextSongs={upNext}
         />
       }
-      right={left}
+      right={right}
     />
   );
 };

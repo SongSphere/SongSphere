@@ -195,13 +195,16 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
         playerRef.current = player;
       };
     }
+
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.pause();
+      }
+    };
   }, [user]);
 
   useEffect(() => {
     if (deviceId && song && playerRef.current) {
-      currStateRef.current.position = 0;
-      setProgress(0);
-
       setSongInPlayer(song.uri, deviceId).then(() => {
         const interval = setInterval(() => {
           const position = getStatePosition();
@@ -220,9 +223,13 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
       <div className="flex w-1/2 p-4 lg:w-full">
         <img className="w-24 h-24" src={song?.img}></img>
         <div className="pl-2">
-          <div className="text-2xl font-semibold ">{song?.name}</div>
-          {song?.artists.map((artist) => {
-            return <p className="text-white">{artist}</p>;
+          <div className="text-2xl font-semibold text-white">{song?.name}</div>
+          {song?.artists.map((artist, index) => {
+            return (
+              <p key={index} className="text-white">
+                {artist}
+              </p>
+            );
           })}
         </div>
       </div>
