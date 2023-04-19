@@ -82,10 +82,7 @@ describe("Testing db services", () => {
       _id: newRoom._id.toString(),
     });
 
-    console.log("foundRoom", foundRoom);
-    console.log("newRoom", newRoom);
-
-    expect(newRoom).not.toBeNull();
+    expect(foundRoom).not.toBeNull();
   });
 
   test("Testing invite users for party", async () => {
