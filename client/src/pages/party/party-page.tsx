@@ -60,6 +60,9 @@ const PartyPage = () => {
   useEffect(() => {
     // Fetch user and set service
     const fetchUserData = async () => {
+      const fetchedUser = Session.getUser();
+      const fetchedService = Session.getMusicService();
+
       if (id) {
         fetchRoomById(id).then((res) => {
           if (res == null) {
@@ -67,11 +70,20 @@ const PartyPage = () => {
             navigate("/404");
           }
 
+          if (fetchedUser && res._id) {
+            if (!res.members.includes(fetchedUser.username)) {
+              AddMember(res._id, fetchedUser.username);
+            }
+          }
+
+          if (user && id) {
+            user.partyRoom = id;
+          }
+
           setRoom(res);
         });
       }
-      const fetchedUser = Session.getUser();
-      const fetchedService = Session.getMusicService();
+
       setUser(fetchedUser);
       setService(fetchedService);
       setIsLoading(false);
@@ -113,17 +125,17 @@ const PartyPage = () => {
     };
   }, [id, songPlaying]);
 
-  useEffect(() => {
-    if (user && room?._id) {
-      if (!room.members.includes(user.username)) {
-        AddMember(room._id, user.username);
-      }
-    }
+  // useEffect(() => {
+  //   if (user && room?._id) {
+  //     if (!room.members.includes(user.username)) {
+  //       AddMember(room._id, user.username);
+  //     }
+  //   }
 
-    if (user && id) {
-      user.partyRoom = id;
-    }
-  }, []);
+  //   if (user && id) {
+  //     user.partyRoom = id;
+  //   }
+  // }, []);
 
   if (isLoading || !user || !queueRef.current || !room || !id) {
     return <div>Loading...</div>;
