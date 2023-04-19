@@ -135,7 +135,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                                         props.room.invitedMembers.forEach(
                                           (invitedUser) => {
                                             if (invitedUser == res.username) {
-                                              console.log(`invitedUser: ${invitedUser} res.username: ${res.username}`);
+                                            
                                               setIsInvited(true);
                                             }
                                           }
@@ -146,7 +146,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
 
                             
                                   setFollowing([]);
-                                   console.log(setIsInvited);
+                      
                                  
                                 }}
                               >
