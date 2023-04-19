@@ -250,6 +250,15 @@ export const sendChat = async (room:TPartyRoom,chat: TChat) => {
   }
 }
 
+export const fetchChats = async (id: string) => {
+  try {
+    const room = await PartyRoom.findOne({ _id: id });
+    return room;
+  } catch (error) {
+    throw error
+  }
+}
+
 import { CourierClient } from "@trycourier/courier";
 import User from "../db/user";
 export const sendInvitationEmail = async (

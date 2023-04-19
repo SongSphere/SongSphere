@@ -22,6 +22,7 @@ import {
   blockUser,
   updatePartyRoom,
   sendChat,
+  fetchChats,
 } from "../services/party-room";
 
 export const newRoom = async (req: Request, res: Response) => {
@@ -206,5 +207,15 @@ export const sendMessage = async (req: Request, res:Response) => {
   } catch (error) {
     res.status(500);
     res.json({ error: error });
+  }
+};
+
+export const fetchMessages = async (req: Request, res:Response) => {
+  try {
+    const room = await fetchChats(req.params.id);
+    res.status(201);
+    res.json({ room: room });
+  } catch (error) {
+    throw error;
   }
 }

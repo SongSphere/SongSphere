@@ -4,15 +4,17 @@ import { TChat } from "../../types/chat";
 import { TUser } from "../../types/user";
 import Session from "../../session";
 import SendChat from "../../services/party/send-chat";
+import fetchChatsById from "../../services/party/fetch-chats";
 
 interface ISendChatProps {
   room: TPartyRoom;
 }
 
 const PartyRoomChat = (props: ISendChatProps) => {
-  const [messages, setMessages] = useState(props.room.chats);
+  const [messages, setMessages] = useState<TChat[]>(props.room.chats);
   const [messageInput, setMessageInput] = useState("");
   const[user, setUser] = useState<TUser | null >(null);
+  const mesRef = useRef<TChat[] | null> (null);
 
   useEffect(() => {
     const fetched = Session.getUser();
@@ -21,6 +23,37 @@ const PartyRoomChat = (props: ISendChatProps) => {
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+    
+  }, [messages]);
+
+useEffect(() => {
+  let mounted = true;
+  const updateMessages = async () => {
+    let newMessages;
+    if(props.room._id) {
+      newMessages = await fetchChatsById(props.room._id.toString());
+    }
+    if(
+      newMessages &&
+      JSON.stringify(newMessages) !== JSON.stringify(mesRef.current) &&
+      mounted
+    ) {
+      mesRef.current = newMessages;
+      setMessages(newMessages);
+    }
+  };
+  const interval = setInterval(updateMessages, 500);
+  return () => {
+    clearInterval(interval);
+    mounted = false;
+  }
+}, [])
   const sendMessage = () => {
     if (messageInput.trim() === "") return;
     if(user) {
@@ -28,21 +61,13 @@ const PartyRoomChat = (props: ISendChatProps) => {
         sender: user.username,
         message: messageInput,
       };
-      setMessages([...messages , newChat]);
       setMessageInput("");
       SendChat(props.room, newChat);
+      setMessages([...messages, newChat]);
     }
     
     
   };
-
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
-    }
-  }, [messages]);
-
   return (
     <div className="w-full px-4 lg:h-72 h-96">
       <div className="h-full bg-white rounded-lg drop-shadow-md">
@@ -52,7 +77,7 @@ const PartyRoomChat = (props: ISendChatProps) => {
         <div className="border-b-2 border-gray-300"></div>
         <div className="flex flex-col p-2">
           <div className="flex-grow p-2 overflow-y-auto" ref={chatContainerRef}>
-            {messages.map((message, index) => (
+            {messages?.map((message, index) => (
               <div
                 key={index}
                 className={`mb-1 rounded-md pl-3 py-1 ${

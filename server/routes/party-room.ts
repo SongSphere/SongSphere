@@ -17,7 +17,8 @@ import {
   reorderQueue,
   sendEmail,
   block,
-  sendMessage
+  sendMessage,
+  fetchMessages,
 } from "../controllers/party-room";
 
 // import middleware
@@ -43,6 +44,7 @@ router.post("/api/transferOwner", transferO);
 
 router.get("/api/room/find/:username", getRoomByOwner);
 router.get("/api/room/:id", getRoomById);
+router.get("/api/room/fetchChats:id", fetchMessages);
 
 router.post("/api/sendInvitationEmail", sendEmail);
 
