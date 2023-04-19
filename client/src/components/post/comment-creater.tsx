@@ -22,6 +22,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
   const [filteredOptions, setFilteredOptions] = useState<string[]>([]);
   const [stringToRemove, setStringToRemove] = useState<string>("");
   const [startLookingLocation, setStartLookingLocation] = useState<number>(0);
+  const [listOfTaggedUsers, setListOfTaggedUsers] = useState<string[]>([]);
 
   useEffect(() => {
     if (props.user) {
@@ -30,7 +31,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
       }
     }
   }, [props.user]);
-
 
   const handleDropdownSelection = (
     nameSelected: React.SetStateAction<string>
@@ -51,6 +51,17 @@ const CommentCreater = (props: ICommentCreatorProp) => {
         e.preventDefault();
         let res = false;
         if (props.user && commentContent !== "") {
+
+          const regex = /@(\w+)/g;
+          let match;
+
+          while ((match = regex.exec(commentContent))) {
+            listOfTaggedUsers.push(match[1]);
+          }
+
+          console.log(listOfTaggedUsers);
+          
+
           const comment: TComment = {
             username: props.user.username,
             userEmail: props.user.email,
@@ -105,14 +116,16 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             placeholder="Type ur comment here!"
             name="name"
             value={commentContent}
-
             //onChange={handleInputChange}
             onChange={async (event) => {
               /*
                 This functionality calls to backend for User Document
               */
               if ((event.target.value as string) === "") {
+                setListOfTaggedUsers([]);
                 setShowDropdown(false);
+                setCommentContent("");
+                setStartLookingLocation(0);
               } else if ((event.target.value as string) !== "") {
                 const value = event.target.value;
                 setCommentContent(value);
@@ -134,7 +147,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
 
                   setFilteredOptions(filtered); // sets to only show the item with matched string
                   setStringToRemove(selectedItem);
-
 
                   setSearchTerm("");
                 } else {
