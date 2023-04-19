@@ -128,17 +128,30 @@ const SearchSongPlayList = (props: ISearchSongPlayListProps) => {
           <div>
             {selectedSong && (
               <div>
-                <div>{selectedSong.name}</div>
-                <button
-                  onClick={async () => {
-                    await addQueue(selectedSong);
-                    setSelectedPlaylist(null);
-                    setSelectedSong(null);
-                    props.onClose();
-                  }}
-                >
-                  add
-                </button>
+                <div className="flex w-full text-sm">
+                  <div className="w-16">
+                    <img src={selectedSong.cover} />
+                  </div>
+                  {/* <div className="w-1/5"></div> */}
+                  <div className="w-3/5 pl-2">
+                    <div className="truncate">{selectedSong.name}</div>
+                    <div className="truncate">{selectedSong.artist}</div>
+                  </div>
+                  <div>
+                    <button
+                      className="px-2 py-1 ml-2 rounded-lg drop-shadow-lg bg-sky-300 hover:bg-sky-400"
+                      onClick={async () => {
+                        await addQueue(selectedSong);
+                        setSelectedPlaylist(null);
+                        setSelectedSong(null);
+                        props.onClose();
+                      }}
+                    >
+                      add
+                    </button>
+                  </div>
+                </div>
+                {/* <div>{selectedSong.name}</div> */}
               </div>
             )}
           </div>
