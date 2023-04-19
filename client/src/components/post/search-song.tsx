@@ -290,8 +290,6 @@ const SearchSong = (props: ISearchSongProps) => {
                 listOfTaggedUsers.push(match[1]);
               }
         
-              console.log(listOfTaggedUsers);
-
               const newPost: TPost = {
                 username: user.username,
                 userEmail: user.email,

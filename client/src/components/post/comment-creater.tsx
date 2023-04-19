@@ -59,8 +59,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             listOfTaggedUsers.push(match[1]);
           }
 
-          console.log(listOfTaggedUsers);
-          
 
           const comment: TComment = {
             username: props.user.username,
@@ -96,12 +94,16 @@ const CommentCreater = (props: ICommentCreatorProp) => {
               await sendNotification(notificationForAlerts);
             }
           }
+
+
         }
 
         if (res) {
           setCommentContent("");
           props.setCommentChanged(props.commentChanged + 1);
         }
+
+        setListOfTaggedUsers([]);
       }}
     >
       <label>
