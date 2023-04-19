@@ -48,176 +48,222 @@ describe("Testing db services", () => {
   //     console.log("email sent");
   // });
 
-    test("Testing invite users for party", async () => {
-        const userA = new User({
-            name: "Dominic",
-            username: "domdan",
-            givenName: "Dominic",
-            familyName: "Danborn",
-            email: "dominicdanborn@gmail.com",
-            emailVerified: true,
-            profileImgUrl: "google.com",
-            backgroundImgUrl: "google.com",
-            token: "idk",
-            onboarded: false,
-            isPrivate: false,
-            showPlayingSong: false,
-          });
-
-          const userB = new User({
-            name: "Willy",
-            username: "magician3124",
-            givenName: "Chi-Wei",
-            familyName: "Lien",
-            email: "crashingballoon@gmail.com",
-            emailVerified: true,
-            profileImgUrl: "google.com",
-            backgroundImgUrl: "google.com",
-            token: "idk",
-            onboarded: false,
-            isPrivate: false,
-            showPlayingSong: false,
-          });
-
-          const newRoom = new PartyRoom({
-            ownerUsername: userA.username,
-            ownerEmail: userA.email,
-            partyName: "Test Room Party",
-            description: "Test Room",
-            members: [],
-            invitedMembers: [],
-            queue: [],
-            musicIndex: 0,
-          });
-
-          await userA.save();
-          await userB.save();
-
-          await newRoom.save();
-
-          await addInvitation(newRoom._id.toString(), userB.username);
-
-          const changedRoom = await PartyRoom.findOne({ _id: newRoom._id.toString() });
-
-          expect(changedRoom.invitedMembers).toContain(userB.username);
+  test("Testing create party room", async () => {
+    const userA = new User({
+      name: "Dominic",
+      username: "domdan",
+      givenName: "Dominic",
+      familyName: "Danborn",
+      email: "dominicdanborn@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      onboarded: false,
+      isPrivate: false,
+      showPlayingSong: false,
     });
 
-    test("Testing uninvite users for party", async () => {
-        const userA = new User({
-            name: "Dominic",
-            username: "domdan",
-            givenName: "Dominic",
-            familyName: "Danborn",
-            email: "dominicdanborn@gmail.com",
-            emailVerified: true,
-            profileImgUrl: "google.com",
-            backgroundImgUrl: "google.com",
-            token: "idk",
-            onboarded: false,
-            isPrivate: false,
-            showPlayingSong: false,
-          });
-
-          const userB = new User({
-            name: "Willy",
-            username: "magician3124",
-            givenName: "Chi-Wei",
-            familyName: "Lien",
-            email: "crashingballoon@gmail.com",
-            emailVerified: true,
-            profileImgUrl: "google.com",
-            backgroundImgUrl: "google.com",
-            token: "idk",
-            onboarded: false,
-            isPrivate: false,
-            showPlayingSong: false,
-          });
-
-          const newRoom = new PartyRoom({
-            ownerUsername: userA.username,
-            ownerEmail: userA.email,
-            partyName: "Test Room Party",
-            description: "Test Room",
-            members: [],
-            invitedMembers: ["magician3124"],
-            queue: [],
-            musicIndex: 0,
-          });
-
-          await userA.save();
-          await userB.save();
-
-          await newRoom.save();
-
-          await deleteInvitation(newRoom._id.toString(), userB.username);
-
-          const changedRoom = await PartyRoom.findOne({ _id: newRoom._id.toString() });
-
-          expect(changedRoom.invitedMembers).not.toContain(userB.username);
+    const newRoom = new PartyRoom({
+      ownerUsername: userA.username,
+      ownerEmail: userA.email,
+      partyName: "Test Room Party",
+      description: "Test Room",
+      members: [],
+      invitedMembers: [],
+      queue: [],
+      musicIndex: 0,
     });
 
-    test("Testing join for party", async () => {
-      const userA = new User({
-          name: "Dominic",
-          username: "domdan",
-          givenName: "Dominic",
-          familyName: "Danborn",
-          email: "dominicdanborn@gmail.com",
-          emailVerified: true,
-          profileImgUrl: "google.com",
-          backgroundImgUrl: "google.com",
-          token: "idk",
-          onboarded: false,
-          isPrivate: false,
-          showPlayingSong: false,
-        });
+    await userA.save();
+    await newRoom.save();
 
-        const userB = new User({
-          name: "Willy",
-          username: "magician3124",
-          givenName: "Chi-Wei",
-          familyName: "Lien",
-          email: "crashingballoon@gmail.com",
-          emailVerified: true,
-          profileImgUrl: "google.com",
-          backgroundImgUrl: "google.com",
-          token: "idk",
-          onboarded: false,
-          isPrivate: false,
-          showPlayingSong: false,
-        });
+    const foundRoom = await PartyRoom.findOne({
+      _id: newRoom._id.toString(),
+    });
 
-        const newRoom = new PartyRoom({
-          ownerUsername: userA.username,
-          ownerEmail: userA.email,
-          partyName: "Test Room Party",
-          description: "Test Room",
-          members: [],
-          invitedMembers: [],
-          queue: [],
-          musicIndex: 0,
-        });
+    console.log("foundRoom", foundRoom);
+    console.log("newRoom", newRoom);
 
-        const roomWithUser = new PartyRoom({
-          ownerUsername: userA.username,
-          ownerEmail: userA.email,
-          partyName: "Test Room Party",
-          description: "Test Room",
-          members: ["magician3124"],
-          invitedMembers: [],
-          queue: [],
-          musicIndex: 0,
-        });
+    expect(newRoom).not.toBeNull();
+  });
 
-        await userA.save();
-        await userB.save();
+  test("Testing invite users for party", async () => {
+    const userA = new User({
+      name: "Dominic",
+      username: "domdan",
+      givenName: "Dominic",
+      familyName: "Danborn",
+      email: "dominicdanborn@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      onboarded: false,
+      isPrivate: false,
+      showPlayingSong: false,
+    });
 
-        await newRoom.save();
+    const userB = new User({
+      name: "Willy",
+      username: "magician3124",
+      givenName: "Chi-Wei",
+      familyName: "Lien",
+      email: "crashingballoon@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      onboarded: false,
+      isPrivate: false,
+      showPlayingSong: false,
+    });
 
-        await addListener(newRoom._id.toString(), userB.username);
+    const newRoom = new PartyRoom({
+      ownerUsername: userA.username,
+      ownerEmail: userA.email,
+      partyName: "Test Room Party",
+      description: "Test Room",
+      members: [],
+      invitedMembers: [],
+      queue: [],
+      musicIndex: 0,
+    });
 
-        const changedRoom = await PartyRoom.findOne({ _id: newRoom._id.toString() });
+    await userA.save();
+    await userB.save();
 
-        expect(changedRoom.members[0]).toContain(roomWithUser.members[0]);
+    await newRoom.save();
+
+    await addInvitation(newRoom._id.toString(), userB.username);
+
+    const changedRoom = await PartyRoom.findOne({
+      _id: newRoom._id.toString(),
+    });
+
+    expect(changedRoom.invitedMembers).toContain(userB.username);
+  });
+
+  test("Testing uninvite users for party", async () => {
+    const userA = new User({
+      name: "Dominic",
+      username: "domdan",
+      givenName: "Dominic",
+      familyName: "Danborn",
+      email: "dominicdanborn@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      onboarded: false,
+      isPrivate: false,
+      showPlayingSong: false,
+    });
+
+    const userB = new User({
+      name: "Willy",
+      username: "magician3124",
+      givenName: "Chi-Wei",
+      familyName: "Lien",
+      email: "crashingballoon@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      onboarded: false,
+      isPrivate: false,
+      showPlayingSong: false,
+    });
+
+    const newRoom = new PartyRoom({
+      ownerUsername: userA.username,
+      ownerEmail: userA.email,
+      partyName: "Test Room Party",
+      description: "Test Room",
+      members: [],
+      invitedMembers: ["magician3124"],
+      queue: [],
+      musicIndex: 0,
+    });
+
+    await userA.save();
+    await userB.save();
+
+    await newRoom.save();
+
+    await deleteInvitation(newRoom._id.toString(), userB.username);
+
+    const changedRoom = await PartyRoom.findOne({
+      _id: newRoom._id.toString(),
+    });
+
+    expect(changedRoom.invitedMembers).not.toContain(userB.username);
+  });
+
+  test("Testing join for party", async () => {
+    const userA = new User({
+      name: "Dominic",
+      username: "domdan",
+      givenName: "Dominic",
+      familyName: "Danborn",
+      email: "dominicdanborn@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      onboarded: false,
+      isPrivate: false,
+      showPlayingSong: false,
+    });
+
+    const userB = new User({
+      name: "Willy",
+      username: "magician3124",
+      givenName: "Chi-Wei",
+      familyName: "Lien",
+      email: "crashingballoon@gmail.com",
+      emailVerified: true,
+      profileImgUrl: "google.com",
+      backgroundImgUrl: "google.com",
+      token: "idk",
+      onboarded: false,
+      isPrivate: false,
+      showPlayingSong: false,
+    });
+
+    const newRoom = new PartyRoom({
+      ownerUsername: userA.username,
+      ownerEmail: userA.email,
+      partyName: "Test Room Party",
+      description: "Test Room",
+      members: [],
+      invitedMembers: [],
+      queue: [],
+      musicIndex: 0,
+    });
+
+    const roomWithUser = new PartyRoom({
+      ownerUsername: userA.username,
+      ownerEmail: userA.email,
+      partyName: "Test Room Party",
+      description: "Test Room",
+      members: ["magician3124"],
+      invitedMembers: [],
+      queue: [],
+      musicIndex: 0,
+    });
+
+    await userA.save();
+    await userB.save();
+
+    await newRoom.save();
+
+    await addListener(newRoom._id.toString(), userB.username);
+
+    const changedRoom = await PartyRoom.findOne({
+      _id: newRoom._id.toString(),
+    });
+
+    expect(changedRoom.members[0]).toContain(roomWithUser.members[0]);
   });
 });
