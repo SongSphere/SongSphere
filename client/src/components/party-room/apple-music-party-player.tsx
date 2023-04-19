@@ -26,19 +26,6 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
     setAMInstance(Session.getAMInstance());
   }, [Session.getUser()]);
 
-  // useEffect(() => {
-  //   console.log("cleanup function");
-  //   // Cleanup function to stop playback and clear the queue when the component is unmounted
-  //   return () => {
-  //     if (AMInstance) {
-  //       if (AMInstance.player.isPlaying) {
-  //         AMInstance.player.pause();
-  //       }
-  //       AMInstance.setQueue({ items: [] });
-  //     }
-  //   };
-  // }, [AMInstance]);
-
   useEffect(() => {
     console.log("hello");
     if (AMInstance) {
