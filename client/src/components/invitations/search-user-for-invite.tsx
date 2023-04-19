@@ -7,6 +7,7 @@ import removeInvitation from "../../services/party/remove-invitation";
 import { TPartyRoom } from "../../types/party-room";
 import { TNotification } from "../../types/notification";
 import fetchUserByUsername from "../../services/user/fetch-user-username";
+import SendInvitationEmail from "../../services/party/send-invitation-email";
 
 interface ISearchUserForInviteProps {
   following: string[];
@@ -20,11 +21,13 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
   const [following, setFollowing] = useState(props.following);
   const [isInvited, setIsInvited] = useState<Boolean>(false);
   const [user, setUser] = useState<TUser | null>(null);
+  const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
 
   const handleOnClose = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "container") {
       setFollowing([]);
-      handleInviteClick();
+      setIsInvited(false);
+      setSelectedUser(null);
       props.onClose();
     }
   };
@@ -34,7 +37,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
   }, [Session.getUser()]);
 
   useEffect(() => {
-    setFollowing([]);
+    setFollowing(props.following);
   }, [props.following]);
 
   if (!props.isVisible) {
@@ -71,10 +74,13 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                 className="flex-1 block w-full px-3 py-2 focus:outline-none"
                 placeholder="Search Username"
                 onChange={async (event) => {
+                  // setSelectedUser(event.target.value);
+
                   // searching
 
                   if ((event.target.value as string) === "") {
                     setFollowing([]);
+                    setSelectedUser(null);
                   } else if ((event.target.value as string) !== "") {
                     let filteredUsers: Array<string> = Array<string>();
                     let filteredUsersStatus: Array<Boolean> = Array<Boolean>();
@@ -85,14 +91,14 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                       if (u.startsWith(event.target.value as string)) {
                         filteredUsers.push(u);
                         filteredUsersStatus.push(false);
-                        if (props.room?.invitedMembers) {
-                          props.room.invitedMembers.forEach((invitedUser) => {
-                            if (invitedUser == u) {
-                              setIsInvited(true);
-                              //  filteredUsersStatus.push(true);
-                            }
-                          });
-                        }
+                        // if (props.room?.invitedMembers) {
+                        //   props.room.invitedMembers.forEach((invitedUser) => {
+                        //     if (invitedUser == u) {
+                        //         setIsInvited(true);
+                        //       //  filteredUsersStatus.push(true);
+                        //     }
+                        //   });
+                        // }
                       }
                     });
 
@@ -116,67 +122,36 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                                 viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg"
                               ></svg>
-                              <span className="flex-1 inline-block text-left">
-                                {userName}
-                                {isInvited ? (
-                                  <button
-                                    className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
-                                    onClick={async () => {
-                                      if (props.roomId) {
-                                        await removeInvitation(
-                                          props.roomId,
-                                          userName
-                                        );
-                                        handleInviteClick();
-                                      } else {
-                                        alert("The room does not exist");
-                                      }
-                                    }}
-                                  >
-                                    Invited
-                                  </button>
-                                ) : (
-                                  <button
-                                    className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
-                                    onClick={async () => {
-                                      if (props.roomId) {
-                                        await AddInvitation(
-                                          props.roomId,
-                                          userName
-                                        );
-
-                                        if (user) {
-                                          const receiverEmail = (
-                                            await fetchUserByUsername(userName)
-                                          ).email;
-                                          if (receiverEmail) {
-                                            const notificationForAlerts: TNotification =
-                                              {
-                                                userEmailSender: user.email,
-                                                userEmailReceiver:
-                                                  receiverEmail,
-                                                notificationType: "Party",
-                                                text: props.roomId,
-                                              };
-
-                                            await sendNotification(
-                                              notificationForAlerts
-                                            );
-                                          } else {
-                                            console.log(
-                                              "Error: the user does not have an email"
-                                            );
+                              <button
+                                className="flex-1 inline-block text-left"
+                                onClick={async () => {
+                                  await fetchUserByUsername(userName).then((res) => {
+                                    if (res) {
+                                      setSelectedUser(res);
+                                      if (
+                                        props.room &&
+                                        props.room.invitedMembers
+                                      ) {
+                                        props.room.invitedMembers.forEach(
+                                          (invitedUser) => {
+                                            if (invitedUser == res.username) {
+                                              console.log(`invitedUser: ${invitedUser} res.username: ${res.username}`);
+                                              setIsInvited(true);
+                                            }
                                           }
-                                        }
-
-                                        handleInviteClick();
+                                        );
                                       }
-                                    }}
-                                  >
-                                    Invite
-                                  </button>
-                                )}
-                              </span>
+                                    }
+                                  });
+
+                            
+                                  setFollowing([]);
+                                   console.log(setIsInvited);
+                                 
+                                }}
+                              >
+                                {userName}
+                              </button>
                             </a>
                           </div>
                         </div>
@@ -185,7 +160,79 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                   })
                 ) : (
                   <div className="px-3 py-2 cursor-pointer hover:bg-slate-100">
-                    <p className="text-sm font-medium text-gray-600"></p>
+                    {selectedUser && (
+                      <div className="flex items-center gap-2 mb-5">
+                        <div className="w-14 h-14 rounded-full p-1 hover:scale-105 bg-blue-200/80 overflow-hidden">
+                          <img
+                            src={selectedUser.backgroundImgUrl}
+                            alt=""
+                            className="rounded-full w-full"
+                          />
+                        </div>
+                        <div className="font-semibold text-blue-600 mr-auto">
+                          <h2>{selectedUser.username}</h2>
+                        </div>
+                
+                        <button
+                            className="btn follow_friend px-4 py-2 bg-blue-700 text-slate-100 rounded-full text-sm font-semibold hover:bg-white border border-blue-700 hover:text-blue-700 shadow-md shadow-blue-700
+"
+                            onClick={async () => {
+                              if (props.roomId) {
+                                await AddInvitation(
+                                  props.roomId,
+                                  selectedUser.username
+                                )
+                                  .then(async (res) => {
+
+                                  })
+                                  .catch((err) => {
+                                    alert(err);
+                                  });
+
+                                if (user) {
+                                  const notificationForAlerts: TNotification = {
+                                    userEmailSender: user.email,
+                                    userEmailReceiver: selectedUser.email,
+                                    notificationType: "Party",
+                                    text: props.roomId,
+                                  };
+
+                                  await sendNotification(notificationForAlerts);
+
+                                  await SendInvitationEmail(props.roomId, user.username, selectedUser.email);
+                                  handleInviteClick();
+                                  // send email
+                                
+                                }
+                              }
+                            }}
+                          >
+                            Invite
+                          </button>
+
+                          <button
+                            className="btn follow_friend px-4 py-2 bg-blue-700 text-slate-100 rounded-full text-sm font-semibold hover:bg-white border border-blue-700 hover:text-blue-700 shadow-md shadow-blue-700
+"
+                            onClick={async () => {
+                              if (props.roomId) {
+                                await removeInvitation(
+                                  props.roomId,
+                                  selectedUser.username
+                                );
+
+                                handleInviteClick();
+                              } else {
+                                alert("The room does not exist");
+                              }
+                            }}
+                          >
+                            Uninvite
+                          </button>
+                  
+                          
+          
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
