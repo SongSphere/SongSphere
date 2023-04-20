@@ -21,6 +21,7 @@ import CreateRoomPage from "../pages/party/enter-room-page";
 import PartyPage from "../pages/party/party-page";
 import SettingsPage from "../pages/settings-page";
 import Page404 from "../components/party-room/404";
+import PageBlocked from "../components/party-room/blocked-page";
 
 const Router = () => {
   let element = useRoutes([
@@ -95,6 +96,10 @@ const Router = () => {
     {
       path: "/party/:id",
       element: <PartyPage />,
+    },
+    {
+      path:"/party/blocked",
+      element: <PageBlocked />,
     },
   ]);
   return element;
