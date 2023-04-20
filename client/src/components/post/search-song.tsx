@@ -68,7 +68,7 @@ const SearchSong = (props: ISearchSongProps) => {
     const newCommentContent = caption.replace(stringToRemove, "");
     setStringToRemove(""); // reset the string to remove
     setCaption(newCommentContent + "" + nameSelected); // Auto fill
-    setListOfTaggedUsers(listOfTaggedUsers.concat(nameSelected.toString()));
+
 
     setSearchTerm("");
     setShowDropdown(false);
@@ -295,6 +295,8 @@ const SearchSong = (props: ISearchSongProps) => {
               while ((match = regex.exec(caption))) {
                 listOfTaggedUsers.push(match[1]);
               }
+
+              setListOfTaggedUsers(listOfTaggedUsers);
 
               const newPost: TPost = {
                 username: user.username,
