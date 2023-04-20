@@ -143,13 +143,7 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
                 className="px-2 py-1 rounded-lg bg-sky-300 hover:bg-sky-400 drop-shadow-lg"
                 onClick={() => {
                   if (props.room && props.id) {
-                    fetchRoomById(props.id).then((res) => {
-                      if (res) {
-                        handleFollowingOpen();
-                      } else {
-                        alert("Room does not exist");
-                      }
-                    });
+                    handleFollowingOpen();
                   }
                 }}
               >
@@ -212,7 +206,7 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
         room={partyRoom}
       />
       <SearchUserForInvite
-        following={following}
+        // following={props.user.following}
         isVisible={showFollowingModal}
         onClose={handleFollowingClose}
         roomId={props.id}
