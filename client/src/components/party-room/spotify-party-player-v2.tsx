@@ -88,7 +88,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
       new URLSearchParams({ device_id: deviceId });
 
     if (user) {
-      await fetch(url, {
+      return await fetch(url, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -199,6 +199,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
 
     return () => {
       if (playerRef.current) {
+        console.log("pause");
         playerRef.current.pause();
       }
     };
