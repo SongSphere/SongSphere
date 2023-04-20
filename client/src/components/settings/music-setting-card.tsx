@@ -8,7 +8,6 @@ import fetchUser from "../../services/user/fetch-user";
 import unlinkMusic from "../../services/user/unlink-music";
 import Session from "../../session";
 import { TUser } from "../../types/user";
-import AppleLink from "./apple-link";
 import DefaultPlatform from "./set-default-platform";
 
 interface IMusicSettingCardProps {
@@ -146,11 +145,7 @@ const MusicSettingCard = (props: IMusicSettingCardProps) => {
             {appleLink}
             <div className="pr-2 font-semibold">Spotfiy: </div>
             {spotifyLink}
-            <DefaultPlatform
-              appleAccountStatus={appleAccountStatus}
-              spotifyAccountStatus={spotifyAccountStatus}
-              defaultPlatform={props.user.defaultPlatform}
-            />
+            <DefaultPlatform defaultPlatform={props.user.defaultPlatform} />
           </div>
         </div>
       </div>

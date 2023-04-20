@@ -1,64 +1,68 @@
 import Session from "../../session";
-import { TUser } from "../../types/user";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { setDefaultPlatform } from "../../services/user/default-platform";
 
+const buttonActiveStyle =
+  "px-2 py-1 mr-2 text-center text-black rounded-lg drop-shadow-lg bg-sky-300";
+
+const buttonStyle =
+  "px-2 py-1 mr-2 text-center text-black rounded-lg drop-shadow-lg bg-slate-300";
+
 interface IDefaultPlatformProps {
-  appleAccountStatus: boolean;
-  spotifyAccountStatus: boolean;
   defaultPlatform: string;
 }
 
 const DefaultPlatform = (props: IDefaultPlatformProps) => {
-  let [currService, setCurrService] = useState<string>();
-  let [service, setService] = useState<string[]>([]);
+  // let [currService, setCurrService] = useState<string>();
+  // let [service, setService] = useState<string[]>([]);
+  let [appleIsDefault, setAppleIsDefault] = useState(false);
+  let [spotifyIsDefault, setSpotifyIsDefault] = useState(false);
+
+  const ref = useRef<HTMLElement | null>(null);
+
+  const switchHandler = async (s: string) => {
+    const span = ref.current;
+    if (span) {
+      span.className += "bg-sky-300";
+    }
+    Session.setMusicService(s);
+    await setDefaultPlatform(s);
+  };
 
   useEffect(() => {
-    setCurrService(props.defaultPlatform);
-    let tempService: string[] = [];
-    if (props.appleAccountStatus) {
-      tempService.push("apple");
+    if (props.defaultPlatform == "apple") {
+      setAppleIsDefault(true);
+    } else if (props.defaultPlatform == "spotify") {
+      setSpotifyIsDefault(true);
     }
-    if (props.spotifyAccountStatus) {
-      tempService.push("spotify");
-    }
-    setService(tempService);
-  }, [props.appleAccountStatus, props.spotifyAccountStatus]);
+  }, []);
 
   return (
     <div className="">
       <div className="font-semibold">Default Service:</div>
-      {service.map((s) => {
-        if (s == currService) {
-          return (
-            <button
-              className="px-2 py-1 mr-2 text-center text-black rounded-lg bg-sky-300 drop-shadow-lg"
-              key={s}
-              onClick={() => {
-                Session.setMusicService(s);
-                setDefaultPlatform(s);
-                setCurrService(s);
-              }}
-            >
-              {s}
-            </button>
-          );
-        } else {
-          return (
-            <button
-              className="px-2 py-1 mr-2 text-center text-black rounded-lg bg-slate-100 drop-shadow-lg"
-              key={s}
-              onClick={() => {
-                Session.setMusicService(s);
-                setDefaultPlatform(s);
-                setCurrService(s);
-              }}
-            >
-              {s}
-            </button>
-          );
-        }
-      })}
+      <button
+        className={spotifyIsDefault ? buttonActiveStyle : buttonStyle}
+        onClick={async () => {
+          Session.setMusicService("spotify");
+          await setDefaultPlatform("spotify");
+          setAppleIsDefault(false);
+          setSpotifyIsDefault(true);
+        }}
+      >
+        Spotify
+      </button>
+
+      <button
+        className={appleIsDefault ? buttonActiveStyle : buttonStyle}
+        onClick={async () => {
+          Session.setMusicService("apple");
+          await setDefaultPlatform("apple");
+          setAppleIsDefault(true);
+          setSpotifyIsDefault(false);
+        }}
+      >
+        Apple Music
+      </button>
     </div>
   );
 };
