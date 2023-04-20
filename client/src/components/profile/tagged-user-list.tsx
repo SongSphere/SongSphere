@@ -35,8 +35,8 @@ const TaggedUserList = (props: ITaggedUserListProps) => {
       onClick={handleOnClose}
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
     >
-      <div className="w-1/4 p-5 bg-white rounded max-h-[60vh] min-h-[60vh]">
-        <h1 className="py-3 font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
+      <div className="w-1/4 p-5 bg-white rounded max-h-[60vh] min-h-[30vh]">
+        <h1 className="py-1 font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
           Tagged Users
         </h1>
 

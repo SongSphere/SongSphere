@@ -47,20 +47,6 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
     setAMInstance(Session.getAMInstance());
   }, [Session.getUser()]);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     if (props.song && user) {
-  //       selectService(props.song, "songs", 1).then((result) => {
-  //         setCategory("songs");
-  //         setSongs(result!);
-  //         if (result) {
-  //           setSelected(result[0]);
-  //         }
-  //       });
-  //     }
-  //   }
-  // }, [user]);
-
   const selectService = async (
     term: string,
     category: string,
@@ -133,7 +119,7 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
               }
             }}
           >
-            Add Song
+            Add
           </button>
         </div>
       </div>

@@ -17,6 +17,8 @@ import {
   reorderQueue,
   sendEmail,
   block,
+  sendMessage,
+  fetchMessages,
   updateQueueIndex,
 } from "../controllers/party-room";
 
@@ -34,6 +36,7 @@ router.post("/api/roomBlock", block);
 router.post("/api/addqueue", addQueue);
 router.post("/api/removequeue", removeQueue);
 router.post("/api/reorderqueue", reorderQueue);
+router.post("/api/sendChat", sendMessage);
 router.post("/api/updateIndex", updateQueueIndex);
 
 router.post("/api/inviteMember", addInvitedMember);
@@ -43,6 +46,7 @@ router.post("/api/transferOwner", transferO);
 
 router.get("/api/room/find/:username", getRoomByOwner);
 router.get("/api/room/:id", getRoomById);
+router.get("/api/room/fetchChats:id", fetchMessages);
 
 router.post("/api/sendInvitationEmail", sendEmail);
 

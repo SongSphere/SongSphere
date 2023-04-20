@@ -3,6 +3,7 @@ import { TMusicContent } from "../types/music-content";
 
 import PartyRoom, { IPartyRoom } from "../db/party-room";
 import { TPartyRoom } from "../types/party-room";
+import { TChat } from "../types/chat";
 
 export const createPartyRoom = async (
   newRoom: TPartyRoom
@@ -21,6 +22,7 @@ export const createPartyRoom = async (
     { username: newRoom.ownerUsername },
     { partyRoom: party._id }
   );
+
   return party;
 };
 
@@ -72,15 +74,11 @@ export const deleteRoom = async (room: TPartyRoom) => {
 
 export const addListener = async (roomId: string, username: string) => {
   try {
-    await PartyRoom.findOneAndUpdate(
+    let room = await PartyRoom.findOneAndUpdate(
       { _id: roomId },
       { $push: { members: username } }
-    ).then(async () => {
-      await User.findOneAndUpdate(
-        { username: username },
-        { partyRoom: roomId }
-      );
-    });
+    );
+    room.save();
   } catch (error) {
     throw error;
   }
@@ -224,6 +222,36 @@ export const blockUser = async (room: TPartyRoom, username: string) => {
     ).then(async () => {
       await User.findOneAndUpdate({ username: username }, { partyRoom: "" });
     });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePartyRoom = async (username: string, update: string) => {
+  try {
+    await User.findOneAndUpdate({ username: username }, { partyRoom: update });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const sendChat = async (room: TPartyRoom, chat: TChat) => {
+  try {
+    await PartyRoom.findOneAndUpdate(
+      { _id: room._id },
+      {
+        $push: { chats: chat },
+      }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchChats = async (id: string) => {
+  try {
+    const room = await PartyRoom.findOne({ _id: id });
+    return room;
   } catch (error) {
     throw error;
   }

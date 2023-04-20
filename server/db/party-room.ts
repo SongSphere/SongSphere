@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { TMusicContent } from "../types/music-content";
-import User from "./user";
+import { TChat } from "../types/chat";
 
 export interface IPartyRoom {
   id: string;
@@ -13,6 +13,7 @@ export interface IPartyRoom {
   queue: Array<TMusicContent>;
   musicIndex: Number;
   blocked: Array<String>;
+  chats: Array<TChat>;
 }
 
 const PartyRoomSchema = new Schema<IPartyRoom>(
@@ -57,6 +58,10 @@ const PartyRoomSchema = new Schema<IPartyRoom>(
       type: Array<String>(),
       required: true,
     },
+    chats: {
+      type: Array<TChat>(),
+      required: true,
+    }
   },
   {
     timestamps: true,
