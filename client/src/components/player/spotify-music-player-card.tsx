@@ -268,45 +268,5 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
       </div>
     </div>
   );
-
-  // return (
-  //   <div className="flex flex-row justify-center h-full text-white lg:flex-col">
-  //     <div className="flex w-1/2 p-4 lg:w-full">
-  //       <img className="w-24 h-24" src={song.img}></img>
-  //       <div className="pl-2">
-  //         <div className="text-2xl font-semibold ">{song.name}</div>
-  //         {song.artists.map((artist) => {
-  //           return <p className="text-white">{artist}</p>;
-  //         })}
-  //       </div>
-  //     </div>
-  //     <div className="w-1/2 p-4 lg:w-full">
-  //       <div className="flex flex-col mt-4 place-items-center">
-  //         <div
-  //           className="w-5 h-5 cursor-pointer"
-  //           onClick={() => {
-  //             playMusicHandler();
-  //           }}
-  //         >
-  //           <img
-  //             src={
-  //               isPlaying
-  //                 ? "/img/icons/pause-icon.svg"
-  //                 : "/img/icons/play-icon.svg"
-  //             }
-  //           ></img>
-  //         </div>
-  //         <div className="w-4/5 h-1 mt-5 bg-neutral-200 dark:bg-neutral-600">
-  //           <div
-  //             className={`h-1 bg-red-400`}
-  //             style={{
-  //               width: `${progress}%`,
-  //             }}
-  //           ></div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 };
 export default SpotifyPlayerCard;
