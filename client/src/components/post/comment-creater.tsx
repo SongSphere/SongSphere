@@ -4,6 +4,7 @@ import sendComment from "../../services/post/send-comment";
 import { TComment } from "../../types/comment";
 import { TNotification } from "../../types/notification";
 import { TUser } from "../../types/user";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
 
 interface ICommentCreatorProp {
   user: TUser;
@@ -40,10 +41,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
     setStringToRemove(""); // reset the string to remove
     setCommentContent(newCommentContent + "" + nameSelected); // Auto fill
 
-    // This fetches the user name
-    setListOfTaggedUsers(listOfTaggedUsers.concat(nameSelected.toString()));
-    // listOfTaggedUsers.push(nameSelected.toString());
-
     setSearchTerm("");
     setShowDropdown(false);
     setFilteredOptions([]);
@@ -63,6 +60,8 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             listOfTaggedUsers.push(match[1]);
           }
 
+          setListOfTaggedUsers(listOfTaggedUsers);
+
           const comment: TComment = {
             username: props.user.username,
             userEmail: props.user.email,
@@ -72,18 +71,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             like: 0,
           };
 
-          // listOfTaggedUsers.forEach(async (element) => {
-          //   fetchUserByUsername(element).then(async (res) => {
-          // const notificationForAlerts: TNotification = {
-          //   userEmailSender: user.email,
-          //   userEmailReceiver: res.email,
-          //   notificationType: "Follow",
-          //   text: `${user.username} tagged you in a post!`,
-          // };
-          //     await sendNotification(notificationForAlerts);
-          //   });
-          // });
-
+      
           if (props.commentType === "Post") {
             res = await sendComment(comment, props.id, "");
 
