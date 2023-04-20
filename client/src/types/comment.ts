@@ -5,4 +5,5 @@ export type TComment = {
   text: string;
   subComments?: string[];
   like: number;
+  taggedUsers: string[];
 };

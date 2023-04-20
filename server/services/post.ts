@@ -9,6 +9,7 @@ import { TNotification } from "../types/notification";
 import { INotification } from "../db/notification";
 
 import Notifications from "../db/notification";
+import { fetchUserbyUserName } from "./user";
 
 export const createPost = async (
   newPost: TPost
@@ -114,7 +115,7 @@ export const removePost = async (post: TPost) => {
 };
 
 // Add replying to posibility.
-export const comment = async (
+export const createComment = async (
   newComment: TComment,
   postId: string,
   replyingTo: string
@@ -124,7 +125,20 @@ export const comment = async (
     userEmail: newComment.userEmail,
     text: newComment.text,
     subComments: newComment.subComments,
+    taggedUsers: newComment.taggedUsers,
     like: 0,
+  });
+
+  comment.taggedUsers.forEach(async (user) => {
+    const notification: TNotification = {
+      userEmailSender: comment.userEmail,
+      userEmailReceiver: (await fetchUserbyUserName(user.toString())).email,
+      notificationType: "Follow",
+      text: `${newComment.username} tagged you in a comment!`,
+    };
+
+    const newNotification = await notificationForAlerts(notification);
+    await saveNotification(newNotification);
   });
 
   if (replyingTo.length == 0) {
