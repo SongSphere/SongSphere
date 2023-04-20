@@ -54,7 +54,7 @@ const NotificationCard = (props: ICommentNotificationCard) => {
       <FailPopUp
         open={partyFailOpen}
         setOpen={setPartyFailOpen}
-        failText={"Room does not exist"}
+        failText={"Room does not exist or you are not invited"}
       />
       <div className="flex items-center justify-center w-8 h-8 border border-gray-200 rounded-full">
         <svg
@@ -77,15 +77,18 @@ const NotificationCard = (props: ICommentNotificationCard) => {
             type="submit"
             className="p-3 mt-4 text-white rounded-xl bg-navy"
             onClick={() => {
+
+             
               fetchRoomById(props.text)
                 .then((res) => {
-                  if (res && res._id && user) {
+                  if (res && res._id && user ) {
+                    if (res.invitedMembers.includes(user.username)) {
                     RemoveInvitation(res._id?.toString(), user.username);
                     AddMember(res._id, user.username);
                     navigate(`/party/${res._id}`);
                     window.location.reload();
-                  } else {
-                  }
+                    }
+                  } 
                 })
                 .then((error) => {
                   setPartyFailOpen(true);

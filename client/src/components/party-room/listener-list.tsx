@@ -88,7 +88,7 @@ const ListenerList = (props: IListernerListProps) => {
                 {followers.map((users) => {
                   return (
                     <div className="grid grid-flow-col" key={users}>
-                      <h1 className="ml-5">{users}</h1>
+                      <h1 className="mx-5">{users}</h1>
                       {user.username === props.room.ownerUsername &&
                       user.username != users ? (
                         <div>
@@ -101,7 +101,7 @@ const ListenerList = (props: IListernerListProps) => {
                             transfer
                           </button>
                           <button
-                            className=" text-lblue"
+                            className="mr-5 text-lblue"
                             onClick={() =>
                               BlockMember(props.room, users).then((res) => {
                                 if (res) {

@@ -89,7 +89,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                 {following.length > 0 ? (
                   following.map((userName) => {
                     return (
-                      <div className="flex">
+                      <div key={userName} className="flex">
                         <div className="flex-1 inline-block text-left">
                           <div>
                             <a className="flex items-center p-2 text-base font-normal ">
@@ -148,7 +148,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                         </div>
 
                         <button
-                          className="px-4 py-2 text-sm font-semibold bg-blue-700 border border-blue-700 rounded-full shadow-md btn follow_friend text-slate-100 hover:bg-white hover:text-blue-700 shadow-blue-700 "
+                          className="px-4 py-2 text-sm font-semibold bg-blue-700 border border-blue-700 rounded-full shadow-md btn follow_friend text-slate-100 hover:bg-white hover:text-blue-700 shadow-blue-700"
                           onClick={async () => {
                             if (props.roomId) {
                               await AddInvitation(

@@ -32,7 +32,7 @@ const HomePage = () => {
   }, [user]);
 
   if (!user) {
-    return <div>fetching user</div>;
+    return <div></div>;
   }
 
   const left = <FriendActivityCard />;

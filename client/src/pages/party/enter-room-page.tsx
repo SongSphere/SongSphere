@@ -30,7 +30,7 @@ const CreateRoomPage = () => {
   }, [user]);
 
   if (!user) {
-    return <div>fethcing user</div>;
+    return <div>fetching user</div>;
   }
 
   if (user.partyRoom) {
@@ -162,7 +162,7 @@ const CreateRoomPage = () => {
                   fetchRoomById(id)
                     .then((res) => {
                       if (res && res._id) {
-                        AddMember(res._id, user.username);
+                        
                         user.partyRoom = res._id;
                         res.members.push(user.username);
                         navigate(`/party/${res._id}`);
