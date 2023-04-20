@@ -1,7 +1,13 @@
 import Session from "../../session";
-import { TUser } from "../../types/user";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { setDefaultPlatform } from "../../services/user/default-platform";
+import fetchUser from "../../services/user/fetch-user";
+
+const buttonActiveStyle =
+  "px-2 py-1 mr-2 text-center text-black rounded-lg drop-shadow-lg bg-sky-300";
+
+const buttonStyle =
+  "px-2 py-1 mr-2 text-center text-black rounded-lg drop-shadow-lg bg-slate-300";
 
 interface IDefaultPlatformProps {
   appleAccountStatus: boolean;
@@ -10,55 +16,71 @@ interface IDefaultPlatformProps {
 }
 
 const DefaultPlatform = (props: IDefaultPlatformProps) => {
-  let [currService, setCurrService] = useState<string>();
-  let [service, setService] = useState<string[]>([]);
+  let [appleIsDefault, setAppleIsDefault] = useState(false);
+  let [spotifyIsDefault, setSpotifyIsDefault] = useState(false);
+
+  const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    setCurrService(props.defaultPlatform);
-    let tempService: string[] = [];
-    if (props.appleAccountStatus) {
-      tempService.push("apple");
+    if (props.defaultPlatform == "apple") {
+      setAppleIsDefault(true);
+      setSpotifyIsDefault(false);
+    } else if (props.defaultPlatform == "spotify") {
+      setSpotifyIsDefault(true);
+      setAppleIsDefault(false);
     }
-    if (props.spotifyAccountStatus) {
-      tempService.push("spotify");
+
+    if (!props.appleAccountStatus) {
+      setAppleIsDefault(false);
+      if (props.spotifyAccountStatus) {
+        setDefaultPlatform("spotify");
+        setSpotifyIsDefault(true);
+      } else {
+        setDefaultPlatform("");
+      }
+    } else if (!props.spotifyAccountStatus) {
+      setSpotifyIsDefault(false);
+      if (props.appleAccountStatus) {
+        setDefaultPlatform("apple");
+        setAppleIsDefault(true);
+      } else {
+        setDefaultPlatform("");
+      }
     }
-    setService(tempService);
   }, [props.appleAccountStatus, props.spotifyAccountStatus]);
 
   return (
     <div className="">
       <div className="font-semibold">Default Service:</div>
-      {service.map((s) => {
-        if (s == currService) {
-          return (
-            <button
-              className="px-2 py-1 mr-2 text-center text-black rounded-lg bg-sky-300 drop-shadow-lg"
-              key={s}
-              onClick={() => {
-                Session.setMusicService(s);
-                setDefaultPlatform(s);
-                setCurrService(s);
-              }}
-            >
-              {s}
-            </button>
-          );
-        } else {
-          return (
-            <button
-              className="px-2 py-1 mr-2 text-center text-black rounded-lg bg-slate-100 drop-shadow-lg"
-              key={s}
-              onClick={() => {
-                Session.setMusicService(s);
-                setDefaultPlatform(s);
-                setCurrService(s);
-              }}
-            >
-              {s}
-            </button>
-          );
-        }
-      })}
+      {props.spotifyAccountStatus && (
+        <button
+          className={spotifyIsDefault ? buttonActiveStyle : buttonStyle}
+          onClick={async () => {
+            Session.setMusicService("spotify");
+            await setDefaultPlatform("spotify");
+            setAppleIsDefault(false);
+            setSpotifyIsDefault(true);
+            await Session.setUser(await fetchUser());
+          }}
+        >
+          Spotify
+        </button>
+      )}
+
+      {props.appleAccountStatus && (
+        <button
+          className={appleIsDefault ? buttonActiveStyle : buttonStyle}
+          onClick={async () => {
+            Session.setMusicService("apple");
+            await setDefaultPlatform("apple");
+            setAppleIsDefault(true);
+            setSpotifyIsDefault(false);
+            await Session.setUser(await fetchUser());
+          }}
+        >
+          Apple Music
+        </button>
+      )}
     </div>
   );
 };

@@ -316,6 +316,8 @@ export const getPlatform = async (req: Request, res: Response) => {
 export const setPlatform = async (req: Request, res: Response) => {
   try {
     await setDefaultPlatform(req.session.user.email, req.body.platform);
+    res.status(200);
+    res.json({ msg: "success" });
   } catch (error) {
     res.status(500);
     res.json({ error: error });

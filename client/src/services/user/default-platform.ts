@@ -1,5 +1,3 @@
-import { TPost } from "../../types/post";
-
 export const getDefaultPlatform = async (): Promise<string> => {
   return new Promise<string>(async () => {
     await fetch(`${process.env.REACT_APP_API}/user/getDefaultPlatform`, {
