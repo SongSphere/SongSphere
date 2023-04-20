@@ -1,6 +1,5 @@
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { TUser } from "../../types/user";
-import Navbar from "../../components/navbar";
 import { TPartyRoom } from "../../types/party-room";
 import { useEffect, useRef, useState } from "react";
 import fetchRoomById from "../../services/party/fetch-room-by-id";
@@ -78,6 +77,9 @@ const PartyPage = () => {
   useEffect(() => {
     // Fetch user and set service
     const fetchUserData = async () => {
+      const fetchedUser = Session.getUser();
+      const fetchedService = Session.getMusicService();
+
       if (id) {
         fetchRoomById(id).then((res) => {
           if (res == null) {
@@ -85,11 +87,20 @@ const PartyPage = () => {
             navigate("/404");
           }
 
+          if (fetchedUser && res._id) {
+            if (!res.members.includes(fetchedUser.username)) {
+              AddMember(res._id, fetchedUser.username);
+            }
+          }
+
+          if (user && id) {
+            user.partyRoom = id;
+          }
+
           setRoom(res);
         });
       }
-      const fetchedUser = Session.getUser();
-      const fetchedService = Session.getMusicService();
+
       setUser(fetchedUser);
       setService(fetchedService);
       setIsLoading(false);
@@ -187,7 +198,11 @@ const PartyPage = () => {
     return <div>Loading...</div>;
   }
 
-  const right = (
+  if (blocked) {
+    user.partyRoom = "";
+    navigate("/party/blocked");
+  }
+  const left = (
     <div className="w-full h-full bg-slate-900">
       {service === "apple" ? (
         <AppleMusicPartyRoomPlayerCard
@@ -230,7 +245,7 @@ const PartyPage = () => {
           upNextSongs={upNext}
         />
       }
-      right={right}
+      right={left}
     />
   );
 };

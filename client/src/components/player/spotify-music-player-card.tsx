@@ -5,6 +5,7 @@ import selectService from "../../services/user/select-service";
 import Session from "../../session";
 import setActivity from "../../services/general/set-activity";
 import { spotifyRefresh } from "../../services/spotify/spotify-refresh";
+import NoSongPlayer from "./no-song-player";
 
 interface ISpotifySong {
   name: string;
@@ -18,7 +19,7 @@ interface ISpotifyPlayerCardProps {
 }
 
 const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [song, setSong] = useState<ISpotifySong | null>(null);
   const [player, setPlayer] = useState<Spotify.Player | null>(null);
   const [deviceId, setDeviceId] = useState<string | null>(null);
@@ -220,22 +221,27 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
   }, [user]);
 
   if (!song) {
-    return <div>fetching</div>;
+    return <NoSongPlayer />;
   }
 
   return (
-    <div className="flex flex-row justify-center h-full text-white lg:flex-col">
+    <div className="flex flex-row justify-center h-full text-white rounded-lg lg:m-4 lg:flex-col bg-slate-800">
       <div className="flex w-1/2 p-4 lg:w-full">
-        <img className="w-24 h-24" src={song.img}></img>
-        <div className="pl-2">
+        <div className="grid w-1/5 place-content-center">
+          <div>
+            <img className="w-full h-auto" src={song.img}></img>
+          </div>
+        </div>
+
+        <div className="w-4/5 ml-3 text-xl font-semibold ">
           <div className="text-2xl font-semibold ">{song.name}</div>
           {song.artists.map((artist) => {
-            return <p className="text-white">{artist}</p>;
-          })}
+            return <p className="text-sm">{artist}</p>;
+          })}{" "}
         </div>
       </div>
       <div className="w-1/2 p-4 lg:w-full">
-        <div className="flex flex-col mt-4 place-items-center">
+        <div className="flex flex-col pt-8 lg:pt-0 place-items-center">
           <div
             className="w-5 h-5 cursor-pointer"
             onClick={() => {
@@ -262,5 +268,45 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
       </div>
     </div>
   );
+
+  // return (
+  //   <div className="flex flex-row justify-center h-full text-white lg:flex-col">
+  //     <div className="flex w-1/2 p-4 lg:w-full">
+  //       <img className="w-24 h-24" src={song.img}></img>
+  //       <div className="pl-2">
+  //         <div className="text-2xl font-semibold ">{song.name}</div>
+  //         {song.artists.map((artist) => {
+  //           return <p className="text-white">{artist}</p>;
+  //         })}
+  //       </div>
+  //     </div>
+  //     <div className="w-1/2 p-4 lg:w-full">
+  //       <div className="flex flex-col mt-4 place-items-center">
+  //         <div
+  //           className="w-5 h-5 cursor-pointer"
+  //           onClick={() => {
+  //             playMusicHandler();
+  //           }}
+  //         >
+  //           <img
+  //             src={
+  //               isPlaying
+  //                 ? "/img/icons/pause-icon.svg"
+  //                 : "/img/icons/play-icon.svg"
+  //             }
+  //           ></img>
+  //         </div>
+  //         <div className="w-4/5 h-1 mt-5 bg-neutral-200 dark:bg-neutral-600">
+  //           <div
+  //             className={`h-1 bg-red-400`}
+  //             style={{
+  //               width: `${progress}%`,
+  //             }}
+  //           ></div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 };
 export default SpotifyPlayerCard;
