@@ -32,7 +32,7 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
   const [partyRoom, setPartyRoom] = useState<TPartyRoom>(props.room);
   const [listeners, setListeners] = useState<string[]>(props.room.members);
   const [owner, setOwner] = useState<string>(props.room.ownerUsername);
-  const ownerRef = useRef<string | null> (null);
+  const ownerRef = useRef<string> (props.room.ownerUsername);
   const lesRef = useRef<string[] | null> (null);
 
 

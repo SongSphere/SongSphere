@@ -5,6 +5,7 @@ import { TUser } from "../../types/user";
 import Session from "../../session";
 import SendChat from "../../services/party/send-chat";
 import fetchChatsById from "../../services/party/fetch-chats";
+import FailPopUp from "../popup/fail-popup";
 
 interface ISendChatProps {
   room: TPartyRoom;
@@ -13,6 +14,7 @@ interface ISendChatProps {
 const PartyRoomChat = (props: ISendChatProps) => {
   const [messages, setMessages] = useState<TChat[]>(props.room.chats);
   const [messageInput, setMessageInput] = useState("");
+  const [failOpen, setFailOpen] = useState(false);
   const[user, setUser] = useState<TUser | null >(null);
   const mesRef = useRef<TChat[] | null> (null);
 
@@ -62,7 +64,15 @@ useEffect(() => {
         message: messageInput,
       };
       setMessageInput("");
-      SendChat(props.room, newChat);
+      SendChat(props.room, newChat).then((res) => {
+        if(!res) {
+          <FailPopUp 
+            open={failOpen}
+            setOpen={setFailOpen}
+            failText="Error sending message try again"
+          />
+        }
+      })
       setMessages([...messages, newChat]);
     }
     

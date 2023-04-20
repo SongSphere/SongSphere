@@ -144,6 +144,28 @@ const PartyPage = () => {
     };
   },[user, id])
 
+  useEffect(() => {
+    let mounted = true;
+    const updateRoom = async() => {
+      let newRoom;
+      if(id) {
+        newRoom = await fetchRoomById(id);
+      }
+      if(
+        newRoom == null &&
+        user?.username !== room?.ownerUsername
+      ) {
+        navigate("/party/ended")
+      }
+     
+    };
+    const interval = setInterval(updateRoom, 500);
+    return () => {
+      clearInterval(interval);
+      mounted = false;
+    };
+  },[room, user])
+
   if (isLoading || !user || !queueRef.current || !room || !id) {
     return <div>Loading...</div>;
   }
