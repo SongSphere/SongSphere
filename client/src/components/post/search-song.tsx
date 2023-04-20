@@ -68,10 +68,7 @@ const SearchSong = (props: ISearchSongProps) => {
     const newCommentContent = caption.replace(stringToRemove, "");
     setStringToRemove(""); // reset the string to remove
     setCaption(newCommentContent + "" + nameSelected); // Auto fill
-
-    // This fetches the user name
     setListOfTaggedUsers(listOfTaggedUsers.concat(nameSelected.toString()));
-    // listOfTaggedUsers.push(nameSelected.toString());
 
     setSearchTerm("");
     setShowDropdown(false);
@@ -196,7 +193,7 @@ const SearchSong = (props: ISearchSongProps) => {
                     <img src={s.cover} />
                   </div>
                   {s.name}
-                  <br />
+                  <br></br>
                   {s.artist}
                 </div>
               </button>
@@ -229,6 +226,7 @@ const SearchSong = (props: ISearchSongProps) => {
                     setListOfTaggedUsers([]);
                     setShowDropdown(false);
                     setCaption("");
+                    setStartLookingLocation(0);
                   } else if ((event.target.value as string) !== "") {
                     const value = event.target.value;
                     setCaption(value);
@@ -265,7 +263,7 @@ const SearchSong = (props: ISearchSongProps) => {
                     }
                   }
                 }}
-                placeholder="Type '@' to mention someone..."
+                placeholder="Type out the caption here!"
               />
               {showDropdown && (
                 <ul className="w-[40%] mt-3 mx-auto">
@@ -289,6 +287,15 @@ const SearchSong = (props: ISearchSongProps) => {
           className="float-right p-2 mb-2 mr-10 rounded-md text-lgrey bg-navy hover:bg-lblue"
           onClick={async () => {
             if (user) {
+              // do the string manipuation here!!!!
+
+              const regex = /@(\w+)/g;
+              let match;
+
+              while ((match = regex.exec(caption))) {
+                listOfTaggedUsers.push(match[1]);
+              }
+
               const newPost: TPost = {
                 username: user.username,
                 userEmail: user.email,
@@ -299,6 +306,7 @@ const SearchSong = (props: ISearchSongProps) => {
                 repost: isRepost,
                 taggedUsers: listOfTaggedUsers,
               };
+
               await sendPost(newPost)
                 .then((res) => {
                   if (!res) {
@@ -323,6 +331,8 @@ const SearchSong = (props: ISearchSongProps) => {
                   setPostFailOpen(true);
                 });
             }
+
+            setListOfTaggedUsers([]);
           }}
         >
           Submit

@@ -32,19 +32,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
     }
   }, [props.user]);
 
-  // const handleDropdownSelection = (
-  //   nameSelected: React.SetStateAction<string>
-  // ) => {
-  //   // Handle dropdown selection
-  //   const newCommentContent = commentContent.replace(stringToRemove, "");
-  //   setStringToRemove(""); // reset the string to remove
-  //   setCommentContent(newCommentContent + "" + nameSelected); // Auto fill
-  //   setSearchTerm("");
-  //   setShowDropdown(false);
-  //   setFilteredOptions([]);
-  //   setStartLookingLocation(commentContent.length);
-  // };
-
   const handleDropdownSelection = (
     nameSelected: React.SetStateAction<string>
   ) => {
@@ -69,6 +56,13 @@ const CommentCreater = (props: ICommentCreatorProp) => {
         e.preventDefault();
         let res = false;
         if (props.user && commentContent !== "") {
+          const regex = /@(\w+)/g;
+          let match;
+
+          while ((match = regex.exec(commentContent))) {
+            listOfTaggedUsers.push(match[1]);
+          }
+
           const comment: TComment = {
             username: props.user.username,
             userEmail: props.user.email,
@@ -122,6 +116,8 @@ const CommentCreater = (props: ICommentCreatorProp) => {
           setCommentContent("");
           props.setCommentChanged(props.commentChanged + 1);
         }
+
+        setListOfTaggedUsers([]);
       }}
     >
       <label>
@@ -142,7 +138,10 @@ const CommentCreater = (props: ICommentCreatorProp) => {
                 This functionality calls to backend for User Document
               */
               if ((event.target.value as string) === "") {
+                setListOfTaggedUsers([]);
                 setShowDropdown(false);
+                setCommentContent("");
+                setStartLookingLocation(0);
               } else if ((event.target.value as string) !== "") {
                 const value = event.target.value;
                 setCommentContent(value);

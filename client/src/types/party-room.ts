@@ -1,4 +1,5 @@
 import { TMusicContent } from "./music-content";
+import { TChat } from "./chat";
 
 export type TPartyRoom = {
     _id?: string;
@@ -11,4 +12,5 @@ export type TPartyRoom = {
     queue: TMusicContent[];
     musicIndex: number;
     blocked: string[];
+    chats: TChat[];
   };

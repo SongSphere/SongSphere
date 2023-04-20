@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchUserForInvite from "../../components/invitations/search-user-for-invite";
 import ListenerList from "../../components/party-room/listener-list";
@@ -11,6 +11,9 @@ import { TMusicContent } from "../../types/music-content";
 import { TPartyRoom } from "../../types/party-room";
 import { TUser } from "../../types/user";
 import SearchSongPlayList from "./search-song-playlist";
+import { useEffect } from "react";
+import fetchListeners from "../../services/party/fetch-listeners";
+
 
 interface IPartyInfoCardProps {
   room: TPartyRoom;
@@ -25,7 +28,13 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
   const [showListenersModal, setShowListenersModal] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
-  const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
+  const [showTransfer, setShowTransfer] = useState(false);
+  const [partyRoom, setPartyRoom] = useState<TPartyRoom>(props.room);
+  const [listeners, setListeners] = useState<string[]>(props.room.members);
+  const [owner, setOwner] = useState<string>(props.room.ownerUsername);
+  const ownerRef = useRef<string> (props.room.ownerUsername);
+  const lesRef = useRef<string[] | null> (null);
+
 
   const handlePlaylistClose = () => {
     setShowPlaylistModal(false);
@@ -45,7 +54,65 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
   const handleCloseListen = () => {
     setShowListenersModal(false);
   };
+  const handleOpenTransfer = () => {
+    setShowTransfer(true);
+  };
+ 
 
+  useEffect(() => {
+    let mounted = true;
+    const updateListen = async () => {
+      let newListen;
+      if(props.room._id) {
+        newListen = await fetchListeners(props.room._id.toString());
+      }
+      if(
+        newListen &&
+        JSON.stringify(newListen) !== JSON.stringify(lesRef.current) &&
+        mounted
+      ) {
+        lesRef.current = newListen;
+        setListeners(newListen);
+      }
+    };
+    const interval = setInterval(updateListen, 500);
+    return () => {
+      clearInterval(interval);
+      mounted = false;
+    }
+  }, []);  
+
+  useEffect(() => {
+    let mounted = true;
+    const updateOwner = async () => {
+      let newOwner;
+      let newRoom;
+      if(props.room._id) {
+        newRoom = await fetchRoomById(props.room._id.toString());
+        newOwner = newRoom.ownerUsername;
+      }
+      if(
+        newRoom &&
+        newOwner &&
+        JSON.stringify(newOwner) !== JSON.stringify(ownerRef.current) &&
+        mounted
+      ) {
+        ownerRef.current = newOwner;
+        setOwner(newOwner);
+        setPartyRoom(newRoom);
+        if(newOwner === props.user.username) {
+          setShowTransfer(true);
+        }
+      }
+    };
+    const interval = setInterval(updateOwner, 500);
+    return () => {
+      clearInterval(interval);
+      mounted = false;
+    }
+  }, [])
+
+  
   const ERROR_MSG = "Oh no! An error occurs when deleting a member";
 
   return (
@@ -65,7 +132,7 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
           </h1>
           <h1 className="text-navy">
             <span className="font-semibold">Owner: </span>
-            {props.room.ownerUsername}
+            {owner}
           </h1>
           <div className="flex flex-wrap gap-2 mt-2">
             <button
@@ -74,6 +141,7 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
             >
               View Listeners
             </button>
+            
             {props.room.ownerUsername === props.user.username && (
               <button
                 className="px-2 py-1 rounded-lg bg-sky-300 hover:bg-sky-400 drop-shadow-lg"
@@ -82,7 +150,6 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
                     fetchRoomById(props.id).then((res) => {
                       if (res) {
                         handleFollowingOpen();
-                        setPartyRoom(res);
                       } else {
                         alert("Room does not exist");
                       }
@@ -97,10 +164,12 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
               className="px-2 py-1 rounded-lg bg-sky-300 hover:bg-sky-400 drop-shadow-lg"
               onClick={async () => {
                 if (props.user.username === props.room.ownerUsername) {
+                  props.user.partyRoom="";
                   await DeleteRoom(props.room).then(() => {
                     navigate("/");
                   });
                 } else {
+                  props.user.partyRoom="";
                   await DeleteMember(props.room, props.user.username).then(
                     (res) => {
                       if (res) {
@@ -141,10 +210,10 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
         onClose={handlePlaylistClose}
       />
       <ListenerList
-        listeners={props.room.members}
+        listeners={listeners}
         isVisible={showListenersModal}
         onClose={handleCloseListen}
-        room={props.room}
+        room={partyRoom}
       />
       <SearchUserForInvite
         following={props.user.following}
@@ -152,6 +221,11 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
         onClose={handleFollowingClose}
         roomId={props.id}
         room={props.room}
+      />
+      <FailPopUp
+        open={showTransfer}
+        setOpen={setShowTransfer}
+        failText="You are now the owner of this party!"
       />
     </div>
   );

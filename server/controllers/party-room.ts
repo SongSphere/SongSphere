@@ -20,6 +20,9 @@ import {
   moveDownQueue,
   sendInvitationEmail,
   blockUser,
+  updatePartyRoom,
+  sendChat,
+  fetchChats,
 } from "../services/party-room";
 
 export const newRoom = async (req: Request, res: Response) => {
@@ -60,6 +63,7 @@ export const getRoomById = async (req: Request, res: Response) => {
 export const removeRoom = async (req: Request, res: Response) => {
   try {
     await deleteRoom(req.body.room);
+    await updatePartyRoom(req.body.room.ownerUsername, "");
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
@@ -71,6 +75,8 @@ export const removeRoom = async (req: Request, res: Response) => {
 export const addMember = async (req: Request, res: Response) => {
   try {
     await addListener(req.body.roomId, req.body.username);
+    await updatePartyRoom(req.body.username, req.body.roomId);
+    
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
@@ -82,6 +88,7 @@ export const addMember = async (req: Request, res: Response) => {
 export const removeMember = async (req: Request, res: Response) => {
   try {
     await deleteListener(req.body.room, req.body.username);
+    await updatePartyRoom(req.body.username, req.body.room._id);
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {
@@ -188,3 +195,27 @@ export const sendEmail = async (req: Request, res: Response) => {
     res.json({ error: error });
   }
 };
+
+export const sendMessage = async (req: Request, res:Response) => {
+  try {
+    await sendChat(
+      req.body.room,
+      req.body.chat,
+    );
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
+  }
+};
+
+export const fetchMessages = async (req: Request, res:Response) => {
+  try {
+    const room = await fetchChats(req.params.id);
+    res.status(201);
+    res.json({ room: room });
+  } catch (error) {
+    throw error;
+  }
+}
