@@ -69,8 +69,6 @@ const SearchSong = (props: ISearchSongProps) => {
     setStringToRemove(""); // reset the string to remove
     setCaption(newCommentContent + "" + nameSelected); // Auto fill
 
-    // // This fetches the user name
-    // listOfTaggedUsers.push(nameSelected.toString());
 
     setSearchTerm("");
     setShowDropdown(false);
@@ -243,10 +241,18 @@ const SearchSong = (props: ISearchSongProps) => {
                       setShowDropdown(true);
 
                       setSearchTerm(selectedItem); // search term is the matched string
+                      // const filtered = followers.filter((option) => {
+                      //   console.log(option.includes(selectedItem));
+                      //   option.includes(selectedItem);
+                      // });
 
-                      const filtered = followers.filter((option) =>
-                        option.includes(selectedItem)
-                      );
+                      const filtered: string[] = [];
+
+                      followers.filter((option) => {
+                        if (option.includes(selectedItem)) {
+                          filtered.push(option);
+                        }
+                      });
 
                       setFilteredOptions(filtered); // sets to only show the item with matched string
                       setStringToRemove(selectedItem);
@@ -289,7 +295,9 @@ const SearchSong = (props: ISearchSongProps) => {
               while ((match = regex.exec(caption))) {
                 listOfTaggedUsers.push(match[1]);
               }
-        
+
+              setListOfTaggedUsers(listOfTaggedUsers);
+
               const newPost: TPost = {
                 username: user.username,
                 userEmail: user.email,

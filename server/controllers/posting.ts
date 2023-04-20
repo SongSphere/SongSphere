@@ -14,7 +14,7 @@ import {
   updatePost,
   fetchPostsByUsername,
   fetchPostById,
-  comment,
+  createComment,
   saveComment,
   fetchComments,
   notificationForAlerts,
@@ -85,11 +85,7 @@ export const getPostById = async (req: Request, res: Response) => {
 export const storePost = async (req: Request, res: Response) => {
   try {
     const post = await createPost(req.body.post);
-    
-
     await savePost(post);
-
-  
 
     res.status(201);
     res.json({ msg: "success" });
@@ -140,12 +136,13 @@ export const sendNotification = async (req: Request, res: Response) => {
 
 export const sendComment = async (req: Request, res: Response) => {
   try {
-    const c = await comment(
+    const c = await createComment(
       req.body.comment,
       req.body.postId,
       req.body.replyingTo
     );
     await saveComment(c);
+
     res.status(201);
     res.json({ msg: "success" });
   } catch (error) {

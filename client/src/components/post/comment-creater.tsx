@@ -4,6 +4,7 @@ import sendComment from "../../services/post/send-comment";
 import { TComment } from "../../types/comment";
 import { TNotification } from "../../types/notification";
 import { TUser } from "../../types/user";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
 
 interface ICommentCreatorProp {
   user: TUser;
@@ -39,6 +40,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
     const newCommentContent = commentContent.replace(stringToRemove, "");
     setStringToRemove(""); // reset the string to remove
     setCommentContent(newCommentContent + "" + nameSelected); // Auto fill
+
     setSearchTerm("");
     setShowDropdown(false);
     setFilteredOptions([]);
@@ -51,7 +53,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
         e.preventDefault();
         let res = false;
         if (props.user && commentContent !== "") {
-
           const regex = /@(\w+)/g;
           let match;
 
@@ -59,15 +60,18 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             listOfTaggedUsers.push(match[1]);
           }
 
+          setListOfTaggedUsers(listOfTaggedUsers);
 
           const comment: TComment = {
             username: props.user.username,
             userEmail: props.user.email,
             text: commentContent,
             subComments: [],
+            taggedUsers: listOfTaggedUsers,
             like: 0,
           };
 
+      
           if (props.commentType === "Post") {
             res = await sendComment(comment, props.id, "");
 
@@ -94,8 +98,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
               await sendNotification(notificationForAlerts);
             }
           }
-
-
         }
 
         if (res) {
@@ -143,9 +145,17 @@ const CommentCreater = (props: ICommentCreatorProp) => {
 
                   setSearchTerm(selectedItem); // search term is the matched string
 
-                  const filtered = followers.filter((option) =>
-                    option.includes(selectedItem)
-                  );
+                  // const filtered = followers.filter((option) =>
+                  //   option.includes(selectedItem)
+                  // );
+
+                  const filtered: string[] = [];
+
+                  followers.filter((option) => {
+                    if (option.includes(selectedItem)) {
+                      filtered.push(option);
+                    }
+                  });
 
                   setFilteredOptions(filtered); // sets to only show the item with matched string
                   setStringToRemove(selectedItem);

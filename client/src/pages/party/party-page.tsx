@@ -1,6 +1,5 @@
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { TUser } from "../../types/user";
-import Navbar from "../../components/navbar";
 import { TPartyRoom } from "../../types/party-room";
 import { useEffect, useRef, useState } from "react";
 import fetchRoomById from "../../services/party/fetch-room-by-id";
@@ -35,17 +34,14 @@ const PartyPage = () => {
   const [blocked, setBlocked] = useState<boolean>(false);
   const blockRef = useRef<boolean>(false);
 
-
   useEffect(() => {
     const playNextSong = () => {
       if (isSongOver) {
         if (upNextRef.current && queueRef.current) {
-          
-
           setIsSongOver(false);
 
           upNextRef.current = queueRef.current.slice(queueIndex + 1);
-        
+
           setSongPlaying(upNextRef.current[0]);
 
           setUpNext(upNextRef.current.slice(1));
@@ -62,6 +58,9 @@ const PartyPage = () => {
   useEffect(() => {
     // Fetch user and set service
     const fetchUserData = async () => {
+      const fetchedUser = Session.getUser();
+      const fetchedService = Session.getMusicService();
+
       if (id) {
         fetchRoomById(id).then((res) => {
           if (res == null) {
@@ -69,11 +68,20 @@ const PartyPage = () => {
             navigate("/404");
           }
 
+          if (fetchedUser && res._id) {
+            if (!res.members.includes(fetchedUser.username)) {
+              AddMember(res._id, fetchedUser.username);
+            }
+          }
+
+          if (user && id) {
+            user.partyRoom = id;
+          }
+
           setRoom(res);
         });
       }
-      const fetchedUser = Session.getUser();
-      const fetchedService = Session.getMusicService();
+
       setUser(fetchedUser);
       setService(fetchedService);
       setIsLoading(false);
@@ -131,7 +139,7 @@ const PartyPage = () => {
         mounted
       ) {
         blockRef.current = newBool;
-       
+
         setBlocked(newBool);
       }
     };
@@ -142,37 +150,33 @@ const PartyPage = () => {
       clearInterval(interval);
       mounted = false;
     };
-  },[user, id])
+  }, [user, id]);
 
   useEffect(() => {
     let mounted = true;
-    const updateRoom = async() => {
+    const updateRoom = async () => {
       let newRoom;
-      if(id) {
+      if (id) {
         newRoom = await fetchRoomById(id);
       }
-      if(
-        newRoom == null &&
-        user?.username !== room?.ownerUsername
-      ) {
-        navigate("/party/ended")
+      if (newRoom == null && user?.username !== room?.ownerUsername) {
+        navigate("/party/ended");
       }
-     
     };
     const interval = setInterval(updateRoom, 500);
     return () => {
       clearInterval(interval);
       mounted = false;
     };
-  },[room, user])
+  }, [room, user]);
 
   if (isLoading || !user || !queueRef.current || !room || !id) {
     return <div>Loading...</div>;
   }
 
-  if(blocked) {
-    user.partyRoom="";
-    navigate('/party/blocked');
+  if (blocked) {
+    user.partyRoom = "";
+    navigate("/party/blocked");
   }
   const left = (
     <div className="w-full h-full bg-slate-900">
@@ -186,8 +190,7 @@ const PartyPage = () => {
         />
       )}
       <div className="hidden w-full lg:block">
-        <PartyRoomChat
-        room={room}/>
+        <PartyRoomChat room={room} />
       </div>
     </div>
   );
@@ -203,8 +206,7 @@ const PartyPage = () => {
             id={id}
           />
           <div className="w-full bg-slate-900 lg:hidden">
-            <PartyRoomChat 
-            room={room}/>
+            <PartyRoomChat room={room} />
           </div>
         </div>
       }
