@@ -30,7 +30,7 @@ const CreateRoomPage = () => {
   }, [user]);
 
   if (!user) {
-    return <div>fethcing user</div>;
+    return <div>fetching user</div>;
   }
 
   if (user.partyRoom) {

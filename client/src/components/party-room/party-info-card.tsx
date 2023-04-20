@@ -30,6 +30,7 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
   const [showTransfer, setShowTransfer] = useState(false);
   const [partyRoom, setPartyRoom] = useState<TPartyRoom>(props.room);
   const [listeners, setListeners] = useState<string[]>(props.room.members);
+  const [following, setFollowing] = useState<string[]>(props.user.following);
   const [owner, setOwner] = useState<string>(props.room.ownerUsername);
   const ownerRef = useRef<string>(props.room.ownerUsername);
   const lesRef = useRef<string[] | null>(null);
@@ -38,14 +39,13 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
     setShowPlaylistModal(false);
   };
 
-  const handleFollowingClose = () => {
-    setShowFollowingModal(false);
-  };
-
   const handleFollowingOpen = () => {
     setShowFollowingModal(true);
   };
 
+  const handleFollowingClose = () => {
+    setShowFollowingModal(false);
+  };
   const handleOpenListen = () => {
     setShowListenersModal(true);
   };
@@ -212,7 +212,7 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
         room={partyRoom}
       />
       <SearchUserForInvite
-        following={props.user.following}
+        following={following}
         isVisible={showFollowingModal}
         onClose={handleFollowingClose}
         roomId={props.id}
