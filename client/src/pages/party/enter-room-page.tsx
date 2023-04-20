@@ -111,11 +111,12 @@ const CreateRoomPage = () => {
                           ownerEmail: user.email,
                           partyName: name,
                           description: description,
-                          members: [],
+                          members: [user.username],
                           invitedMembers: [],
                           queue: [],
                           musicIndex: 0,
                           blocked:[],
+                          chats:[],
                         };
                         await CreateRoom(newRoom)
                           .then((res) => {
@@ -125,6 +126,7 @@ const CreateRoomPage = () => {
                               fetchRoomByOwner(newRoom.ownerUsername).then(
                                 (room) => {
                                   if (room._id) {
+                                    user.partyRoom=room._id;
                                     navigate(`/party/${room._id}`);
                                     
                                   }
@@ -181,6 +183,9 @@ const CreateRoomPage = () => {
                       fetchRoomById(id)
                         .then((res) => {
                           if (res && res._id) {
+                            AddMember(res._id, user.username);
+                            user.partyRoom=res._id;
+                            res.members.push(user.username);
                             navigate(`/party/${res._id}`);
                             RemoveInvitation(
                               res._id.toString(),
