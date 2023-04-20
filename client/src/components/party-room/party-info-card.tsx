@@ -165,9 +165,9 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
                     navigate("/");
                   });
                 } else {
-                  props.user.partyRoom = "";
                   await DeleteMember(props.room, props.user.username).then(
                     (res) => {
+                      props.user.partyRoom = "";
                       if (res) {
                         navigate(`/`);
                       } else {
