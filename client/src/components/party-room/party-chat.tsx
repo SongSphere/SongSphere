@@ -85,7 +85,7 @@ useEffect(() => {
           Chat
         </div>
         <div className="border-b-2 border-gray-300"></div>
-        <div className="flex flex-col p-2">
+        <div className="flex flex-col p-2 overflow-hidden max-h-[85%]">
           <div className="flex-grow p-2 overflow-y-auto" ref={chatContainerRef}>
             {messages?.map((message, index) => (
               <div
