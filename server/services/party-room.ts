@@ -18,8 +18,11 @@ export const createPartyRoom = async (
     queue: newRoom.queue,
     musicIndex: newRoom.musicIndex,
   });
-  await User.findOneAndUpdate({username: newRoom.ownerUsername}, {partyRoom: party._id});
-  
+  await User.findOneAndUpdate(
+    { username: newRoom.ownerUsername },
+    { partyRoom: party._id }
+  );
+
   return party;
 };
 
@@ -46,10 +49,10 @@ export const fetchRoomByOwner = async (username: string) => {
 export const fetchRoomById = async (id: string) => {
   try {
     const room = await PartyRoom.findOne({ _id: id });
-    if (!room) { 
+    if (!room) {
       throw Error;
     }
-    
+
     return room;
   } catch (error) {
     throw error;
@@ -59,7 +62,10 @@ export const fetchRoomById = async (id: string) => {
 export const deleteRoom = async (room: TPartyRoom) => {
   try {
     await PartyRoom.findByIdAndDelete(room._id);
-    
+    await User.findOneAndUpdate(
+      { username: room.ownerUsername },
+      { partyRoom: "" }
+    );
   } catch (error) {
     throw error;
   }
@@ -72,6 +78,7 @@ export const addListener = async (roomId: string, username: string) => {
       { $push: { members: username } }
     );
     room.save();
+    await User.findOneAndUpdate({ username: username }, { partyRoom: roomId });
   } catch (error) {
     throw error;
   }
@@ -83,10 +90,7 @@ export const deleteListener = async (room: TPartyRoom, username: string) => {
       { _id: room._id },
       { $pull: { members: username } }
     ).then(async () => {
-      await User.findOneAndUpdate(
-        {username: username}, 
-        {partyRoom: ""}
-      )
+      await User.findOneAndUpdate({ username: username }, { partyRoom: "" });
     });
   } catch (error) {
     throw error;
@@ -213,51 +217,45 @@ export const blockUser = async (room: TPartyRoom, username: string) => {
     await PartyRoom.findOneAndUpdate(
       { _id: room._id },
       {
-        $push: { blocked: username } 
+        $push: { blocked: username },
       }
     ).then(async () => {
-      await User.findOneAndUpdate(
-        {username: username}, 
-        {partyRoom: ""}
-      )
+      await User.findOneAndUpdate({ username: username }, { partyRoom: "" });
     });
   } catch (error) {
     throw error;
   }
-}
+};
 
-export const updatePartyRoom = async ( username: string, update: string) => {
+export const updatePartyRoom = async (username: string, update: string) => {
   try {
-    await User.findOneAndUpdate(
-      {username: username}, 
-      {partyRoom: update}
-    );
-  } catch(error) {
-    throw error;
-  }
-}
-
-export const sendChat = async (room:TPartyRoom,chat: TChat) => {
-  try {
-    await PartyRoom.findOneAndUpdate(
-      {_id: room._id},
-      {
-        $push:{chats: chat}
-      }
-      );
+    await User.findOneAndUpdate({ username: username }, { partyRoom: update });
   } catch (error) {
     throw error;
   }
-}
+};
+
+export const sendChat = async (room: TPartyRoom, chat: TChat) => {
+  try {
+    await PartyRoom.findOneAndUpdate(
+      { _id: room._id },
+      {
+        $push: { chats: chat },
+      }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const fetchChats = async (id: string) => {
   try {
     const room = await PartyRoom.findOne({ _id: id });
     return room;
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+};
 
 import { CourierClient } from "@trycourier/courier";
 import User from "../db/user";
@@ -266,8 +264,6 @@ export const sendInvitationEmail = async (
   senderUsername: string,
   receiverEmail: string
 ) => {
-
-
   const courier = CourierClient({
     authorizationToken: process.env.EMAIL_API_KEY,
   });
