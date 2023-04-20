@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchUserForInvite from "../../components/invitations/search-user-for-invite";
 import ListenerList from "../../components/party-room/listener-list";
@@ -11,6 +11,8 @@ import { TMusicContent } from "../../types/music-content";
 import { TPartyRoom } from "../../types/party-room";
 import { TUser } from "../../types/user";
 import SearchSongPlayList from "./search-song-playlist";
+import { useEffect } from "react";
+import fetchListeners from "../../services/party/fetch-listeners";
 
 interface IPartyInfoCardProps {
   room: TPartyRoom;
@@ -26,6 +28,9 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [partyRoom, setPartyRoom] = useState<TPartyRoom | null>(null);
+  const [listeners, setListeners] = useState<string[]>(props.room.members);
+  const lesRef = useRef<string[] | null> (null);
+
 
   const handlePlaylistClose = () => {
     setShowPlaylistModal(false);
@@ -45,6 +50,29 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
   const handleCloseListen = () => {
     setShowListenersModal(false);
   };
+
+  useEffect(() => {
+    let mounted = true;
+    const updateListen = async () => {
+      let newListen;
+      if(props.room._id) {
+        newListen = await fetchListeners(props.room._id.toString());
+      }
+      if(
+        newListen &&
+        JSON.stringify(newListen) !== JSON.stringify(lesRef.current) &&
+        mounted
+      ) {
+        lesRef.current = newListen;
+        setListeners(newListen);
+      }
+    };
+    const interval = setInterval(updateListen, 500);
+    return () => {
+      clearInterval(interval);
+      mounted = false;
+    }
+  }, []);  
 
   const ERROR_MSG = "Oh no! An error occurs when deleting a member";
 
@@ -143,7 +171,7 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
         onClose={handlePlaylistClose}
       />
       <ListenerList
-        listeners={props.room.members}
+        listeners={listeners}
         isVisible={showListenersModal}
         onClose={handleCloseListen}
         room={props.room}
