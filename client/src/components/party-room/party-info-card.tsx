@@ -113,9 +113,9 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
 
   return (
     <div className="w-full h-full p-4">
-      <div className="p-4 pb-10 bg-white rounded-lg h-128">
+      <div className="p-4 pb-10 bg-white rounded-lg h-[calc(90vh-8rem)]">
         <h3 className="pt-10 text-3xl font-semibold text-center">
-          Profile Settings
+          Party Room Settings
         </h3>
         <div className="">
           <h1 className="text-navy">
@@ -165,9 +165,9 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
                     navigate("/");
                   });
                 } else {
-                  props.user.partyRoom = "";
                   await DeleteMember(props.room, props.user.username).then(
                     (res) => {
+                      props.user.partyRoom = "";
                       if (res) {
                         navigate(`/`);
                       } else {

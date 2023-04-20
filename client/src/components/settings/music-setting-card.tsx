@@ -4,11 +4,11 @@ import {
   spotifyAuth,
 } from "../../services/spotify/spotify-link";
 import { appleAuth } from "../../services/user/apple-music-link";
+import { setDefaultPlatform } from "../../services/user/default-platform";
 import fetchUser from "../../services/user/fetch-user";
 import unlinkMusic from "../../services/user/unlink-music";
 import Session from "../../session";
 import { TUser } from "../../types/user";
-import AppleLink from "./apple-link";
 import DefaultPlatform from "./set-default-platform";
 
 interface IMusicSettingCardProps {
@@ -66,16 +66,11 @@ const MusicSettingCard = (props: IMusicSettingCardProps) => {
 
   useEffect(() => {
     setAMInstance(Session.getAMInstance());
-
-    if (props.user.appleToken != undefined) {
+    if (props.user.appleToken) {
       setAppleAccountStatus(true);
-    } else {
-      setAppleAccountStatus(false);
     }
     if (props.user.spotifyToken != undefined) {
       setSpotifyAccountStatus(true);
-    } else {
-      setSpotifyAccountStatus(false);
     }
   }, []);
 
@@ -102,6 +97,7 @@ const MusicSettingCard = (props: IMusicSettingCardProps) => {
         onClick={async () => {
           try {
             await appleAuth(AMInstance!);
+            await setDefaultPlatform("apple");
             setAppleAccountStatus(true);
           } catch (error) {
             console.error(error);

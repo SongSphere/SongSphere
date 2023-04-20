@@ -68,6 +68,7 @@ describe("Testing db services", () => {
       userEmail: "anthonyfbaumann@gmail.com",
       text: "asoidj",
       like: 0,
+      taggedUsers: [],
     };
 
     const post1 = new Post({

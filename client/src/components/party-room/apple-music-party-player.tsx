@@ -6,11 +6,12 @@ import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
 
 interface IMusicPlayerCardProps {
+  isSongOver: boolean;
+  setIsSongOver: Function;
   selectedSong: TMusicContent | null;
 }
 
 const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState<TUser | null>(null);
   const [song, setSong] = useState<MusicKit.Resource | null>(null);
@@ -25,17 +26,43 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
   }, [Session.getUser()]);
 
   useEffect(() => {
+    console.log("hello");
     if (AMInstance) {
       AMInstance.addEventListener("playbackTimeDidChange", () => {
         setProgress(AMInstance.player.currentPlaybackProgress * 100);
       });
+
+      AMInstance.addEventListener("playbackStateDidChange", () => {
+        if (
+          AMInstance.player.playbackState === MusicKit.PlaybackStates.paused
+        ) {
+          const currentProgress = AMInstance.player.currentPlaybackProgress;
+          if (currentProgress >= 0.99) {
+            console.log("Track ended");
+            props.setIsSongOver(true);
+          }
+        }
+      });
     }
+
+    return () => {
+      if (AMInstance) {
+        if (AMInstance.player.isPlaying) {
+          AMInstance.player.pause();
+        }
+        AMInstance.setQueue({ items: [] });
+      }
+    };
   }, [AMInstance]);
 
   useEffect(() => {
+    console.log("useEffect for song changed", props.selectedSong?.name);
+
     const fetchSong = async (songId: string) => {
+      console.log("fetching song");
       if (AMInstance) {
         const song = await AMInstance.api.song(songId.toString());
+        console.log("fetched ", song);
         setSong(song);
 
         const mediaItemOptions: MusicKit.MediaItemOptions = {
@@ -46,8 +73,17 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
 
         const mediaItem = new MusicKit.MediaItem(mediaItemOptions);
 
-        AMInstance.setQueue({
-          items: [mediaItem],
+        if (AMInstance.player.isPlaying) {
+          AMInstance.player.pause();
+        }
+
+        AMInstance.setQueue({ items: [] }).then(() => {
+          AMInstance.setQueue({ items: [mediaItem] }).then(() => {
+            console.log("play");
+            setTimeout(() => {
+              AMInstance.play();
+            }, 500); // Add a delay of 500ms before playing the song
+          });
         });
       } else {
         console.error("music not set");
@@ -71,35 +107,13 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
 
     if (props.selectedSong && user && AMInstance) {
       selectServiceHandler(props.selectedSong, AMInstance, user, service);
-    }
-
-    if (props.selectedSong) {
-      fetchSong(props.selectedSong.id);
+    } else {
+      console.log("else 1");
     }
   }, [props.selectedSong, user, AMInstance]);
 
-  const playMusicHandler = () => {
-    setIsPlaying(!isPlaying);
-
-    if (AMInstance != null) {
-      if (!isPlaying) {
-        AMInstance.play();
-        if (props.selectedSong) {
-          setActivity(props.selectedSong);
-        }
-      } else {
-        AMInstance.pause();
-        if (props.selectedSong) {
-          setActivity(null);
-        }
-      }
-    } else {
-      console.error("music not instantiated");
-    }
-  };
-
   return (
-    <div className="flex flex-row justify-center text-white h-1/2 lg:flex-col">
+    <div className="flex flex-row justify-centertext-white lg:mb-5 h-fit lg:flex-col">
       <div className="flex w-1/2 p-4 lg:w-full">
         <img
           className="w-24 h-24"
@@ -112,28 +126,14 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
           }
         ></img>
         <div className="pl-2">
-          <div className="text-2xl font-semibold ">{song?.attributes.name}</div>
-          {/* {song.artists.map((artist) => {
-            return <p className="text-white">{artist}</p>;
-          })} */}
+          <div className="text-2xl font-semibold text-white">
+            {song?.attributes.name}
+          </div>
+          <div className="text-white">{props.selectedSong?.artist}</div>
         </div>
       </div>
       <div className="w-1/2 p-4 lg:w-full">
         <div className="flex flex-col mt-4 place-items-center">
-          <div
-            className="w-5 h-5 cursor-pointer"
-            onClick={() => {
-              playMusicHandler();
-            }}
-          >
-            <img
-              src={
-                isPlaying
-                  ? "/img/icons/pause-icon.svg"
-                  : "/img/icons/play-icon.svg"
-              }
-            ></img>
-          </div>
           <div className="w-4/5 h-1 mt-5 bg-neutral-200 dark:bg-neutral-600">
             <div
               className={`h-1 bg-red-400`}

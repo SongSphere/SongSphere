@@ -13,7 +13,13 @@ import SpotifyPartyRoomPlayerV2 from "../../components/party-room/spotify-party-
 import PartyRoomLayout from "../../layouts/party-room-layout";
 import PartyInfoCard from "../../components/party-room/party-info-card";
 import PartyRoomChat from "../../components/party-room/party-chat";
+import updateQueueIndex from "../../services/party/update-queue-index";
 import fetchBlocked from "../../services/party/fetch-blocked";
+
+interface IQueue {
+  queue: TMusicContent[];
+  index: number;
+}
 
 const PartyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,22 +43,35 @@ const PartyPage = () => {
   useEffect(() => {
     const playNextSong = () => {
       if (isSongOver) {
-        if (upNextRef.current && queueRef.current) {
-          setIsSongOver(false);
+        if (user && room) {
+          if ((user.username = room?.ownerUsername)) {
+            if (upNextRef.current && queueRef.current) {
+              console.log("next song. index: ", queueIndex);
+              console.log("upnext", upNextRef.current);
+              console.log("current", queueRef.current);
 
-          upNextRef.current = queueRef.current.slice(queueIndex + 1);
+              setIsSongOver(false);
 
-          setSongPlaying(upNextRef.current[0]);
+              upNextRef.current = queueRef.current.slice(queueIndex + 1);
+              console.log("setting current song 1", upNextRef.current);
+              setSongPlaying(upNextRef.current[0]);
 
-          setUpNext(upNextRef.current.slice(1));
-          setQueueIndex(queueIndex + 1);
+              setUpNext(upNextRef.current.slice(1));
+
+              if (user && room) {
+                if ((user.username = room?.ownerUsername)) {
+                  updateQueueIndex(queueIndex + 1);
+                }
+              }
+
+              setQueueIndex(queueIndex + 1);
+            }
+          }
         }
       }
     };
 
-    if (isSongOver) {
-      playNextSong();
-    }
+    playNextSong();
   }, [isSongOver]);
 
   useEffect(() => {
@@ -100,22 +119,27 @@ const PartyPage = () => {
       }
 
       if (
-        newQueue &&
-        JSON.stringify(newQueue) !== JSON.stringify(queueRef.current) &&
+        newQueue?.queue &&
+        (JSON.stringify(newQueue?.queue) !== JSON.stringify(queueRef.current) ||
+          newQueue.index != queueIndex) &&
         mounted
       ) {
-        queueRef.current = newQueue;
-        // Only update the songPlaying state if the queue was empty before
-        if (!songPlaying) {
-          console.log("setting current song 2", newQueue);
-          setSongPlaying(newQueue[0]);
+        queueRef.current = newQueue.queue;
+        if (newQueue.index != queueIndex) {
+          setQueueIndex(newQueue.index);
+          console.log("queue index changed bruh");
+          setSongPlaying(newQueue.queue[newQueue.index]);
         }
-        upNextRef.current = newQueue.slice(queueIndex + 1);
-        setUpNext(newQueue.slice(queueIndex + 1));
+        // Only update the songPlaying state if the upnext queue was empty before
+        if (!songPlaying) {
+          setSongPlaying(newQueue.queue[newQueue.index]);
+        }
+        upNextRef.current = newQueue.queue.slice(newQueue.index + 1);
+        setUpNext(newQueue.queue.slice(newQueue.index + 1));
       }
     };
 
-    const interval = setInterval(updateQueue, 500);
+    const interval = setInterval(updateQueue, 200);
 
     return () => {
       clearInterval(interval);
@@ -181,7 +205,11 @@ const PartyPage = () => {
   const left = (
     <div className="w-full h-full bg-slate-900">
       {service === "apple" ? (
-        <AppleMusicPartyRoomPlayerCard selectedSong={currentlyPlayingSong} />
+        <AppleMusicPartyRoomPlayerCard
+          isSongOver={isSongOver}
+          setIsSongOver={setIsSongOver}
+          selectedSong={songPlaying}
+        />
       ) : (
         <SpotifyPartyRoomPlayerV2
           isSongOver={isSongOver}
