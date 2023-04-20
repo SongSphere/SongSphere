@@ -50,6 +50,7 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
         AMInstance.setQueue({
           items: [mediaItem],
         });
+        AMInstance.play();
       } else {
         console.error("music not set");
       }
