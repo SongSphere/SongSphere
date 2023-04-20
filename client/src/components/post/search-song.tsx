@@ -70,8 +70,8 @@ const SearchSong = (props: ISearchSongProps) => {
     setCaption(newCommentContent + "" + nameSelected); // Auto fill
 
     // This fetches the user name
-    listOfTaggedUsers.push(nameSelected.toString());
-
+    setListOfTaggedUsers(listOfTaggedUsers.concat(nameSelected.toString()));
+    // listOfTaggedUsers.push(nameSelected.toString());
 
     setSearchTerm("");
     setShowDropdown(false);
@@ -220,12 +220,11 @@ const SearchSong = (props: ISearchSongProps) => {
               <input
                 type="text"
                 value={caption}
-       
                 onChange={async (event) => {
                   /*
                     This functionality calls to backend for User Document
                   */
-                 
+
                   if ((event.target.value as string) === "") {
                     setListOfTaggedUsers([]);
                     setShowDropdown(false);
@@ -244,10 +243,18 @@ const SearchSong = (props: ISearchSongProps) => {
                       setShowDropdown(true);
 
                       setSearchTerm(selectedItem); // search term is the matched string
+                      // const filtered = followers.filter((option) => {
+                      //   console.log(option.includes(selectedItem));
+                      //   option.includes(selectedItem);
+                      // });
 
-                      const filtered = followers.filter((option) =>
-                        option.includes(selectedItem)
-                      );
+                      const filtered: string[] = [];
+
+                      followers.filter((option) => {
+                        if (option.includes(selectedItem)) {
+                          filtered.push(option);
+                        }
+                      });
 
                       setFilteredOptions(filtered); // sets to only show the item with matched string
                       setStringToRemove(selectedItem);
@@ -306,7 +313,6 @@ const SearchSong = (props: ISearchSongProps) => {
                           text: `${user.username} tagged you in a post!`,
                         };
                         await sendNotification(notificationForAlerts);
-  
                       });
                     });
 

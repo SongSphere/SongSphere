@@ -22,6 +22,7 @@ const CommentCreater = (props: ICommentCreatorProp) => {
   const [filteredOptions, setFilteredOptions] = useState<string[]>([]);
   const [stringToRemove, setStringToRemove] = useState<string>("");
   const [startLookingLocation, setStartLookingLocation] = useState<number>(0);
+  const [listOfTaggedUsers, setListOfTaggedUsers] = useState<string[]>([]);
 
   useEffect(() => {
     if (props.user) {
@@ -31,6 +32,18 @@ const CommentCreater = (props: ICommentCreatorProp) => {
     }
   }, [props.user]);
 
+  // const handleDropdownSelection = (
+  //   nameSelected: React.SetStateAction<string>
+  // ) => {
+  //   // Handle dropdown selection
+  //   const newCommentContent = commentContent.replace(stringToRemove, "");
+  //   setStringToRemove(""); // reset the string to remove
+  //   setCommentContent(newCommentContent + "" + nameSelected); // Auto fill
+  //   setSearchTerm("");
+  //   setShowDropdown(false);
+  //   setFilteredOptions([]);
+  //   setStartLookingLocation(commentContent.length);
+  // };
 
   const handleDropdownSelection = (
     nameSelected: React.SetStateAction<string>
@@ -39,6 +52,11 @@ const CommentCreater = (props: ICommentCreatorProp) => {
     const newCommentContent = commentContent.replace(stringToRemove, "");
     setStringToRemove(""); // reset the string to remove
     setCommentContent(newCommentContent + "" + nameSelected); // Auto fill
+
+    // This fetches the user name
+    setListOfTaggedUsers(listOfTaggedUsers.concat(nameSelected.toString()));
+    // listOfTaggedUsers.push(nameSelected.toString());
+
     setSearchTerm("");
     setShowDropdown(false);
     setFilteredOptions([]);
@@ -56,8 +74,21 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             userEmail: props.user.email,
             text: commentContent,
             subComments: [],
+            taggedUsers: listOfTaggedUsers,
             like: 0,
           };
+
+          // listOfTaggedUsers.forEach(async (element) => {
+          //   fetchUserByUsername(element).then(async (res) => {
+          // const notificationForAlerts: TNotification = {
+          //   userEmailSender: user.email,
+          //   userEmailReceiver: res.email,
+          //   notificationType: "Follow",
+          //   text: `${user.username} tagged you in a post!`,
+          // };
+          //     await sendNotification(notificationForAlerts);
+          //   });
+          // });
 
           if (props.commentType === "Post") {
             res = await sendComment(comment, props.id, "");
@@ -105,7 +136,6 @@ const CommentCreater = (props: ICommentCreatorProp) => {
             placeholder="Type ur comment here!"
             name="name"
             value={commentContent}
-
             //onChange={handleInputChange}
             onChange={async (event) => {
               /*
@@ -128,13 +158,20 @@ const CommentCreater = (props: ICommentCreatorProp) => {
 
                   setSearchTerm(selectedItem); // search term is the matched string
 
-                  const filtered = followers.filter((option) =>
-                    option.includes(selectedItem)
-                  );
+                  // const filtered = followers.filter((option) =>
+                  //   option.includes(selectedItem)
+                  // );
+
+                  const filtered: string[] = [];
+
+                  followers.filter((option) => {
+                    if (option.includes(selectedItem)) {
+                      filtered.push(option);
+                    }
+                  });
 
                   setFilteredOptions(filtered); // sets to only show the item with matched string
                   setStringToRemove(selectedItem);
-
 
                   setSearchTerm("");
                 } else {
