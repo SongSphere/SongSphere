@@ -114,6 +114,7 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
                 .replace("{w}", 1000)
                 .replace("{h}", 1000)}
             ></img>
+            apple
           </div>
         </div>
 

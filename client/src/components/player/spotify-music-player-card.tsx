@@ -230,6 +230,7 @@ const SpotifyPlayerCard = (props: ISpotifyPlayerCardProps) => {
         <div className="grid w-1/5 place-content-center">
           <div>
             <img className="w-full h-auto" src={song.img}></img>
+            spoitfy
           </div>
         </div>
 
