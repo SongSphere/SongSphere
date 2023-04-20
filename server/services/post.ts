@@ -130,15 +130,33 @@ export const createComment = async (
   });
 
   comment.taggedUsers.forEach(async (user) => {
-    const notification: TNotification = {
-      userEmailSender: comment.userEmail,
-      userEmailReceiver: (await fetchUserbyUserName(user.toString())).email,
-      notificationType: "Follow",
-      text: `${newComment.username} tagged you in a comment!`,
-    };
+    fetchUserbyUserName(user.toString())
+      .then(async (user) => {
+        if (user) {
+          const notification: TNotification = {
+            userEmailSender: comment.userEmail,
+            userEmailReceiver: user.email,
+            notificationType: "Follow",
+            text: `${newComment.username} tagged you in a comment!`,
+          };
 
-    const newNotification = await notificationForAlerts(notification);
-    await saveNotification(newNotification);
+          const newNotification = await notificationForAlerts(notification);
+          await saveNotification(newNotification);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // const notification: TNotification = {
+    //   userEmailSender: comment.userEmail,
+    //   userEmailReceiver: (await fetchUserbyUserName(user.toString())).email,
+    //   notificationType: "Follow",
+    //   text: `${newComment.username} tagged you in a comment!`,
+    // };
+
+    // const newNotification = await notificationForAlerts(notification);
+    // await saveNotification(newNotification);
   });
 
   if (replyingTo.length == 0) {

@@ -56,8 +56,11 @@ const CommentCreater = (props: ICommentCreatorProp) => {
           const regex = /@(\w+)/g;
           let match;
 
+    
           while ((match = regex.exec(commentContent))) {
-            listOfTaggedUsers.push(match[1]);
+            if (followers.includes(match[1])) {
+              listOfTaggedUsers.push(match[1]);
+            }
           }
 
           setListOfTaggedUsers(listOfTaggedUsers);
