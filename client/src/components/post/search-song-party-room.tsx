@@ -80,8 +80,8 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
               );
             }}
           />
-          <div className="w-full ">
-            <div className="absolute overflow-y-auto max-h-90 no-scrollbar">
+          <div className="w-full">
+            <div className="absolute z-30 overflow-y-auto max-h-90 no-scrollbar">
               {songs.map((s) => (
                 <div className="grid w-full grid-flow-col">
                   <button

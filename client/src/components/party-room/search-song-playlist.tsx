@@ -84,39 +84,59 @@ const SearchSongPlayList = (props: ISearchSongPlayListProps) => {
       onClick={handleOnClose}
       className="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm"
     >
-      <div className="w-5/6 lg:w-3/5 p-5 bg-white rounded h-[68vh]">
+      <div className=" w-5/6 lg:w-3/5 p-5 bg-white rounded h-[68vh]">
         <h1 className="py-3 font-semibold text-center text-gray-900 border-b-4 border-solid border-b-lgrey">
-          Search Playlist
+          Search Playlists
         </h1>
-        <div className="flex">
-          <div className="w-1/2 overflow-y-auto max-h-[45vh] no-scrollbar">
-            <div className="">
+        <div className="flex border-b-4 border-solid border-b-lgrey">
+          <div className="w-1/2 ">
+            {/* <div className="relative w-full h-full"> */}
+            <div className="pt-2 pb-2 text-xl font-semibold text-center bg-white">
+              Playlists
+            </div>
+            <div className="overflow-y-auto no-scrollbar max-h-[40vh] ">
               {playlists.map((playlist) => {
                 return (
                   <div
-                    className="cursor-pointer"
+                    className="transition ease-in-out cursor-pointer hover:bg-slate-200 delay-50"
                     onClick={() => {
                       setSelectedPlaylist(playlist);
                     }}
                   >
-                    {playlist.name}
+                    <div className="flex">
+                      <div className="w-24 h-24">
+                        <img src={playlist.cover_url}></img>
+                      </div>
+                      <div className="grid pl-4 place-content-center">
+                        {playlist.name}
+                      </div>
+                    </div>
                   </div>
                 );
               })}
             </div>
+            {/* </div> */}
           </div>
-          <div>
+          <div className="w-1/2">
+            <div className="pt-2 pb-2 text-xl font-semibold text-center bg-white">
+              Songs
+            </div>
             {selectedPlaylist && (
-              <div className="w-1/2 overflow-y-auto max-h-[45vh] no-scrollbar">
+              <div className="w-1/2 overflow-y-auto max-h-[40vh] no-scrollbar">
                 {tracks.map((song) => {
                   return (
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setSelectedSong(song);
-                      }}
-                    >
-                      {song.name}
+                    <div className="flex">
+                      <div className="w-1/5">
+                        <img src={song.cover}></img>
+                      </div>
+                      <div
+                        className="w-4/5 cursor-pointer"
+                        onClick={() => {
+                          setSelectedSong(song);
+                        }}
+                      >
+                        <div className="pl-4">{song.name}</div>
+                      </div>
                     </div>
                   );
                 })}
@@ -124,7 +144,7 @@ const SearchSongPlayList = (props: ISearchSongPlayListProps) => {
             )}
           </div>
         </div>
-        <div>
+        <div className="pt-1">
           <div>
             {selectedSong && (
               <div>
