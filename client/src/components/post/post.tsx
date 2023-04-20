@@ -14,6 +14,7 @@ import selectService from "../../services/user/select-service";
 import { addToAppleLibrary } from "../../services/apple/add-to-library";
 import FailPopUp from "../popup/fail-popup";
 import TaggedUserList from "../profile/tagged-user-list";
+import parseTags from "../../utils/parse-tags";
 
 interface IPostProps {
   post: TPost;
@@ -35,6 +36,8 @@ const Post = (props: IPostProps) => {
   const LIBRARY_ERR_MSG =
     "Oops! An error occurs when adding to your library. Try again later!";
 
+  let parsedCaption = parseTags(props.post.caption, props.post.taggedUsers);
+
   const closeModal = (e: React.ChangeEvent<any>) => {
     if (e.target.id === "modal-container") {
       setEditOpen(false);
@@ -53,23 +56,13 @@ const Post = (props: IPostProps) => {
     });
   }, []);
 
-  const [showFollowingModal, setShowFollowingModal] = useState(false);
-  const [showFollowerModal, setShowFollowerModal] = useState(false);
-
-   const handleFollowingOpen = () => {
-    setShowFollowingModal(true);
-  };
-  const handleFollowingClose = () => {
-    setShowFollowingModal(false);
-  };
-
   return (
     <div className="flex w-full p-6 mb-8 transition ease-in-out rounded-lg delay-50 drop-shadow-md hover:bg-slate-800">
       {/* Only display edit function if this post belongs to the user */}
-      {props.post.username == props.user.username ? (
+      {props.post.username == props.user.username && (
         <div className="dropdown">
           <button onClick={handleOpen} className="absolute top-5 right-5 ">
-            <img width={20} src="https://i.stack.imgur.com/4MEQw.png" />
+            <img width={20} src="/img/icons/three-dots.svg" />
           </button>
           {editOpen ? (
             <div
@@ -164,8 +157,6 @@ const Post = (props: IPostProps) => {
             <div></div>
           )}
         </div>
-      ) : (
-        <div></div>
       )}
 
       <div
@@ -176,13 +167,6 @@ const Post = (props: IPostProps) => {
       >
         <img className="rounded-sm" src={props.post.music.cover}></img>
       </div>
-
-     
-      <TaggedUserList
-        taggedUsers={props.post.taggedUsers}
-        isVisible={showFollowingModal}
-        onClose={handleFollowingClose}
-      />
 
       <FailPopUp
         open={deleteFailOpen}
@@ -233,7 +217,11 @@ const Post = (props: IPostProps) => {
           <div className="">{props.post.music.artist}</div>
           <hr className="h-0.5 border-0 bg-slate-300"></hr>
           <div className="flex justify-end mt-2">
-            <div className="w-full ">{props.post.caption}</div>
+            <div
+              className="w-full"
+              dangerouslySetInnerHTML={{ __html: parsedCaption }}
+            ></div>
+            {/* <div className="w-full">{parsedCaption}</div> */}
             <LikeButton
               id={props.post._id}
               type="Post"
@@ -259,15 +247,6 @@ const Post = (props: IPostProps) => {
                 <img src="/img/icons/repost.svg"></img>
               </div>
             )}
-
-            <div
-              className="mt-1 ml-2 cursor-pointer w-7 h-7"
-              onClick={() => {
-                handleFollowingOpen();
-              }}
-            >
-              <img src="/img/icons/repost.svg"></img>
-            </div>
           </div>
         </div>
       </div>
