@@ -17,6 +17,7 @@ const ListenerList = (props: IListernerListProps) => {
   const [followers, setFollowers] = useState(props.listeners);
   const [user, setUser] = useState<TUser | null>(null);
   const [enterFailOpen, setEnterFailOpen] = useState(false);
+  const [owner, setOwner] = useState<string>(props.room.ownerUsername);
   const ERROR_MSG = "Oh no! An error occurs when removing a user";
   useEffect(() => {
     setUser(Session.getUser());
@@ -94,11 +95,7 @@ const ListenerList = (props: IListernerListProps) => {
                           <button
                             className="float-right text-lblue"
                             onClick={async () =>
-                              await TransferOwner(props.room, users).then(
-                                () => {
-                                  window.location.reload();
-                                }
-                              )
+                              await TransferOwner(props.room, users)
                             }
                           >
                             transfer
@@ -108,7 +105,7 @@ const ListenerList = (props: IListernerListProps) => {
                             onClick={() =>
                               BlockMember(props.room, users).then((res) => {
                                 if (res) {
-                                  window.location.reload();
+                                  
                                 } else {
                                   setEnterFailOpen(true);
                                 }

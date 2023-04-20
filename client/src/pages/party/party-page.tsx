@@ -14,6 +14,7 @@ import SpotifyPartyRoomPlayerV2 from "../../components/party-room/spotify-party-
 import PartyRoomLayout from "../../layouts/party-room-layout";
 import PartyInfoCard from "../../components/party-room/party-info-card";
 import PartyRoomChat from "../../components/party-room/party-chat";
+import fetchBlocked from "../../services/party/fetch-blocked";
 
 const PartyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +32,9 @@ const PartyPage = () => {
   const [queueIndex, setQueueIndex] = useState(0);
   const [songPlaying, setSongPlaying] = useState<TMusicContent | null>(null);
   const [isSongOver, setIsSongOver] = useState<boolean>(false);
-  
+  const [blocked, setBlocked] = useState<boolean>(false);
+  const blockRef = useRef<boolean>(false);
+
 
   useEffect(() => {
     const playNextSong = () => {
@@ -112,12 +115,43 @@ const PartyPage = () => {
     };
   }, [id, songPlaying]);
 
+  useEffect(() => {
+    let mounted = true;
 
+    const updateQueue = async () => {
+      let newBool;
+
+      if (user && id) {
+        newBool = (await fetchBlocked(id)).includes(user.username);
+      }
+
+      if (
+        newBool &&
+        JSON.stringify(newBool) !== JSON.stringify(queueRef.current) &&
+        mounted
+      ) {
+        blockRef.current = newBool;
+       
+        setBlocked(newBool);
+      }
+    };
+
+    const interval = setInterval(updateQueue, 500);
+
+    return () => {
+      clearInterval(interval);
+      mounted = false;
+    };
+  },[user, id])
 
   if (isLoading || !user || !queueRef.current || !room || !id) {
     return <div>Loading...</div>;
   }
 
+  if(blocked) {
+    user.partyRoom="";
+    navigate('/party/blocked');
+  }
   const left = (
     <div className="w-full h-full bg-slate-900">
       {service === "apple" ? (
