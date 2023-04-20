@@ -81,11 +81,11 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
             }}
           />
           <div className="w-full ">
-            <div className="absolute overflow-y-auto max-h-40 no-scrollbar">
+            <div className="absolute overflow-y-auto max-h-90 no-scrollbar">
               {songs.map((s) => (
                 <div className="grid w-full grid-flow-col">
                   <button
-                    className="w-full text-center bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
+                    className="w-full bg-white border-2 border-solid text-navy border-lblue hover:text-gray-400 hover:text-lg"
                     key={s.id}
                     onClick={() => {
                       setSelected(s);
@@ -95,13 +95,14 @@ const SearchSongPartyRoom = (props: ISearchSongProps) => {
                       }
                     }}
                   >
-                    <div className="flex w-full text-sm text-center">
+                    <div className="flex w-full text-xs">
                       <div className="w-10 h-10 ">
                         <img src={s.cover} />
                       </div>
-                      {s.name}
-                      <br />
-                      {s.artist}
+                      <div className="flex flex-col pl-1">
+                        <div className="font-semibold">{s.name}</div>
+                        <div className="">{s.artist}</div>
+                      </div>
                     </div>
                   </button>
                 </div>

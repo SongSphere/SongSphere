@@ -283,3 +283,16 @@ export const sendInvitationEmail = async (
     },
   });
 };
+
+export const updateIndex = async (index: number, username: string) => {
+  try {
+    const room = await PartyRoom.findOne({
+      members: {
+        $in: [username],
+      },
+    });
+    await PartyRoom.findOneAndUpdate({ _id: room._id }, { musicIndex: index });
+  } catch (error) {
+    throw error;
+  }
+};

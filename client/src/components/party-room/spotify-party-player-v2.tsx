@@ -27,7 +27,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
   const [AMInstance, setAMInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
   const playerRef = useRef<Spotify.Player | null>(null);
-
+  const isPlayingRef = useRef<boolean>(false);
   const currStateRef = useRef({
     paused: false,
     position: 0,
@@ -88,7 +88,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
       new URLSearchParams({ device_id: deviceId });
 
     if (user) {
-      await fetch(url, {
+      return await fetch(url, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -184,6 +184,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
           ) {
             console.log("Track ended");
             props.setIsSongOver(true);
+            isPlayingRef.current = false;
           }
 
           currStateRef.current.paused = state.paused;
@@ -195,17 +196,26 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
         playerRef.current = player;
       };
     }
+
+    return () => {
+      if (playerRef.current) {
+        console.log("pause");
+        playerRef.current.pause();
+      }
+    };
   }, [user]);
 
   useEffect(() => {
     if (deviceId && song && playerRef.current) {
-      currStateRef.current.position = 0;
-      setProgress(0);
-
       setSongInPlayer(song.uri, deviceId).then(() => {
+        isPlayingRef.current = true;
         const interval = setInterval(() => {
           const position = getStatePosition();
-          setProgress(position);
+          if (isPlayingRef.current) {
+            setProgress(position);
+          } else {
+            setProgress(0);
+          }
         }, 100);
 
         return () => {
@@ -220,9 +230,13 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
       <div className="flex w-1/2 p-4 lg:w-full">
         <img className="w-24 h-24" src={song?.img}></img>
         <div className="pl-2">
-          <div className="text-2xl font-semibold ">{song?.name}</div>
-          {song?.artists.map((artist) => {
-            return <p className="text-white">{artist}</p>;
+          <div className="text-2xl font-semibold text-white">{song?.name}</div>
+          {song?.artists.map((artist, index) => {
+            return (
+              <p key={index} className="text-white">
+                {artist}
+              </p>
+            );
           })}
         </div>
       </div>

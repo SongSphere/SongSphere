@@ -1,8 +1,13 @@
 import { TMusicContent } from "../../types/music-content";
 import { TPartyRoom } from "../../types/party-room";
 
+interface IQueue {
+  queue: TMusicContent[];
+  index: number;
+}
+
 const fetchQueue = async (id: string) => {
-  return new Promise<TMusicContent[]>(async (resolve, reject) => {
+  return new Promise<IQueue>(async (resolve, reject) => {
     await fetch(`${process.env.REACT_APP_API}/api/room/${id}`, {
       method: "GET",
       credentials: "include",
@@ -15,7 +20,10 @@ const fetchQueue = async (id: string) => {
       })
       .then((data) => {
         const room = data.room as TPartyRoom;
-        resolve(room.queue);
+        resolve({
+          queue: room.queue,
+          index: room.musicIndex,
+        });
       })
       .catch((error) => {
         reject(error);

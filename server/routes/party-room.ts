@@ -19,6 +19,7 @@ import {
   block,
   sendMessage,
   fetchMessages,
+  updateQueueIndex,
 } from "../controllers/party-room";
 
 // import middleware
@@ -35,7 +36,8 @@ router.post("/api/roomBlock", block);
 router.post("/api/addqueue", addQueue);
 router.post("/api/removequeue", removeQueue);
 router.post("/api/reorderqueue", reorderQueue);
-router.post("/api/sendChat", sendMessage)
+router.post("/api/sendChat", sendMessage);
+router.post("/api/updateIndex", updateQueueIndex);
 
 router.post("/api/inviteMember", addInvitedMember);
 router.post("/api/uninviteMember", removeInvitedMember);
