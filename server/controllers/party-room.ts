@@ -23,6 +23,7 @@ import {
   updatePartyRoom,
   sendChat,
   fetchChats,
+  updateIndex,
 } from "../services/party-room";
 
 export const newRoom = async (req: Request, res: Response) => {
@@ -213,5 +214,16 @@ export const fetchMessages = async (req: Request, res: Response) => {
     res.json({ room: room });
   } catch (error) {
     throw error;
+  }
+};
+
+export const updateQueueIndex = async (req: Request, res: Response) => {
+  try {
+    await updateIndex(req.body.index, req.session.user.username);
+    res.status(201);
+    res.json({ msg: "success" });
+  } catch (error) {
+    res.status(500);
+    res.json({ error: error });
   }
 };
