@@ -27,7 +27,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
   const [AMInstance, setAMInstance] =
     useState<MusicKit.MusicKitInstance | null>(null);
   const playerRef = useRef<Spotify.Player | null>(null);
-
+  const isPlayingRef = useRef<boolean>(false);
   const currStateRef = useRef({
     paused: false,
     position: 0,
@@ -156,7 +156,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
           getOAuthToken: (cb) => {
             cb(user.spotifyToken || "");
           },
-          volume: 0,
+          volume: 1,
         });
 
         player.addListener("ready", async ({ device_id }) => {
@@ -184,6 +184,7 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
           ) {
             console.log("Track ended");
             props.setIsSongOver(true);
+            isPlayingRef.current = false;
           }
 
           currStateRef.current.paused = state.paused;
@@ -206,9 +207,14 @@ const SpotifyPartyRoomPlayerV2 = (props: ISpotifyPlayerCardProps) => {
   useEffect(() => {
     if (deviceId && song && playerRef.current) {
       setSongInPlayer(song.uri, deviceId).then(() => {
+        isPlayingRef.current = true;
         const interval = setInterval(() => {
           const position = getStatePosition();
-          setProgress(position);
+          if (isPlayingRef.current) {
+            setProgress(position);
+          } else {
+            setProgress(0);
+          }
         }, 100);
 
         return () => {

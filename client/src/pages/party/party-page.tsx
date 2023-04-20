@@ -41,33 +41,35 @@ const PartyPage = () => {
   useEffect(() => {
     const playNextSong = () => {
       if (isSongOver) {
-        if (upNextRef.current && queueRef.current) {
-          console.log("next song. index: ", queueIndex);
-          console.log("upnext", upNextRef.current);
-          console.log("current", queueRef.current);
+        if (user && room) {
+          if ((user.username = room?.ownerUsername)) {
+            if (upNextRef.current && queueRef.current) {
+              console.log("next song. index: ", queueIndex);
+              console.log("upnext", upNextRef.current);
+              console.log("current", queueRef.current);
 
-          setIsSongOver(false);
+              setIsSongOver(false);
 
-          upNextRef.current = queueRef.current.slice(queueIndex + 1);
-          console.log("setting current song 1", upNextRef.current);
-          setSongPlaying(upNextRef.current[0]);
+              upNextRef.current = queueRef.current.slice(queueIndex + 1);
+              console.log("setting current song 1", upNextRef.current);
+              setSongPlaying(upNextRef.current[0]);
 
-          setUpNext(upNextRef.current.slice(1));
+              setUpNext(upNextRef.current.slice(1));
 
-          if (user && room) {
-            if ((user.username = room?.ownerUsername)) {
-              updateQueueIndex(queueIndex + 1);
+              if (user && room) {
+                if ((user.username = room?.ownerUsername)) {
+                  updateQueueIndex(queueIndex + 1);
+                }
+              }
+
+              setQueueIndex(queueIndex + 1);
             }
           }
-
-          setQueueIndex(queueIndex + 1);
         }
       }
     };
 
-    if (isSongOver) {
-      playNextSong();
-    }
+    playNextSong();
   }, [isSongOver]);
 
   useEffect(() => {
@@ -109,7 +111,11 @@ const PartyPage = () => {
         mounted
       ) {
         queueRef.current = newQueue.queue;
-        setQueueIndex(newQueue.index);
+        if (newQueue.index != queueIndex) {
+          setQueueIndex(newQueue.index);
+          console.log("queue index changed bruh");
+          setSongPlaying(newQueue.queue[newQueue.index]);
+        }
         // Only update the songPlaying state if the upnext queue was empty before
         if (!songPlaying) {
           setSongPlaying(newQueue.queue[newQueue.index]);

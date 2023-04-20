@@ -50,7 +50,6 @@ const CreateRoomPage = () => {
 
   if (user.partyRoom) {
     navigate(`/party/${user.partyRoom}`);
-    
   }
 
   return (
@@ -62,7 +61,7 @@ const CreateRoomPage = () => {
       />
       <Navbar />
       <div className="grid grid-cols-4 gap-2 md:grid-flow-col">
-        <FriendActivityCard />
+        <div className="coll-span-1"></div>
         <div className="col-span-2">
           <div className="w-full h-full min-h-screen bg-lblue ">
             <div className="grid p-5 m-5 bg-white h-80 rounded-xl place-content-center">
@@ -115,7 +114,7 @@ const CreateRoomPage = () => {
                           invitedMembers: [],
                           queue: [],
                           musicIndex: 0,
-                          blocked:[],
+                          blocked: [],
                         };
                         await CreateRoom(newRoom)
                           .then((res) => {
@@ -126,7 +125,6 @@ const CreateRoomPage = () => {
                                 (room) => {
                                   if (room._id) {
                                     navigate(`/party/${room._id}`);
-                                    
                                   }
                                 }
                               );
@@ -182,13 +180,7 @@ const CreateRoomPage = () => {
                         .then((res) => {
                           if (res && res._id) {
                             navigate(`/party/${res._id}`);
-                            RemoveInvitation(
-                              res._id.toString(),
-                              user.username
-                            );
-                            
-                            
-                            
+                            RemoveInvitation(res._id.toString(), user.username);
                           } else {
                           }
                         })
@@ -204,11 +196,6 @@ const CreateRoomPage = () => {
             </div>
           </div>
         </div>
-        {service === "apple" ? (
-          <AppleMusicPlayerCard selectedSong={song} />
-        ) : (
-          <SpotifyPlayerCard selectedSong={song} />
-        )}
       </div>
     </div>
   );

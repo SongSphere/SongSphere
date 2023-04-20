@@ -12,7 +12,6 @@ interface IMusicPlayerCardProps {
 }
 
 const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState<TUser | null>(null);
   const [song, setSong] = useState<MusicKit.Resource | null>(null);
@@ -33,7 +32,6 @@ const AppleMusicPartyRoomPlayerCard = (props: IMusicPlayerCardProps) => {
         setProgress(AMInstance.player.currentPlaybackProgress * 100);
       });
 
-      // Add an event listener to detect when a song ends
       AMInstance.addEventListener("playbackStateDidChange", () => {
         if (
           AMInstance.player.playbackState === MusicKit.PlaybackStates.paused
