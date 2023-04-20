@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Session from "../../session";
 import fetchAnalytics from "../../services/user/fetch-analytics";
 
-
-
 interface IProfileCardProps {
   openFollowingModal: Function;
   openFollowersModal: Function;
@@ -82,7 +80,7 @@ const ProfileCard = (props: IProfileCardProps) => {
             </button>
           </div>
           <div className="p-4 text-center">{user.biography}</div>
-          <div className="flex justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-2 px-1">
             <button
               className="px-4 py-1 rounded-md bg-slate-700"
               onClick={() => {
@@ -99,8 +97,6 @@ const ProfileCard = (props: IProfileCardProps) => {
             >
               recently played
             </button>
-          </div>
-          <div className="flex justify-center gap-2 mt-2">
             <button
               className="px-4 py-1 rounded-md bg-slate-700"
               onClick={() => {
@@ -135,7 +131,7 @@ const ProfileCard = (props: IProfileCardProps) => {
                 onClick={handleCloseAnalytics}
                 className="fixed inset-0 flex items-center justify-center bg-opacity-30 backdrop-blur-sm"
               >
-                <div className="w-3/4 p-4 bg-slate-700 rounded-md grid grid-cols-4">
+                <div className="grid w-3/4 grid-cols-4 p-4 rounded-md bg-slate-700">
                   <div className="col-span-3">Total Likes:</div>
                   <div>{analytics[0]}</div>
                   <div className="col-span-3">Average Likes:</div>
