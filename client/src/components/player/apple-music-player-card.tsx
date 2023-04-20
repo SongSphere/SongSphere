@@ -4,13 +4,14 @@ import selectService from "../../services/user/select-service";
 import Session from "../../session";
 import { TMusicContent } from "../../types/music-content";
 import { TUser } from "../../types/user";
+import NoSongPlayer from "./no-song-player";
 
 interface IMusicPlayerCardProps {
   selectedSong: TMusicContent | null;
 }
 
 const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState<TUser | null>(null);
   const [song, setSong] = useState<MusicKit.Resource | null>(null);
@@ -99,27 +100,31 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
   };
 
   if (!song) {
-    return <div>fetching</div>;
+    console.log("no song");
+    return <NoSongPlayer />;
   }
 
   return (
-    <div className="flex flex-row justify-centertext-white lg:mb-5 h-fit lg:flex-col">
+    <div className="flex flex-row justify-center h-full text-white rounded-lg lg:m-4 lg:flex-col bg-slate-800">
       <div className="flex w-1/2 p-4 lg:w-full">
-        <img
-          className="w-24 h-24"
-          src={song.attributes.artwork.url
-            .replace("{w}", 1000)
-            .replace("{h}", 1000)}
-        ></img>
-        <div className="pl-2">
+        <div className="grid w-1/5 place-content-center">
+          <div>
+            <img
+              className="w-full h-auto"
+              src={song.attributes.artwork.url
+                .replace("{w}", 1000)
+                .replace("{h}", 1000)}
+            ></img>
+          </div>
+        </div>
+
+        <div className="w-4/5 ml-3 text-xl font-semibold ">
+          <div className="text-2xl font-semibold ">{song.name}</div>
           <div className="text-2xl font-semibold ">{song.attributes.name}</div>
-          {/* {song.artists.map((artist) => {
-            return <p className="text-white">{artist}</p>;
-          })} */}
         </div>
       </div>
       <div className="w-1/2 p-4 lg:w-full">
-        <div className="flex flex-col mt-4 place-items-center">
+        <div className="flex flex-col pt-8 lg:pt-0 place-items-center">
           <div
             className="w-5 h-5 cursor-pointer"
             onClick={() => {
@@ -146,5 +151,50 @@ const AppleMusicPlayerCard = (props: IMusicPlayerCardProps) => {
       </div>
     </div>
   );
+
+  // return (
+  //   <div className="flex flex-row justify-centertext-white lg:mb-5 h-fit lg:flex-col">
+  //     <div className="flex w-1/2 p-4 lg:w-full">
+  //       <img
+  //         className="w-24 h-24"
+  //         src={song.attributes.artwork.url
+  //           .replace("{w}", 1000)
+  //           .replace("{h}", 1000)}
+  //       ></img>
+  //       <div className="pl-2">
+  //         <div className="text-2xl font-semibold ">{song.attributes.name}</div>
+  //         {/* {song.artists.map((artist) => {
+  //           return <p className="text-white">{artist}</p>;
+  //         })} */}
+  //       </div>
+  //     </div>
+  //     <div className="w-1/2 p-4 lg:w-full">
+  //       <div className="flex flex-col mt-4 place-items-center">
+  //         <div
+  //           className="w-5 h-5 cursor-pointer"
+  //           onClick={() => {
+  //             playMusicHandler();
+  //           }}
+  //         >
+  //           <img
+  //             src={
+  //               isPlaying
+  //                 ? "/img/icons/pause-icon.svg"
+  //                 : "/img/icons/play-icon.svg"
+  //             }
+  //           ></img>
+  //         </div>
+  //         <div className="w-4/5 h-1 mt-5 bg-neutral-200 dark:bg-neutral-600">
+  //           <div
+  //             className={`h-1 bg-red-400`}
+  //             style={{
+  //               width: `${progress}%`,
+  //             }}
+  //           ></div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 };
 export default AppleMusicPlayerCard;
