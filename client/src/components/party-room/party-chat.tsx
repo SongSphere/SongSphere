@@ -15,72 +15,73 @@ const PartyRoomChat = (props: ISendChatProps) => {
   const [messages, setMessages] = useState<TChat[]>(props.room.chats);
   const [messageInput, setMessageInput] = useState("");
   const [failOpen, setFailOpen] = useState(false);
-  const[user, setUser] = useState<TUser | null >(null);
-  const mesRef = useRef<TChat[] | null> (null);
+  const [user, setUser] = useState<TUser | null>(null);
+  const mesRef = useRef<TChat[] | null>(null);
 
   useEffect(() => {
     const fetched = Session.getUser();
     setUser(fetched);
-  }, [])
+  }, []);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
-    
   }, [messages]);
 
-useEffect(() => {
-  let mounted = true;
-  const updateMessages = async () => {
-    let newMessages;
-    if(props.room._id) {
-      newMessages = await fetchChatsById(props.room._id.toString());
-    }
-    if(
-      newMessages &&
-      JSON.stringify(newMessages) !== JSON.stringify(mesRef.current) &&
-      mounted
-    ) {
-      mesRef.current = newMessages;
-      setMessages(newMessages);
-    }
-  };
-  const interval = setInterval(updateMessages, 500);
-  return () => {
-    clearInterval(interval);
-    mounted = false;
-  }
-}, [])
+  useEffect(() => {
+    let mounted = true;
+    const updateMessages = async () => {
+      let newMessages;
+      if (props.room._id) {
+        newMessages = await fetchChatsById(props.room._id.toString());
+      }
+      if (
+        newMessages &&
+        JSON.stringify(newMessages) !== JSON.stringify(mesRef.current) &&
+        mounted
+      ) {
+        mesRef.current = newMessages;
+        setMessages(newMessages);
+      }
+    };
+    const interval = setInterval(updateMessages, 500);
+    return () => {
+      clearInterval(interval);
+      mounted = false;
+    };
+  }, []);
   const sendMessage = () => {
     if (messageInput.trim() === "") return;
-    if(user) {
+    if (user) {
       const newChat: TChat = {
         sender: user.username,
         message: messageInput,
       };
       setMessageInput("");
-      SendChat(props.room, newChat).then((res) => {
-        if(!res) {
-          <FailPopUp 
-            open={failOpen}
-            setOpen={setFailOpen}
-            failText="Error sending message try again"
-          />
-        }
-      })
+      SendChat(props.room, newChat)
+        .then((res) => {
+          if (!res) {
+            setFailOpen(true);
+          }
+        })
+        .catch((error) => {
+          setFailOpen(true);
+        });
       setMessages([...messages, newChat]);
     }
-    
-    
   };
   return (
     <div className="w-full px-4 lg:h-72 h-96">
       <div className="h-full bg-white rounded-lg drop-shadow-md">
+        <FailPopUp
+          open={failOpen}
+          setOpen={setFailOpen}
+          failText="Error sending message try again"
+        />
         <div className="pt-3 mb-2 text-2xl font-bold text-gray-700 pl-7">
           Chat
         </div>
