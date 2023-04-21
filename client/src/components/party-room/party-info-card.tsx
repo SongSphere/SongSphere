@@ -24,6 +24,7 @@ interface IPartyInfoCardProps {
 const PartyInfoCard = (props: IPartyInfoCardProps) => {
   let navigate = useNavigate();
   const [removeMemberFailOpen, setRemoveMemberFailOpen] = useState(false);
+  const [exitRoomFailOpen, setExitRoomFailOpen] = useState(false);
   const [showListenersModal, setShowListenersModal] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
@@ -46,6 +47,16 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
   const handleFollowingClose = () => {
     setShowFollowingModal(false);
   };
+
+  const handleExitPartyOpen = () => {
+    setExitRoomFailOpen(true);
+  };
+
+  const handleExitPartyClose = () => {
+    setExitRoomFailOpen(false);
+  
+  };
+
   const handleOpenListen = () => {
     setShowListenersModal(true);
   };
@@ -110,6 +121,7 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
   }, []);
 
   const ERROR_MSG = "Oh no! An error occurs when deleting a member";
+  const ERROR_MSG_EXIT_PARTY = "Oh no! An error occurs when exiting the party";
 
   return (
     <div className="w-full h-full p-4">
@@ -155,9 +167,15 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
               onClick={async () => {
                 if (props.user.username === props.room.ownerUsername) {
                   props.user.partyRoom = "";
-                  await DeleteRoom(props.room).then(() => {
-                    navigate("/");
-                  });
+                  await DeleteRoom(props.room)
+                    .then(() => {
+                      navigate("/");
+                    })
+                    .catch((err) => {
+                      handleExitPartyOpen();
+                      console.log("Backend seems not running");
+                      console.log(err);
+                    });
                 } else {
                   await DeleteMember(props.room, props.user.username).then(
                     (res) => {
@@ -217,6 +235,13 @@ const PartyInfoCard = (props: IPartyInfoCardProps) => {
         setOpen={setShowTransfer}
         failText="You are now the owner of this party!"
       />
+      
+      <FailPopUp
+        open={exitRoomFailOpen}
+        setOpen={handleExitPartyClose}
+        failText={ERROR_MSG_EXIT_PARTY}
+      />
+      ;
     </div>
   );
 };
