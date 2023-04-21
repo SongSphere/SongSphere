@@ -30,6 +30,7 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
   };
 
   useEffect(() => {
+    setUser(Session.getUser());
     setFollowing(Session.getUser()?.following || []);
   }, []);
 
@@ -159,8 +160,11 @@ const SearchUserForInvite = (props: ISearchUserForInviteProps) => {
                                 .catch((err) => {
                                   alert(err);
                                 });
+                              console.log("invitation reached 1");
+                              console.log(user);
 
                               if (user) {
+                                console.log("invitation reached 2");
                                 const notificationForAlerts: TNotification = {
                                   userEmailSender: user.email,
                                   userEmailReceiver: selectedUser.email,
