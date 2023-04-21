@@ -25,6 +25,9 @@ const PartyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
   let navigate = useNavigate();
+  const [originalQueue, setOriginalQueue] = useState<TMusicContent[] | null>(
+    null
+  );
 
   const [room, setRoom] = useState<TPartyRoom | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
@@ -116,6 +119,7 @@ const PartyPage = () => {
 
       if (id) {
         newQueue = await fetchQueue(id);
+        setOriginalQueue(newQueue.queue);
       }
 
       if (
@@ -243,6 +247,7 @@ const PartyPage = () => {
           queueIndex={queueIndex}
           currentlyPlayingSong={songPlaying}
           upNextSongs={upNext}
+          originalQueue={originalQueue}
         />
       }
       right={left}
