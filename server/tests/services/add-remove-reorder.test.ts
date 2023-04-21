@@ -40,6 +40,7 @@ describe("Testing db services", () => {
     await mongoose.connection.close();
   });
 
+  /* User Story 3 */
   test("Testing addToQueue", async () => {
     const user1 = new User({
       name: "Anthony",
@@ -89,6 +90,7 @@ describe("Testing db services", () => {
     expect(room2.queue.length).toBe(1);
   });
 
+  /* User Story 3 */
   test("Testing removeFromQueue", async () => {
     const user1 = new User({
       name: "Anthony",
@@ -142,6 +144,7 @@ describe("Testing db services", () => {
     expect(room3.queue.length).toBe(0);
   });
 
+  /* User Story 3 */
   test("Testing moveUpQueue", async () => {
     const user1 = new User({
       name: "Anthony",
@@ -209,6 +212,7 @@ describe("Testing db services", () => {
     expect(room3.queue[0].name).toBe("song2");
   });
 
+  /* User Story 3 */
   test("Testing moveDownQueue", async () => {
     const user1 = new User({
       name: "Anthony",

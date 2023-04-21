@@ -48,6 +48,7 @@ describe("Testing db services", () => {
   //     console.log("email sent");
   // });
 
+  /* User Story 1 */
   test("Testing create party room", async () => {
     const userA = new User({
       name: "Dominic",
@@ -85,6 +86,7 @@ describe("Testing db services", () => {
     expect(foundRoom).not.toBeNull();
   });
 
+  /* User Story 5 */
   test("Testing invite users for party", async () => {
     const userA = new User({
       name: "Dominic",
@@ -141,6 +143,7 @@ describe("Testing db services", () => {
     expect(changedRoom.invitedMembers).toContain(userB.username);
   });
 
+  /* User Story 5 */
   test("Testing uninvite users for party", async () => {
     const userA = new User({
       name: "Dominic",
@@ -197,6 +200,7 @@ describe("Testing db services", () => {
     expect(changedRoom.invitedMembers).not.toContain(userB.username);
   });
 
+  /* User Story 6 */
   test("Testing join for party", async () => {
     const userA = new User({
       name: "Dominic",

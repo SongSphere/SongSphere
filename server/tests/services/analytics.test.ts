@@ -35,6 +35,7 @@ describe("Testing db services", () => {
     await mongoose.connection.close();
   });
 
+  /* User Story 12 */
   test("Testing getAnalytics", async () => {
     const user1 = new User({
       name: "Anthony",

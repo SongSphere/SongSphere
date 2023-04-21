@@ -44,6 +44,7 @@ describe("Testing db services", () => {
     await mongoose.connection.close();
   });
 
+  /* User Story 9 */
   test("Testing sending a chat", async () => {
     const userA = new User({
       name: "Anthony",
@@ -104,6 +105,7 @@ describe("Testing db services", () => {
     expect(foundRoom.chats[0]).toStrictEqual(chat);
   });
 
+  /* User Story 9 */
   test("Testing fetching chats", async () => {
     const userA = new User({
       name: "Anthony",
