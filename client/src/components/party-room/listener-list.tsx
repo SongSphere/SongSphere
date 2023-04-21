@@ -5,6 +5,9 @@ import TransferOwner from "../../services/party/trasnfer-owner";
 import Session from "../../session";
 import BlockMember from "../../services/party/block-member";
 import FailPopUp from "../popup/fail-popup";
+import { TNotification } from "../../types/notification";
+import fetchUserByUsername from "../../services/user/fetch-user-username";
+import sendNotification from "../../services/notification/send-notification";
 
 interface IListernerListProps {
   listeners: string[];
@@ -94,9 +97,21 @@ const ListenerList = (props: IListernerListProps) => {
                         <div>
                           <button
                             className="float-right text-lblue"
-                            onClick={async () =>
-                              await TransferOwner(props.room, users)
-                            }
+                            onClick={async () => {
+                              const u = await fetchUserByUsername(users);
+
+                              await TransferOwner(props.room, users).then(
+                                async () => {
+                                  const notification: TNotification = {
+                                    userEmailSender: user.email,
+                                    userEmailReceiver: u.email,
+                                    notificationType: "Party",
+                                    text: "You are now the owner of this party room",
+                                  };
+                                  await sendNotification(notification);
+                                }
+                              );
+                            }}
                           >
                             transfer
                           </button>
@@ -105,7 +120,6 @@ const ListenerList = (props: IListernerListProps) => {
                             onClick={() =>
                               BlockMember(props.room, users).then((res) => {
                                 if (res) {
-                                  
                                 } else {
                                   setEnterFailOpen(true);
                                 }
