@@ -21,6 +21,9 @@ const ListenerList = (props: IListernerListProps) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [enterFailOpen, setEnterFailOpen] = useState(false);
   const [owner, setOwner] = useState<string>(props.room.ownerUsername);
+
+  const [transferFailOpen, setTransferFailOpen] = useState(false);
+
   const ERROR_MSG = "Oh no! An error occurs when removing a user";
   useEffect(() => {
     setUser(Session.getUser());
@@ -43,6 +46,8 @@ const ListenerList = (props: IListernerListProps) => {
   if (!user) {
     return null;
   }
+
+
 
   return (
     <div
@@ -98,19 +103,23 @@ const ListenerList = (props: IListernerListProps) => {
                           <button
                             className="float-right text-lblue"
                             onClick={async () => {
-                              const u = await fetchUserByUsername(users);
+                              await fetchUserByUsername(users).then(async (receiverTransfered) => {
+                                await TransferOwner(props.room, users).then(
+                                  async () => {
+                                    const notification: TNotification = {
+                                      userEmailSender: user.email,
+                                      userEmailReceiver: receiverTransfered.email,
+                                      notificationType: "Comment",
+                                      text: "You are now the owner of this party room",
+                                    };
+                                    await sendNotification(notification);
+                                  })
 
-                              await TransferOwner(props.room, users).then(
-                                async () => {
-                                  const notification: TNotification = {
-                                    userEmailSender: user.email,
-                                    userEmailReceiver: u.email,
-                                    notificationType: "Party",
-                                    text: "You are now the owner of this party room",
-                                  };
-                                  await sendNotification(notification);
-                                }
-                              );
+                              }).catch((err) => {
+                                setTransferFailOpen(true);
+                                console.log("Server not running?");
+                                console.log(err);
+                              });
                             }}
                           >
                             transfer
@@ -144,7 +153,15 @@ const ListenerList = (props: IListernerListProps) => {
           </div>
         </form>
       </div>
+      <FailPopUp
+        open={transferFailOpen}
+        setOpen={setTransferFailOpen}
+        failText="Transfer did not work"
+      />
+
     </div>
+
+    
   );
 };
 export default ListenerList;
