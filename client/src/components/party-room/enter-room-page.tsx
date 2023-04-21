@@ -50,7 +50,6 @@ const CreateRoomPage = () => {
 
   if (user.partyRoom) {
     navigate(`/party/${user.partyRoom}`);
-    
   }
 
   return (
@@ -115,7 +114,7 @@ const CreateRoomPage = () => {
                           invitedMembers: [],
                           queue: [],
                           musicIndex: 0,
-                          blocked:[],
+                          blocked: [],
                           chats: [],
                         };
                         await CreateRoom(newRoom)
@@ -127,7 +126,6 @@ const CreateRoomPage = () => {
                                 (room) => {
                                   if (room._id) {
                                     navigate(`/party/${room._id}`);
-                                    
                                   }
                                 }
                               );
@@ -181,19 +179,14 @@ const CreateRoomPage = () => {
                     onClick={() => {
                       fetchRoomById(id)
                         .then((res) => {
-                          
                           if (res && res._id) {
-                            navigate(`/party/${res._id}`);
-                            let bol = AddMember(res._id.toString(), user.username);
-                            console.log(bol);
-                            RemoveInvitation(
+                            let bol = AddMember(
                               res._id.toString(),
                               user.username
                             );
-                            
-                            
-                            
-                          } else {
+                            console.log(bol);
+                            RemoveInvitation(res._id.toString(), user.username);
+                            navigate(`/party/${res._id}`);
                           }
                         })
                         .then((error) => {

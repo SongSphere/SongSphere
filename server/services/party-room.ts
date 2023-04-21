@@ -73,11 +73,19 @@ export const deleteRoom = async (room: TPartyRoom) => {
 
 export const addListener = async (roomId: string, username: string) => {
   try {
-    let room = await PartyRoom.findOneAndUpdate(
-      { _id: roomId },
-      { $push: { members: username } }
-    );
-    room.save();
+    const foundParty = await PartyRoom.findOne({ _id: roomId });
+
+    if (
+      !foundParty.members.includes(username) &&
+      foundParty.invitedMembers.includes(username)
+    ) {
+      let room = await PartyRoom.findOneAndUpdate(
+        { _id: roomId },
+        { $push: { members: username } }
+      );
+      room.save();
+    }
+
     await User.findOneAndUpdate({ username: username }, { partyRoom: roomId });
   } catch (error) {
     throw error;
