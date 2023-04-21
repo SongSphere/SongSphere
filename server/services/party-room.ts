@@ -74,10 +74,9 @@ export const deleteRoom = async (room: TPartyRoom) => {
 export const addListener = async (roomId: string, username: string) => {
   try {
     const foundParty = await PartyRoom.findOne({ _id: roomId });
-
     if (
-      !foundParty.members.includes(username) &&
-      foundParty.invitedMembers.includes(username)
+      !foundParty.members.includes(username)
+      // foundParty.invitedMembers.includes(username)
     ) {
       let room = await PartyRoom.findOneAndUpdate(
         { _id: roomId },
