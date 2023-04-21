@@ -103,13 +103,16 @@ const ListenerList = (props: IListernerListProps) => {
                           <button
                             className="mr-5 text-lblue"
                             onClick={() =>
-                              BlockMember(props.room, users).then((res) => {
-                                if (res) {
-                                  
-                                } else {
+                              BlockMember(props.room, users)
+                                .then((res) => {
+                                  if (res) {
+                                  } else {
+                                    setEnterFailOpen(true);
+                                  }
+                                })
+                                .catch((error) => {
                                   setEnterFailOpen(true);
-                                }
-                              })
+                                })
                             }
                           >
                             remove
